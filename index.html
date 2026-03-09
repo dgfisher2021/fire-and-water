@@ -42,9 +42,9 @@ opacity:0.4;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,0.5);
 .track-tab img{width:100%;height:100%;object-fit:cover;display:block}
 .track-tab:hover{opacity:0.65}
 .track-tab.active{opacity:1;transform:scale(1.12)}
-.track-tab.active[data-track=“pencil”]{border-color:var(–pencil-warm);box-shadow:0 4px 28px rgba(196,149,106,0.4)}
-.track-tab.active[data-track=“fire”]{border-color:var(–fire-bright);box-shadow:0 4px 28px rgba(245,158,11,0.4)}
-.track-tab.active[data-track=“water”]{border-color:var(–water-bright);box-shadow:0 4px 28px rgba(125,211,252,0.4)}
+.track-tab.active[data-track=“pencil”]{border-color:var(--pencil-warm);box-shadow:0 4px 28px rgba(196,149,106,0.4)}
+.track-tab.active[data-track=“fire”]{border-color:var(--fire-bright);box-shadow:0 4px 28px rgba(245,158,11,0.4)}
+.track-tab.active[data-track=“water”]{border-color:var(--water-bright);box-shadow:0 4px 28px rgba(125,211,252,0.4)}
 
 /* ===== HOME / CAROUSEL ===== */
 .home-view{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;position:relative;z-index:3}
@@ -59,12 +59,12 @@ box-shadow:0 24px 72px rgba(0,0,0,0.6);opacity:0;transition:opacity 1.8s ease;cu
 font-family:‘Cormorant Garamond’,serif;font-weight:300;font-size:38px;line-height:1.1;margin-bottom:6px;
 }
 .home-sub{
-font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:15px;color:var(–text-secondary);
+font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:15px;color:var(--text-secondary);
 }
-.home-title .fire{background:linear-gradient(135deg,var(–fire-bright),var(–fire-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.home-title .water{background:linear-gradient(135deg,var(–water-bright),var(–water-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.home-title .amp{font-style:italic;color:var(–text-dim);-webkit-text-fill-color:var(–text-dim)}
-.home-title .pencil-t{color:var(–pencil-warm);-webkit-text-fill-color:var(–pencil-warm)}
+.home-title .fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-title .water{background:linear-gradient(135deg,var(--water-bright),var(--water-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-title .amp{font-style:italic;color:var(--text-dim);-webkit-text-fill-color:var(--text-dim)}
+.home-title .pencil-t{color:var(--pencil-warm);-webkit-text-fill-color:var(--pencil-warm)}
 
 .car-text{text-align:center;min-height:100px}
 .car-title{
@@ -72,20 +72,20 @@ font-family:‘Cormorant Garamond’,serif;font-weight:400;font-size:28px;line-h
 margin-bottom:4px;opacity:0;transition:opacity 0.8s ease;
 }
 .car-title.visible{opacity:1}
-.car-title.pencil{color:var(–pencil-warm)}
-.car-title.fire{color:var(–fire-bright)}
-.car-title.water{color:var(–water-bright)}
+.car-title.pencil{color:var(--pencil-warm)}
+.car-title.fire{color:var(--fire-bright)}
+.car-title.water{color:var(--water-bright)}
 
 .car-sub{
 font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:13px;
-color:var(–text-secondary);margin-bottom:10px;
+color:var(--text-secondary);margin-bottom:10px;
 opacity:0;transition:opacity 0.8s ease 0.1s;
 }
 .car-sub.visible{opacity:1}
 
 .car-desc{
 font-family:‘Outfit’,sans-serif;font-size:13px;line-height:1.5;
-color:var(–text-dim);max-width:300px;margin:0 auto;
+color:var(--text-dim);max-width:300px;margin:0 auto;
 opacity:0;transition:opacity 0.8s ease 0.2s;
 }
 .car-desc.visible{opacity:1}
@@ -107,17 +107,17 @@ color:white;
 .car-play-btn svg{width:16px;height:16px;fill:white}
 .car-play-btn:hover{filter:brightness(1.15);transform:scale(1.03)}
 .car-play-btn:active{transform:scale(0.97)}
-.car-play-btn.pencil{background:linear-gradient(135deg,var(–pencil-warm),var(–pencil-deep))}
-.car-play-btn.fire{background:linear-gradient(135deg,var(–fire-bright),var(–fire-deep))}
-.car-play-btn.water{background:linear-gradient(135deg,var(–water-bright),var(–water-deep))}
+.car-play-btn.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
+.car-play-btn.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
+.car-play-btn.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
 
 .car-lyrics-btn{
 padding:10px 24px;border-radius:12px;
 border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);
-color:var(–text-secondary);font-family:‘Outfit’,sans-serif;font-size:13px;
+color:var(--text-secondary);font-family:‘Outfit’,sans-serif;font-size:13px;
 letter-spacing:1px;cursor:pointer;transition:background 0.2s ease, color 0.2s ease;
 }
-.car-lyrics-btn:hover{background:rgba(255,255,255,0.12);color:var(–text-primary)}
+.car-lyrics-btn:hover{background:rgba(255,255,255,0.12);color:var(--text-primary)}
 .car-lyrics-btn:active{transform:scale(0.96)}
 
 .car-dots{
@@ -141,17 +141,17 @@ box-shadow:0 20px 60px rgba(0,0,0,0.6);cursor:pointer;transition:all 0.3s ease;
 .tv-art:hover{transform:scale(1.02)}
 .tv-art:active{transform:scale(0.97)}
 .tv-title{font-family:‘Cormorant Garamond’,serif;font-weight:400;font-size:30px;margin-top:20px}
-.tv-title.pencil{color:var(–pencil-warm)}
-.tv-title.fire{color:var(–fire-bright)}
-.tv-title.water{color:var(–water-bright)}
-.tv-sub{font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:14px;color:var(–text-secondary);margin-top:4px}
+.tv-title.pencil{color:var(--pencil-warm)}
+.tv-title.fire{color:var(--fire-bright)}
+.tv-title.water{color:var(--water-bright)}
+.tv-sub{font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:14px;color:var(--text-secondary);margin-top:4px}
 
 .tv-alt{
 display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:10px;
 background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-font-size:12px;color:var(–text-secondary);cursor:pointer;transition:all 0.2s ease;
+font-size:12px;color:var(--text-secondary);cursor:pointer;transition:all 0.2s ease;
 }
-.tv-alt:hover{background:rgba(255,255,255,0.08);color:var(–text-primary)}
+.tv-alt:hover{background:rgba(255,255,255,0.08);color:var(--text-primary)}
 .tv-alt svg{width:14px;height:14px;fill:currentColor;opacity:0.6}
 
 .tv-actions{display:flex;gap:14px;margin-top:20px;align-items:center}
@@ -165,33 +165,33 @@ display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;
 .tv-play-btn .pause{display:none}
 .tv-play-btn.playing .tri{display:none}
 .tv-play-btn.playing .pause{display:block}
-.tv-play-btn.pencil{background:linear-gradient(135deg,var(–pencil-warm),var(–pencil-deep))}
-.tv-play-btn.fire{background:linear-gradient(135deg,var(–fire-bright),var(–fire-deep))}
-.tv-play-btn.water{background:linear-gradient(135deg,var(–water-bright),var(–water-deep))}
+.tv-play-btn.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
+.tv-play-btn.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
+.tv-play-btn.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
 
 .tv-lyrics-btn{
 padding:12px 20px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);
-background:rgba(255,255,255,0.05);color:var(–text-secondary);
+background:rgba(255,255,255,0.05);color:var(--text-secondary);
 font-family:‘Outfit’,sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;transition:all 0.2s ease;
 }
-.tv-lyrics-btn:hover{background:rgba(255,255,255,0.1);color:var(–text-primary)}
+.tv-lyrics-btn:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
 
 .tv-dl{
 width:40px;height:40px;border:none;background:rgba(255,255,255,0.05);
 border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
 text-decoration:none;border:1px solid rgba(255,255,255,0.06);
 }
-.tv-dl svg{width:16px;height:16px;fill:var(–text-dim)}
+.tv-dl svg{width:16px;height:16px;fill:var(--text-dim)}
 .tv-dl:hover{background:rgba(255,255,255,0.1)}
-.tv-dl:hover svg{fill:var(–text-secondary)}
+.tv-dl:hover svg{fill:var(--text-secondary)}
 
 .tv-progress{width:100%;max-width:300px;margin-top:16px}
 .tv-pbar{width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,0.06);cursor:pointer;margin-bottom:4px}
 .tv-pfill{height:100%;border-radius:2px;width:0%;transition:width 0.15s linear}
-.tv-pfill.pencil{background:linear-gradient(90deg,var(–pencil-deep),var(–pencil-warm))}
-.tv-pfill.fire{background:linear-gradient(90deg,var(–fire-deep),var(–fire-bright))}
-.tv-pfill.water{background:linear-gradient(90deg,var(–water-deep),var(–water-bright))}
-.tv-times{display:flex;justify-content:space-between;font-size:10px;color:var(–text-dim);font-variant-numeric:tabular-nums}
+.tv-pfill.pencil{background:linear-gradient(90deg,var(--pencil-deep),var(--pencil-warm))}
+.tv-pfill.fire{background:linear-gradient(90deg,var(--fire-deep),var(--fire-bright))}
+.tv-pfill.water{background:linear-gradient(90deg,var(--water-deep),var(--water-bright))}
+.tv-times{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-variant-numeric:tabular-nums}
 
 /* ===== FULL SCREEN LYRICS DRAWER ===== */
 .lyrics-drawer{
@@ -208,30 +208,30 @@ transform:translateY(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
 width:36px;height:36px;border:none;background:rgba(255,255,255,0.06);
 border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.ld-close svg{width:16px;height:16px;fill:var(–text-secondary)}
+.ld-close svg{width:16px;height:16px;fill:var(--text-secondary)}
 .ld-close:hover{background:rgba(255,255,255,0.12)}
 .ld-header-meta{flex:1;text-align:center;padding:0 12px}
 .ld-header-title{font-family:‘Cormorant Garamond’,serif;font-size:18px;font-weight:400}
-.ld-header-title.pencil{color:var(–pencil-warm)}
-.ld-header-title.fire{color:var(–fire-bright)}
-.ld-header-title.water{color:var(–water-bright)}
-.ld-header-sub{font-size:11px;color:var(–text-dim);font-family:‘Cormorant Garamond’,serif;font-style:italic}
+.ld-header-title.pencil{color:var(--pencil-warm)}
+.ld-header-title.fire{color:var(--fire-bright)}
+.ld-header-title.water{color:var(--water-bright)}
+.ld-header-sub{font-size:11px;color:var(--text-dim);font-family:‘Cormorant Garamond’,serif;font-style:italic}
 .ld-header-voice{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
-.ld-header-voice.pencil{color:var(–pencil-warm)}
-.ld-header-voice.fire{color:var(–fire-bright)}
-.ld-header-voice.water{color:var(–water-bright)}
-.ld-counter{font-size:11px;color:var(–text-dim);font-variant-numeric:tabular-nums;min-width:36px;text-align:right;flex-shrink:0}
+.ld-header-voice.pencil{color:var(--pencil-warm)}
+.ld-header-voice.fire{color:var(--fire-bright)}
+.ld-header-voice.water{color:var(--water-bright)}
+.ld-counter{font-size:11px;color:var(--text-dim);font-variant-numeric:tabular-nums;min-width:36px;text-align:right;flex-shrink:0}
 
 .ld-sbs-toggle{
 display:flex;align-items:center;gap:5px;flex-shrink:0;
 padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);
-background:rgba(255,255,255,0.05);color:var(–text-secondary);
+background:rgba(255,255,255,0.05);color:var(--text-secondary);
 font-family:‘Outfit’,sans-serif;font-size:11px;letter-spacing:0.5px;
 cursor:pointer;transition:all 0.2s ease;
 }
 .ld-sbs-toggle svg{width:14px;height:14px;fill:currentColor;opacity:0.6}
-.ld-sbs-toggle:hover{background:rgba(255,255,255,0.1);color:var(–text-primary)}
-.ld-sbs-toggle.active{background:rgba(125,211,252,0.12);color:var(–water-bright);border-color:rgba(125,211,252,0.2)}
+.ld-sbs-toggle:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
+.ld-sbs-toggle.active{background:rgba(125,211,252,0.12);color:var(--water-bright);border-color:rgba(125,211,252,0.2)}
 
 .ld-stanza-area{flex:1;overflow-y:auto;padding:24px 32px 60px;-webkit-overflow-scrolling:touch;
 mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
@@ -240,7 +240,7 @@ mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, trans
 .ld-stanza-area::-webkit-scrollbar{width:0}
 .ld-stanza{
 font-family:‘Cormorant Garamond’,serif;font-size:22px;line-height:1.7;
-text-align:center;color:var(–text-secondary);margin-bottom:32px;
+text-align:center;color:var(--text-secondary);margin-bottom:32px;
 transition:color 0.4s ease;
 }
 .ld-stanza .line{display:block}
@@ -255,11 +255,11 @@ mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, trans
 .ld-sbs-col::-webkit-scrollbar{width:0}
 .ld-sbs-divider{width:1px;background:rgba(255,255,255,0.06);flex-shrink:0;align-self:stretch}
 .ld-sbs-col .col-tag{font-family:‘Outfit’,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;text-align:center;position:sticky;top:0;z-index:2;padding:8px 0;background:linear-gradient(to bottom,rgba(0,0,0,0.55) 60%,transparent)}
-.ld-sbs-col.left .col-tag{color:var(–fire-bright)}
-.ld-sbs-col.right .col-tag{color:var(–water-bright)}
+.ld-sbs-col.left .col-tag{color:var(--fire-bright)}
+.ld-sbs-col.right .col-tag{color:var(--water-bright)}
 .col-voice{display:block;font-size:9px;letter-spacing:1.5px;opacity:0.6;margin-top:2px}
 .ld-sbs-col .sbs-stanza{
-font-family:‘Cormorant Garamond’,serif;font-size:17px;line-height:1.65;text-align:center;color:var(–text-secondary);
+font-family:‘Cormorant Garamond’,serif;font-size:17px;line-height:1.65;text-align:center;color:var(--text-secondary);
 margin-bottom:24px;
 }
 .ld-sbs-col .sbs-stanza .line{display:block}
@@ -280,20 +280,65 @@ transform:scale(0.9) translateY(10px);transition:transform 0.35s cubic-bezier(0.
 }
 .toast-overlay.show .toast-box{transform:scale(1) translateY(0)}
 .toast-icon{width:48px;height:48px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06)}
-.toast-icon svg{width:24px;height:24px;fill:var(–text-secondary)}
-.toast-title{font-family:‘Cormorant Garamond’,serif;font-size:20px;font-weight:500;color:var(–text-primary);margin-bottom:8px}
-.toast-msg{font-size:13px;color:var(–text-secondary);line-height:1.5;margin-bottom:24px}
+.toast-icon svg{width:24px;height:24px;fill:var(--text-secondary)}
+.toast-title{font-family:‘Cormorant Garamond’,serif;font-size:20px;font-weight:500;color:var(--text-primary);margin-bottom:8px}
+.toast-msg{font-size:13px;color:var(--text-secondary);line-height:1.5;margin-bottom:24px}
 .toast-actions{display:flex;gap:10px}
 .toast-btn{flex:1;padding:12px 16px;border-radius:12px;border:none;cursor:pointer;font-family:‘Outfit’,sans-serif;font-size:14px;font-weight:500;transition:all 0.2s ease}
 .toast-btn:active{transform:scale(0.96)}
-.toast-btn.cancel{background:rgba(255,255,255,0.06);color:var(–text-secondary);border:1px solid rgba(255,255,255,0.08)}
+.toast-btn.cancel{background:rgba(255,255,255,0.06);color:var(--text-secondary);border:1px solid rgba(255,255,255,0.08)}
 .toast-btn.cancel:hover{background:rgba(255,255,255,0.1)}
 .toast-btn.download{color:white}
-.toast-btn.download.pencil{background:linear-gradient(135deg,var(–pencil-warm),var(–pencil-deep))}
-.toast-btn.download.fire{background:linear-gradient(135deg,var(–fire-bright),var(–fire-deep))}
-.toast-btn.download.water{background:linear-gradient(135deg,var(–water-bright),var(–water-deep))}
+.toast-btn.download.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
+.toast-btn.download.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
+.toast-btn.download.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
 
-.app-footer{text-align:center;padding:8px;flex-shrink:0;font-family:‘Cormorant Garamond’,serif;font-style:italic;font-size:12px;color:var(–text-dim);position:relative;z-index:3}
+/* ===== LYRICS AUDIO BAR ===== */
+.ld-audio-bar{
+display:flex;align-items:center;gap:10px;padding:10px 20px;flex-shrink:0;
+border-top:1px solid rgba(255,255,255,0.04);background:rgba(0,0,0,0.3);
+}
+.ld-play-btn{
+width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
+display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;flex-shrink:0;
+}
+.ld-play-btn:hover{transform:scale(1.08)}
+.ld-play-btn:active{transform:scale(0.95)}
+.ld-play-btn svg{width:18px;height:18px;fill:white}
+.ld-play-btn .pause-icon{display:none}
+.ld-play-btn.playing .play-icon{display:none}
+.ld-play-btn.playing .pause-icon{display:block}
+.ld-play-btn.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
+.ld-play-btn.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
+.ld-play-btn.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
+.ld-progress{flex:1;display:flex;flex-direction:column;gap:2px}
+.ld-pbar{width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,0.08);cursor:pointer}
+.ld-pfill{height:100%;border-radius:2px;width:0%;transition:width 0.15s linear}
+.ld-pfill.pencil{background:linear-gradient(90deg,var(--pencil-deep),var(--pencil-warm))}
+.ld-pfill.fire{background:linear-gradient(90deg,var(--fire-deep),var(--fire-bright))}
+.ld-pfill.water{background:linear-gradient(90deg,var(--water-deep),var(--water-bright))}
+.ld-times{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-variant-numeric:tabular-nums}
+.ld-dl-btn{
+width:36px;height:36px;border:none;background:rgba(255,255,255,0.05);
+border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+text-decoration:none;border:1px solid rgba(255,255,255,0.06);flex-shrink:0;
+}
+.ld-dl-btn svg{width:14px;height:14px;fill:var(--text-dim)}
+.ld-dl-btn:hover{background:rgba(255,255,255,0.1)}
+.ld-dl-btn:hover svg{fill:var(--text-secondary)}
+
+/* ===== CAROUSEL DOWNLOAD BTN ===== */
+.car-dl-btn{
+width:40px;height:40px;border:none;background:rgba(255,255,255,0.06);
+border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+text-decoration:none;border:1px solid rgba(255,255,255,0.08);
+transition:all 0.2s ease;
+}
+.car-dl-btn svg{width:16px;height:16px;fill:var(--text-dim)}
+.car-dl-btn:hover{background:rgba(255,255,255,0.12)}
+.car-dl-btn:hover svg{fill:var(--text-secondary)}
+
+.app-footer{text-align:center;padding:8px;flex-shrink:0;font-family:’Cormorant Garamond’,serif;font-style:italic;font-size:12px;color:var(--text-dim);position:relative;z-index:3}
 
 @media(min-width:768px){
 .carousel-wrap{width:320px;height:320px}
@@ -341,11 +386,14 @@ transform:scale(0.9) translateY(10px);transition:transform 0.35s cubic-bezier(0.
       <div class="car-sub visible" id="carSub">For Alex, from Dustin</div>
       <div class="car-desc visible" id="carDesc">A boy who only trusted pencil&#x2014;erasable, safe, fixable&#x2014;watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.</div>
       <div class="car-actions visible" id="carActions">
-        <a class="car-play-btn" id="carPlayBtn" href="#" target="_blank" rel="noopener" onclick="event.preventDefault();window.open(this.href,'_blank')" style="display:none">
+        <button class="car-play-btn pencil" id="carPlayBtn" onclick="playAndOpenLyrics()">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          Listen
-        </a>
+          Play
+        </button>
         <button class="car-lyrics-btn" id="carLyricsBtn" onclick="openLyricsForCurrent()">Read Lyrics</button>
+        <a class="car-dl-btn" id="carDlBtn" href="pencil-and-pen.m4a" download title="Download">
+          <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        </a>
       </div>
     </div>
     <div class="car-dots">
@@ -377,13 +425,33 @@ transform:scale(0.9) translateY(10px);transition:transform 0.35s cubic-bezier(0.
     <div class="ld-sbs-divider"></div>
     <div class="ld-sbs-col right" id="ldSbsRight"><div class="col-tag">Water &amp; Fire<span class="col-voice">Alex&rsquo;s voice</span></div><div id="ldSbsRightStanza"></div></div>
   </div>
+  <div class="ld-audio-bar" id="ldAudioBar">
+    <button class="ld-play-btn pencil" id="ldPlayBtn" onclick="toggleAudio()">
+      <svg class="play-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <svg class="pause-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
+    <div class="ld-progress">
+      <div class="ld-pbar" id="ldPbar" onclick="seekAudio(event)">
+        <div class="ld-pfill pencil" id="ldPfill"></div>
+      </div>
+      <div class="ld-times">
+        <span id="ldTimeCur">0:00</span>
+        <span id="ldTimeDur">0:00</span>
+      </div>
+    </div>
+    <a class="ld-dl-btn" id="ldDlBtn" href="#" download title="Download">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+    </a>
+  </div>
 </div>
+
+<audio id="audioPlayer" preload="metadata"></audio>
 
 <script>
 var TRACKS={
-  pencil:{title:'Pencil and Pen',sub:'For Alex, from Dustin \u2014 March 2, 2026',voice:'Dustin\u2019s voice',bgId:'bg-pencil',link:'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',lyrics:[["My dear sister,","you know.. it\u2019s true.","The fire in me","was lit by you."],["I remember this rebel,","so wild and free..","Transforming feelings","to poetry."],["With journal open,","and pen in hand..","You\u2019d fill the pages","without a plan."],["Drawn to pencil,","I hated pen..","Could not erase","or start again."],["With pencil I could","fix mistakes..","Erase the parts","that I would hate."],["Your anger, sadness,","pain and grief..","Your pen gave every","hurt relief."],["You felt it all","and wrote it free..","Your words flowed out","authentically."],["So much I felt","I couldn\u2019t say..","Just wanted it","to go away."],["So much inside,","held in, suppressed..","So much of me","forced down, repressed."],["I tried so hard","to get it right..","The perfect boy","who prayed at night."],["I learned \u201cthe truth.\u201d","I stayed in line..","Followed their rules","and bought their lies."],["You got put down,","called difficult..","While I got sucked","into that cult."],["But watching you","just write it out..","The anger, sadness,","fear and doubt.."],["Inspired me","more than you knew..","Couldn\u2019t feel yet","but wanted to."],["You didn\u2019t give up,","you figured it out..","Forced me to face","my own self-doubt."]]},
-  fire:{title:'Fire and Water',sub:'From Dustin, to Alex \u2014 March 8, 2026',voice:'Dustin\u2019s voice',bgId:'bg-fire',link:'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',lyrics:[["You lit the fire","inside of me..","My words now flow,","I\u2019m finally free."],["I had to learn","your element..","To speak my truth,","say what I meant."],["Your fire gave me","strength and pride..","Unlocked the voice","I kept inside."],["To stand my ground,","to roar, be bold..","Stop being quiet,","do what I\u2019m told."],["But somewhere in","the years between..","You needed something","you learned from me."],["The years had shaped","a different you..","Fierce but nurturing,","more patient too."],["Our roles reversed,","our stories turned..","My element","you slowly learned."],["From bridges burned,","to second chance..","Your temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp and precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With time and patience,","it\u2019ll carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["Our parents\u2019 voice,","their weight and blame..","As if YOUR fire","was theirs to tame."],["When they expect","a fast reply..","You don\u2019t owe them","a reason why."],["Two girls to teach,","a home to build..","Still expectations","are not fulfilled."],["Their guilt, their weight,","their keeping scores..","Let go of theirs,","they are not yours."],["Your feelings strong,","a swelling tide..","Your currents pull","from deep inside."],["But feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["The anger that","would once explode..","You\u2019ve channeled into","inner growth."],["You bend and flow,","you hold and give..","You teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear sister,","you know it\u2019s true..","The best parts of me","are inspired by you."]]},
-  water:{title:'Water and Fire',sub:'By Dustin, as Alex \u2014 March 8, 2026',voice:'Alex\u2019s voice',bgId:'bg-water',link:'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',lyrics:[["Your fire\u2019s lit,","I always knew..","You had the words","inside of you."],["While you learned","my element..","To speak your truth,","say what you meant."],["I see you full","of strength and pride..","Unlocked the voice","you kept inside."],["To stand your ground,","to roar, be bold..","Stop being quiet,","do what you\u2019re told."],["But somewhere in","the years between..","I needed something","I learned from you."],["The years had shaped","a different me..","Fierce but nurturing,","more patient, free."],["Our roles reversed,","our stories turned..","Your element","I\u2019ve slowly learned."],["From bridges burned,","to second chance..","My temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp, precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With patience, time","will carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["I hold no guilt,","no weight or blame..","MY fire was never","theirs to tame."],["I will respect..","and always try","those that show","a reason why."],["My girls I teach,","a home I build..","And still more dreams","not yet fulfilled."],["The anger that","would once explode..","I\u2019ve channeled into","inner growth."],["Let go of thoughts","that are not mine..","The guilt, the weight","will fade in time."],["My feelings strong,","a swelling tide..","My currents pull","from deep inside."],["Past feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["I bend and flow,","I hold and give..","I teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear brother,","you know it\u2019s true..","The best parts of me","are inspired by you."]]}
+  pencil:{title:'Pencil and Pen',sub:'For Alex, from Dustin \u2014 March 2, 2026',voice:'Dustin\u2019s voice',bgId:'bg-pencil',audioFile:'pencil-and-pen.m4a',link:'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',lyrics:[["My dear sister,","you know.. it\u2019s true.","The fire in me","was lit by you."],["I remember this rebel,","so wild and free..","Transforming feelings","to poetry."],["With journal open,","and pen in hand..","You\u2019d fill the pages","without a plan."],["Drawn to pencil,","I hated pen..","Could not erase","or start again."],["With pencil I could","fix mistakes..","Erase the parts","that I would hate."],["Your anger, sadness,","pain and grief..","Your pen gave every","hurt relief."],["You felt it all","and wrote it free..","Your words flowed out","authentically."],["So much I felt","I couldn\u2019t say..","Just wanted it","to go away."],["So much inside,","held in, suppressed..","So much of me","forced down, repressed."],["I tried so hard","to get it right..","The perfect boy","who prayed at night."],["I learned \u201cthe truth.\u201d","I stayed in line..","Followed their rules","and bought their lies."],["You got put down,","called difficult..","While I got sucked","into that cult."],["But watching you","just write it out..","The anger, sadness,","fear and doubt.."],["Inspired me","more than you knew..","Couldn\u2019t feel yet","but wanted to."],["You didn\u2019t give up,","you figured it out..","Forced me to face","my own self-doubt."]]},
+  fire:{title:'Fire and Water',sub:'From Dustin, to Alex \u2014 March 8, 2026',voice:'Dustin\u2019s voice',bgId:'bg-fire',audioFile:'fire-and-water.m4a',link:'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',lyrics:[["You lit the fire","inside of me..","My words now flow,","I\u2019m finally free."],["I had to learn","your element..","To speak my truth,","say what I meant."],["Your fire gave me","strength and pride..","Unlocked the voice","I kept inside."],["To stand my ground,","to roar, be bold..","Stop being quiet,","do what I\u2019m told."],["But somewhere in","the years between..","You needed something","you learned from me."],["The years had shaped","a different you..","Fierce but nurturing,","more patient too."],["Our roles reversed,","our stories turned..","My element","you slowly learned."],["From bridges burned,","to second chance..","Your temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp and precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With time and patience,","it\u2019ll carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["Our parents\u2019 voice,","their weight and blame..","As if YOUR fire","was theirs to tame."],["When they expect","a fast reply..","You don\u2019t owe them","a reason why."],["Two girls to teach,","a home to build..","Still expectations","are not fulfilled."],["Their guilt, their weight,","their keeping scores..","Let go of theirs,","they are not yours."],["Your feelings strong,","a swelling tide..","Your currents pull","from deep inside."],["But feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["The anger that","would once explode..","You\u2019ve channeled into","inner growth."],["You bend and flow,","you hold and give..","You teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear sister,","you know it\u2019s true..","The best parts of me","are inspired by you."]]},
+  water:{title:'Water and Fire',sub:'By Dustin, as Alex \u2014 March 8, 2026',voice:'Alex\u2019s voice',bgId:'bg-water',audioFile:'water-and-fire.m4a',link:'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',lyrics:[["Your fire\u2019s lit,","I always knew..","You had the words","inside of you."],["While you learned","my element..","To speak your truth,","say what you meant."],["I see you full","of strength and pride..","Unlocked the voice","you kept inside."],["To stand your ground,","to roar, be bold..","Stop being quiet,","do what you\u2019re told."],["But somewhere in","the years between..","I needed something","I learned from you."],["The years had shaped","a different me..","Fierce but nurturing,","more patient, free."],["Our roles reversed,","our stories turned..","Your element","I\u2019ve slowly learned."],["From bridges burned,","to second chance..","My temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp, precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With patience, time","will carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["I hold no guilt,","no weight or blame..","MY fire was never","theirs to tame."],["I will respect..","and always try","those that show","a reason why."],["My girls I teach,","a home I build..","And still more dreams","not yet fulfilled."],["The anger that","would once explode..","I\u2019ve channeled into","inner growth."],["Let go of thoughts","that are not mine..","The guilt, the weight","will fade in time."],["My feelings strong,","a swelling tide..","My currents pull","from deep inside."],["Past feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["I bend and flow,","I hold and give..","I teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear brother,","you know it\u2019s true..","The best parts of me","are inspired by you."]]}
 };
 
 var ORDER=['pencil','fire','water'];
@@ -420,16 +488,12 @@ function showCar(i){
     cd.textContent=CAR_SLIDES[i].desc;
     cd.className='car-desc visible';
     ca.className='car-actions visible';
-    // Play button
+    // Play button and download
     var pb=document.getElementById('carPlayBtn');
     var t=TRACKS[CAR_SLIDES[i].track];
-    if(t.link){
-      pb.href=t.link;
-      pb.className='car-play-btn '+CAR_SLIDES[i].theme;
-      pb.style.display='';
-    }else{
-      pb.style.display='none';
-    }
+    pb.className='car-play-btn '+CAR_SLIDES[i].theme;
+    var dl=document.getElementById('carDlBtn');
+    dl.href=t.audioFile;
   },400);
 }
 
@@ -489,13 +553,94 @@ function openLyrics(){
   sa.scrollTop=0;
   sbsOn=false;
 
+  // Set up audio bar theme
+  var ldPb=document.getElementById('ldPlayBtn');
+  ldPb.className='ld-play-btn '+current;
+  document.getElementById('ldPfill').className='ld-pfill '+current;
+  document.getElementById('ldDlBtn').href=t.audioFile;
+
   document.getElementById('lyricsDrawer').classList.add('open');
 }
 
 function closeLyrics(){
   document.getElementById('lyricsDrawer').classList.remove('open');
   sbsOn=false;
+  stopAudio();
 }
+
+// ===== AUDIO PLAYER =====
+var audio=document.getElementById('audioPlayer');
+var audioRAF=null;
+
+function playAndOpenLyrics(){
+  current=CAR_SLIDES[carIdx].track;
+  sbsOn=false;
+  openLyrics();
+  var t=TRACKS[current];
+  audio.src=t.audioFile;
+  audio.play();
+  document.getElementById('ldPlayBtn').classList.add('playing');
+  startProgressUpdate();
+}
+
+function toggleAudio(){
+  if(!current)return;
+  var btn=document.getElementById('ldPlayBtn');
+  if(audio.paused||!audio.src){
+    if(!audio.src||audio.src.indexOf(TRACKS[current].audioFile)===-1){
+      audio.src=TRACKS[current].audioFile;
+    }
+    audio.play();
+    btn.classList.add('playing');
+    startProgressUpdate();
+  }else{
+    audio.pause();
+    btn.classList.remove('playing');
+    stopProgressUpdate();
+  }
+}
+
+function stopAudio(){
+  audio.pause();
+  audio.currentTime=0;
+  audio.src='';
+  document.getElementById('ldPlayBtn').classList.remove('playing');
+  document.getElementById('ldPfill').style.width='0%';
+  document.getElementById('ldTimeCur').textContent='0:00';
+  document.getElementById('ldTimeDur').textContent='0:00';
+  stopProgressUpdate();
+}
+
+function seekAudio(e){
+  if(!audio.duration)return;
+  var bar=document.getElementById('ldPbar');
+  var rect=bar.getBoundingClientRect();
+  var pct=(e.clientX-rect.left)/rect.width;
+  audio.currentTime=pct*audio.duration;
+}
+
+function fmtTime(s){
+  s=Math.floor(s);var m=Math.floor(s/60);s=s%60;
+  return m+':'+(s<10?'0':'')+s;
+}
+
+function updateProgress(){
+  if(audio.duration){
+    document.getElementById('ldPfill').style.width=(audio.currentTime/audio.duration*100)+'%';
+    document.getElementById('ldTimeCur').textContent=fmtTime(audio.currentTime);
+    document.getElementById('ldTimeDur').textContent=fmtTime(audio.duration);
+  }
+  audioRAF=requestAnimationFrame(updateProgress);
+}
+
+function startProgressUpdate(){stopProgressUpdate();audioRAF=requestAnimationFrame(updateProgress)}
+function stopProgressUpdate(){if(audioRAF){cancelAnimationFrame(audioRAF);audioRAF=null}}
+
+audio.addEventListener('ended',function(){
+  document.getElementById('ldPlayBtn').classList.remove('playing');
+  document.getElementById('ldPfill').style.width='100%';
+  stopProgressUpdate();
+});
 
 function toggleSbs(){
   var sa=document.getElementById('ldSingleArea'),sbs=document.getElementById('ldSbsArea');
