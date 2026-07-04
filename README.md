@@ -21,7 +21,8 @@ A music experience featuring three original songs exploring the bond between a b
 - Lock-screen / hardware media controls via the Media Session API
 - Album play-through — when a track ends, the next one starts with its lyrics
 - Full keyboard support — arrow keys switch tracks, Space plays/pauses, Escape closes the lyrics view
-- Works offline — a service worker caches the app shell and artwork
+- Works offline — a service worker caches the app shell, artwork, and fonts
+- Shareable song links — each track has a deep link (e.g. `/#water`) that opens straight to its lyrics, plus a native share button
 - Fully responsive, mobile-friendly, and installable (web app manifest)
 
 ## Project structure

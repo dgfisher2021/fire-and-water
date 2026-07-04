@@ -8,6 +8,10 @@
 <meta name="description" content="Three original songs exploring the bond between a brother and sister — Pencil and Pen, Fire and Water, and Water and Fire. Listen and read the lyrics side by side.">
 <meta name="author" content="Dustin Fisher">
 <meta name="theme-color" content="#0a0e1a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Fire &amp; Water">
 <link rel="canonical" href="https://dgfisher2021.github.io/fire-and-water/">
 <meta property="og:type" content="music.album">
 <meta property="og:title" content="Fire &amp; Water — Dustin &amp; Alex">
@@ -376,6 +380,9 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
         <span id="ldTimeDur">0:00</span>
       </div>
     </div>
+    <button class="ld-dl-btn" id="ldShareBtn" onclick="shareTrack()" title="Share" aria-label="Share track" style="display:none">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+    </button>
     <a class="ld-dl-btn" id="ldDlBtn" href="#" download title="Download" aria-label="Download track">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
     </a>
@@ -392,7 +399,7 @@ var TRACKS={
 };
 
 var ORDER=['pencil','fire','water'];
-var carIdx=0,carTimer=null,current=null,sbsOn=false;
+var carIdx=0,carTimer=null,current=null,sbsOn=false,pushedHash=false;
 
 var CAR_SLIDES=[
   {track:'pencil',theme:'pencil',title:'Pencil and Pen',sub:'For Alex, from Dustin',desc:'A boy who only trusted pencil\u2014erasable, safe, fixable\u2014watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.'},
@@ -470,6 +477,13 @@ function openLyricsForCurrent(){
 function openLyrics(){
   if(!current)return;
   var t=TRACKS[current];
+  var wasOpen=document.getElementById('lyricsDrawer').classList.contains('open');
+  // Deep link: the open track lives in the URL hash, so songs are shareable
+  // and the back button closes the drawer instead of leaving the site
+  if(location.hash!=='#'+current){
+    if(wasOpen){history.replaceState(null,'','#'+current)}
+    else{history.pushState(null,'','#'+current);pushedHash=true}
+  }
   stopCarousel();
   var bgs=document.querySelectorAll('.bg-layer');for(var j=0;j<bgs.length;j++)bgs[j].classList.remove('active');
   document.getElementById(t.bgId).classList.add('active');
@@ -509,12 +523,39 @@ function openLyrics(){
 }
 
 function closeLyrics(){
+  if(pushedHash){pushedHash=false;history.back();return}
+  if(location.hash)history.replaceState(null,'',location.pathname+location.search);
+  closeLyricsUI();
+}
+
+function closeLyricsUI(){
   document.getElementById('lyricsDrawer').classList.remove('open');
   sbsOn=false;
   stopAudio();
   // Resume the carousel on the track that was open
   jumpCar(current?ORDER.indexOf(current):carIdx);
 }
+
+window.addEventListener('popstate',function(){
+  var h=location.hash.slice(1);
+  if(TRACKS[h]){
+    current=h;sbsOn=false;openLyrics();
+  }else if(document.getElementById('lyricsDrawer').classList.contains('open')){
+    pushedHash=false;
+    closeLyricsUI();
+  }
+});
+
+function shareTrack(){
+  if(!current||!navigator.share)return;
+  var t=TRACKS[current];
+  navigator.share({
+    title:t.title+' — Dustin & Alex',
+    text:'Listen to "'+t.title+'"',
+    url:location.origin+location.pathname+'#'+current
+  }).catch(function(){});
+}
+if(navigator.share)document.getElementById('ldShareBtn').style.display='';
 
 // ===== AUDIO PLAYER =====
 var audio=document.getElementById('audioPlayer');
@@ -743,6 +784,16 @@ document.getElementById('ldPbar').addEventListener('keydown',function(e){
 });
 
 startCarousel();
+
+// Open a track's lyrics directly when the page is loaded with a #track hash
+(function(){
+  var h=location.hash.slice(1);
+  if(TRACKS[h]){
+    jumpCar(ORDER.indexOf(h));
+    current=h;
+    openLyrics();
+  }
+})();
 
 // Offline support for the app shell and artwork (audio streams from the network)
 if('serviceWorker' in navigator){

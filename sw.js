@@ -1,7 +1,7 @@
 /* Caches the app shell and artwork so the site loads offline.
    Audio (.m4a) and range requests always go to the network — serving cached
    full-body responses to range requests breaks seeking in some browsers. */
-var CACHE = 'fire-and-water-v1';
+var CACHE = 'fire-and-water-v2';
 var CORE = [
   '.',
   'index.html',
@@ -35,6 +35,20 @@ self.addEventListener('fetch', function (e) {
   var url = new URL(e.request.url);
   if (e.request.method !== 'GET') return;
   if (url.pathname.slice(-4) === '.m4a' || e.request.headers.get('range')) return;
+
+  // Cache-first for web fonts so typography survives offline
+  if (url.origin === 'https://fonts.googleapis.com' || url.origin === 'https://fonts.gstatic.com') {
+    e.respondWith(
+      caches.match(e.request).then(function (m) {
+        return m || fetch(e.request).then(function (r) {
+          var copy = r.clone();
+          caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
+          return r;
+        });
+      })
+    );
+    return;
+  }
 
   if (e.request.mode === 'navigate') {
     // Network-first for the page itself so deploys show up immediately
