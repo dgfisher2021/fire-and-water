@@ -293,6 +293,32 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 @media(prefers-reduced-motion:reduce){
 *,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
 }
+
+/* ===== SHARE FEEDBACK ===== */
+.ld-dl-btn{position:relative}
+.ld-dl-btn.copied::after{
+content:'Link copied';position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+background:rgba(25,30,50,0.97);border:1px solid rgba(255,255,255,0.15);border-radius:8px;
+padding:6px 10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-primary);
+white-space:nowrap;pointer-events:none;
+}
+
+/* ===== PRINT: lyrics as a clean typeset sheet ===== */
+@media print{
+html,body{height:auto;overflow:visible;background:#fff}
+body{color:#1a1a1a}
+.bg-layer,.bg-vignette,.ld-audio-bar,.ld-close,.ld-sbs-toggle,.app-footer{display:none !important}
+body.lyrics-open .app{display:none}
+body:not(.lyrics-open) .lyrics-drawer{display:none}
+.lyrics-drawer{position:static;transform:none;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;display:block}
+.ld-header{border-bottom:1px solid #ddd;justify-content:center}
+.ld-header-title,.ld-header-voice{color:#1a1a1a !important}
+.ld-header-sub{color:#555}
+.ld-stanza-area,.ld-sbs-col{overflow:visible;mask-image:none;-webkit-mask-image:none}
+.ld-stanza,.sbs-stanza{color:#1a1a1a !important}
+.ld-sbs-area{overflow:visible}
+.ld-sbs-col .col-tag{position:static;background:none;color:#555 !important}
+}
 </style>
 
 </head>
@@ -306,21 +332,21 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 <div class="app" id="app">
   <div class="top-bar" role="group" aria-label="Tracks">
     <button class="track-tab" type="button" data-track="pencil" onclick="jumpCar(0)" aria-label="Pencil and Pen">
-      <img src="assets/pencil-512.jpg" alt="">
+      <img src="assets/pencil-512.jpg" alt="" decoding="async">
     </button>
     <button class="track-tab" type="button" data-track="fire" onclick="jumpCar(1)" aria-label="Fire and Water">
-      <img src="assets/fire-512.jpg" alt="">
+      <img src="assets/fire-512.jpg" alt="" decoding="async">
     </button>
     <button class="track-tab" type="button" data-track="water" onclick="jumpCar(2)" aria-label="Water and Fire">
-      <img src="assets/water-512.jpg" alt="">
+      <img src="assets/water-512.jpg" alt="" decoding="async">
     </button>
   </div>
 
   <div class="home-view" id="homeView">
     <div class="carousel-wrap">
-      <img class="carousel-img visible" id="car0" src="assets/pencil.jpg" alt="Pencil and Pen album artwork">
-      <img class="carousel-img" id="car1" src="assets/fire.jpg" alt="Fire and Water album artwork">
-      <img class="carousel-img" id="car2" src="assets/water.jpg" alt="Water and Fire album artwork">
+      <img class="carousel-img visible" id="car0" src="assets/pencil.jpg" alt="Pencil and Pen album artwork" fetchpriority="high">
+      <img class="carousel-img" id="car1" src="assets/fire.jpg" alt="Fire and Water album artwork" decoding="async">
+      <img class="carousel-img" id="car2" src="assets/water.jpg" alt="Water and Fire album artwork" decoding="async">
     </div>
     <div class="car-text">
       <div class="car-title visible pencil" id="carTitle">Pencil and Pen</div>
@@ -393,13 +419,13 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 
 <script>
 var TRACKS={
-  pencil:{title:'Pencil and Pen',sub:'For Alex, from Dustin \u2014 March 2, 2026',voice:'Dustin\u2019s voice',bgId:'bg-pencil',audioFile:'pencil-and-pen.m4a',link:'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',lyrics:[["My dear sister,","you know.. it\u2019s true.","The fire in me","was lit by you."],["I remember this rebel,","so wild and free..","Transforming feelings","to poetry."],["With journal open,","and pen in hand..","You\u2019d fill the pages","without a plan."],["Drawn to pencil,","I hated pen..","Could not erase","or start again."],["With pencil I could","fix mistakes..","Erase the parts","that I would hate."],["Your anger, sadness,","pain and grief..","Your pen gave every","hurt relief."],["You felt it all","and wrote it free..","Your words flowed out","authentically."],["So much I felt","I couldn\u2019t say..","Just wanted it","to go away."],["So much inside,","held in, suppressed..","So much of me","forced down, repressed."],["I tried so hard","to get it right..","The perfect boy","who prayed at night."],["I learned \u201cthe truth.\u201d","I stayed in line..","Followed their rules","and bought their lies."],["You got put down,","called difficult..","While I got sucked","into that cult."],["But watching you","just write it out..","The anger, sadness,","fear and doubt.."],["Inspired me","more than you knew..","Couldn\u2019t feel yet","but wanted to."],["You didn\u2019t give up,","you figured it out..","Forced me to face","my own self-doubt."]]},
-  fire:{title:'Fire and Water',sub:'From Dustin, to Alex \u2014 March 8, 2026',voice:'Dustin\u2019s voice',bgId:'bg-fire',audioFile:'fire-and-water.m4a',link:'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',lyrics:[["You lit the fire","inside of me..","My words now flow,","I\u2019m finally free."],["I had to learn","your element..","To speak my truth,","say what I meant."],["Your fire gave me","strength and pride..","Unlocked the voice","I kept inside."],["To stand my ground,","to roar, be bold..","Stop being quiet,","do what I\u2019m told."],["But somewhere in","the years between..","You needed something","you learned from me."],["The years had shaped","a different you..","Fierce but nurturing,","more patient too."],["Our roles reversed,","our stories turned..","My element","you slowly learned."],["From bridges burned,","to second chance..","Your temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp and precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With time and patience,","it\u2019ll carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["Our parents\u2019 voice,","their weight and blame..","As if YOUR fire","was theirs to tame."],["When they expect","a fast reply..","You don\u2019t owe them","a reason why."],["Two girls to teach,","a home to build..","Still expectations","are not fulfilled."],["Their guilt, their weight,","their keeping scores..","Let go of theirs,","they are not yours."],["Your feelings strong,","a swelling tide..","Your currents pull","from deep inside."],["But feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["The anger that","would once explode..","You\u2019ve channeled into","inner growth."],["You bend and flow,","you hold and give..","You teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear sister,","you know it\u2019s true..","The best parts of me","are inspired by you."]]},
-  water:{title:'Water and Fire',sub:'By Dustin, as Alex \u2014 March 8, 2026',voice:'Alex\u2019s voice',bgId:'bg-water',audioFile:'water-and-fire.m4a',link:'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',lyrics:[["Your fire\u2019s lit,","I always knew..","You had the words","inside of you."],["While you learned","my element..","To speak your truth,","say what you meant."],["I see you full","of strength and pride..","Unlocked the voice","you kept inside."],["To stand your ground,","to roar, be bold..","Stop being quiet,","do what you\u2019re told."],["But somewhere in","the years between..","I needed something","I learned from you."],["The years had shaped","a different me..","Fierce but nurturing,","more patient, free."],["Our roles reversed,","our stories turned..","Your element","I\u2019ve slowly learned."],["From bridges burned,","to second chance..","My temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp, precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With patience, time","will carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["I hold no guilt,","no weight or blame..","MY fire was never","theirs to tame."],["I will respect..","and always try","those that show","a reason why."],["My girls I teach,","a home I build..","And still more dreams","not yet fulfilled."],["The anger that","would once explode..","I\u2019ve channeled into","inner growth."],["Let go of thoughts","that are not mine..","The guilt, the weight","will fade in time."],["My feelings strong,","a swelling tide..","My currents pull","from deep inside."],["Past feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["I bend and flow,","I hold and give..","I teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear brother,","you know it\u2019s true..","The best parts of me","are inspired by you."]]}
+  pencil:{title:'Pencil and Pen',sub:'For Alex, from Dustin \u2014 March 2, 2026',voice:'Dustin\u2019s voice',bgId:'bg-pencil',audioFile:'pencil-and-pen.m4a',duration:190,link:'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',lyrics:[["My dear sister,","you know.. it\u2019s true.","The fire in me","was lit by you."],["I remember this rebel,","so wild and free..","Transforming feelings","to poetry."],["With journal open,","and pen in hand..","You\u2019d fill the pages","without a plan."],["Drawn to pencil,","I hated pen..","Could not erase","or start again."],["With pencil I could","fix mistakes..","Erase the parts","that I would hate."],["Your anger, sadness,","pain and grief..","Your pen gave every","hurt relief."],["You felt it all","and wrote it free..","Your words flowed out","authentically."],["So much I felt","I couldn\u2019t say..","Just wanted it","to go away."],["So much inside,","held in, suppressed..","So much of me","forced down, repressed."],["I tried so hard","to get it right..","The perfect boy","who prayed at night."],["I learned \u201cthe truth.\u201d","I stayed in line..","Followed their rules","and bought their lies."],["You got put down,","called difficult..","While I got sucked","into that cult."],["But watching you","just write it out..","The anger, sadness,","fear and doubt.."],["Inspired me","more than you knew..","Couldn\u2019t feel yet","but wanted to."],["You didn\u2019t give up,","you figured it out..","Forced me to face","my own self-doubt."]]},
+  fire:{title:'Fire and Water',sub:'From Dustin, to Alex \u2014 March 8, 2026',voice:'Dustin\u2019s voice',bgId:'bg-fire',audioFile:'fire-and-water.m4a',duration:400,link:'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',lyrics:[["You lit the fire","inside of me..","My words now flow,","I\u2019m finally free."],["I had to learn","your element..","To speak my truth,","say what I meant."],["Your fire gave me","strength and pride..","Unlocked the voice","I kept inside."],["To stand my ground,","to roar, be bold..","Stop being quiet,","do what I\u2019m told."],["But somewhere in","the years between..","You needed something","you learned from me."],["The years had shaped","a different you..","Fierce but nurturing,","more patient too."],["Our roles reversed,","our stories turned..","My element","you slowly learned."],["From bridges burned,","to second chance..","Your temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp and precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With time and patience,","it\u2019ll carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["Our parents\u2019 voice,","their weight and blame..","As if YOUR fire","was theirs to tame."],["When they expect","a fast reply..","You don\u2019t owe them","a reason why."],["Two girls to teach,","a home to build..","Still expectations","are not fulfilled."],["Their guilt, their weight,","their keeping scores..","Let go of theirs,","they are not yours."],["Your feelings strong,","a swelling tide..","Your currents pull","from deep inside."],["But feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["The anger that","would once explode..","You\u2019ve channeled into","inner growth."],["You bend and flow,","you hold and give..","You teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear sister,","you know it\u2019s true..","The best parts of me","are inspired by you."]]},
+  water:{title:'Water and Fire',sub:'By Dustin, as Alex \u2014 March 8, 2026',voice:'Alex\u2019s voice',bgId:'bg-water',audioFile:'water-and-fire.m4a',duration:295,link:'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',lyrics:[["Your fire\u2019s lit,","I always knew..","You had the words","inside of you."],["While you learned","my element..","To speak your truth,","say what you meant."],["I see you full","of strength and pride..","Unlocked the voice","you kept inside."],["To stand your ground,","to roar, be bold..","Stop being quiet,","do what you\u2019re told."],["But somewhere in","the years between..","I needed something","I learned from you."],["The years had shaped","a different me..","Fierce but nurturing,","more patient, free."],["Our roles reversed,","our stories turned..","Your element","I\u2019ve slowly learned."],["From bridges burned,","to second chance..","My temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp, precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With patience, time","will carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["I hold no guilt,","no weight or blame..","MY fire was never","theirs to tame."],["I will respect..","and always try","those that show","a reason why."],["My girls I teach,","a home I build..","And still more dreams","not yet fulfilled."],["The anger that","would once explode..","I\u2019ve channeled into","inner growth."],["Let go of thoughts","that are not mine..","The guilt, the weight","will fade in time."],["My feelings strong,","a swelling tide..","My currents pull","from deep inside."],["Past feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["I bend and flow,","I hold and give..","I teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear brother,","you know it\u2019s true..","The best parts of me","are inspired by you."]]}
 };
 
 var ORDER=['pencil','fire','water'];
-var carIdx=0,carTimer=null,current=null,sbsOn=false,pushedHash=false;
+var carIdx=0,carTimer=null,current=null,sbsOn=false,pushedHash=false,lastFocused=null;
 
 var CAR_SLIDES=[
   {track:'pencil',theme:'pencil',title:'Pencil and Pen',sub:'For Alex, from Dustin',desc:'A boy who only trusted pencil\u2014erasable, safe, fixable\u2014watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.'},
@@ -433,7 +459,7 @@ function showCar(i){
   setTimeout(function(){
     ct.textContent=CAR_SLIDES[i].title;
     ct.className='car-title visible '+CAR_SLIDES[i].theme;
-    cs.textContent=CAR_SLIDES[i].sub;
+    cs.textContent=CAR_SLIDES[i].sub+' · '+fmtTime(TRACKS[CAR_SLIDES[i].track].duration);
     cs.className='car-sub visible';
     cd.textContent=CAR_SLIDES[i].desc;
     cd.className='car-desc visible';
@@ -518,8 +544,19 @@ function openLyrics(){
   ldPb.className='ld-play-btn '+current;
   document.getElementById('ldPfill').className='ld-pfill '+current;
   document.getElementById('ldDlBtn').href=t.audioFile;
+  if(!audio.src||audio.src.indexOf(t.audioFile)===-1){
+    document.getElementById('ldTimeDur').textContent=fmtTime(t.duration);
+  }
 
+  var wasAlreadyOpen=document.getElementById('lyricsDrawer').classList.contains('open');
   document.getElementById('lyricsDrawer').classList.add('open');
+  document.body.classList.add('lyrics-open');
+  // Keep keyboard and screen-reader focus inside the dialog
+  document.getElementById('app').setAttribute('inert','');
+  if(!wasAlreadyOpen){
+    lastFocused=document.activeElement;
+    document.querySelector('.ld-close').focus();
+  }
 }
 
 function closeLyrics(){
@@ -530,6 +567,9 @@ function closeLyrics(){
 
 function closeLyricsUI(){
   document.getElementById('lyricsDrawer').classList.remove('open');
+  document.body.classList.remove('lyrics-open');
+  document.getElementById('app').removeAttribute('inert');
+  if(lastFocused&&lastFocused.focus){lastFocused.focus();lastFocused=null}
   sbsOn=false;
   stopAudio();
   // Resume the carousel on the track that was open
@@ -547,15 +587,24 @@ window.addEventListener('popstate',function(){
 });
 
 function shareTrack(){
-  if(!current||!navigator.share)return;
+  if(!current)return;
   var t=TRACKS[current];
-  navigator.share({
-    title:t.title+' — Dustin & Alex',
-    text:'Listen to "'+t.title+'"',
-    url:location.origin+location.pathname+'#'+current
-  }).catch(function(){});
+  var url=location.origin+location.pathname+'#'+current;
+  if(navigator.share){
+    navigator.share({
+      title:t.title+' — Dustin & Alex',
+      text:'Listen to "'+t.title+'"',
+      url:url
+    }).catch(function(){});
+  }else if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(function(){
+      var btn=document.getElementById('ldShareBtn');
+      btn.classList.add('copied');
+      setTimeout(function(){btn.classList.remove('copied')},1500);
+    }).catch(function(){});
+  }
 }
-if(navigator.share)document.getElementById('ldShareBtn').style.display='';
+if(navigator.share||navigator.clipboard)document.getElementById('ldShareBtn').style.display='';
 
 // ===== AUDIO PLAYER =====
 var audio=document.getElementById('audioPlayer');

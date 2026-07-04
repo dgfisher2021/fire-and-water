@@ -22,7 +22,8 @@ A music experience featuring three original songs exploring the bond between a b
 - Album play-through — when a track ends, the next one starts with its lyrics
 - Full keyboard support — arrow keys switch tracks, Space plays/pauses, Escape closes the lyrics view
 - Works offline — a service worker caches the app shell, artwork, and fonts
-- Shareable song links — each track has a deep link (e.g. `/#water`) that opens straight to its lyrics, plus a native share button
+- Shareable song links — each track has a deep link (e.g. `/#water`) that opens straight to its lyrics, plus a share button (native share sheet on phones, copy-link elsewhere)
+- Print-friendly lyrics — printing with a song open produces a clean typeset lyric sheet
 - Fully responsive, mobile-friendly, and installable (web app manifest)
 
 ## Project structure
@@ -45,4 +46,5 @@ python3 -m http.server 8000
 # then visit http://localhost:8000
 ```
 
-Deployed automatically via GitHub Pages from the `main` branch.
+Deployed automatically via GitHub Pages from the `main` branch. CI validates the
+HTML, manifest, and service worker on every pull request.
