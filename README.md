@@ -15,7 +15,36 @@ A music experience featuring three original songs exploring the bond between a b
 ## Features
 
 - Interactive carousel with album artwork for each track
-- Built-in audio player with progress tracking
+- Built-in audio player with progress tracking and per-track download
 - Side-by-side lyrics comparison between Dustin's and Alex's perspectives
 - Themed visuals — each track has its own color palette and animated background
-- Fully responsive, mobile-friendly design
+- Lock-screen / hardware media controls via the Media Session API
+- Album play-through — when a track ends, the next one starts with its lyrics
+- Full keyboard support — arrow keys switch tracks, Space plays/pauses, Escape closes the lyrics view
+- Works offline — a service worker caches the app shell, artwork, and fonts
+- Shareable song links — each track has a deep link (e.g. `/#water`) that opens straight to its lyrics, plus a share button (native share sheet on phones, copy-link elsewhere)
+- Print-friendly lyrics — printing with a song open produces a clean typeset lyric sheet
+- Fully responsive, mobile-friendly, and installable (web app manifest)
+
+## Project structure
+
+```
+index.html          The entire app — markup, styles, and scripts (no build step)
+sw.js               Service worker — offline caching of the shell and artwork
+404.html            Not-found page served by GitHub Pages
+site.webmanifest    Web app manifest for installability
+assets/             Album artwork (full size + 512px thumbnails) and icons
+*.m4a               The three audio tracks
+```
+
+## Developing locally
+
+No build step or dependencies — serve the folder and open it in a browser:
+
+```sh
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+Deployed automatically via GitHub Pages from the `main` branch. CI validates the
+HTML, manifest, and service worker on every pull request.
