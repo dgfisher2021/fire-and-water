@@ -15,7 +15,29 @@ A music experience featuring three original songs exploring the bond between a b
 ## Features
 
 - Interactive carousel with album artwork for each track
-- Built-in audio player with progress tracking
+- Built-in audio player with progress tracking and per-track download
 - Side-by-side lyrics comparison between Dustin's and Alex's perspectives
 - Themed visuals — each track has its own color palette and animated background
-- Fully responsive, mobile-friendly design
+- Lock-screen / hardware media controls via the Media Session API
+- Full keyboard support — arrow keys switch tracks, Space plays/pauses, Escape closes the lyrics view
+- Fully responsive, mobile-friendly, and installable (web app manifest)
+
+## Project structure
+
+```
+index.html          The entire app — markup, styles, and scripts (no build step)
+site.webmanifest    Web app manifest for installability
+assets/             Album artwork (full size + 512px thumbnails) and icons
+*.m4a               The three audio tracks
+```
+
+## Developing locally
+
+No build step or dependencies — serve the folder and open it in a browser:
+
+```sh
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+Deployed automatically via GitHub Pages from the `main` branch.
