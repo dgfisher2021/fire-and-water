@@ -19,13 +19,17 @@ A music experience featuring three original songs exploring the bond between a b
 - Side-by-side lyrics comparison between Dustin's and Alex's perspectives
 - Themed visuals — each track has its own color palette and animated background
 - Lock-screen / hardware media controls via the Media Session API
+- Album play-through — when a track ends, the next one starts with its lyrics
 - Full keyboard support — arrow keys switch tracks, Space plays/pauses, Escape closes the lyrics view
+- Works offline — a service worker caches the app shell and artwork
 - Fully responsive, mobile-friendly, and installable (web app manifest)
 
 ## Project structure
 
 ```
 index.html          The entire app — markup, styles, and scripts (no build step)
+sw.js               Service worker — offline caching of the shell and artwork
+404.html            Not-found page served by GitHub Pages
 site.webmanifest    Web app manifest for installability
 assets/             Album artwork (full size + 512px thumbnails) and icons
 *.m4a               The three audio tracks

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dgfisher2021.github.io/fire-and-water/sitemap.xml

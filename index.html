@@ -25,6 +25,25 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicAlbum",
+  "name": "Fire & Water",
+  "byArtist": { "@type": "MusicGroup", "name": "Dustin & Alex" },
+  "url": "https://dgfisher2021.github.io/fire-and-water/",
+  "image": "https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png",
+  "numTracks": 3,
+  "track": [
+    { "@type": "MusicRecording", "name": "Pencil and Pen", "position": 1,
+      "audio": "https://dgfisher2021.github.io/fire-and-water/pencil-and-pen.m4a" },
+    { "@type": "MusicRecording", "name": "Fire and Water", "position": 2,
+      "audio": "https://dgfisher2021.github.io/fire-and-water/fire-and-water.m4a" },
+    { "@type": "MusicRecording", "name": "Water and Fire", "position": 3,
+      "audio": "https://dgfisher2021.github.io/fire-and-water/water-and-fire.m4a" }
+  ]
+}
+</script>
 <style>
   :root {
     --fire-bright:#f59e0b; --fire-deep:#b91c1c;
@@ -281,7 +300,7 @@ button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid 
 <div class="bg-vignette"></div>
 
 <div class="app" id="app">
-  <div class="top-bar" role="tablist" aria-label="Tracks">
+  <div class="top-bar" role="group" aria-label="Tracks">
     <button class="track-tab" type="button" data-track="pencil" onclick="jumpCar(0)" aria-label="Pencil and Pen">
       <img src="assets/pencil-512.jpg" alt="">
     </button>
@@ -391,9 +410,15 @@ function showCar(i){
   var bgs=document.querySelectorAll('.bg-layer');for(var j=0;j<bgs.length;j++)bgs[j].classList.remove('active');
   document.getElementById(TRACKS[CAR_SLIDES[i].track].bgId).classList.add('active');
   var tabs=document.querySelectorAll('.track-tab');
-  for(var j=0;j<tabs.length;j++)tabs[j].classList.toggle('active',j===i);
+  for(var j=0;j<tabs.length;j++){
+    tabs[j].classList.toggle('active',j===i);
+    if(j===i)tabs[j].setAttribute('aria-current','true');else tabs[j].removeAttribute('aria-current');
+  }
   var dots=document.querySelectorAll('.car-dot');
-  for(var j=0;j<dots.length;j++)dots[j].classList.toggle('active',j===i);
+  for(var j=0;j<dots.length;j++){
+    dots[j].classList.toggle('active',j===i);
+    if(j===i)dots[j].setAttribute('aria-current','true');else dots[j].removeAttribute('aria-current');
+  }
   var ct=document.getElementById('carTitle'),cs=document.getElementById('carSub'),cd=document.getElementById('carDesc');
   var ca=document.getElementById('carActions');
   ct.classList.remove('visible');cs.classList.remove('visible');cd.classList.remove('visible');
@@ -494,6 +519,11 @@ function closeLyrics(){
 // ===== AUDIO PLAYER =====
 var audio=document.getElementById('audioPlayer');
 var audioRAF=null;
+var BASE_TITLE=document.title;
+
+function setDocTitle(playing){
+  document.title=playing&&current?'▶ '+TRACKS[current].title+' — Dustin & Alex':BASE_TITLE;
+}
 
 function playAndOpenLyrics(){
   current=CAR_SLIDES[carIdx].track;
@@ -505,6 +535,7 @@ function playAndOpenLyrics(){
   document.getElementById('ldPlayBtn').classList.add('playing');
   startProgressUpdate();
   updateMediaSession();
+  setDocTitle(true);
 }
 
 function toggleAudio(){
@@ -518,10 +549,12 @@ function toggleAudio(){
     btn.classList.add('playing');
     startProgressUpdate();
     updateMediaSession();
+    setDocTitle(true);
   }else{
     audio.pause();
     btn.classList.remove('playing');
     stopProgressUpdate();
+    setDocTitle(false);
   }
 }
 
@@ -534,12 +567,13 @@ function stopAudio(){
   document.getElementById('ldTimeCur').textContent='0:00';
   document.getElementById('ldTimeDur').textContent='0:00';
   stopProgressUpdate();
+  setDocTitle(false);
 }
 
 // Switch tracks inside the lyrics drawer; keeps playing if audio was playing
-function switchTrack(dir){
+function switchTrack(dir,forcePlay){
   if(!current)return;
-  var wasPlaying=!!audio.src&&!audio.paused;
+  var wasPlaying=forcePlay||(!!audio.src&&!audio.paused);
   var idx=ORDER.indexOf(current);
   current=ORDER[(idx+dir+ORDER.length)%ORDER.length];
   sbsOn=false;
@@ -550,6 +584,7 @@ function switchTrack(dir){
     document.getElementById('ldPlayBtn').classList.add('playing');
     startProgressUpdate();
     updateMediaSession();
+    setDocTitle(true);
   }
 }
 
@@ -603,9 +638,17 @@ function startProgressUpdate(){stopProgressUpdate();audioRAF=requestAnimationFra
 function stopProgressUpdate(){if(audioRAF){cancelAnimationFrame(audioRAF);audioRAF=null}}
 
 audio.addEventListener('ended',function(){
+  // Play the album through: advance to the next track until the last one ends
+  var idx=ORDER.indexOf(current);
+  var drawerOpen=document.getElementById('lyricsDrawer').classList.contains('open');
+  if(drawerOpen&&idx>-1&&idx<ORDER.length-1){
+    switchTrack(1,true);
+    return;
+  }
   document.getElementById('ldPlayBtn').classList.remove('playing');
   document.getElementById('ldPfill').style.width='100%';
   stopProgressUpdate();
+  setDocTitle(false);
 });
 
 function toggleSbs(){
@@ -700,6 +743,11 @@ document.getElementById('ldPbar').addEventListener('keydown',function(e){
 });
 
 startCarousel();
+
+// Offline support for the app shell and artwork (audio streams from the network)
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
 </script>
 
 </body>
