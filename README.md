@@ -2,7 +2,7 @@
 
 **Live site:** [https://dgfisher2021.github.io/fire-and-water/](https://dgfisher2021.github.io/fire-and-water/)
 
-A mobile-first music experience for three original songs exploring the bond between a brother and sister — Dustin and Alex.
+A phone app for three original songs exploring the bond between a brother and sister — Dustin and Alex. Built on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit; on a desktop it runs inside a phone mockup floating over the artwork.
 
 ## Tracks
 
@@ -10,33 +10,36 @@ A mobile-first music experience for three original songs exploring the bond betw
 - **Fire and Water** — She was fire — bold, roaring, untamed. He was water — patient, adaptive, persistent.
 - **Water and Fire** — The same story through her eyes. Her fire was never theirs to tame.
 
+## Screens
+
+- **Album** — the three covers crossfade inside a tilting frame over a glow in the active song's colors; swipe, tap a dot, or let it play through. Below, the tracklist.
+- **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics, which scroll with reading focus: the stanza in the middle brightens while the rest recede. Swipe left or right to change songs; the music keeps going.
+- **Compare** — the two mirrored songs, Dustin's and Alex's voices, in synced-scroll columns with a transport bar.
+- **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads, Google Drive links, sharing, credits.
+- The bottom bar's center action plays and pauses from anywhere.
+
 ## Features
 
-- Artwork stage: the three covers crossfade inside a tilting frame over a glow in the active track's colors; swipe, tap a thumbnail, or let it play through
-- Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything, vignetted so type stays legible
-- Lyrics drawer: a frosted full-screen sheet with a grab handle — swipe down or press Escape to close, swipe left and right to change songs
-- Reading focus: the stanza in the middle of the screen brightens while the rest recede
-- Side by side: the two mirrored songs, Dustin's and Alex's voices, in synced-scroll columns
-- Audio bar: play/pause with a buffering ring, a draggable scrubber, tabular times, share and download
-- Album play-through: when a track ends the next one starts with its lyrics
-- Lock-screen and hardware media controls (Media Session API)
-- Keyboard: arrows switch tracks, Space plays/pauses, Escape closes
+- Per-song accent on every theme: pencil, fire and water color the play controls, the glow and the titles
+- Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything
+- Album play-through, lock-screen and hardware media controls (Media Session API)
+- Keyboard: arrows switch songs, Space plays/pauses
 - Shareable deep links — `/lyrics/water` opens straight to a song (old `#water` links still work); native share sheet on phones, copy-link elsewhere
 - Print-friendly lyrics
 - Installable PWA that works offline (app shell, artwork and fonts cached; audio streams)
 
 ## Stack
 
-React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on [Dust UI](https://github.com/dgfisher2021/dust-ui) (`@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens`), zustand for player state, sonner for toasts, `vite-plugin-pwa` for the service worker.
+React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens`; zustand for player state; `vite-plugin-pwa` for the service worker; self-hosted Cormorant Garamond and Outfit.
 
 ```
-index.html              App shell, meta, legacy #hash redirect
-src/routes/             / (home) · /lyrics/$track (drawer) · ?view=split
-src/components/         App compositions built to Dust UI blocks rules
-src/components/ui/      Dust UI components vendored via @dust-ui-source and modified
-src/store/player.ts     Player state bound to the single <audio> element
+index.html              App shell, meta, pre-paint theme, legacy #hash redirect
+src/routes/             / album · /lyrics/$track now playing · /compare · /more
+src/components/         Shell, screen, artwork stage, lyrics reader and split, play button
+src/components/ui/      Dust UI components vendored via @dust-ui-source
+src/store/              Player state (one <audio> element) and toasts
 src/data/tracks.ts      Track data and lyrics (zod-validated)
-src/styles/index.css    Token contract, brand values, per-track accents
+src/styles/index.css    Token contract, presets, brand default, per-song accents
 public/                 Audio (*.m4a) and artwork
 claude/                 Specs and analysis
 ```

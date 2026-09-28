@@ -56,9 +56,10 @@ export function ArtworkStage({
         </MotionCarouselContent>
       </MotionTilt>
       {children}
+      {/* Dots opt out of the 44px touch rule; the whole row is the target. */}
       <MotionCarouselIndicators
-        className='static mt-4 translate-x-0 gap-2'
-        dotClassName='size-2 bg-foreground/15 transition-[background-color,transform] duration-400 data-active:scale-[1.3] data-active:bg-foreground/50'
+        className='static mt-4 translate-x-0 gap-3 py-2'
+        dotClassName='size-2 min-h-0 bg-foreground/15 transition-[background-color,transform] duration-400 data-active:scale-[1.3] data-active:bg-foreground/50'
       />
     </MotionCarousel>
   )

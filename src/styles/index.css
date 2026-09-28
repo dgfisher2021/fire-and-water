@@ -229,6 +229,15 @@
       transform: scale(0.97);
     }
   }
+  /* 44px targets on touch screens. In the base layer so utilities such as
+     the carousel dots' min-h-0 can opt out. */
+  @media (pointer: coarse) {
+    button,
+    [role='button'],
+    a[href] {
+      min-height: 44px;
+    }
+  }
 }
 
 /* Scroll panes hide their bars (the Dust UI mobile kit expects this
@@ -257,14 +266,6 @@
 }
 @utility pb-safe {
   padding-bottom: env(safe-area-inset-bottom);
-}
-
-@media (pointer: coarse) {
-  button,
-  [role='button'],
-  a[href] {
-    min-height: 44px;
-  }
 }
 
 /* Print: lyrics as a clean typeset sheet. */

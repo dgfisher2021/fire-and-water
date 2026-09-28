@@ -14,44 +14,64 @@ pnpm format     # prettier on src/
 
 ## What this is
 
-A mobile-first album player for three songs: artwork stage on the home
-screen, a full-screen frosted lyrics drawer with reading focus, a
-side-by-side view for the two mirrored songs, and an audio bar with a
-draggable scrubber. React 19 + TypeScript strict + Vite 8 + TanStack
-Router + Tailwind v4 on Dust UI (`@dust-ui/ui`, `@dust-ui/motion`,
-`@dust-ui/tokens`) from GitHub Packages. Dark-only by design: the artwork
-dictates the ground, so `<html class="dark">` is static.
+A phone app for three songs, built on the Dust UI mobile kit. Four screens
+behind a `NavBottom` whose center action plays and pauses: Album (artwork
+stage + `MobileListGroup` tracklist), Now Playing (`MobileMediaPlayer` card
+above a reading-focus lyrics pane), Compare (the two mirrored songs in
+synced columns with a transport bar) and More (`MobileListGroup` rows for
+appearance, downloads, Drive links, sharing, credits). React 19 +
+TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
+`@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens` from GitHub Packages.
 
-- `src/routes/` file routes. `/` is home, `/lyrics/$track` opens the
-  drawer (deep-linkable), `?view=split` is side by side. The URL is the
-  source of truth for what is open; the store owns playback.
+- `src/components/phone-shell.tsx` the chrome: on phones the screen fills
+  the viewport with a fixed nav; from 768px up it sits in a `DeviceFrame`
+  over a blurred copy of the artwork. `shell-context.ts` exposes the
+  positioned root (for `SheetAction`/toast portals) and `useFramed`.
+- `src/components/screen.tsx` one screen: `MobilePageHeader` on top
+  (status-bar inset in the frame, safe-area on phones), scroll pane below.
+- `src/routes/` `/` album, `/lyrics/$track` now playing, `/compare`,
+  `/more`. The URL owns what is open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
-  element (`src/lib/audio.ts`) by `useAudioEngine`. Subscribe with
-  selectors: `currentTime` updates every frame while playing.
+  element (`src/lib/audio.ts`) by `useAudioEngine`. Album play-through and
+  lock-screen prev/next go through `requestTrack`, which the lyrics screen
+  follows. Subscribe with selectors: `currentTime` updates every frame.
+- `src/store/toasts.ts` in-frame toasts for `MobileToastStack`.
 - `src/data/tracks.ts` zod-validated track data and lyrics.
-- `src/components/` app compositions built to Dust UI blocks rules
-  (props-only, semantic tokens, `data-slot`, reduced-motion fallbacks) so
-  they stay promotable. `src/components/ui/` holds Dust UI components
-  vendored through the `@dust-ui-source` door and modified here; each
-  delta is recorded in the dust-ui spec (see below).
-- `src/styles/index.css` the token contract, brand values (scoped
-  `:root:not([data-theme])`), the three voice tokens (`--pencil`, `--fire`,
-  `--water`) and the per-track override on `html[data-track]`.
-- `public/` audio at the root (existing download links keep working) and
-  `assets/` artwork.
+- `src/components/` app compositions built to Dust UI blocks rules;
+  `src/components/ui/` holds Dust UI components vendored through the
+  `@dust-ui-source` door: `mobile-media-player`, `motion-carousel`,
+  `motion-tilt` are forks (deltas in the dust-ui spec); `grain-overlay`
+  and `nav-bottom` are simply newer than the published packages.
+- `src/styles/index.css` the token contract, the three presets, the brand
+  default (light paper / dark navy, scoped `:root:not([data-theme])`),
+  the voice tokens (`--pencil`, `--fire`, `--water`) and the per-track
+  accent on `:root[data-track]`, which out-ranks every theme.
 
 ## Dust UI rules (house rules, non-negotiable)
 
 - Semantic tokens only: `bg-primary`, `text-muted-foreground`,
   `var(--track-glow)`. No raw palette utilities, hex, or pixel radii.
 - Import from `@dust-ui/*` first. New UI checks the library before it is
-  written. The `@dust-ui-source/<name>` door only to fork, and a fork
-  records its delta in `../dust-ui/specs/`.
+  written. The `@dust-ui-source/<name>` door only to fork or to take a
+  component newer than the last publish; a fork records its delta in
+  `../dust-ui/specs/`.
 - No `asChild`: polymorphism is `render={<Link/>}`. Base UI state hooks
-  are `data-active:` style, never `data-[state=...]` (vaul and sonner keep
-  theirs).
+  are `data-active:` style, never `data-[state=...]`.
+- `AppearanceProvider` owns dark mode and presets (`main.tsx`); never
+  query `prefers-color-scheme` yourself. The accent and font sections of
+  the drawer are hidden on purpose: the track owns the accent, the album
+  owns the faces.
 - `MotionProvider` mounts once at the root; under reduced motion show the
   end state, never leave content at `opacity: 0`.
+
+## Verifying visually
+
+Headless Chromium cannot launch in this WSL2 environment, but Windows
+Chrome can be driven from WSL: `'/mnt/c/Program Files/Google/Chrome/
+Application/chrome.exe' --headless=new --screenshot=... --window-size=...
+http://localhost:4600/`. Desktop Chrome clamps the window to about 500px
+wide, so the phone layout is verified through the 393px `DeviceFrame`
+(open the app at 1440px), not through a 390px window.
 
 ## The dust-ui MCP
 
