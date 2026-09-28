@@ -1,966 +1,118 @@
-<!DOCTYPE html>
-
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fire &amp; Water — Dustin &amp; Alex</title>
-<meta name="description" content="Three original songs exploring the bond between a brother and sister — Pencil and Pen, Fire and Water, and Water and Fire. Listen and read the lyrics side by side.">
-<meta name="author" content="Dustin Fisher">
-<meta name="theme-color" id="themeColor" content="#0a0e1a">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fire &amp; Water">
-<link rel="canonical" href="https://dgfisher2021.github.io/fire-and-water/">
-<meta property="og:type" content="music.album">
-<meta property="og:title" content="Fire &amp; Water — Dustin &amp; Alex">
-<meta property="og:description" content="Three original songs exploring the bond between a brother and sister. Listen and read the lyrics side by side.">
-<meta property="og:url" content="https://dgfisher2021.github.io/fire-and-water/">
-<meta property="og:image" content="https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fire &amp; Water — Dustin &amp; Alex">
-<meta name="twitter:description" content="Three original songs exploring the bond between a brother and sister.">
-<meta name="twitter:image" content="https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png">
-<link rel="icon" href="assets/favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="manifest" href="site.webmanifest">
-<link rel="preload" as="image" href="assets/pencil.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "MusicAlbum",
-  "name": "Fire & Water",
-  "byArtist": { "@type": "MusicGroup", "name": "Dustin & Alex" },
-  "url": "https://dgfisher2021.github.io/fire-and-water/",
-  "image": "https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png",
-  "numTracks": 3,
-  "track": [
-    { "@type": "MusicRecording", "name": "Pencil and Pen", "position": 1,
-      "audio": "https://dgfisher2021.github.io/fire-and-water/pencil-and-pen.m4a" },
-    { "@type": "MusicRecording", "name": "Fire and Water", "position": 2,
-      "audio": "https://dgfisher2021.github.io/fire-and-water/fire-and-water.m4a" },
-    { "@type": "MusicRecording", "name": "Water and Fire", "position": 3,
-      "audio": "https://dgfisher2021.github.io/fire-and-water/water-and-fire.m4a" }
-  ]
-}
-</script>
-<style>
-  :root {
-    --fire-bright:#f59e0b; --fire-deep:#b91c1c;
-    --water-bright:#7dd3fc; --water-deep:#1e3a5f;
-    --pencil-warm:#c4956a; --pencil-deep:#6b4226;
-    --text-primary:#f0eae2;
-    --text-secondary:rgba(240,234,226,0.6);
-    --text-dim:rgba(240,234,226,0.3);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;overflow:hidden}
-  body{font-family:'Outfit',sans-serif;background:#0a0e1a;color:var(--text-primary)}
-
-/* ===== BACKGROUNDS ===== */
-.bg-layer{position:fixed;inset:0;z-index:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.8s ease}
-.bg-layer.active{opacity:1;animation:bgDrift 36s ease-in-out infinite alternate}
-@keyframes bgDrift{from{transform:scale(1)}to{transform:scale(1.07)}}
-.bg-vignette{
-position:fixed;inset:0;z-index:1;pointer-events:none;
-background:radial-gradient(ellipse 70% 70% at 50% 45%, rgba(10,14,26,0.15) 0%, rgba(10,14,26,0.5) 40%, rgba(10,14,26,0.85) 100%);
-}
-
-/* ===== APP ===== */
-.app{position:relative;z-index:2;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-
-/* ===== TOP BAR ===== */
-.top-bar{display:flex;align-items:center;justify-content:center;padding:20px 20px 12px;gap:14px;flex-shrink:0;position:relative;z-index:10}
-.track-tab{
-width:60px;height:60px;border-radius:14px;overflow:hidden;cursor:pointer;
-padding:0;background:none;
-border:2.5px solid transparent;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
-opacity:0.4;flex-shrink:0;box-shadow:0 4px 20px rgba(0,0,0,0.5);
-}
-.track-tab img{width:100%;height:100%;object-fit:cover;display:block}
-.track-tab:hover{opacity:0.65}
-.track-tab.active{opacity:1;transform:scale(1.12)}
-.track-tab.active[data-track="pencil"]{border-color:var(--pencil-warm);box-shadow:0 4px 28px rgba(196,149,106,0.4)}
-.track-tab.active[data-track="fire"]{border-color:var(--fire-bright);box-shadow:0 4px 28px rgba(245,158,11,0.4)}
-.track-tab.active[data-track="water"]{border-color:var(--water-bright);box-shadow:0 4px 28px rgba(125,211,252,0.4)}
-
-/* ===== HOME / CAROUSEL ===== */
-.home-view{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;position:relative;z-index:3}
-.carousel-wrap{position:relative;width:260px;height:260px;margin-bottom:28px;transform-style:preserve-3d}
-.carousel-wrap::before{
-content:'';position:absolute;inset:-24px;border-radius:48px;filter:blur(64px);
-opacity:0.45;z-index:-1;transition:background 1.8s ease;
-}
-.carousel-wrap.glow-pencil::before{background:radial-gradient(circle,rgba(196,149,106,0.55),transparent 70%)}
-.carousel-wrap.glow-fire::before{background:radial-gradient(circle,rgba(234,88,12,0.55),transparent 70%)}
-.carousel-wrap.glow-water::before{background:radial-gradient(circle,rgba(59,130,246,0.55),transparent 70%)}
-.carousel-img{
-position:absolute;inset:0;width:100%;height:100%;border-radius:20px;object-fit:cover;
-box-shadow:0 24px 72px rgba(0,0,0,0.6);opacity:0;transition:opacity 1.8s ease;cursor:pointer;
-}
-.carousel-img.visible{opacity:1}
-
-.car-text{text-align:center;min-height:100px}
-.car-title{
-font-family:'Cormorant Garamond',serif;font-weight:400;font-size:28px;line-height:1.15;
-margin-bottom:4px;opacity:0;transition:opacity 0.8s ease;
-}
-.car-title.visible{opacity:1}
-.car-title.pencil{color:var(--pencil-warm)}
-.car-title.fire{color:var(--fire-bright)}
-.car-title.water{color:var(--water-bright)}
-
-.car-sub{
-font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;
-color:var(--text-secondary);margin-bottom:10px;
-opacity:0;transition:opacity 0.8s ease 0.1s;
-}
-.car-sub.visible{opacity:1}
-
-.car-desc{
-font-family:'Outfit',sans-serif;font-size:13px;line-height:1.5;
-color:var(--text-dim);max-width:300px;margin:0 auto;
-opacity:0;transition:opacity 0.8s ease 0.2s;
-}
-.car-desc.visible{opacity:1}
-
-.car-actions{
-display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px;
-width:100%;
-opacity:0;transition:opacity 1s ease 0.3s;
-}
-.car-actions.visible{opacity:1}
-
-.car-play-btn{
-display:inline-flex;align-items:center;gap:7px;
-padding:12px 22px;border-radius:14px;border:none;
-font-family:'Outfit',sans-serif;font-size:13px;letter-spacing:1px;font-weight:500;
-cursor:pointer;transition:all 0.2s ease;text-decoration:none;
-color:white;
-}
-.car-play-btn svg{width:16px;height:16px;fill:white}
-.car-play-btn:hover{filter:brightness(1.15);transform:scale(1.03)}
-.car-play-btn:active{transform:scale(0.97)}
-.car-play-btn.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
-.car-play-btn.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
-.car-play-btn.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
-
-.car-lyrics-btn{
-padding:10px 24px;border-radius:12px;
-border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);
-color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:13px;
-letter-spacing:1px;cursor:pointer;transition:background 0.2s ease, color 0.2s ease;
-}
-.car-lyrics-btn:hover{background:rgba(255,255,255,0.12);color:var(--text-primary)}
-.car-lyrics-btn:active{transform:scale(0.96)}
-
-.car-dots{
-display:flex;gap:8px;justify-content:center;
-margin-top:20px;position:relative;z-index:3;
-}
-.car-dot{
-width:8px;height:8px;border-radius:50%;border:none;padding:0;
-background:rgba(255,255,255,0.15);cursor:pointer;
-transition:all 0.4s ease;
-}
-.car-dot.active{background:rgba(255,255,255,0.5);transform:scale(1.3)}
-
-/* ===== FULL SCREEN LYRICS DRAWER ===== */
-.lyrics-drawer{
-position:fixed;inset:0;z-index:50;
-background:rgba(0,0,0,0.6);
-backdrop-filter:blur(60px) saturate(1.4);-webkit-backdrop-filter:blur(60px) saturate(1.4);
-display:flex;flex-direction:column;
-transform:translateY(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
-}
-.lyrics-drawer.open{transform:translateY(0)}
-
-.ld-grab{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:10px auto 0;flex-shrink:0}
-.ld-header{display:flex;align-items:center;padding:12px 20px 16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,0.04)}
-.ld-close{
-width:36px;height:36px;border:none;background:rgba(255,255,255,0.06);
-border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.ld-close svg{width:16px;height:16px;fill:var(--text-secondary)}
-.ld-close:hover{background:rgba(255,255,255,0.12)}
-.ld-header-meta{flex:1;text-align:center;padding:0 12px}
-.ld-header-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400}
-.ld-header-title.pencil{color:var(--pencil-warm)}
-.ld-header-title.fire{color:var(--fire-bright)}
-.ld-header-title.water{color:var(--water-bright)}
-.ld-header-sub{font-size:11px;color:var(--text-dim);font-family:'Cormorant Garamond',serif;font-style:italic}
-.ld-header-voice{font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-top:2px}
-.ld-header-voice.pencil{color:var(--pencil-warm)}
-.ld-header-voice.fire{color:var(--fire-bright)}
-.ld-header-voice.water{color:var(--water-bright)}
-
-.ld-sbs-toggle{
-display:flex;align-items:center;gap:5px;flex-shrink:0;
-padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);
-background:rgba(255,255,255,0.05);color:var(--text-secondary);
-font-family:'Outfit',sans-serif;font-size:11px;letter-spacing:0.5px;
-cursor:pointer;transition:all 0.2s ease;
-}
-.ld-sbs-toggle svg{width:14px;height:14px;fill:currentColor;opacity:0.6}
-.ld-sbs-toggle:hover{background:rgba(255,255,255,0.1);color:var(--text-primary)}
-.ld-sbs-toggle.active{background:rgba(125,211,252,0.12);color:var(--water-bright);border-color:rgba(125,211,252,0.2)}
-
-.ld-stanza-area{flex:1;overflow-y:auto;padding:26vh 32px 45vh;-webkit-overflow-scrolling:touch;
-mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
--webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
-}
-.ld-stanza-area::-webkit-scrollbar{width:0}
-.ld-stanza{
-font-family:'Cormorant Garamond',serif;font-size:22px;line-height:1.7;
-text-align:center;color:var(--text-secondary);margin-bottom:32px;
-transition:color 0.4s ease;
-}
-.ld-stanza .line{display:block}
-/* Reading focus: the stanza in the middle of the view brightens, the rest recede */
-body.io .ld-stanza,body.io .sbs-stanza{color:var(--text-dim);transition:color 0.4s ease}
-body.io .ld-stanza.infocus,body.io .sbs-stanza.infocus{color:var(--text-primary)}
-
-.ld-sbs-area{flex:1;display:none;flex-direction:row;overflow:hidden}
-.ld-sbs-area.show{display:flex}
-.ld-stanza-area.hide{display:none}
-.ld-sbs-col{flex:1;overflow-y:auto;padding:16px 14px 60px;-webkit-overflow-scrolling:touch;
-mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
--webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 3%, black 92%, transparent 100%);
-}
-.ld-sbs-col::-webkit-scrollbar{width:0}
-.ld-sbs-divider{width:1px;background:rgba(255,255,255,0.06);flex-shrink:0;align-self:stretch}
-.ld-sbs-col .col-tag{font-family:'Outfit',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;text-align:center;position:sticky;top:0;z-index:2;padding:8px 0;background:linear-gradient(to bottom,rgba(0,0,0,0.55) 60%,transparent)}
-.ld-sbs-col.left .col-tag{color:var(--fire-bright)}
-.ld-sbs-col.right .col-tag{color:var(--water-bright)}
-.col-voice{display:block;font-size:9px;letter-spacing:1.5px;opacity:0.6;margin-top:2px}
-.ld-sbs-col .sbs-stanza{
-font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1.65;text-align:center;color:var(--text-secondary);
-margin-bottom:24px;
-}
-.ld-sbs-col .sbs-stanza .line{display:block}
-
-/* ===== LYRICS AUDIO BAR ===== */
-.ld-audio-bar{
-display:flex;align-items:center;gap:10px;padding:10px 20px;flex-shrink:0;
-border-top:1px solid rgba(255,255,255,0.04);background:rgba(0,0,0,0.3);
-}
-.ld-play-btn{
-width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;position:relative;
-display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;flex-shrink:0;
-}
-.ld-play-btn.playing{animation:breathe 2.6s ease-in-out infinite}
-@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}50%{box-shadow:0 0 22px 2px rgba(255,255,255,0.22)}}
-.ld-play-btn.loading svg{opacity:0}
-.ld-play-btn.loading::after{
-content:'';position:absolute;width:18px;height:18px;border-radius:50%;
-border:2px solid rgba(255,255,255,0.35);border-top-color:#fff;
-animation:spin 0.8s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ld-play-btn:hover{transform:scale(1.08)}
-.ld-play-btn:active{transform:scale(0.95)}
-.ld-play-btn svg{width:18px;height:18px;fill:white}
-.ld-play-btn .pause-icon{display:none}
-.ld-play-btn.playing .play-icon{display:none}
-.ld-play-btn.playing .pause-icon{display:block}
-.ld-play-btn.pencil{background:linear-gradient(135deg,var(--pencil-warm),var(--pencil-deep))}
-.ld-play-btn.fire{background:linear-gradient(135deg,var(--fire-bright),var(--fire-deep))}
-.ld-play-btn.water{background:linear-gradient(135deg,var(--water-bright),var(--water-deep))}
-.ld-progress{flex:1;display:flex;flex-direction:column;gap:2px}
-.ld-pbar{width:100%;height:18px;display:flex;align-items:center;cursor:pointer;touch-action:none}
-.ld-ptrack{width:100%;height:3px;border-radius:2px;background:rgba(255,255,255,0.08)}
-.ld-pfill{height:100%;border-radius:2px;width:0%;transition:width 0.15s linear;position:relative}
-.ld-pfill::after{
-content:'';position:absolute;right:-5px;top:50%;width:10px;height:10px;border-radius:50%;
-background:#fff;box-shadow:0 1px 6px rgba(0,0,0,0.5);
-transform:translateY(-50%) scale(0);transition:transform 0.15s ease;
-}
-.ld-pbar:hover .ld-pfill::after,.ld-pbar.dragging .ld-pfill::after{transform:translateY(-50%) scale(1)}
-.ld-pbar.dragging .ld-pfill{transition:none}
-.ld-pfill.pencil{background:linear-gradient(90deg,var(--pencil-deep),var(--pencil-warm))}
-.ld-pfill.fire{background:linear-gradient(90deg,var(--fire-deep),var(--fire-bright))}
-.ld-pfill.water{background:linear-gradient(90deg,var(--water-deep),var(--water-bright))}
-.ld-times{display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);font-variant-numeric:tabular-nums}
-.ld-dl-btn{
-width:36px;height:36px;border:none;background:rgba(255,255,255,0.05);
-border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
-text-decoration:none;border:1px solid rgba(255,255,255,0.06);flex-shrink:0;
-}
-.ld-dl-btn svg{width:14px;height:14px;fill:var(--text-dim)}
-.ld-dl-btn:hover{background:rgba(255,255,255,0.1)}
-.ld-dl-btn:hover svg{fill:var(--text-secondary)}
-
-/* ===== CAROUSEL DOWNLOAD BTN ===== */
-.car-dl-btn{
-width:40px;height:40px;border:none;background:rgba(255,255,255,0.06);
-border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
-text-decoration:none;border:1px solid rgba(255,255,255,0.08);
-transition:all 0.2s ease;
-}
-.car-dl-btn svg{width:16px;height:16px;fill:var(--text-dim)}
-.car-dl-btn:hover{background:rgba(255,255,255,0.12)}
-.car-dl-btn:hover svg{fill:var(--text-secondary)}
-
-.app-footer{text-align:center;padding:8px;flex-shrink:0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;color:var(--text-dim);position:relative;z-index:3}
-
-@media(min-width:768px){
-.carousel-wrap{width:320px;height:320px}
-.track-tab{width:68px;height:68px}
-.ld-stanza{font-size:26px}
-.lyrics-drawer{max-width:100%}
-.ld-stanza-area{padding:26vh 20% 45vh}
-.ld-sbs-col{padding:16px 24px 80px}
-.ld-sbs-col .sbs-stanza{font-size:20px}
-}
-
-/* ===== ENTRANCE ===== */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.top-bar{animation:fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both}
-.carousel-wrap{animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.15s both}
-.car-text{animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s both}
-.car-dots{animation:fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s both}
-.app-footer{animation:fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.6s both}
-
-/* ===== ACCESSIBILITY ===== */
-button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--water-bright);outline-offset:2px}
-@media(prefers-reduced-motion:reduce){
-*,*::before,*::after{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
-}
-
-/* ===== SHARE FEEDBACK ===== */
-.ld-dl-btn{position:relative}
-.ld-dl-btn.copied::after{
-content:'Link copied';position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
-background:rgba(25,30,50,0.97);border:1px solid rgba(255,255,255,0.15);border-radius:8px;
-padding:6px 10px;font-family:'Outfit',sans-serif;font-size:11px;color:var(--text-primary);
-white-space:nowrap;pointer-events:none;
-}
-
-/* ===== PRINT: lyrics as a clean typeset sheet ===== */
-@media print{
-html,body{height:auto;overflow:visible;background:#fff}
-body{color:#1a1a1a}
-.bg-layer,.bg-vignette,.ld-audio-bar,.ld-close,.ld-sbs-toggle,.app-footer{display:none !important}
-body.lyrics-open .app{display:none}
-body:not(.lyrics-open) .lyrics-drawer{display:none}
-.lyrics-drawer{position:static;transform:none;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;display:block}
-.ld-header{border-bottom:1px solid #ddd;justify-content:center}
-.ld-header-title,.ld-header-voice{color:#1a1a1a !important}
-.ld-header-sub{color:#555}
-.ld-stanza-area,.ld-sbs-col{overflow:visible;mask-image:none;-webkit-mask-image:none}
-.ld-stanza,.sbs-stanza{color:#1a1a1a !important}
-.ld-sbs-area{overflow:visible}
-.ld-sbs-col .col-tag{position:static;background:none;color:#555 !important}
-}
-</style>
-
-</head>
-<body>
-
-<div class="bg-layer active" id="bg-pencil" style="background-image:url('assets/pencil.jpg')"></div>
-<div class="bg-layer" id="bg-fire" style="background-image:url('assets/fire.jpg')"></div>
-<div class="bg-layer" id="bg-water" style="background-image:url('assets/water.jpg')"></div>
-<div class="bg-vignette"></div>
-
-<div class="app" id="app">
-  <div class="top-bar" role="group" aria-label="Tracks">
-    <button class="track-tab" type="button" data-track="pencil" onclick="jumpCar(0)" aria-label="Pencil and Pen">
-      <img src="assets/pencil-512.jpg" alt="" decoding="async">
-    </button>
-    <button class="track-tab" type="button" data-track="fire" onclick="jumpCar(1)" aria-label="Fire and Water">
-      <img src="assets/fire-512.jpg" alt="" decoding="async">
-    </button>
-    <button class="track-tab" type="button" data-track="water" onclick="jumpCar(2)" aria-label="Water and Fire">
-      <img src="assets/water-512.jpg" alt="" decoding="async">
-    </button>
-  </div>
-
-  <div class="home-view" id="homeView">
-    <div class="carousel-wrap">
-      <img class="carousel-img visible" id="car0" src="assets/pencil.jpg" alt="Pencil and Pen album artwork" fetchpriority="high">
-      <img class="carousel-img" id="car1" src="assets/fire.jpg" alt="Fire and Water album artwork" decoding="async">
-      <img class="carousel-img" id="car2" src="assets/water.jpg" alt="Water and Fire album artwork" decoding="async">
-    </div>
-    <div class="car-text">
-      <div class="car-title visible pencil" id="carTitle">Pencil and Pen</div>
-      <div class="car-sub visible" id="carSub">For Alex, from Dustin</div>
-      <div class="car-desc visible" id="carDesc">A boy who only trusted pencil&#x2014;erasable, safe, fixable&#x2014;watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.</div>
-      <div class="car-actions visible" id="carActions">
-        <button class="car-play-btn pencil" id="carPlayBtn" onclick="playAndOpenLyrics()">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          Play
-        </button>
-        <button class="car-lyrics-btn" id="carLyricsBtn" onclick="openLyricsForCurrent()">Read Lyrics</button>
-        <a class="car-dl-btn" id="carDlBtn" href="pencil-and-pen.m4a" download title="Download" aria-label="Download track">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        </a>
-      </div>
-    </div>
-    <div class="car-dots">
-      <button class="car-dot active" type="button" onclick="jumpCar(0)" aria-label="Go to Pencil and Pen"></button>
-      <button class="car-dot" type="button" onclick="jumpCar(1)" aria-label="Go to Fire and Water"></button>
-      <button class="car-dot" type="button" onclick="jumpCar(2)" aria-label="Go to Water and Fire"></button>
-    </div>
-  </div>
-
-  <div class="app-footer">&ldquo;You can&rsquo;t tame the flame.&rdquo;</div>
-</div>
-
-<div class="lyrics-drawer" id="lyricsDrawer" role="dialog" aria-modal="true" aria-label="Lyrics">
-  <div class="ld-grab" aria-hidden="true"></div>
-  <div class="ld-header">
-    <button class="ld-close" onclick="closeLyrics()" aria-label="Close lyrics"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-    <div class="ld-header-meta">
-      <div class="ld-header-title pencil" id="ldTitle"></div>
-      <div class="ld-header-sub" id="ldSub"></div>
-      <div class="ld-header-voice" id="ldVoice"></div>
-    </div>
-    <button class="ld-sbs-toggle" id="ldSbsToggle" onclick="toggleSbs()" style="display:none">
-      <svg viewBox="0 0 24 24"><path d="M3 3h8v18H3V3zm10 0h8v18h-8V3z"/></svg>
-      <span id="ldSbsLabel">Side by Side</span>
-    </button>
-  </div>
-  <div class="ld-stanza-area" id="ldSingleArea"></div>
-  <div class="ld-sbs-area" id="ldSbsArea">
-    <div class="ld-sbs-col left" id="ldSbsLeft"><div class="col-tag">Fire &amp; Water<span class="col-voice">Dustin&rsquo;s voice</span></div><div id="ldSbsLeftStanza"></div></div>
-    <div class="ld-sbs-divider"></div>
-    <div class="ld-sbs-col right" id="ldSbsRight"><div class="col-tag">Water &amp; Fire<span class="col-voice">Alex&rsquo;s voice</span></div><div id="ldSbsRightStanza"></div></div>
-  </div>
-  <div class="ld-audio-bar" id="ldAudioBar">
-    <button class="ld-play-btn pencil" id="ldPlayBtn" onclick="toggleAudio()" aria-label="Play or pause">
-      <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </button>
-    <div class="ld-progress">
-      <div class="ld-pbar" id="ldPbar" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
-        <div class="ld-ptrack"><div class="ld-pfill pencil" id="ldPfill"></div></div>
-      </div>
-      <div class="ld-times">
-        <span id="ldTimeCur">0:00</span>
-        <span id="ldTimeDur">0:00</span>
-      </div>
-    </div>
-    <button class="ld-dl-btn" id="ldShareBtn" onclick="shareTrack()" title="Share" aria-label="Share track" style="display:none">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
-    </button>
-    <a class="ld-dl-btn" id="ldDlBtn" href="#" download title="Download" aria-label="Download track">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-    </a>
-  </div>
-</div>
-
-<audio id="audioPlayer" preload="metadata"></audio>
-
-<script>
-var TRACKS={
-  pencil:{title:'Pencil and Pen',sub:'For Alex, from Dustin \u2014 March 2, 2026',voice:'Dustin\u2019s voice',bgId:'bg-pencil',audioFile:'pencil-and-pen.m4a',duration:190,link:'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',lyrics:[["My dear sister,","you know.. it\u2019s true.","The fire in me","was lit by you."],["I remember this rebel,","so wild and free..","Transforming feelings","to poetry."],["With journal open,","and pen in hand..","You\u2019d fill the pages","without a plan."],["Drawn to pencil,","I hated pen..","Could not erase","or start again."],["With pencil I could","fix mistakes..","Erase the parts","that I would hate."],["Your anger, sadness,","pain and grief..","Your pen gave every","hurt relief."],["You felt it all","and wrote it free..","Your words flowed out","authentically."],["So much I felt","I couldn\u2019t say..","Just wanted it","to go away."],["So much inside,","held in, suppressed..","So much of me","forced down, repressed."],["I tried so hard","to get it right..","The perfect boy","who prayed at night."],["I learned \u201cthe truth.\u201d","I stayed in line..","Followed their rules","and bought their lies."],["You got put down,","called difficult..","While I got sucked","into that cult."],["But watching you","just write it out..","The anger, sadness,","fear and doubt.."],["Inspired me","more than you knew..","Couldn\u2019t feel yet","but wanted to."],["You didn\u2019t give up,","you figured it out..","Forced me to face","my own self-doubt."]]},
-  fire:{title:'Fire and Water',sub:'From Dustin, to Alex \u2014 March 8, 2026',voice:'Dustin\u2019s voice',bgId:'bg-fire',audioFile:'fire-and-water.m4a',duration:400,link:'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',lyrics:[["You lit the fire","inside of me..","My words now flow,","I\u2019m finally free."],["I had to learn","your element..","To speak my truth,","say what I meant."],["Your fire gave me","strength and pride..","Unlocked the voice","I kept inside."],["To stand my ground,","to roar, be bold..","Stop being quiet,","do what I\u2019m told."],["But somewhere in","the years between..","You needed something","you learned from me."],["The years had shaped","a different you..","Fierce but nurturing,","more patient too."],["Our roles reversed,","our stories turned..","My element","you slowly learned."],["From bridges burned,","to second chance..","Your temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp and precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With time and patience,","it\u2019ll carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["Our parents\u2019 voice,","their weight and blame..","As if YOUR fire","was theirs to tame."],["When they expect","a fast reply..","You don\u2019t owe them","a reason why."],["Two girls to teach,","a home to build..","Still expectations","are not fulfilled."],["Their guilt, their weight,","their keeping scores..","Let go of theirs,","they are not yours."],["Your feelings strong,","a swelling tide..","Your currents pull","from deep inside."],["But feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["The anger that","would once explode..","You\u2019ve channeled into","inner growth."],["You bend and flow,","you hold and give..","You teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear sister,","you know it\u2019s true..","The best parts of me","are inspired by you."]]},
-  water:{title:'Water and Fire',sub:'By Dustin, as Alex \u2014 March 8, 2026',voice:'Alex\u2019s voice',bgId:'bg-water',audioFile:'water-and-fire.m4a',duration:295,link:'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',lyrics:[["Your fire\u2019s lit,","I always knew..","You had the words","inside of you."],["While you learned","my element..","To speak your truth,","say what you meant."],["I see you full","of strength and pride..","Unlocked the voice","you kept inside."],["To stand your ground,","to roar, be bold..","Stop being quiet,","do what you\u2019re told."],["But somewhere in","the years between..","I needed something","I learned from you."],["The years had shaped","a different me..","Fierce but nurturing,","more patient, free."],["Our roles reversed,","our stories turned..","Your element","I\u2019ve slowly learned."],["From bridges burned,","to second chance..","My temper turned","to temperance."],["Water adapts,","it is not weak..","It\u2019s knowing how","to act or speak."],["When water\u2019s frozen,","as solid ice..","It\u2019s cold, unmoving,","sharp, precise."],["When boiling hot,","it turns to steam..","Which burns like fire,","its heat unseen."],["A river with","persistence flows..","With patience, time","will carve through stone."],["And water falls","as tears or rain..","Refreshing, cleansing,","healing pain."],["Floods can rise","beyond control..","A tidal wave","that swallows whole."],["I hold no guilt,","no weight or blame..","MY fire was never","theirs to tame."],["I will respect..","and always try","those that show","a reason why."],["My girls I teach,","a home I build..","And still more dreams","not yet fulfilled."],["The anger that","would once explode..","I\u2019ve channeled into","inner growth."],["Let go of thoughts","that are not mine..","The guilt, the weight","will fade in time."],["My feelings strong,","a swelling tide..","My currents pull","from deep inside."],["Past feelings pass","and wash away..","Redirect,","don\u2019t let them stay."],["I bend and flow,","I hold and give..","I teach with patience","and forgive."],["Both raging storm","and peaceful calm..","The fiercest sister,","the loving mom."],["We learn from each other","again and again..","Both fire and water,","with pencil or pen."],["My dear brother,","you know it\u2019s true..","The best parts of me","are inspired by you."]]}
-};
-
-var ORDER=['pencil','fire','water'];
-var carIdx=0,carTimer=null,current=null,sbsOn=false,pushedHash=false,lastFocused=null;
-
-var CAR_SLIDES=[
-  {track:'pencil',theme:'pencil',title:'Pencil and Pen',sub:'For Alex, from Dustin',desc:'A boy who only trusted pencil\u2014erasable, safe, fixable\u2014watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.'},
-  {track:'fire',theme:'fire',title:'Fire and Water',sub:'From Dustin, to Alex',desc:'She was fire\u2014bold, roaring, untamed. He was water\u2014patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn\u2019t weakness. Their parents\u2019 guilt was never hers to carry.'},
-  {track:'water',theme:'water',title:'Water and Fire',sub:'By Dustin, as Alex',desc:'The same story through her eyes. Her fire was never theirs to tame. She channels what used to explode into raising her girls, building a home, and letting go of weight that was never hers to hold.'}
-];
-
-// ===== CAROUSEL =====
-function startCarousel(){carIdx=0;showCar(0);carTimer=setInterval(function(){carIdx=(carIdx+1)%3;showCar(carIdx)},10000)}
-function stopCarousel(){if(carTimer){clearInterval(carTimer);carTimer=null}}
-
-var THEME_COLORS={pencil:'#161009',fire:'#170c06',water:'#0a0e1a'};
-function setThemeColor(track){
-  document.getElementById('themeColor').setAttribute('content',THEME_COLORS[track]||'#0a0e1a');
-}
-
-function showCar(i){
-  carIdx=i;
-  document.querySelector('.carousel-wrap').className='carousel-wrap glow-'+CAR_SLIDES[i].theme;
-  setThemeColor(CAR_SLIDES[i].track);
-  for(var j=0;j<3;j++)document.getElementById('car'+j).classList.toggle('visible',j===i);
-  var bgs=document.querySelectorAll('.bg-layer');for(var j=0;j<bgs.length;j++)bgs[j].classList.remove('active');
-  document.getElementById(TRACKS[CAR_SLIDES[i].track].bgId).classList.add('active');
-  var tabs=document.querySelectorAll('.track-tab');
-  for(var j=0;j<tabs.length;j++){
-    tabs[j].classList.toggle('active',j===i);
-    if(j===i)tabs[j].setAttribute('aria-current','true');else tabs[j].removeAttribute('aria-current');
-  }
-  var dots=document.querySelectorAll('.car-dot');
-  for(var j=0;j<dots.length;j++){
-    dots[j].classList.toggle('active',j===i);
-    if(j===i)dots[j].setAttribute('aria-current','true');else dots[j].removeAttribute('aria-current');
-  }
-  var ct=document.getElementById('carTitle'),cs=document.getElementById('carSub'),cd=document.getElementById('carDesc');
-  var ca=document.getElementById('carActions');
-  ct.classList.remove('visible');cs.classList.remove('visible');cd.classList.remove('visible');
-  ca.classList.remove('visible');
-  setTimeout(function(){
-    ct.textContent=CAR_SLIDES[i].title;
-    ct.className='car-title visible '+CAR_SLIDES[i].theme;
-    cs.textContent=CAR_SLIDES[i].sub+' · '+fmtTime(TRACKS[CAR_SLIDES[i].track].duration);
-    cs.className='car-sub visible';
-    cd.textContent=CAR_SLIDES[i].desc;
-    cd.className='car-desc visible';
-    ca.className='car-actions visible';
-    // Play button and download
-    var pb=document.getElementById('carPlayBtn');
-    var t=TRACKS[CAR_SLIDES[i].track];
-    pb.className='car-play-btn '+CAR_SLIDES[i].theme;
-    var dl=document.getElementById('carDlBtn');
-    dl.href=t.audioFile;
-  },400);
-}
-
-function jumpCar(i){stopCarousel();showCar(i);carTimer=setInterval(function(){carIdx=(carIdx+1)%3;showCar(carIdx)},10000)}
-
-// Swipe on carousel
-(function(){
-  var home=document.getElementById('homeView');
-  var sx=0,sy=0,tracking=false;
-  home.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true},{passive:true});
-  home.addEventListener('touchmove',function(e){
-    if(!tracking)return;
-    if(Math.abs(e.touches[0].clientY-sy)>Math.abs(e.touches[0].clientX-sx)+10)tracking=false;
-  },{passive:true});
-  home.addEventListener('touchend',function(e){
-    if(!tracking)return;tracking=false;
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)<60)return;
-    if(dx<0){jumpCar((carIdx+1)%3)}
-    else{jumpCar((carIdx-1+3)%3)}
-  },{passive:true});
-})();
-
-// ===== LYRICS DRAWER =====
-function openLyricsForCurrent(){
-  current=CAR_SLIDES[carIdx].track;
-  sbsOn=false;
-  openLyrics();
-}
-
-function openLyrics(){
-  if(!current)return;
-  var t=TRACKS[current];
-  var wasOpen=document.getElementById('lyricsDrawer').classList.contains('open');
-  // Deep link: the open track lives in the URL hash, so songs are shareable
-  // and the back button closes the drawer instead of leaving the site
-  if(location.hash!=='#'+current){
-    if(wasOpen){history.replaceState(null,'','#'+current)}
-    else{history.pushState(null,'','#'+current);pushedHash=true}
-  }
-  stopCarousel();
-  setThemeColor(current);
-  var bgs=document.querySelectorAll('.bg-layer');for(var j=0;j<bgs.length;j++)bgs[j].classList.remove('active');
-  document.getElementById(t.bgId).classList.add('active');
-  var ht=document.getElementById('ldTitle');
-  ht.textContent=t.title;
-  ht.className='ld-header-title '+current;
-  document.getElementById('ldSub').textContent=t.sub;
-  var ve=document.getElementById('ldVoice');
-  ve.textContent=t.voice;
-  ve.className='ld-header-voice '+current;
-  var sa=document.getElementById('ldSingleArea'),sbs=document.getElementById('ldSbsArea');
-  var toggle=document.getElementById('ldSbsToggle');
-
-  // Show SBS toggle only for fire/water
-  if(current==='fire'||current==='water'){
-    toggle.style.display='';
-    toggle.classList.remove('active');
-    document.getElementById('ldSbsLabel').textContent='Side by Side';
-  }else{
-    toggle.style.display='none';
-  }
-
-  // Always start in single mode
-  sa.classList.remove('hide');
-  sbs.classList.remove('show');
-  renderSingle();
-  sa.scrollTop=0;
-  sbsOn=false;
-
-  // Set up audio bar theme
-  var ldPb=document.getElementById('ldPlayBtn');
-  ldPb.className='ld-play-btn '+current;
-  document.getElementById('ldPfill').className='ld-pfill '+current;
-  document.getElementById('ldDlBtn').href=t.audioFile;
-  if(!audio.src||audio.src.indexOf(t.audioFile)===-1){
-    document.getElementById('ldTimeDur').textContent=fmtTime(t.duration);
-  }
-
-  var wasAlreadyOpen=document.getElementById('lyricsDrawer').classList.contains('open');
-  document.getElementById('lyricsDrawer').classList.add('open');
-  document.body.classList.add('lyrics-open');
-  // Keep keyboard and screen-reader focus inside the dialog
-  document.getElementById('app').setAttribute('inert','');
-  if(!wasAlreadyOpen){
-    lastFocused=document.activeElement;
-    document.querySelector('.ld-close').focus();
-  }
-}
-
-function closeLyrics(){
-  if(pushedHash){pushedHash=false;history.back();return}
-  if(location.hash)history.replaceState(null,'',location.pathname+location.search);
-  closeLyricsUI();
-}
-
-function closeLyricsUI(){
-  document.getElementById('lyricsDrawer').classList.remove('open');
-  document.body.classList.remove('lyrics-open');
-  document.getElementById('app').removeAttribute('inert');
-  if(lastFocused&&lastFocused.focus){lastFocused.focus();lastFocused=null}
-  sbsOn=false;
-  stopAudio();
-  // Resume the carousel on the track that was open
-  jumpCar(current?ORDER.indexOf(current):carIdx);
-}
-
-window.addEventListener('popstate',function(){
-  var h=location.hash.slice(1);
-  if(TRACKS[h]){
-    current=h;sbsOn=false;openLyrics();
-  }else if(document.getElementById('lyricsDrawer').classList.contains('open')){
-    pushedHash=false;
-    closeLyricsUI();
-  }
-});
-
-function shareTrack(){
-  if(!current)return;
-  var t=TRACKS[current];
-  var url=location.origin+location.pathname+'#'+current;
-  if(navigator.share){
-    navigator.share({
-      title:t.title+' — Dustin & Alex',
-      text:'Listen to "'+t.title+'"',
-      url:url
-    }).catch(function(){});
-  }else if(navigator.clipboard){
-    navigator.clipboard.writeText(url).then(function(){
-      var btn=document.getElementById('ldShareBtn');
-      btn.classList.add('copied');
-      setTimeout(function(){btn.classList.remove('copied')},1500);
-    }).catch(function(){});
-  }
-}
-if(navigator.share||navigator.clipboard)document.getElementById('ldShareBtn').style.display='';
-
-// ===== AUDIO PLAYER =====
-var audio=document.getElementById('audioPlayer');
-var audioRAF=null;
-var BASE_TITLE=document.title;
-
-function setDocTitle(playing){
-  document.title=playing&&current?'▶ '+TRACKS[current].title+' — Dustin & Alex':BASE_TITLE;
-}
-
-function playAndOpenLyrics(){
-  current=CAR_SLIDES[carIdx].track;
-  sbsOn=false;
-  openLyrics();
-  var t=TRACKS[current];
-  audio.src=t.audioFile;
-  audio.play().catch(function(){});
-  document.getElementById('ldPlayBtn').classList.add('playing');
-  startProgressUpdate();
-  updateMediaSession();
-  setDocTitle(true);
-}
-
-function toggleAudio(){
-  if(!current)return;
-  var btn=document.getElementById('ldPlayBtn');
-  if(audio.paused||!audio.src){
-    if(!audio.src||audio.src.indexOf(TRACKS[current].audioFile)===-1){
-      audio.src=TRACKS[current].audioFile;
-    }
-    audio.play().catch(function(){});
-    btn.classList.add('playing');
-    startProgressUpdate();
-    updateMediaSession();
-    setDocTitle(true);
-  }else{
-    audio.pause();
-    btn.classList.remove('playing');
-    stopProgressUpdate();
-    setDocTitle(false);
-  }
-}
-
-function stopAudio(){
-  audio.pause();
-  audio.removeAttribute('src');
-  audio.load();
-  document.getElementById('ldPlayBtn').classList.remove('playing');
-  document.getElementById('ldPfill').style.width='0%';
-  document.getElementById('ldTimeCur').textContent='0:00';
-  document.getElementById('ldTimeDur').textContent='0:00';
-  stopProgressUpdate();
-  setDocTitle(false);
-}
-
-// Switch tracks inside the lyrics drawer; keeps playing if audio was playing
-function switchTrack(dir,forcePlay){
-  if(!current)return;
-  var wasPlaying=forcePlay||(!!audio.src&&!audio.paused);
-  var idx=ORDER.indexOf(current);
-  current=ORDER[(idx+dir+ORDER.length)%ORDER.length];
-  sbsOn=false;
-  openLyrics();
-  if(wasPlaying){
-    audio.src=TRACKS[current].audioFile;
-    audio.play().catch(function(){});
-    document.getElementById('ldPlayBtn').classList.add('playing');
-    startProgressUpdate();
-    updateMediaSession();
-    setDocTitle(true);
-  }
-}
-
-// ===== MEDIA SESSION (lock screen / hardware keys) =====
-function updateMediaSession(){
-  if(!('mediaSession' in navigator)||!current)return;
-  var t=TRACKS[current];
-  navigator.mediaSession.metadata=new MediaMetadata({
-    title:t.title,
-    artist:'Dustin & Alex',
-    album:'Fire & Water',
-    artwork:[{src:'assets/'+current+'-512.jpg',sizes:'512x512',type:'image/jpeg'}]
-  });
-}
-if('mediaSession' in navigator){
-  navigator.mediaSession.setActionHandler('play',function(){if(current&&audio.paused)toggleAudio()});
-  navigator.mediaSession.setActionHandler('pause',function(){if(current&&!audio.paused)toggleAudio()});
-  navigator.mediaSession.setActionHandler('previoustrack',function(){switchTrack(-1)});
-  navigator.mediaSession.setActionHandler('nexttrack',function(){switchTrack(1)});
-}
-
-// Draggable scrubber: tap or drag anywhere on the bar to seek
-(function(){
-  var bar=document.getElementById('ldPbar');
-  var dragging=false;
-  function seekTo(clientX){
-    if(!audio.duration)return;
-    var rect=bar.getBoundingClientRect();
-    var pct=Math.min(1,Math.max(0,(clientX-rect.left)/rect.width));
-    audio.currentTime=pct*audio.duration;
-    document.getElementById('ldPfill').style.width=(pct*100)+'%';
-    document.getElementById('ldTimeCur').textContent=fmtTime(audio.currentTime);
-  }
-  bar.addEventListener('pointerdown',function(e){
-    dragging=true;bar.classList.add('dragging');
-    if(bar.setPointerCapture)bar.setPointerCapture(e.pointerId);
-    seekTo(e.clientX);
-  });
-  bar.addEventListener('pointermove',function(e){if(dragging)seekTo(e.clientX)});
-  bar.addEventListener('pointerup',function(){dragging=false;bar.classList.remove('dragging')});
-  bar.addEventListener('pointercancel',function(){dragging=false;bar.classList.remove('dragging')});
-})();
-
-function fmtTime(s){
-  s=Math.floor(s);var m=Math.floor(s/60);s=s%60;
-  return m+':'+(s<10?'0':'')+s;
-}
-
-function updateProgress(){
-  if(audio.duration){
-    var pct=audio.currentTime/audio.duration*100;
-    document.getElementById('ldPfill').style.width=pct+'%';
-    document.getElementById('ldPbar').setAttribute('aria-valuenow',Math.round(pct));
-    document.getElementById('ldTimeCur').textContent=fmtTime(audio.currentTime);
-    document.getElementById('ldTimeDur').textContent=fmtTime(audio.duration);
-  }
-  audioRAF=requestAnimationFrame(updateProgress);
-}
-
-audio.addEventListener('loadedmetadata',function(){
-  if(audio.duration)document.getElementById('ldTimeDur').textContent=fmtTime(audio.duration);
-});
-
-// Buffering indicator on the play button
-audio.addEventListener('waiting',function(){document.getElementById('ldPlayBtn').classList.add('loading')});
-audio.addEventListener('playing',function(){document.getElementById('ldPlayBtn').classList.remove('loading')});
-audio.addEventListener('pause',function(){document.getElementById('ldPlayBtn').classList.remove('loading')});
-
-function startProgressUpdate(){stopProgressUpdate();audioRAF=requestAnimationFrame(updateProgress)}
-function stopProgressUpdate(){if(audioRAF){cancelAnimationFrame(audioRAF);audioRAF=null}}
-
-audio.addEventListener('ended',function(){
-  // Play the album through: advance to the next track until the last one ends
-  var idx=ORDER.indexOf(current);
-  var drawerOpen=document.getElementById('lyricsDrawer').classList.contains('open');
-  if(drawerOpen&&idx>-1&&idx<ORDER.length-1){
-    switchTrack(1,true);
-    return;
-  }
-  document.getElementById('ldPlayBtn').classList.remove('playing');
-  document.getElementById('ldPfill').style.width='100%';
-  stopProgressUpdate();
-  setDocTitle(false);
-});
-
-function toggleSbs(){
-  var sa=document.getElementById('ldSingleArea'),sbs=document.getElementById('ldSbsArea');
-  var toggle=document.getElementById('ldSbsToggle');
-  var ve=document.getElementById('ldVoice');
-  sbsOn=!sbsOn;
-
-  if(sbsOn){
-    sa.classList.add('hide');
-    sbs.classList.add('show');
-    toggle.classList.add('active');
-    document.getElementById('ldSbsLabel').textContent='Single View';
-    document.getElementById('ldTitle').textContent='Fire & Water \u00D7 Water & Fire';
-    document.getElementById('ldTitle').className='ld-header-title fire';
-    document.getElementById('ldSub').textContent='Both by Dustin';
-    ve.textContent='Dustin\u2019s voice \u00D7 Alex\u2019s voice';
-    ve.className='ld-header-voice';
-    ve.style.color='var(--text-secondary)';
-    renderSbs();
-    var left=document.getElementById('ldSbsLeft'),right=document.getElementById('ldSbsRight');
-    var syncing=false;
-    left.onscroll=function(){if(syncing)return;syncing=true;right.scrollTop=left.scrollTop;setTimeout(function(){syncing=false},16)};
-    right.onscroll=function(){if(syncing)return;syncing=true;left.scrollTop=right.scrollTop;setTimeout(function(){syncing=false},16)};
-    left.scrollTop=0;right.scrollTop=0;
-  }else{
-    sa.classList.remove('hide');
-    sbs.classList.remove('show');
-    toggle.classList.remove('active');
-    document.getElementById('ldSbsLabel').textContent='Side by Side';
-    var t=TRACKS[current];
-    document.getElementById('ldTitle').textContent=t.title;
-    document.getElementById('ldTitle').className='ld-header-title '+current;
-    document.getElementById('ldSub').textContent=t.sub;
-    ve.textContent=t.voice;
-    ve.className='ld-header-voice '+current;
-    ve.style.color='';
-    renderSingle();
-    sa.scrollTop=0;
-  }
-}
-
-// Reading focus: brighten the stanza passing the middle of the viewport
-var stanzaObservers=[];
-function clearStanzaObservers(){
-  for(var i=0;i<stanzaObservers.length;i++)stanzaObservers[i].disconnect();
-  stanzaObservers=[];
-}
-function observeStanzas(root,sel){
-  if(!('IntersectionObserver' in window))return;
-  var o=new IntersectionObserver(function(entries){
-    entries.forEach(function(en){en.target.classList.toggle('infocus',en.isIntersecting)});
-  },{root:root,rootMargin:'-35% 0px -35% 0px'});
-  var els=root.querySelectorAll(sel);
-  for(var i=0;i<els.length;i++)o.observe(els[i]);
-  stanzaObservers.push(o);
-}
-if('IntersectionObserver' in window)document.body.classList.add('io');
-
-function renderSingle(){
-  var t=TRACKS[current],a=document.getElementById('ldSingleArea');
-  a.innerHTML=t.lyrics.map(function(st,i){return'<div class="ld-stanza" data-i="'+i+'">'+st.map(function(l){return'<span class="line">'+l+'</span>'}).join('')+'</div>'}).join('');
-  clearStanzaObservers();
-  observeStanzas(a,'.ld-stanza');
-}
-
-function renderSbs(){
-  var fl=TRACKS.fire.lyrics,wl=TRACKS.water.lyrics;
-  document.getElementById('ldSbsLeftStanza').innerHTML=fl.map(function(st,i){return'<div class="sbs-stanza" data-i="'+i+'">'+st.map(function(l){return'<span class="line">'+l+'</span>'}).join('')+'</div>'}).join('');
-  document.getElementById('ldSbsRightStanza').innerHTML=wl.map(function(st,i){return'<div class="sbs-stanza" data-i="'+i+'">'+st.map(function(l){return'<span class="line">'+l+'</span>'}).join('')+'</div>'}).join('');
-  clearStanzaObservers();
-  observeStanzas(document.getElementById('ldSbsLeft'),'.sbs-stanza');
-  observeStanzas(document.getElementById('ldSbsRight'),'.sbs-stanza');
-}
-
-// Swipe to switch songs in drawer
-(function(){
-  var drawer=document.getElementById('lyricsDrawer');
-  var sx=0,sy=0,tracking=false;
-  drawer.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;tracking=true},{passive:true});
-  drawer.addEventListener('touchmove',function(e){
-    if(!tracking)return;
-    if(Math.abs(e.touches[0].clientY-sy)>Math.abs(e.touches[0].clientX-sx)+10)tracking=false;
-  },{passive:true});
-  drawer.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    var dy=e.changedTouches[0].clientY-sy;
-    if(tracking){
-      tracking=false;
-      if(Math.abs(dx)>=80){switchTrack(dx<0?1:-1);return}
-    }
-    // Swipe down closes the drawer when the lyrics are scrolled to the top
-    if(dy>90&&Math.abs(dx)<60){
-      var atTop=sbsOn
-        ?(document.getElementById('ldSbsLeft').scrollTop<=0&&document.getElementById('ldSbsRight').scrollTop<=0)
-        :document.getElementById('ldSingleArea').scrollTop<=0;
-      if(atTop)closeLyrics();
-    }
-  },{passive:true});
-})();
-
-// Subtle 3D tilt on the artwork for pointer devices
-(function(){
-  if(!window.matchMedia)return;
-  if(!matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)').matches)return;
-  var wrap=document.querySelector('.carousel-wrap');
-  // The entrance animation's fill would pin transform, so release it once done
-  wrap.addEventListener('animationend',function(){wrap.style.animation='none'});
-  wrap.addEventListener('pointermove',function(e){
-    var r=wrap.getBoundingClientRect();
-    var rx=((e.clientY-r.top)/r.height-0.5)*-7;
-    var ry=((e.clientX-r.left)/r.width-0.5)*7;
-    wrap.style.transform='perspective(700px) rotateX('+rx+'deg) rotateY('+ry+'deg)';
-  });
-  wrap.addEventListener('pointerleave',function(){wrap.style.transform=''});
-})();
-
-// ===== KEYBOARD SUPPORT =====
-document.addEventListener('keydown',function(e){
-  var tag=e.target.tagName;
-  if(tag==='INPUT'||tag==='TEXTAREA')return;
-  var drawerOpen=document.getElementById('lyricsDrawer').classList.contains('open');
-  if(e.key==='Escape'&&drawerOpen){closeLyrics();return}
-  if((e.key===' '||e.key==='Spacebar')&&drawerOpen&&tag!=='BUTTON'&&tag!=='A'){
-    e.preventDefault();toggleAudio();return;
-  }
-  if(e.key==='ArrowRight'){drawerOpen?switchTrack(1):jumpCar((carIdx+1)%3)}
-  else if(e.key==='ArrowLeft'){drawerOpen?switchTrack(-1):jumpCar((carIdx-1+3)%3)}
-});
-
-// Arrow-key seeking on the focused progress bar
-document.getElementById('ldPbar').addEventListener('keydown',function(e){
-  if(!audio.duration)return;
-  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){
-    e.preventDefault();e.stopPropagation();
-    var delta=e.key==='ArrowRight'?5:-5;
-    audio.currentTime=Math.min(audio.duration,Math.max(0,audio.currentTime+delta));
-  }
-});
-
-startCarousel();
-
-// Open a track's lyrics directly when the page is loaded with a #track hash
-(function(){
-  var h=location.hash.slice(1);
-  if(TRACKS[h]){
-    jumpCar(ORDER.indexOf(h));
-    current=h;
-    openLyrics();
-  }
-})();
-
-// Offline support for the app shell and artwork (audio streams from the network)
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').catch(function(){});
-}
-</script>
-
-</body>
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Relative asset and audio URLs resolve against the deploy base, so the
+         same strings work at / locally and under /fire-and-water/ on Pages. -->
+    <base href="%BASE_URL%" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0e1a" />
+    <meta name="color-scheme" content="dark" />
+    <title>Fire &amp; Water — Dustin &amp; Alex</title>
+    <meta
+      name="description"
+      content="Three original songs exploring the bond between a brother and sister — Pencil and Pen, Fire and Water, and Water and Fire. Listen and read the lyrics side by side."
+    />
+    <meta name="author" content="Dustin Fisher" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Fire &amp; Water" />
+    <link rel="canonical" href="https://dgfisher2021.github.io/fire-and-water/" />
+    <meta property="og:type" content="music.album" />
+    <meta property="og:title" content="Fire &amp; Water — Dustin &amp; Alex" />
+    <meta
+      property="og:description"
+      content="Three original songs exploring the bond between a brother and sister. Listen and read the lyrics side by side."
+    />
+    <meta property="og:url" content="https://dgfisher2021.github.io/fire-and-water/" />
+    <meta
+      property="og:image"
+      content="https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fire &amp; Water — Dustin &amp; Alex" />
+    <meta
+      name="twitter:description"
+      content="Three original songs exploring the bond between a brother and sister."
+    />
+    <meta
+      name="twitter:image"
+      content="https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png"
+    />
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="assets/pencil.jpg" fetchpriority="high" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "MusicAlbum",
+        "name": "Fire & Water",
+        "byArtist": { "@type": "MusicGroup", "name": "Dustin & Alex" },
+        "url": "https://dgfisher2021.github.io/fire-and-water/",
+        "image": "https://dgfisher2021.github.io/fire-and-water/assets/icon-512.png",
+        "numTracks": 3,
+        "track": [
+          {
+            "@type": "MusicRecording",
+            "name": "Pencil and Pen",
+            "position": 1,
+            "audio": "https://dgfisher2021.github.io/fire-and-water/pencil-and-pen.m4a"
+          },
+          {
+            "@type": "MusicRecording",
+            "name": "Fire and Water",
+            "position": 2,
+            "audio": "https://dgfisher2021.github.io/fire-and-water/fire-and-water.m4a"
+          },
+          {
+            "@type": "MusicRecording",
+            "name": "Water and Fire",
+            "position": 3,
+            "audio": "https://dgfisher2021.github.io/fire-and-water/water-and-fire.m4a"
+          }
+        ]
+      }
+    </script>
+    <script>
+      ;(function () {
+        var l = window.location
+        // SPA-on-GH-Pages restore: 404.html (a copy of this file) receives
+        // deep links with the path encoded as `?/seg1/seg2`. Decode before
+        // TanStack Router boots so it sees the real pathname.
+        if (l.search && l.search.charAt(1) === '/') {
+          var parts = l.search.slice(2).split('&')
+          var path = parts.shift().replace(/~and~/g, '&')
+          var query = parts.length
+            ? '?' + parts.join('&').replace(/~and~/g, '&')
+            : ''
+          window.history.replaceState(
+            null,
+            '',
+            l.pathname + path + query + l.hash
+          )
+        }
+        // Legacy share links (#pencil / #fire / #water) open the lyrics route.
+        var hash = window.location.hash.slice(1)
+        if (/^(pencil|fire|water)$/.test(hash)) {
+          var base = window.location.pathname.replace(/\/?$/, '/')
+          window.history.replaceState(
+            null,
+            '',
+            base + 'lyrics/' + hash + window.location.search
+          )
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
