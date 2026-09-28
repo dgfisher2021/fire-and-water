@@ -37,16 +37,13 @@ export function ArtworkStage({
       autoplayInterval={autoplayMs}
       className={cn('flex w-full flex-col items-center', className)}
     >
-      <MotionTilt
-        rotation={7}
-        className='relative mb-7 size-[260px] md:size-[320px]'
-      >
+      <MotionTilt rotation={7} className='relative mb-5 size-[216px]'>
         <div
           aria-hidden
           data-slot='artwork-glow'
-          className='absolute -inset-6 -z-10 rounded-[48px] bg-track-glow opacity-70 blur-[64px] transition-colors duration-[1800ms]'
+          className='absolute -inset-6 -z-10 rounded-[48px] bg-track-glow opacity-70 blur-[56px] transition-colors duration-[1800ms]'
         />
-        <MotionCarouselContent className='size-full rounded-[20px] shadow-[0_24px_72px_rgb(0_0_0/0.6)]'>
+        <MotionCarouselContent className='size-full rounded-[20px] shadow-[0_24px_60px_rgb(0_0_0/0.55)]'>
           {TRACK_ORDER.map((id) => (
             <img
               key={id}
@@ -60,7 +57,7 @@ export function ArtworkStage({
       </MotionTilt>
       {children}
       <MotionCarouselIndicators
-        className='static mt-5 translate-x-0 gap-2'
+        className='static mt-4 translate-x-0 gap-2'
         dotClassName='size-2 bg-foreground/15 transition-[background-color,transform] duration-400 data-active:scale-[1.3] data-active:bg-foreground/50'
       />
     </MotionCarousel>

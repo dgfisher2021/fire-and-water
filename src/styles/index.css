@@ -1,7 +1,13 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import '@dust-ui/tokens/styles.css';
+@import '@dust-ui/ui/theme-transition.css'; /* circle wipe on light/dark */
 @import '@dust-ui/ui/mobile.css'; /* keyframes for the Dust UI mobile kit */
+/* Theme presets, gated by <html data-theme> set by AppearanceProvider. */
+@import '@dust-ui/tokens/themes/clean-slate.css';
+@import '@dust-ui/tokens/themes/cool-slate.css';
+@import '@dust-ui/tokens/themes/dark-teal.css';
+/* portal.css is newer than the published @dust-ui/tokens; add it on the next release. */
 
 /* Self-hosted brand faces so typography survives offline (PWA). */
 @import '@fontsource-variable/outfit';
@@ -57,16 +63,54 @@
   }
 }
 
-/*
- * Brand voice - Fire & Water. A dark-only album player: the artwork
- * backdrops dictate the ground, so <html class="dark"> is static and there
- * is no light ladder. Values only, never token restructuring. Scoped to
- * :not([data-theme]) per the Dust UI house rule.
- */
-:root:not([data-theme]),
-.dark:not([data-theme]) {
-  --radius: 0.875rem;
+/* The three voices, always addressable (the split view shows two at once). */
+:root {
+  --pencil: oklch(0.7 0.08 60); /* #c4956a */
+  --pencil-deep: oklch(0.38 0.07 50); /* #6b4226 */
+  --pencil-glow: oklch(0.7 0.08 60 / 42%);
+  --fire: oklch(0.78 0.17 70); /* #f59e0b */
+  --fire-deep: oklch(0.48 0.19 28); /* #b91c1c */
+  --fire-glow: oklch(0.66 0.2 45 / 45%); /* ember */
+  --water: oklch(0.85 0.09 225); /* #7dd3fc */
+  --water-deep: oklch(0.33 0.07 250); /* #1e3a5f */
+  --water-glow: oklch(0.6 0.19 255 / 45%);
+  /* Type on the bright-to-deep track gradients, in every mode. */
+  --track-foreground: oklch(1 0 0);
+}
 
+/*
+ * Brand voice for the 'default' theme - Fire & Water. Values only, never
+ * token restructuring. Scoped to :not([data-theme]) because these rules
+ * come after the preset imports: an unscoped :root would out-order every
+ * equal-specificity preset and freeze the appearance picker. Light is warm
+ * paper over the artwork; dark is the deep navy the album was made in.
+ */
+:root:not([data-theme]) {
+  --background: oklch(0.965 0.01 80);
+  --foreground: oklch(0.22 0.02 265);
+  --card: oklch(1 0 0 / 55%);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.99 0.005 80);
+  --popover-foreground: var(--foreground);
+
+  --muted: oklch(0.22 0.02 265 / 6%);
+  --muted-foreground: oklch(0.22 0.02 265 / 60%);
+  --secondary: var(--muted);
+  --secondary-foreground: var(--foreground);
+
+  --accent: oklch(0.22 0.02 265 / 8%);
+  --accent-foreground: var(--foreground);
+
+  --border: oklch(0.22 0.02 265 / 12%);
+  --input: oklch(0.22 0.02 265 / 16%);
+  --overlay: oklch(0.2 0.02 265 / 40%);
+
+  --primary: var(--water-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
+}
+
+.dark:not([data-theme]) {
   --background: oklch(0.15 0.025 265); /* #0a0e1a deep navy */
   --foreground: oklch(0.94 0.012 75); /* #f0eae2 warm paper */
   --card: oklch(1 0 0 / 6%);
@@ -86,46 +130,57 @@
   --input: oklch(1 0 0 / 14%);
   --overlay: oklch(0 0 0 / 60%);
 
-  /* Primary follows the active track (html[data-track]); water is the
-     resting voice, matching the original theme-color. */
   --primary: var(--water);
-  --primary-foreground: oklch(1 0 0);
+  --primary-foreground: oklch(0.2 0.03 250);
   --ring: var(--primary);
+}
+
+/*
+ * The active track colors the accent on every theme (html[data-track] is set
+ * by usePageMeta). :root[data-track] out-ranks both the brand block above
+ * and the presets, and the .dark form out-ranks their dark ladders. Light
+ * uses the deep voice for contrast on paper; dark uses the bright one.
+ */
+:root {
   --track-bright: var(--water);
   --track-deep: var(--water-deep);
   --track-glow: var(--water-glow);
 }
-
-/* The three voices, always addressable (the split view shows two at once). */
-:root {
-  --pencil: oklch(0.7 0.08 60); /* #c4956a */
-  --pencil-deep: oklch(0.38 0.07 50); /* #6b4226 */
-  --pencil-glow: oklch(0.7 0.08 60 / 42%);
-  --fire: oklch(0.78 0.17 70); /* #f59e0b */
-  --fire-deep: oklch(0.48 0.19 28); /* #b91c1c */
-  --fire-glow: oklch(0.66 0.2 45 / 45%); /* ember */
-  --water: oklch(0.85 0.09 225); /* #7dd3fc */
-  --water-deep: oklch(0.33 0.07 250); /* #1e3a5f */
-  --water-glow: oklch(0.6 0.19 255 / 45%);
-}
-
-html[data-track='pencil'] {
-  --primary: var(--pencil);
+:root[data-track='pencil'] {
   --track-bright: var(--pencil);
   --track-deep: var(--pencil-deep);
   --track-glow: var(--pencil-glow);
+  --primary: var(--pencil-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
 }
-html[data-track='fire'] {
-  --primary: var(--fire);
+:root[data-track='pencil'].dark {
+  --primary: var(--pencil);
+  --primary-foreground: oklch(0.22 0.04 50);
+}
+:root[data-track='fire'] {
   --track-bright: var(--fire);
   --track-deep: var(--fire-deep);
   --track-glow: var(--fire-glow);
+  --primary: var(--fire-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
 }
-html[data-track='water'] {
-  --primary: var(--water);
+:root[data-track='fire'].dark {
+  --primary: var(--fire);
+  --primary-foreground: oklch(0.22 0.05 50);
+}
+:root[data-track='water'] {
   --track-bright: var(--water);
   --track-deep: var(--water-deep);
   --track-glow: var(--water-glow);
+  --primary: var(--water-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
+}
+:root[data-track='water'].dark {
+  --primary: var(--water);
+  --primary-foreground: oklch(0.2 0.03 250);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
@@ -136,6 +191,7 @@ html[data-track='water'] {
   --color-track-bright: var(--track-bright);
   --color-track-deep: var(--track-deep);
   --color-track-glow: var(--track-glow);
+  --color-track-foreground: var(--track-foreground);
 }
 
 @layer base {
@@ -144,6 +200,9 @@ html[data-track='water'] {
     -webkit-tap-highlight-color: transparent;
   }
   :root {
+    color-scheme: light;
+  }
+  .dark {
     color-scheme: dark;
   }
   /* A fixed-viewport player: the document never scrolls, panes do. */
@@ -157,11 +216,18 @@ html[data-track='water'] {
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
+  /* Brand fonts win over the tokens' html[data-font] mapping (same
+     specificity, later in the cascade). */
   html[data-font] {
     font-family: var(--font-sans);
   }
   button {
     touch-action: manipulation;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    button:active {
+      transform: scale(0.97);
+    }
   }
 }
 
@@ -179,8 +245,8 @@ html[data-track='water'] {
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    black 3%,
-    black 92%,
+    black 4%,
+    black 90%,
     transparent 100%
   );
 }
@@ -193,19 +259,11 @@ html[data-track='water'] {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Frosted drawer: the artwork backdrop shows through a heavy blur. */
-@utility glass-drawer {
-  background: var(--overlay);
-  backdrop-filter: blur(60px) saturate(1.4);
-  -webkit-backdrop-filter: blur(60px) saturate(1.4);
-}
-
 @media (pointer: coarse) {
   button,
   [role='button'],
   a[href] {
     min-height: 44px;
-    min-width: 44px;
   }
 }
 
@@ -219,7 +277,9 @@ html[data-track='water'] {
     background: white;
     color: black;
   }
-  [data-print='hide'] {
+  [data-print='hide'],
+  [data-slot='nav-bottom'],
+  [data-slot='ambient-image-backdrop'] {
     display: none !important;
   }
   [data-slot='lyrics-reader'] {

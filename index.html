@@ -81,6 +81,22 @@
       }
     </script>
     <script>
+      // First paint matches the persisted (or default dark) mode; the
+      // appearance provider takes over after hydration.
+      try {
+        var s = JSON.parse(
+          localStorage.getItem('fire-and-water-appearance') || '{}'
+        )
+        var m = s.themeMode || 'dark'
+        var dark =
+          m === 'dark' ||
+          (m === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch (e) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
+    <script>
       ;(function () {
         var l = window.location
         // SPA-on-GH-Pages restore: 404.html (a copy of this file) receives

@@ -1,24 +1,19 @@
 import { Outlet, createRootRoute, useMatch } from '@tanstack/react-router'
 import { MotionProvider } from '@dust-ui/motion'
-import { ToastStack } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { usePlayer } from '@/store/player'
 import { useAudioEngine } from '@/hooks/use-audio-engine'
 import { useMediaSession } from '@/hooks/use-media-session'
 import { usePageMeta } from '@/hooks/use-page-meta'
-import { AmbientImageBackdrop } from '@/components/ambient-image-backdrop'
-// grain-overlay is newer than the published @dust-ui/ui, so it is vendored.
-import { GrainOverlay } from '@/components/ui/grain-overlay'
-
-const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
+import { PhoneShell } from '@/components/phone-shell'
 
 export function RootComponent() {
   useAudioEngine()
   useMediaSession()
 
-  // The open lyrics track owns the theme; otherwise the home slide does.
+  // The open lyrics track owns the theme; otherwise the album slide does.
   const lyricsTrack = useMatch({
-    from: '/_player/lyrics/$track',
+    from: '/lyrics/$track',
     shouldThrow: false,
     select: (m) => m.params.track,
   })
@@ -32,19 +27,16 @@ export function RootComponent() {
 
   return (
     <MotionProvider>
-      <div className='relative isolate flex h-dvh flex-col overflow-hidden'>
-        <AmbientImageBackdrop images={BACKDROPS} activeId={theme} />
-        <GrainOverlay className='fixed z-0' opacity={0.035} />
+      <PhoneShell theme={theme}>
         <Outlet />
-      </div>
-      <ToastStack position='top-center' theme='dark' offset={16} />
+      </PhoneShell>
     </MotionProvider>
   )
 }
 
 export function RootNotFound() {
   return (
-    <main className='flex h-dvh flex-col items-center justify-center gap-4 px-6 text-center'>
+    <main className='relative z-[1] flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center'>
       <p className='font-display text-3xl'>Not found</p>
       <a
         href='.'

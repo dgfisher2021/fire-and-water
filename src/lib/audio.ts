@@ -9,7 +9,3 @@ export function getAudio(): HTMLAudioElement {
   }
   return element
 }
-
-export const canShare = () =>
-  typeof navigator !== 'undefined' &&
-  (typeof navigator.share === 'function' || !!navigator.clipboard)

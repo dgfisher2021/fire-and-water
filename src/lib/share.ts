@@ -1,4 +1,4 @@
-import { toast } from 'sonner'
+import { useToasts } from '@/store/toasts'
 
 export type ShareInput = { title: string; text: string; url: string }
 
@@ -15,8 +15,19 @@ export async function share(input: ShareInput) {
   if (!navigator.clipboard) return
   try {
     await navigator.clipboard.writeText(input.url)
-    toast.success('Link copied')
+    useToasts.getState().push('Link copied', 'success')
   } catch {
-    toast.error('Could not copy the link')
+    useToasts.getState().push('Could not copy the link', 'error')
   }
+}
+
+/** Trigger a file download without leaving the app. */
+export function download(url: string) {
+  const a = document.createElement('a')
+  a.href = url
+  a.download = ''
+  a.rel = 'noopener'
+  document.body.append(a)
+  a.click()
+  a.remove()
 }

@@ -9,92 +9,104 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PlayerRouteImport } from './routes/_player'
-import { Route as PlayerIndexRouteImport } from './routes/_player/index'
-import { Route as PlayerLyricsTrackRouteImport } from './routes/_player/lyrics.$track'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as MoreRouteImport } from './routes/more'
+import { Route as LyricsTrackRouteImport } from './routes/lyrics.$track'
 
-const PlayerRoute = PlayerRouteImport.update({
-  id: '/_player',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlayerIndexRoute = PlayerIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => PlayerRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const PlayerLyricsTrackRoute = PlayerLyricsTrackRouteImport.update({
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoreRoute = MoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LyricsTrackRoute = LyricsTrackRouteImport.update({
   id: '/lyrics/$track',
   path: '/lyrics/$track',
-  getParentRoute: () => PlayerRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof PlayerIndexRoute
-  '/lyrics/$track': typeof PlayerLyricsTrackRoute
+  '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/more': typeof MoreRoute
+  '/lyrics/$track': typeof LyricsTrackRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof PlayerIndexRoute
-  '/lyrics/$track': typeof PlayerLyricsTrackRoute
+  '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/more': typeof MoreRoute
+  '/lyrics/$track': typeof LyricsTrackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/_player': typeof PlayerRouteWithChildren
-  '/_player/': typeof PlayerIndexRoute
-  '/_player/lyrics/$track': typeof PlayerLyricsTrackRoute
+  '/': typeof IndexRoute
+  '/compare': typeof CompareRoute
+  '/more': typeof MoreRoute
+  '/lyrics/$track': typeof LyricsTrackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/lyrics/$track'
+  fullPaths: '/' | '/compare' | '/more' | '/lyrics/$track'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/lyrics/$track'
-  id: '__root__' | '/_player' | '/_player/' | '/_player/lyrics/$track'
+  to: '/' | '/compare' | '/more' | '/lyrics/$track'
+  id: '__root__' | '/' | '/compare' | '/more' | '/lyrics/$track'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  PlayerRoute: typeof PlayerRouteWithChildren
+  IndexRoute: typeof IndexRoute
+  CompareRoute: typeof CompareRoute
+  MoreRoute: typeof MoreRoute
+  LyricsTrackRoute: typeof LyricsTrackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/_player': {
-      id: '/_player'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof PlayerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_player/': {
-      id: '/_player/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof PlayerIndexRouteImport
-      parentRoute: typeof PlayerRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_player/lyrics/$track': {
-      id: '/_player/lyrics/$track'
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/more': {
+      id: '/more'
+      path: '/more'
+      fullPath: '/more'
+      preLoaderRoute: typeof MoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lyrics/$track': {
+      id: '/lyrics/$track'
       path: '/lyrics/$track'
       fullPath: '/lyrics/$track'
-      preLoaderRoute: typeof PlayerLyricsTrackRouteImport
-      parentRoute: typeof PlayerRoute
+      preLoaderRoute: typeof LyricsTrackRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface PlayerRouteChildren {
-  PlayerIndexRoute: typeof PlayerIndexRoute
-  PlayerLyricsTrackRoute: typeof PlayerLyricsTrackRoute
-}
-
-const PlayerRouteChildren: PlayerRouteChildren = {
-  PlayerIndexRoute: PlayerIndexRoute,
-  PlayerLyricsTrackRoute: PlayerLyricsTrackRoute,
-}
-
-const PlayerRouteWithChildren =
-  PlayerRoute._addFileChildren(PlayerRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
-  PlayerRoute: PlayerRouteWithChildren,
+  IndexRoute: IndexRoute,
+  CompareRoute: CompareRoute,
+  MoreRoute: MoreRoute,
+  LyricsTrackRoute: LyricsTrackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
