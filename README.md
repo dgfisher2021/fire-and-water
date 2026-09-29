@@ -109,4 +109,9 @@ pnpm lint
 
 Every push to `main` runs `.github/workflows/deploy.yml`: lint, build with `VITE_BASE_PATH=/fire-and-water/`, copy `index.html` to `404.html` for deep links, then publish to GitHub Pages through the Actions deployment (the repo's Pages source is "GitHub Actions"). Pull requests run the build only. The same workflow can be started by hand from the Actions tab.
 
-Installing `@dust-ui/*` from GitHub Packages needs a token with `read:packages`. Either add the repo secret `DUST_UI_READ_TOKEN` (a classic PAT), or grant this repository access to the `@dust-ui` packages in their package settings ("Manage Actions access"), after which the workflow's own token is enough.
+Installing `@dust-ui/*` from GitHub Packages needs the repo secret `DUST_UI_READ_TOKEN`, a classic personal access token with `read:packages`. The packages are owned by the `dust-ui` organization and this repository is not, so the workflow's own token cannot be granted access to them. Create the token at github.com/settings/tokens, then:
+
+```sh
+gh secret set DUST_UI_READ_TOKEN --repo dgfisher2021/fire-and-water
+gh workflow run deploy.yml --repo dgfisher2021/fire-and-water
+```
