@@ -5,7 +5,8 @@ Monotonic sequence alignment (Needleman-Wunsch over normalized tokens with
 fuzzy matches) maps lyric tokens to heard words. A line is anchored at its
 first strongly matched word once at least half of it was heard; unheard
 lines are spread between their anchored neighbours in proportion to their
-length. A stanza starts at its first line; label lines take the stanza start.
+length. A stanza starts at its first line; a label line takes the time of the
+line after it.
 Every transcript pass next to this file (asr/, asr-strict/, ...) is tried and
 the one that anchors the most lines wins.
 
@@ -170,12 +171,22 @@ def time_song(stanzas, asr):
     line_time = dict(zip(flat_keys, flat))
     unsung = {flat_keys[k] for k in unsung_idx}
 
-    lines_out, stanza_out = [], []
+    stanza_out = []
     for si, lines in enumerate(stanzas):
         sung = [line_time[(si, li)] for li, line in enumerate(lines) if not is_label(line)]
         start = min(sung) if sung else (stanza_out[-1] + 0.1 if stanza_out else 0.0)
         stanza_out.append(round(start, 2))
-        lines_out.append([round(line_time.get((si, li), start), 2) for li in range(len(lines))])
+    # A label takes the time of the next sung line (or the next stanza), so
+    # the reader never treats it as the line being sung.
+    lines_out = []
+    for si, lines in enumerate(stanzas):
+        after = stanza_out[si + 1] if si + 1 < len(stanza_out) else asr["duration"]
+        times = []
+        for li in range(len(lines) - 1, -1, -1):
+            if not is_label(lines[li]):
+                after = line_time[(si, li)]
+            times.append(round(after, 2))
+        lines_out.append(times[::-1])
     return {"stanzas": stanza_out, "lines": lines_out}, anchors, unsung, len(flat_keys)
 
 

@@ -50,7 +50,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Timing the lyrics
 
-`src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...] } }` (label lines take the stanza start). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
+`src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...] } }` (a label line takes the time of the line after it). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
 
 ```sh
 python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper
