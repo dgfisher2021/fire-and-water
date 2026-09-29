@@ -1,27 +1,14 @@
-import { useState, type CSSProperties } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import {
-  MobileMediaPlayer,
-  MobilePageHeader,
-  SegmentedControl,
-} from '@dust-ui/ui'
-import { TRACKS, sameLyricShape, type TrackId } from '@/data/tracks'
+import { MobileMediaPlayer, MobilePageHeader } from '@dust-ui/ui'
+import { TRACKS, sameLyricShape, shortTitle, type TrackId } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
 import { LyricsSplit, type LyricsColumn } from '@/components/lyrics-split'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
 
-const VIEW_OPTIONS = [
-  { value: 'single', label: 'Lyrics' },
-  { value: 'split', label: 'Compare' },
-]
-
 type Side = 'left' | 'right'
-
-/** "Fire & Water", "Not Afraid to Change": the title without its parenthetical. */
-const shortTitle = (id: TrackId) =>
-  TRACKS[id].title.replace(' and ', ' & ').replace(/\s*\(.*\)$/, '')
 
 // A song's deep tone on light surfaces, its bright tone on dark ones.
 const VOICE = 'text-(--voice) dark:text-(--voice-dark)'
@@ -65,6 +52,9 @@ export function CompareScreen() {
   const play = usePlayer((s) => s.play)
   const pause = usePlayer((s) => s.pause)
   const seek = usePlayer((s) => s.seek)
+  // The Compare tab reopens this pair.
+  const setComparePair = usePlayer((s) => s.setComparePair)
+  useEffect(() => setComparePair(pair), [pair, setComparePair])
 
   const setSide = (side: Side, id: TrackId) =>
     navigate({
@@ -105,7 +95,7 @@ export function CompareScreen() {
         <MobilePageHeader
           eyebrow='Side by side'
           title={
-            <span className='block max-w-[240px] truncate font-display text-[17px] font-medium'>
+            <span className='block truncate font-display text-[17px] font-medium'>
               <span className={VOICE} style={voiceVars(pair.left)}>
                 {shortTitle(pair.left)}
               </span>
@@ -115,26 +105,7 @@ export function CompareScreen() {
               </span>
             </span>
           }
-          subtitle='Tap a name above a column to swap its song'
-          trailing={
-            <div className='w-[124px]'>
-              <SegmentedControl
-                options={VIEW_OPTIONS}
-                value='split'
-                onChange={(v) => {
-                  if (v === 'single')
-                    void navigate({
-                      to: '/lyrics/$track',
-                      params: { track },
-                    })
-                }}
-                height={30}
-                trackColor='var(--card)'
-                thumbColor='var(--accent)'
-                activeColor='var(--primary)'
-              />
-            </div>
-          }
+          subtitle='Tap a title to swap its song'
           statusBarInset={framed}
         />
       }

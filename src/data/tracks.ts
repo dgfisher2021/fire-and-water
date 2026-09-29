@@ -326,12 +326,21 @@ export function sameLyricShape(a: Lyrics, b: Lyrics) {
   return a.length === b.length && a.every((s, i) => s.length === b[i].length)
 }
 
-/** "For Alex, from Dustin — March 2, 2026": the dedication with the date, for the lyrics header. */
-export function dedicationLine(t: Track) {
-  const date = new Date(`${t.written}T12:00:00`).toLocaleDateString('en-US', {
+/** "March 2, 2026": the day it was written, spelled out. */
+export function writtenDate(t: Track) {
+  return new Date(`${t.written}T12:00:00`).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
   })
-  return `${t.dedication} — ${date}`
+}
+
+/** "For Alex, from Dustin — March 2, 2026": the dedication with the date, for the action sheet. */
+export function dedicationLine(t: Track) {
+  return `${t.dedication} — ${writtenDate(t)}`
+}
+
+/** "Fire & Water", "Not Afraid to Change": the title without its parenthetical, for tight spots. */
+export function shortTitle(id: TrackId) {
+  return TRACKS[id].title.replace(' and ', ' & ').replace(/\s*\(.*\)$/, '')
 }

@@ -3,12 +3,15 @@ import {
   TRACKS,
   TRACK_ORDER,
   adjacentTrack,
+  comparePartner,
   isLastTrack,
   type TrackId,
 } from '@/data/tracks'
 import { getAudio } from '@/lib/audio'
 
 export type PlayerStatus = 'idle' | 'loading' | 'playing' | 'paused'
+
+export type ComparePair = { left: TrackId; right: TrackId }
 
 type PlayerState = {
   /** Track loaded in the audio element; null when nothing is loaded. */
@@ -24,8 +27,11 @@ type PlayerState = {
    * repeat requests.
    */
   requested: { track: TrackId; seq: number } | null
+  /** The last pair the Compare screen showed; the tab reopens it while it still holds the focus track. */
+  comparePair: ComparePair | null
 
   setCarouselIndex: (index: number) => void
+  setComparePair: (pair: ComparePair) => void
   play: (track: TrackId) => void
   pause: () => void
   toggle: (track: TrackId) => void
@@ -46,8 +52,10 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   duration: 0,
   carouselIndex: 0,
   requested: null,
+  comparePair: null,
 
   setCarouselIndex: (index) => set({ carouselIndex: index }),
+  setComparePair: (pair) => set({ comparePair: pair }),
 
   play: (track) => {
     const audio = getAudio()
@@ -104,3 +112,16 @@ export const selectIsActive = (track: TrackId) => (s: PlayerState) =>
 /** The track the Lyrics tab should open: what is loaded, else the slide. */
 export const selectFocusTrack = (s: PlayerState) =>
   s.track ?? TRACK_ORDER[s.carouselIndex]
+
+/**
+ * The pair the Compare tab should open: the last one while it still holds
+ * the focus track, else the focus track and its partner. A plain function
+ * (it builds an object) rather than a store selector.
+ */
+export const comparePairFor = (
+  focus: TrackId,
+  last: ComparePair | null
+): ComparePair =>
+  last && (last.left === focus || last.right === focus)
+    ? last
+    : { left: focus, right: comparePartner(focus) }

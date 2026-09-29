@@ -11,7 +11,6 @@ import {
   EmptyTitle,
   MobileMediaPlayer,
   MobilePageHeader,
-  SegmentedControl,
   SheetAction,
   type SheetActionAction,
   useSwipe,
@@ -23,6 +22,8 @@ import {
   adjacentTrack,
   comparePartner,
   dedicationLine,
+  shortTitle,
+  writtenDate,
   type TrackId,
 } from '@/data/tracks'
 import { download, share } from '@/lib/share'
@@ -30,11 +31,6 @@ import { selectProgress, usePlayer } from '@/store/player'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
-
-const VIEW_OPTIONS = [
-  { value: 'single', label: 'Lyrics' },
-  { value: 'split', label: 'Compare' },
-]
 
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
@@ -128,7 +124,16 @@ export function LyricsScreen() {
       url: new URL(`lyrics/${track}`, document.baseURI).href,
     })
 
+  const partner = comparePartner(track)
   const actions: SheetActionAction[] = [
+    {
+      label: `Compare with ${shortTitle(partner)}`,
+      onClick: () =>
+        void navigate({
+          to: '/compare',
+          search: { left: track, right: partner },
+        }),
+    },
     { label: 'Share song', onClick: onShare },
     { label: 'Download audio', onClick: () => download(t.audioFile) },
   ]
@@ -161,44 +166,25 @@ export function LyricsScreen() {
         <MobilePageHeader
           eyebrow={t.voice}
           title={
-            <span className='font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'>
+            <span className='line-clamp-2 font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'>
               {t.title}
             </span>
           }
           subtitle={
             t.lyricsSource === 'transcribed'
-              ? `${dedicationLine(t)} · words transcribed by ear`
-              : dedicationLine(t)
+              ? `Written ${writtenDate(t)} · words transcribed by ear`
+              : `Written ${writtenDate(t)}`
           }
           trailing={
-            <>
-              <div className='w-[124px]'>
-                <SegmentedControl
-                  options={VIEW_OPTIONS}
-                  value='single'
-                  onChange={(v) => {
-                    if (v === 'split')
-                      void navigate({
-                        to: '/compare',
-                        search: { left: track, right: comparePartner(track) },
-                      })
-                  }}
-                  height={30}
-                  trackColor='var(--card)'
-                  thumbColor='var(--accent)'
-                  activeColor='var(--primary)'
-                />
-              </div>
-              <Button
-                variant='ghost'
-                size='icon'
-                aria-label='More actions'
-                onClick={() => setSheet(true)}
-                className='rounded-full bg-card text-muted-foreground hover:text-foreground'
-              >
-                <Ellipsis aria-hidden />
-              </Button>
-            </>
+            <Button
+              variant='ghost'
+              size='icon'
+              aria-label='More actions'
+              onClick={() => setSheet(true)}
+              className='rounded-full bg-card text-muted-foreground hover:text-foreground'
+            >
+              <Ellipsis aria-hidden />
+            </Button>
           }
           statusBarInset={framed}
         />
@@ -206,8 +192,8 @@ export function LyricsScreen() {
     >
       <div className='shrink-0 px-4 pb-1'>
         <MobileMediaPlayer
-          title={t.title}
-          artist={`${ALBUM.artist} · ${ALBUM.title}`}
+          title={t.dedication}
+          artist={ALBUM.title}
           artwork={
             <img
               src={t.art.thumb}

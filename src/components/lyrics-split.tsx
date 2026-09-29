@@ -73,12 +73,12 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
                     type='button'
                     aria-label={column.playing ? 'Pause' : 'Play this song'}
                     onClick={column.onPlay}
-                    className='flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full bg-card/70 text-current transition-colors hover:bg-card'
+                    className='flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full bg-card/70 text-current transition-colors hover:bg-card'
                   >
                     {column.playing ? (
-                      <Pause className='size-3' aria-hidden />
+                      <Pause className='size-3.5' aria-hidden />
                     ) : (
-                      <Play className='size-3' aria-hidden />
+                      <Play className='size-3.5' aria-hidden />
                     )}
                   </button>
                 )}
@@ -87,9 +87,11 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
                     type='button'
                     onClick={column.onPick}
                     aria-label='Choose a song for this side'
-                    className='inline-flex min-w-0 cursor-pointer items-center gap-1 rounded-full px-2 py-0.5 tracking-[2px] transition-colors hover:bg-card/60'
+                    className='inline-flex min-w-0 cursor-pointer items-center gap-1 rounded-full px-2 py-1.5 text-[11px] tracking-[1px] transition-colors hover:bg-card/60'
                   >
-                    <span className='truncate'>{column.tag}</span>
+                    <span className='line-clamp-2 leading-tight'>
+                      {column.tag}
+                    </span>
                     <ChevronDown
                       className='size-3 shrink-0 opacity-70'
                       aria-hidden
