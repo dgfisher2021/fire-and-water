@@ -29,9 +29,15 @@ export function useScrollFocus(
       },
       { root: el, rootMargin: margin, threshold: 0 }
     )
-    el.querySelectorAll<HTMLElement>(selector).forEach((n) =>
-      observer.observe(n)
-    )
-    return () => observer.disconnect()
+    const nodes = el.querySelectorAll<HTMLElement>(selector)
+    nodes.forEach((n) => observer.observe(n))
+    return () => {
+      observer.disconnect()
+      // Clear our marks (empty-valued) but not one a prop set to "true".
+      nodes.forEach((n) => {
+        if (n.getAttribute('data-active') === '')
+          n.removeAttribute('data-active')
+      })
+    }
   }, [root, selector, key, enabled, band])
 }
