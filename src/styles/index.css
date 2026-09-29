@@ -1,0 +1,394 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@dust-ui/tokens/styles.css';
+@import '@dust-ui/ui/theme-transition.css'; /* circle wipe on light/dark */
+@import '@dust-ui/ui/mobile.css'; /* keyframes for the Dust UI mobile kit */
+/* Theme presets, gated by <html data-theme> set by AppearanceProvider. */
+@import '@dust-ui/tokens/themes/clean-slate.css';
+@import '@dust-ui/tokens/themes/cool-slate.css';
+@import '@dust-ui/tokens/themes/dark-teal.css';
+@import '@dust-ui/tokens/themes/portal.css';
+
+/* Self-hosted brand faces so typography survives offline (PWA). */
+@import '@fontsource-variable/outfit';
+@import '@fontsource/cormorant-garamond/300.css';
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import '@fontsource/cormorant-garamond/300-italic.css';
+@import '@fontsource/cormorant-garamond/400-italic.css';
+
+/* Tailwind skips node_modules; register the packages' compiled output so
+   their class names generate. */
+@source '../../node_modules/@dust-ui/ui/dist';
+@source '../../node_modules/@dust-ui/motion/dist';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans:
+    'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+
+  --animate-bg-drift: bg-drift 36s ease-in-out infinite alternate;
+  --animate-breathe: breathe 2.6s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes bg-drift {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.07);
+    }
+  }
+  @keyframes breathe {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+    50% {
+      box-shadow: 0 0 22px 2px var(--media-glow, var(--track-glow));
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/*
+ * Every song's voice: a bright tone (dark mode accent), a deep tone (light
+ * mode accent and the far end of the play gradient), a glow, and the ink
+ * that sits on the bright tone. Always addressable by song id, so the split
+ * view can show two at once and the credits can tint each row.
+ */
+:root {
+  --pencil: oklch(0.7 0.08 60); /* #c4956a */
+  --pencil-deep: oklch(0.38 0.07 50); /* #6b4226 */
+  --pencil-glow: oklch(0.7 0.08 60 / 42%);
+  --pencil-ink: oklch(0.22 0.04 50);
+  --fire: oklch(0.78 0.17 70); /* #f59e0b */
+  --fire-deep: oklch(0.48 0.19 28); /* #b91c1c */
+  --fire-glow: oklch(0.66 0.2 45 / 45%); /* ember */
+  --fire-ink: oklch(0.22 0.05 50);
+  --water: oklch(0.85 0.09 225); /* #7dd3fc */
+  --water-deep: oklch(0.33 0.07 250); /* #1e3a5f */
+  --water-glow: oklch(0.6 0.19 255 / 45%);
+  --water-ink: oklch(0.2 0.03 250);
+  --memories: oklch(0.8 0.1 300); /* lavender: memory, dream */
+  --memories-deep: oklch(0.38 0.14 300);
+  --memories-glow: oklch(0.65 0.16 300 / 45%);
+  --memories-ink: oklch(0.22 0.05 300);
+  --baritone: oklch(0.8 0.02 260); /* graphite */
+  --baritone-deep: oklch(0.35 0.03 260);
+  --baritone-glow: oklch(0.65 0.05 260 / 40%);
+  --baritone-ink: oklch(0.2 0.02 260);
+  --dust: oklch(0.78 0.05 80); /* ash and sandstone */
+  --dust-deep: oklch(0.36 0.04 60);
+  --dust-glow: oklch(0.7 0.06 75 / 40%);
+  --dust-ink: oklch(0.22 0.03 70);
+  --change: oklch(0.82 0.12 160); /* sage: hope, growth */
+  --change-deep: oklch(0.38 0.1 160);
+  --change-glow: oklch(0.65 0.15 160 / 45%);
+  --change-ink: oklch(0.2 0.04 160);
+  --hearts: oklch(0.8 0.13 10); /* rose */
+  --hearts-deep: oklch(0.45 0.18 10);
+  --hearts-glow: oklch(0.65 0.2 10 / 45%);
+  --hearts-ink: oklch(0.22 0.05 10);
+  --mercy: oklch(0.8 0.06 70); /* sketchbook paper and sepia */
+  --mercy-deep: oklch(0.42 0.06 55);
+  --mercy-glow: oklch(0.75 0.07 70 / 40%);
+  --mercy-ink: oklch(0.24 0.04 60);
+  --raven: oklch(0.82 0.06 260); /* moonlight over indigo */
+  --raven-deep: oklch(0.3 0.12 270);
+  --raven-glow: oklch(0.6 0.16 270 / 45%);
+  --raven-ink: oklch(0.2 0.05 270);
+  --espoir: oklch(0.8 0.12 240); /* electric blue */
+  --espoir-deep: oklch(0.38 0.15 255);
+  --espoir-glow: oklch(0.65 0.2 245 / 45%);
+  --espoir-ink: oklch(0.2 0.05 250);
+  --beautiful: oklch(0.83 0.15 90); /* ember gold on black */
+  --beautiful-deep: oklch(0.42 0.11 75);
+  --beautiful-glow: oklch(0.72 0.16 85 / 45%);
+  --beautiful-ink: oklch(0.24 0.06 80);
+  --waves: oklch(0.78 0.07 105); /* olive and umber */
+  --waves-deep: oklch(0.36 0.06 110);
+  --waves-glow: oklch(0.66 0.09 105 / 40%);
+  --waves-ink: oklch(0.22 0.04 105);
+  /* Type on the bright-to-deep gradients, in every mode. */
+  --track-foreground: oklch(1 0 0);
+  /* Resting voice before a song is chosen. */
+  --track-bright: var(--water);
+  --track-deep: var(--water-deep);
+  --track-glow: var(--water-glow);
+  --track-ink: var(--water-ink);
+}
+
+/*
+ * Brand voice for the 'default' theme - Fire & Water. Values only, never
+ * token restructuring. Scoped to :not([data-theme]) because these rules
+ * come after the preset imports: an unscoped :root would out-order every
+ * equal-specificity preset and freeze the appearance picker. Light is warm
+ * paper over the artwork; dark is the deep navy the album was made in.
+ */
+:root:not([data-theme]) {
+  --background: oklch(0.965 0.01 80);
+  --foreground: oklch(0.22 0.02 265);
+  --card: oklch(1 0 0 / 55%);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.99 0.005 80);
+  --popover-foreground: var(--foreground);
+
+  --muted: oklch(0.22 0.02 265 / 6%);
+  --muted-foreground: oklch(0.22 0.02 265 / 60%);
+  --secondary: var(--muted);
+  --secondary-foreground: var(--foreground);
+
+  --accent: oklch(0.22 0.02 265 / 8%);
+  --accent-foreground: var(--foreground);
+
+  --border: oklch(0.22 0.02 265 / 12%);
+  --input: oklch(0.22 0.02 265 / 16%);
+  --overlay: oklch(0.2 0.02 265 / 40%);
+
+  --primary: var(--water-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
+}
+
+.dark:not([data-theme]) {
+  --background: oklch(0.15 0.025 265); /* #0a0e1a deep navy */
+  --foreground: oklch(0.94 0.012 75); /* #f0eae2 warm paper */
+  --card: oklch(1 0 0 / 6%);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.2 0.03 265);
+  --popover-foreground: var(--foreground);
+
+  --muted: oklch(1 0 0 / 8%);
+  --muted-foreground: oklch(0.94 0.012 75 / 62%);
+  --secondary: var(--muted);
+  --secondary-foreground: var(--foreground);
+
+  --accent: oklch(1 0 0 / 10%);
+  --accent-foreground: var(--foreground);
+
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --overlay: oklch(0 0 0 / 60%);
+
+  --primary: var(--water);
+  --primary-foreground: var(--water-ink);
+  --ring: var(--primary);
+}
+
+/*
+ * The active song colors the accent on every theme (html[data-track] is set
+ * by usePageMeta). :root[data-track] out-ranks both the brand block above
+ * and the presets, and the .dark form out-ranks their dark ladders. Light
+ * uses the deep voice for contrast on paper; dark uses the bright one.
+ */
+:root[data-track] {
+  --primary: var(--track-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
+}
+:root[data-track].dark {
+  --primary: var(--track-bright);
+  --primary-foreground: var(--track-ink);
+}
+:root[data-track='pencil'] {
+  --track-bright: var(--pencil);
+  --track-deep: var(--pencil-deep);
+  --track-glow: var(--pencil-glow);
+  --track-ink: var(--pencil-ink);
+}
+:root[data-track='fire'] {
+  --track-bright: var(--fire);
+  --track-deep: var(--fire-deep);
+  --track-glow: var(--fire-glow);
+  --track-ink: var(--fire-ink);
+}
+:root[data-track='water'] {
+  --track-bright: var(--water);
+  --track-deep: var(--water-deep);
+  --track-glow: var(--water-glow);
+  --track-ink: var(--water-ink);
+}
+:root[data-track='memories'] {
+  --track-bright: var(--memories);
+  --track-deep: var(--memories-deep);
+  --track-glow: var(--memories-glow);
+  --track-ink: var(--memories-ink);
+}
+:root[data-track='baritone'] {
+  --track-bright: var(--baritone);
+  --track-deep: var(--baritone-deep);
+  --track-glow: var(--baritone-glow);
+  --track-ink: var(--baritone-ink);
+}
+:root[data-track='dust'] {
+  --track-bright: var(--dust);
+  --track-deep: var(--dust-deep);
+  --track-glow: var(--dust-glow);
+  --track-ink: var(--dust-ink);
+}
+:root[data-track='change'] {
+  --track-bright: var(--change);
+  --track-deep: var(--change-deep);
+  --track-glow: var(--change-glow);
+  --track-ink: var(--change-ink);
+}
+:root[data-track='hearts'] {
+  --track-bright: var(--hearts);
+  --track-deep: var(--hearts-deep);
+  --track-glow: var(--hearts-glow);
+  --track-ink: var(--hearts-ink);
+}
+:root[data-track='mercy'] {
+  --track-bright: var(--mercy);
+  --track-deep: var(--mercy-deep);
+  --track-glow: var(--mercy-glow);
+  --track-ink: var(--mercy-ink);
+}
+:root[data-track='raven'] {
+  --track-bright: var(--raven);
+  --track-deep: var(--raven-deep);
+  --track-glow: var(--raven-glow);
+  --track-ink: var(--raven-ink);
+}
+:root[data-track='espoir'] {
+  --track-bright: var(--espoir);
+  --track-deep: var(--espoir-deep);
+  --track-glow: var(--espoir-glow);
+  --track-ink: var(--espoir-ink);
+}
+:root[data-track='beautiful'] {
+  --track-bright: var(--beautiful);
+  --track-deep: var(--beautiful-deep);
+  --track-glow: var(--beautiful-glow);
+  --track-ink: var(--beautiful-ink);
+}
+:root[data-track='waves'] {
+  --track-bright: var(--waves);
+  --track-deep: var(--waves-deep);
+  --track-glow: var(--waves-glow);
+  --track-ink: var(--waves-ink);
+}
+
+/* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
+@theme inline {
+  --color-pencil: var(--pencil);
+  --color-fire: var(--fire);
+  --color-water: var(--water);
+  --color-track-bright: var(--track-bright);
+  --color-track-deep: var(--track-deep);
+  --color-track-glow: var(--track-glow);
+  --color-track-foreground: var(--track-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    -webkit-tap-highlight-color: transparent;
+  }
+  :root {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
+  }
+  /* A fixed-viewport player: the document never scrolls, panes do. */
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  /* Brand fonts win over the tokens' html[data-font] mapping (same
+     specificity, later in the cascade). */
+  html[data-font] {
+    font-family: var(--font-sans);
+  }
+  button {
+    touch-action: manipulation;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    button:active {
+      transform: scale(0.97);
+    }
+  }
+  /* 44px targets on touch screens. In the base layer so utilities such as
+     the carousel dots' min-h-0 can opt out. */
+  @media (pointer: coarse) {
+    button,
+    [role='button'],
+    a[href] {
+      min-height: 44px;
+    }
+  }
+}
+
+/* Scroll panes hide their bars (the Dust UI mobile kit expects this
+   utility; the library ships the components but not the class). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Lyrics panes fade at both edges. */
+@utility mask-fade-y {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 4%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+/* Safe-area padding for notched phones (viewport-fit=cover). */
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Print: lyrics as a clean typeset sheet. */
+@media print {
+  html,
+  body,
+  #root {
+    height: auto;
+    overflow: visible;
+    background: white;
+    color: black;
+  }
+  [data-print='hide'],
+  [data-slot='nav-bottom'],
+  [data-slot='ambient-image-backdrop'] {
+    display: none !important;
+  }
+  [data-slot='lyrics-reader'] {
+    overflow: visible;
+    mask-image: none;
+    -webkit-mask-image: none;
+    padding: 0;
+  }
+  [data-slot='lyrics-stanza'] {
+    color: black !important;
+  }
+}

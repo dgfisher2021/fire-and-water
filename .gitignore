@@ -1,0 +1,8 @@
+node_modules
+dist
+dev-dist
+scripts/timing/asr*/
+scripts/timing/.venv/
+__pycache__/
+*.local
+.DS_Store
