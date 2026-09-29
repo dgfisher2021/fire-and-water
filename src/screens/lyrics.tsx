@@ -161,7 +161,7 @@ export function LyricsScreen() {
         <MobilePageHeader
           eyebrow={t.voice}
           title={
-            <span className='font-display text-[22px] leading-tight font-normal text-primary transition-colors duration-700'>
+            <span className='font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'>
               {t.title}
             </span>
           }
@@ -253,7 +253,7 @@ export function LyricsScreen() {
               >
                 <ScrollText aria-hidden />
               </EmptyMedia>
-              <EmptyTitle className='font-display text-2xl font-normal text-foreground/70'>
+              <EmptyTitle className='font-display text-2xl font-medium text-foreground/80'>
                 Lyrics on their way
               </EmptyTitle>
               <EmptyDescription className='text-[13px]'>

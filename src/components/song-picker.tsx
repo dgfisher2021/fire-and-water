@@ -17,7 +17,7 @@ const ITEMS = TRACK_ORDER.map((id) => {
   return {
     value: id,
     title: (
-      <span className='font-display text-[17px] leading-tight text-foreground'>
+      <span className='font-display text-[18px] leading-tight font-medium text-foreground'>
         {t.title}
       </span>
     ),

@@ -37,7 +37,7 @@ export function MoreScreen() {
         <MobilePageHeader
           eyebrow={ALBUM.artist}
           title={
-            <span className='font-display text-[26px] font-normal'>More</span>
+            <span className='font-display text-[26px] font-medium'>More</span>
           }
           subtitle='Appearance, downloads and the story'
           statusBarInset={framed}

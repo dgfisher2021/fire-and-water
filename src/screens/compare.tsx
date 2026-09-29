@@ -105,7 +105,7 @@ export function CompareScreen() {
         <MobilePageHeader
           eyebrow='Side by side'
           title={
-            <span className='block max-w-[240px] truncate font-display text-[17px] font-normal'>
+            <span className='block max-w-[240px] truncate font-display text-[17px] font-medium'>
               <span className={VOICE} style={voiceVars(pair.left)}>
                 {shortTitle(pair.left)}
               </span>

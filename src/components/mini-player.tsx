@@ -43,7 +43,7 @@ export function MiniPlayer() {
         onClick={open}
         className='min-w-0 flex-1 cursor-pointer text-left'
       >
-        <OverflowMarquee className='font-display text-[15px] leading-tight text-foreground'>
+        <OverflowMarquee className='font-display text-[16px] leading-tight font-medium text-foreground'>
           {t.title}
         </OverflowMarquee>
         <span className='mt-0.5 block truncate text-[10px] tracking-[1px] text-muted-foreground uppercase'>
