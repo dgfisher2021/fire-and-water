@@ -48,7 +48,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 ## Adding a song
 
 1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.jpg` (longest side about 1024) plus `<id>-512.jpg` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`.
-2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together.
+2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, the day it was written, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together. The story timeline on More reads the dates.
 3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.

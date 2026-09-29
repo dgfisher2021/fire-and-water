@@ -30,8 +30,8 @@ const trackSchema = z.object({
   title: z.string(),
   /** Short dedication for the album card. */
   dedication: z.string(),
-  /** Full dedication with the date, for the lyrics header. */
-  dedicationDated: z.string(),
+  /** The day it was written, ISO YYYY-MM-DD; the timeline and the lyrics header read it. */
+  written: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   voice: z.string(),
   description: z.string(),
   audioFile: z.string(),
@@ -106,7 +106,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'pencil',
     title: 'Pencil and Pen',
     dedication: 'For Alex, from Dustin',
-    dedicationDated: 'For Alex, from Dustin — March 2, 2026',
+    written: '2026-03-02',
     voice: 'Dustin’s voice',
     description:
       'A boy who only trusted pencil—erasable, safe, fixable—watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.',
@@ -123,7 +123,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'fire',
     title: 'Fire and Water',
     dedication: 'From Dustin, to Alex',
-    dedicationDated: 'From Dustin, to Alex — March 8, 2026',
+    written: '2026-03-08',
     voice: 'Dustin’s voice',
     description:
       'She was fire—bold, roaring, untamed. He was water—patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn’t weakness. Their parents’ guilt was never hers to carry.',
@@ -140,7 +140,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'water',
     title: 'Water and Fire',
     dedication: 'By Dustin, as Alex',
-    dedicationDated: 'By Dustin, as Alex — March 8, 2026',
+    written: '2026-03-08',
     voice: 'Alex’s voice',
     description:
       'The same story through her eyes. Her fire was never theirs to tame. She channels what used to explode into raising her girls, building a home, and letting go of weight that was never hers to hold.',
@@ -157,7 +157,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'memories',
     title: 'Moments to Memories',
     dedication: 'For Alex, from Dustin',
-    dedicationDated: 'For Alex, from Dustin — September 2026',
+    written: '2026-09-28',
     voice: 'Dustin’s voice, then Dustin Mode',
     description:
       'Pencil lines became journals became code. A brother builds a way to keep what time would steal, so his words outlast him. Then what he built speaks to Alex in his voice.',
@@ -172,7 +172,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'baritone',
     title: 'Pencil and Pen (Baritone Version)',
     dedication: 'For Alex, from Dustin',
-    dedicationDated: 'For Alex, from Dustin — September 2026',
+    written: '2026-09-28',
     voice: 'Baritone',
     description:
       'Pencil and Pen, sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
@@ -187,7 +187,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'dust',
     title: 'Dust I Become',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-28',
     voice: 'Dustin’s voice',
     description:
       'Turned into nothing by someone who always had to be right, he stops begging to be treated the same. Ashes to ashes, dust to dust: he leaves, and becomes his own.',
@@ -202,7 +202,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'change',
     title: 'Not Afraid to Change (Extended Hope)',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-28',
     voice: 'Baritone & soprano',
     description:
       'A baritone and a soprano trade verses through sleepless nights, red-eyed anxiety and the fear of relapse, and refuse to sabotage themselves. Hope, extended.',
@@ -217,7 +217,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'hearts',
     title: 'Opposite Hearts',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-28',
     voice: 'Dustin’s voice',
     description:
       'Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. He teaches water, she teaches fire. Opposite hearts, one rising tide.',
@@ -232,7 +232,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'mercy',
     title: 'Mercy I Owe Myself',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-29',
     voice: 'Dustin’s voice',
     description:
       'When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial.',
@@ -247,7 +247,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'raven',
     title: 'Magic of the Raven',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-29',
     voice: 'Dustin’s voice',
     description:
       'Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released, with an Irish chant to the black raven: fiach dubh, iompair mé.',
@@ -262,7 +262,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'espoir',
     title: 'L’espoir est à moi (en français)',
     dedication: 'By Dustin, in French',
-    dedicationDated: 'By Dustin, in French — September 2026',
+    written: '2026-09-29',
     voice: 'En français',
     description:
       'Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights.',
@@ -277,7 +277,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'beautiful',
     title: 'I Make It Beautiful',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-29',
     voice: 'Dustin’s voice',
     description:
       'Earth held the fear, water the guilt, air the grief, fire the shame, and the songs came before the knowing. Seventeen of them speak as one: wound, rewrite, redirect. He takes the dark and makes it beautiful.',
@@ -292,7 +292,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'waves',
     title: 'Waves of Hope',
     dedication: 'By Dustin',
-    dedicationDated: 'By Dustin — September 2026',
+    written: '2026-09-29',
     voice: 'Dustin’s voice',
     description:
       'Hope is not blind, hope is mine: a choice made every morning and every night, through setback, friction and the fight, until every bruise becomes a map for where to go.',
@@ -324,4 +324,14 @@ type Lyrics = ReadonlyArray<ReadonlyArray<string>>
 /** True when two sheets line up stanza for stanza and line for line, like the mirrored pair. */
 export function sameLyricShape(a: Lyrics, b: Lyrics) {
   return a.length === b.length && a.every((s, i) => s.length === b[i].length)
+}
+
+/** "For Alex, from Dustin — March 2, 2026": the dedication with the date, for the lyrics header. */
+export function dedicationLine(t: Track) {
+  const date = new Date(`${t.written}T12:00:00`).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+  return `${t.dedication} — ${date}`
 }

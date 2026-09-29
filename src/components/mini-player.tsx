@@ -1,8 +1,9 @@
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronUp, Pause, Play } from 'lucide-react'
-import { Button, LoaderSpinner } from '@dust-ui/ui'
+import { Button, LoaderSpinner, MobileProgressRing } from '@dust-ui/ui'
 import { TRACKS } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
+import { OverflowMarquee } from '@/components/overflow-marquee'
 
 /**
  * The strip above the nav: cover, title, a progress hairline, play/pause,
@@ -42,41 +43,37 @@ export function MiniPlayer() {
         onClick={open}
         className='min-w-0 flex-1 cursor-pointer text-left'
       >
-        <span className='block truncate font-display text-[15px] leading-tight text-foreground'>
+        <OverflowMarquee className='font-display text-[15px] leading-tight text-foreground'>
           {t.title}
-        </span>
+        </OverflowMarquee>
         <span className='mt-0.5 block truncate text-[10px] tracking-[1px] text-muted-foreground uppercase'>
           {t.voice}
         </span>
-        <span
-          role='progressbar'
-          aria-label='Progress'
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={Math.round(progress * 100)}
-          className='mt-1.5 block h-[3px] overflow-hidden rounded-full bg-foreground/10'
-        >
-          <span
-            className='block h-full rounded-full bg-linear-to-r from-track-bright to-track-deep transition-[width] duration-300 ease-linear'
-            style={{ width: `${progress * 100}%` }}
-          />
-        </span>
       </button>
-      <Button
-        variant='ghost'
-        size='icon'
-        aria-label={playing ? 'Pause' : 'Play'}
-        onClick={() => (playing ? pause() : play(track))}
-        className='size-10 shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] hover:opacity-90'
+      <MobileProgressRing
+        progress={progress}
+        size={46}
+        strokeWidth={2.5}
+        color='var(--track-bright)'
+        trackColor='color-mix(in oklab, var(--foreground) 12%, transparent)'
+        label='Song progress'
       >
-        {status === 'loading' ? (
-          <LoaderSpinner variant='ring' label='Buffering' />
-        ) : playing ? (
-          <Pause className='size-4 fill-current' aria-hidden />
-        ) : (
-          <Play className='ml-0.5 size-4 fill-current' aria-hidden />
-        )}
-      </Button>
+        <Button
+          variant='ghost'
+          size='icon'
+          aria-label={playing ? 'Pause' : 'Play'}
+          onClick={() => (playing ? pause() : play(track))}
+          className='size-9 shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] hover:opacity-90'
+        >
+          {status === 'loading' ? (
+            <LoaderSpinner variant='ring' label='Buffering' />
+          ) : playing ? (
+            <Pause className='size-4 fill-current' aria-hidden />
+          ) : (
+            <Play className='ml-0.5 size-4 fill-current' aria-hidden />
+          )}
+        </Button>
+      </MobileProgressRing>
       <Button
         variant='ghost'
         size='icon'

@@ -20,6 +20,11 @@
   },
   "registries": {
     "@dust-ui": "http://127.0.0.1:4180/r/{name}.json",
-    "@dust-ui-source": "http://127.0.0.1:4180/r/source/{name}.json"
+    "@dust-ui-source": "http://127.0.0.1:4180/r/source/{name}.json",
+    "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json",
+    "@magicui": "https://magicui.design/r/{name}.json",
+    "@originui": "https://originui.com/r/{name}.json",
+    "@motion-primitives": "https://motion-primitives.com/c/{name}.json",
+    "@aceternity": "https://ui.aceternity.com/registry/{name}.json"
   }
 }

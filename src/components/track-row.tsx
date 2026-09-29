@@ -1,9 +1,11 @@
 import { useNavigate } from '@tanstack/react-router'
 import { Check, Play } from 'lucide-react'
-import { MobileListRow, Pill } from '@dust-ui/ui'
+import { MobileListRow } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
-import { selectIsActive, usePlayer } from '@/store/player'
+import { usePlayer } from '@/store/player'
+import { OverflowMarquee } from '@/components/overflow-marquee'
+import { PlayingBars } from '@/components/playing-bars'
 
 export type TrackRowProps = {
   id: TrackId
@@ -16,13 +18,14 @@ export type TrackRowProps = {
 /** One song in a list: thumbnail, title, dedication and voice, length. */
 export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
   const t = TRACKS[id]
-  const active = usePlayer(selectIsActive(id))
+  // 'idle' when another song is loaded; this song's status otherwise.
+  const status = usePlayer((s) => (s.track === id ? s.status : 'idle'))
   const play = usePlayer((s) => s.play)
   const navigate = useNavigate()
   const trailing = selected ? (
     <Check className='size-4 text-primary' aria-hidden />
-  ) : active ? (
-    <Pill>Playing</Pill>
+  ) : status !== 'idle' ? (
+    <PlayingBars active={status === 'playing' || status === 'loading'} />
   ) : (
     <Play className='size-3.5 text-muted-foreground' aria-hidden />
   )
@@ -36,9 +39,9 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
             className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
           />
           <span className='flex min-w-0 flex-col'>
-            <span className='truncate font-display text-[17px] leading-tight text-foreground'>
+            <OverflowMarquee className='font-display text-[17px] leading-tight text-foreground'>
               {t.title}
-            </span>
+            </OverflowMarquee>
             <span className='truncate text-[11px] text-muted-foreground'>
               {t.dedication} · {t.voice}
             </span>
