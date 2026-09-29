@@ -20,6 +20,7 @@ import {
   TRACK_ORDER,
   adjacentTrack,
   comparePartner,
+  dedicationLine,
   type TrackId,
 } from '@/data/tracks'
 import { download, share } from '@/lib/share'
@@ -145,7 +146,7 @@ export function LyricsScreen() {
     sheet && shellRoot
       ? createPortal(
           <SheetAction
-            title={`${t.title} · ${t.dedicationDated}`}
+            title={`${t.title} · ${dedicationLine(t)}`}
             actions={actions}
             onClose={() => setSheet(false)}
           />,
@@ -166,8 +167,8 @@ export function LyricsScreen() {
           }
           subtitle={
             t.lyricsSource === 'transcribed'
-              ? `${t.dedicationDated} · words transcribed by ear`
-              : t.dedicationDated
+              ? `${dedicationLine(t)} · words transcribed by ear`
+              : dedicationLine(t)
           }
           trailing={
             <>

@@ -8,7 +8,12 @@ import {
   Play,
   ScrollText,
 } from 'lucide-react'
-import { DeviceFrame, MobileToastStack, NavBottom } from '@dust-ui/ui'
+import {
+  DeviceFrame,
+  MobileToastStack,
+  NavBottom,
+  ProgressiveBlur,
+} from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
@@ -30,6 +35,19 @@ function shellVars(framed: boolean, mini: boolean): CSSProperties {
   return {
     '--shell-bottom': mini ? `calc(${nav} + ${MINI_PLAYER_H}px)` : nav,
   } as CSSProperties
+}
+
+/** A soft blur where content runs under the nav and the mini player. */
+function ShellFade() {
+  return (
+    <div
+      aria-hidden
+      className='pointer-events-none absolute inset-x-0 bottom-0 z-30'
+      style={{ height: 'calc(var(--shell-bottom) + 12px)' }}
+    >
+      <ProgressiveBlur side='bottom' blur={10} layers={4} />
+    </div>
+  )
 }
 
 /** The mini player, pinned just above the nav inside the positioned root. */
@@ -129,6 +147,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
             className='absolute z-0'
           />
           {children}
+          <ShellFade />
           {mini && <ShellMini framed={false} />}
           <ShellNav fixed />
           <ShellToasts />
@@ -169,6 +188,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
                 className='absolute z-0'
               />
               {children}
+              <ShellFade />
               {mini && <ShellMini framed />}
             </div>
           </DeviceFrame>

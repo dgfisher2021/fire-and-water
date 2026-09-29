@@ -1,9 +1,10 @@
-import { CloudDownload, Download, Heart, Share2 } from 'lucide-react'
+import { CloudDownload, Download, Heart, Music, Share2 } from 'lucide-react'
 import {
   MobileListGroup,
   MobileListRow,
   MobilePageHeader,
-  Pill,
+  MobileTimeline,
+  type MobileTimelineItem,
 } from '@dust-ui/ui'
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { download, share } from '@/lib/share'
@@ -12,6 +13,21 @@ import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 
 const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
+
+// The songs as a story, in the order they were written.
+const STORY: MobileTimelineItem[] = TRACK_ORDER.map((id) => {
+  const t = TRACKS[id]
+  return {
+    id,
+    date: t.written,
+    month: new Date(t.written).toLocaleString('en-US', { month: 'short' }),
+    title: t.title,
+    desc: `${t.dedication} · ${t.voice}`,
+    detail: t.description,
+    color: `var(--${id})`,
+    icon: Music,
+  }
+})
 
 export function MoreScreen() {
   const framed = useFramed()
@@ -82,21 +98,30 @@ export function MoreScreen() {
           />
         </MobileListGroup>
 
-        <MobileListGroup label='About' footer={ALBUM.tagline}>
+        <MobileListGroup label='About'>
           <MobileListRow
             icon={Heart}
             color='var(--fire)'
             label='Written and performed by Dustin'
             value='2026'
           />
-          {TRACK_ORDER.map((id) => (
-            <MobileListRow
-              key={id}
-              label={TRACKS[id].title}
-              value={<Pill color={`var(--${id})`}>{TRACKS[id].voice}</Pill>}
-            />
-          ))}
         </MobileListGroup>
+
+        <section
+          aria-labelledby='story-heading'
+          className='flex flex-col gap-3'
+        >
+          <h3
+            id='story-heading'
+            className='px-1 text-[11px] font-semibold tracking-[1.5px] text-muted-foreground uppercase'
+          >
+            The story so far
+          </h3>
+          <MobileTimeline items={STORY} />
+          <p className='px-1 font-display text-[13px] text-muted-foreground italic'>
+            {ALBUM.tagline}
+          </p>
+        </section>
       </div>
     </Screen>
   )
