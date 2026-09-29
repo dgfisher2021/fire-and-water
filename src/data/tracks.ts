@@ -623,7 +623,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin — September 2026',
     voice: 'Dustin’s voice',
     description:
-      'A pencil profile on sketchbook paper, drawn twice. The mercy he has given everyone else, finally owed to himself. The lyrics for this one are still on their way.',
+      'When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial. The lyrics for this one are still on their way.',
     audioFile: 'mercy-i-owe-myself.mp3',
     duration: 247,
     art: { full: 'assets/mercy.jpg', thumb: 'assets/mercy-512.jpg' },
@@ -639,7 +639,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin — September 2026',
     voice: 'Dustin’s voice',
     description:
-      'A raven made of stars spreads its wings across the full moon. The lyrics for this one are still on their way.',
+      'Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released. The lyrics for this one are still on their way.',
     audioFile: 'magic-of-the-raven.mp3',
     duration: 332,
     art: { full: 'assets/raven.jpg', thumb: 'assets/raven-512.jpg' },
@@ -655,7 +655,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin, in French — September 2026',
     voice: 'En français',
     description:
-      'Hope is mine, sung in French: a man lit from within, eyes closed under a falling light. The lyrics for this one are still on their way.',
+      'Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights. The French lyrics for this one are still on their way.',
     audioFile: 'lespoir-est-a-moi.mp3',
     duration: 320,
     art: { full: 'assets/espoir.jpg', thumb: 'assets/espoir-512.jpg' },

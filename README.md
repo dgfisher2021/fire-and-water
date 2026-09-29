@@ -19,9 +19,9 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 - **Dust I Become** — Ashes to ashes, dust to dust: he leaves, and becomes his own.
 - **Not Afraid to Change (Extended Hope)** — A baritone and a soprano refuse to sabotage themselves.
 - **Opposite Hearts** — Lyrics still on their way.
-- **Mercy I Owe Myself** — The mercy he gave everyone else, owed to himself. Lyrics still on their way.
-- **Magic of the Raven** — A raven made of stars across the full moon. Lyrics still on their way.
-- **L’espoir est à moi (en français)** — Hope is mine, sung in French. Lyrics still on their way.
+- **Mercy I Owe Myself** — Relentless self-reflection, and the one mercy he never gives himself. Lyrics still on their way.
+- **Magic of the Raven** — The shadow returns and the raven is here: a magician between worlds, prayers carried through the midnight air. Lyrics still on their way.
+- **L’espoir est à moi (en français)** — Waves of Hope, sung in French. Lyrics still on their way.
 - **I Make It Beautiful** — The songs came before the knowing; wound, rewrite, redirect, and the dark made beautiful.
 - **Waves of Hope** — Hope is not blind, hope is mine: a choice made every morning and every night.
 
