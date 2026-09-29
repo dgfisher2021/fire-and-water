@@ -98,6 +98,23 @@ New here, to blocks rules: `AmbientImageBackdrop`, `LyricsReader` +
 `share()`/`download()`, `useAudioEngine`, `useMediaSession`, `Screen`,
 `PhoneShell`.
 
+## Songs added the same day
+
+Dustin's Suno drop (`Downloads/suno songs/dgfisher songs.zip`) added five
+songs as a second tracklist group ("More from Dustin"): Moments to
+Memories, Pencil and Pen (Baritone Version), Dust I Become, Not Afraid to
+Change (Extended Hope), Opposite Hearts. Per song: an id, a voice (four
+tokens: bright, deep, glow, ink) and a `:root[data-track]` block in
+`index.css`, cover art extracted from the MP3 (ffmpeg, longest side 1024
+plus a 512 square), lyrics converted from the drop's text files into
+`src/data/lyrics/<id>.json` (blank lines split stanzas; `[Section]` and
+`[voice]` tags stay as label lines; instrument directions dropped).
+Opposite Hearts came without lyrics and shows an empty state until they
+arrive. The trilogy keeps its Google Drive links; the singles have none,
+so the action sheet hides that row. The prep scripts live in the job's
+tmp folder (`songs/lyrics.py`, `songs/prep.sh`); the README's "Adding a
+song" section records the manual steps.
+
 ## Verification recipe
 
 Headless Chromium cannot run in this WSL2 environment. Windows Chrome
