@@ -4,17 +4,19 @@ import { useEffect, type RefObject } from 'react'
  * Reading focus for a scroll pane: the child crossing the middle band of the
  * viewport gets `data-active`, everything else loses it. Style the
  * brightening in CSS (`data-active:text-foreground`). `key` re-arms the
- * observer when the pane's content is replaced.
+ * observer when the pane's content is replaced; `enabled` false leaves the
+ * attribute to whoever else drives it (a time-synced reader).
  */
 export function useScrollFocus(
   root: RefObject<HTMLElement | null>,
   selector: string,
   key: string,
+  enabled = true,
   band = 0.38
 ) {
   useEffect(() => {
     const el = root.current
-    if (!el || !('IntersectionObserver' in window)) return
+    if (!el || !enabled || !('IntersectionObserver' in window)) return
     const margin = `-${Math.round(band * 100)}% 0px`
     const observer = new IntersectionObserver(
       (entries) => {
@@ -31,5 +33,5 @@ export function useScrollFocus(
       observer.observe(n)
     )
     return () => observer.disconnect()
-  }, [root, selector, key, band])
+  }, [root, selector, key, enabled, band])
 }

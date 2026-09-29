@@ -49,6 +49,13 @@ export function LyricsScreen() {
   const duration = usePlayer((s) =>
     isCurrent && s.duration > 0 ? s.duration : t.duration
   )
+  // Sing-along position, a tenth of a second at a time so the lyrics pane
+  // re-renders ten times a second rather than every frame.
+  const singTime = usePlayer((s) =>
+    s.track === track && s.status !== 'idle'
+      ? Math.round(s.currentTime * 10) / 10
+      : undefined
+  )
   const play = usePlayer((s) => s.play)
   const pause = usePlayer((s) => s.pause)
   const seek = usePlayer((s) => s.seek)
@@ -217,8 +224,11 @@ export function LyricsScreen() {
       <div ref={swipeRef} className='min-h-0 flex-1'>
         {t.lyrics.length > 0 ? (
           <LyricsReader
+            key={track}
             stanzas={t.lyrics}
             contentKey={track}
+            time={singTime}
+            timing={t.timing}
             className='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
           />
         ) : (

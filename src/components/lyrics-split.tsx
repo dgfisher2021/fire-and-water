@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
 import { useSyncedScroll } from '@/hooks/use-synced-scroll'
 import { LyricsReader } from '@/components/lyrics-reader'
@@ -10,6 +11,9 @@ export type LyricsColumn = {
   stanzas: ReadonlyArray<ReadonlyArray<string>>
   /** Utility class for the column tag color (text-fire, text-water). */
   tone: string
+  /** Sing-along position for the column whose song is playing. */
+  time?: number
+  timing?: LyricsTiming
 }
 
 export type LyricsSplitProps = {
@@ -40,6 +44,8 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
             ref={pane}
             stanzas={column.stanzas}
             contentKey={column.key}
+            time={column.time}
+            timing={column.timing}
             size='compact'
             className='flex-1'
           >

@@ -29,6 +29,12 @@ export function CompareScreen() {
   const duration = usePlayer((s) =>
     isCurrent && s.duration > 0 ? s.duration : t.duration
   )
+  // Sing-along position for the column whose song is loaded.
+  const singTime = usePlayer((s) =>
+    s.track && PAIR.includes(s.track) && s.status !== 'idle'
+      ? Math.round(s.currentTime * 10) / 10
+      : undefined
+  )
   const play = usePlayer((s) => s.play)
   const pause = usePlayer((s) => s.pause)
   const seek = usePlayer((s) => s.seek)
@@ -39,6 +45,8 @@ export function CompareScreen() {
     voice: TRACKS[id].voice,
     stanzas: TRACKS[id].lyrics,
     tone,
+    time: loaded === id ? singTime : undefined,
+    timing: TRACKS[id].timing,
   })
 
   return (
