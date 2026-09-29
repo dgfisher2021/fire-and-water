@@ -5,5 +5,9 @@
     ["\\bYom per me\\b", "iompair mé"],
     ["\\bYom me\\b", "iompair mé"],
     ["\\bPer me Oh\\b", "iompair mé, ó"]
+  ],
+  "espoir": [
+    ["^.*telle qu.elle croit.*$", ""],
+    ["devient et sauvage", "devient rude et sauvage"]
   ]
 }

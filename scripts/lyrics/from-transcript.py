@@ -43,7 +43,11 @@ def transcript(song_id):
 
 
 def tidy(line):
-    text = " ".join(line).replace(" -", "-").strip().strip(",;")  # "self -reflection"
+    import re
+
+    text = " ".join(line).replace(" -", "-")  # "self -reflection"
+    text = re.sub(r"(\w) '(\w)", "\\1'\\2", text)  # French "L 'espoir", "qu 'elle"
+    text = text.replace("'", "’").strip().strip(",;")
     return text[:1].upper() + text[1:] if text else text
 
 

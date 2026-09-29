@@ -18,10 +18,10 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 - **Pencil and Pen (Baritone Version)** — The first song, sung low and rewritten around a chorus.
 - **Dust I Become** — Ashes to ashes, dust to dust: he leaves, and becomes his own.
 - **Not Afraid to Change (Extended Hope)** — A baritone and a soprano refuse to sabotage themselves.
-- **Opposite Hearts** — Lyrics still on their way.
-- **Mercy I Owe Myself** — Relentless self-reflection, and the one mercy he never gives himself. Lyrics still on their way.
-- **Magic of the Raven** — The shadow returns and the raven is here: a magician between worlds, prayers carried through the midnight air. Lyrics still on their way.
-- **L’espoir est à moi (en français)** — Waves of Hope, sung in French. Lyrics still on their way.
+- **Opposite Hearts** — Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. Words transcribed by ear.
+- **Mercy I Owe Myself** — Relentless self-reflection, and the one mercy he never gives himself. Words transcribed by ear.
+- **Magic of the Raven** — The shadow returns and the raven is here: a magician between worlds, prayers carried through the midnight air, and an Irish chant to the black raven. Words transcribed by ear.
+- **L’espoir est à moi (en français)** — Waves of Hope, sung in French. Words transcribed by ear.
 - **I Make It Beautiful** — The songs came before the knowing; wound, rewrite, redirect, and the dark made beautiful.
 - **Waves of Hope** — Hope is not blind, hope is mine: a choice made every morning and every night.
 

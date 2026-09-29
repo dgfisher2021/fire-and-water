@@ -220,7 +220,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin — September 2026',
     voice: 'Dustin’s voice',
     description:
-      'Two hearts pulling opposite ways, one song. The lyrics for this one are still on their way.',
+      'Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. He teaches water, she teaches fire. Opposite hearts, one rising tide.',
     audioFile: 'opposite-hearts.mp3',
     duration: 342,
     art: { full: 'assets/hearts.jpg', thumb: 'assets/hearts-512.jpg' },
@@ -235,7 +235,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin — September 2026',
     voice: 'Dustin’s voice',
     description:
-      'When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial. The lyrics for this one are still on their way.',
+      'When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial.',
     audioFile: 'mercy-i-owe-myself.mp3',
     duration: 247,
     art: { full: 'assets/mercy.jpg', thumb: 'assets/mercy-512.jpg' },
@@ -250,7 +250,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin — September 2026',
     voice: 'Dustin’s voice',
     description:
-      'Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released. The lyrics for this one are still on their way.',
+      'Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released, with an Irish chant to the black raven: fiach dubh, iompair mé.',
     audioFile: 'magic-of-the-raven.mp3',
     duration: 332,
     art: { full: 'assets/raven.jpg', thumb: 'assets/raven-512.jpg' },
@@ -265,7 +265,7 @@ export const TRACKS: Record<TrackId, Track> = {
     dedicationDated: 'By Dustin, in French — September 2026',
     voice: 'En français',
     description:
-      'Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights. The French lyrics for this one are still on their way.',
+      'Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights.',
     audioFile: 'lespoir-est-a-moi.mp3',
     duration: 320,
     art: { full: 'assets/espoir.jpg', thumb: 'assets/espoir-512.jpg' },
