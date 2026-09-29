@@ -1,9 +1,14 @@
 import { z } from 'zod'
 import baritoneLyrics from './lyrics/baritone.json'
+import beautifulLyrics from './lyrics/beautiful.json'
 import changeLyrics from './lyrics/change.json'
 import dustLyrics from './lyrics/dust.json'
+import espoirLyrics from './lyrics/espoir.json'
 import heartsLyrics from './lyrics/hearts.json'
 import memoriesLyrics from './lyrics/memories.json'
+import mercyLyrics from './lyrics/mercy.json'
+import ravenLyrics from './lyrics/raven.json'
+import wavesLyrics from './lyrics/waves.json'
 import timingData from './timing.json'
 
 export const trackIdSchema = z.enum([
@@ -15,6 +20,11 @@ export const trackIdSchema = z.enum([
   'dust',
   'change',
   'hearts',
+  'mercy',
+  'raven',
+  'espoir',
+  'beautiful',
+  'waves',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -64,6 +74,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'dust',
   'change',
   'hearts',
+  'mercy',
+  'raven',
+  'espoir',
+  'beautiful',
+  'waves',
 ]
 
 export const ALBUM = {
@@ -600,6 +615,86 @@ export const TRACKS: Record<TrackId, Track> = {
     collection: 'single',
     timing: timingFor('hearts'),
     lyrics: heartsLyrics,
+  }),
+  mercy: trackSchema.parse({
+    id: 'mercy',
+    title: 'Mercy I Owe Myself',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'A pencil profile on sketchbook paper, drawn twice. The mercy he has given everyone else, finally owed to himself. The lyrics for this one are still on their way.',
+    audioFile: 'mercy-i-owe-myself.mp3',
+    duration: 247,
+    art: { full: 'assets/mercy.jpg', thumb: 'assets/mercy-512.jpg' },
+    themeColor: '#17120d',
+    collection: 'single',
+    timing: timingFor('mercy'),
+    lyrics: mercyLyrics,
+  }),
+  raven: trackSchema.parse({
+    id: 'raven',
+    title: 'Magic of the Raven',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'A raven made of stars spreads its wings across the full moon. The lyrics for this one are still on their way.',
+    audioFile: 'magic-of-the-raven.mp3',
+    duration: 332,
+    art: { full: 'assets/raven.jpg', thumb: 'assets/raven-512.jpg' },
+    themeColor: '#0a0d1e',
+    collection: 'single',
+    timing: timingFor('raven'),
+    lyrics: ravenLyrics,
+  }),
+  espoir: trackSchema.parse({
+    id: 'espoir',
+    title: 'L’espoir est à moi (en français)',
+    dedication: 'By Dustin, in French',
+    dedicationDated: 'By Dustin, in French — September 2026',
+    voice: 'En français',
+    description:
+      'Hope is mine, sung in French: a man lit from within, eyes closed under a falling light. The lyrics for this one are still on their way.',
+    audioFile: 'lespoir-est-a-moi.mp3',
+    duration: 320,
+    art: { full: 'assets/espoir.jpg', thumb: 'assets/espoir-512.jpg' },
+    themeColor: '#070c1a',
+    collection: 'single',
+    timing: timingFor('espoir'),
+    lyrics: espoirLyrics,
+  }),
+  beautiful: trackSchema.parse({
+    id: 'beautiful',
+    title: 'I Make It Beautiful',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'Earth held the fear, water the guilt, air the grief, fire the shame, and the songs came before the knowing. Seventeen of them speak as one: wound, rewrite, redirect. He takes the dark and makes it beautiful.',
+    audioFile: 'i-make-it-beautiful.mp3',
+    duration: 240,
+    art: { full: 'assets/beautiful.jpg', thumb: 'assets/beautiful-512.jpg' },
+    themeColor: '#100c08',
+    collection: 'single',
+    timing: timingFor('beautiful'),
+    lyrics: beautifulLyrics,
+  }),
+  waves: trackSchema.parse({
+    id: 'waves',
+    title: 'Waves of Hope',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'Hope is not blind, hope is mine: a choice made every morning and every night, through setback, friction and the fight, until every bruise becomes a map for where to go.',
+    audioFile: 'waves-of-hope.mp3',
+    duration: 317,
+    art: { full: 'assets/waves.jpg', thumb: 'assets/waves-512.jpg' },
+    themeColor: '#0e0d0a',
+    collection: 'single',
+    timing: timingFor('waves'),
+    lyrics: wavesLyrics,
   }),
 }
 

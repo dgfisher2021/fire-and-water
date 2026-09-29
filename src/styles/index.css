@@ -102,6 +102,26 @@
   --hearts-deep: oklch(0.45 0.18 10);
   --hearts-glow: oklch(0.65 0.2 10 / 45%);
   --hearts-ink: oklch(0.22 0.05 10);
+  --mercy: oklch(0.8 0.06 70); /* sketchbook paper and sepia */
+  --mercy-deep: oklch(0.42 0.06 55);
+  --mercy-glow: oklch(0.75 0.07 70 / 40%);
+  --mercy-ink: oklch(0.24 0.04 60);
+  --raven: oklch(0.82 0.06 260); /* moonlight over indigo */
+  --raven-deep: oklch(0.3 0.12 270);
+  --raven-glow: oklch(0.6 0.16 270 / 45%);
+  --raven-ink: oklch(0.2 0.05 270);
+  --espoir: oklch(0.8 0.12 240); /* electric blue */
+  --espoir-deep: oklch(0.38 0.15 255);
+  --espoir-glow: oklch(0.65 0.2 245 / 45%);
+  --espoir-ink: oklch(0.2 0.05 250);
+  --beautiful: oklch(0.83 0.15 90); /* ember gold on black */
+  --beautiful-deep: oklch(0.42 0.11 75);
+  --beautiful-glow: oklch(0.72 0.16 85 / 45%);
+  --beautiful-ink: oklch(0.24 0.06 80);
+  --waves: oklch(0.78 0.07 105); /* olive and umber */
+  --waves-deep: oklch(0.36 0.06 110);
+  --waves-glow: oklch(0.66 0.09 105 / 40%);
+  --waves-ink: oklch(0.22 0.04 105);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -230,6 +250,36 @@
   --track-deep: var(--hearts-deep);
   --track-glow: var(--hearts-glow);
   --track-ink: var(--hearts-ink);
+}
+:root[data-track='mercy'] {
+  --track-bright: var(--mercy);
+  --track-deep: var(--mercy-deep);
+  --track-glow: var(--mercy-glow);
+  --track-ink: var(--mercy-ink);
+}
+:root[data-track='raven'] {
+  --track-bright: var(--raven);
+  --track-deep: var(--raven-deep);
+  --track-glow: var(--raven-glow);
+  --track-ink: var(--raven-ink);
+}
+:root[data-track='espoir'] {
+  --track-bright: var(--espoir);
+  --track-deep: var(--espoir-deep);
+  --track-glow: var(--espoir-glow);
+  --track-ink: var(--espoir-ink);
+}
+:root[data-track='beautiful'] {
+  --track-bright: var(--beautiful);
+  --track-deep: var(--beautiful-deep);
+  --track-glow: var(--beautiful-glow);
+  --track-ink: var(--beautiful-ink);
+}
+:root[data-track='waves'] {
+  --track-bright: var(--waves);
+  --track-deep: var(--waves-deep);
+  --track-glow: var(--waves-glow);
+  --track-ink: var(--waves-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

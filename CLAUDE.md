@@ -90,8 +90,10 @@ Pages is re-enabled.
 ## Deploy
 
 GitHub Pages from `main` via `.github/workflows/deploy.yml`
-(`VITE_BASE_PATH=/fire-and-water/`, `404.html` copy for SPA deep links).
-Needs the repo secret `DUST_UI_READ_TOKEN` (classic PAT, `read:packages`).
+(`VITE_BASE_PATH=/fire-and-water/`, `404.html` copy for SPA deep links);
+the repo's Pages source is "GitHub Actions". Installing `@dust-ui/*` uses
+the repo secret `DUST_UI_READ_TOKEN` (classic PAT, `read:packages`) or,
+once the packages grant this repo Actions access, the workflow token.
 
 ## Docs
 

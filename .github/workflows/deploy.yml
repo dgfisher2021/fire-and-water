@@ -35,11 +35,13 @@ jobs:
 
       # @dust-ui/* installs from GitHub Packages (private). The committed
       # .npmrc carries the scope->registry mapping; the runner supplies auth
-      # here, exactly like a developer's user-level ~/.npmrc. Requires the
-      # repo secret DUST_UI_READ_TOKEN: a classic PAT with read:packages.
+      # here, exactly like a developer's user-level ~/.npmrc. Uses the repo
+      # secret DUST_UI_READ_TOKEN (a classic PAT with read:packages) when
+      # set, else the workflow token, which works once the @dust-ui packages
+      # grant this repository access (package settings, "Manage Actions access").
       - name: Authenticate to GitHub Packages
         env:
-          DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN }}
+          DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN || github.token }}
         run: echo "//npm.pkg.github.com/:_authToken=${DUST_UI_READ_TOKEN}" >> ~/.npmrc
 
       - name: Install

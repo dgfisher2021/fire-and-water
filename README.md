@@ -2,7 +2,7 @@
 
 **Live site:** [https://dgfisher2021.github.io/fire-and-water/](https://dgfisher2021.github.io/fire-and-water/)
 
-A phone app for Dustin's songs — the Fire & Water trilogy about a brother and a sister, and the songs that came after. Built on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit; on a desktop it runs inside a phone mockup floating over the artwork.
+A phone app for Dustin's songs — the Fire & Water trilogy about a brother and a sister, and the ten songs that came after. Each song has its artwork, its lyrics and a sing-along mode that lights the words as they are sung. Built with React on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit and deployed to GitHub Pages on every push to `main`; on a desktop it runs inside a phone mockup floating over the artwork, on a phone it installs as an app.
 
 ## Songs
 
@@ -19,6 +19,11 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 - **Dust I Become** — Ashes to ashes, dust to dust: he leaves, and becomes his own.
 - **Not Afraid to Change (Extended Hope)** — A baritone and a soprano refuse to sabotage themselves.
 - **Opposite Hearts** — Lyrics still on their way.
+- **Mercy I Owe Myself** — The mercy he gave everyone else, owed to himself. Lyrics still on their way.
+- **Magic of the Raven** — A raven made of stars across the full moon. Lyrics still on their way.
+- **L’espoir est à moi (en français)** — Hope is mine, sung in French. Lyrics still on their way.
+- **I Make It Beautiful** — The songs came before the knowing; wound, rewrite, redirect, and the dark made beautiful.
+- **Waves of Hope** — Hope is not blind, hope is mine: a choice made every morning and every night.
 
 Each song has its own accent color that tints the whole app while it is showing.
 
@@ -102,4 +107,6 @@ pnpm lint
 
 ## Deploying
 
-GitHub Pages deploys from `main` via `.github/workflows/deploy.yml`. The workflow needs the repo secret `DUST_UI_READ_TOKEN` to install `@dust-ui/*`.
+Every push to `main` runs `.github/workflows/deploy.yml`: lint, build with `VITE_BASE_PATH=/fire-and-water/`, copy `index.html` to `404.html` for deep links, then publish to GitHub Pages through the Actions deployment (the repo's Pages source is "GitHub Actions"). Pull requests run the build only. The same workflow can be started by hand from the Actions tab.
+
+Installing `@dust-ui/*` from GitHub Packages needs a token with `read:packages`. Either add the repo secret `DUST_UI_READ_TOKEN` (a classic PAT), or grant this repository access to the `@dust-ui` packages in their package settings ("Manage Actions access"), after which the workflow's own token is enough.
