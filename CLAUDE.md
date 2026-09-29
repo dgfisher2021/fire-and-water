@@ -39,9 +39,9 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 - `src/data/tracks.ts` zod-validated track data and lyrics.
 - `src/components/` app compositions built to Dust UI blocks rules;
   `src/components/ui/` holds Dust UI components vendored through the
-  `@dust-ui-source` door: `mobile-media-player`, `motion-carousel`,
-  `motion-tilt` are forks (deltas in the dust-ui spec); `grain-overlay`
-  and `nav-bottom` are simply newer than the published packages.
+  `@dust-ui-source` door as forks: `mobile-media-player`, `motion-carousel`,
+  `motion-tilt` (deltas in the dust-ui spec). Everything else imports
+  from the published packages (`@dust-ui/ui` 0.10, `tokens` 0.3).
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
   the voice tokens (`--pencil`, `--fire`, `--water`) and the per-track

@@ -8,15 +8,13 @@ import {
   Play,
   ScrollText,
 } from 'lucide-react'
-import { DeviceFrame, MobileToastStack } from '@dust-ui/ui'
+import { DeviceFrame, MobileToastStack, NavBottom } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { AmbientImageBackdrop } from '@/components/ambient-image-backdrop'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
-// nav-bottom is vendored: the published @dust-ui/ui predates href tabs.
-import { NavBottom } from '@/components/ui/nav-bottom'
 
 const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 

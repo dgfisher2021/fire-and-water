@@ -14,9 +14,9 @@
     "format:check": "prettier --check src"
   },
   "dependencies": {
-    "@dust-ui/motion": "^0.3.0",
-    "@dust-ui/tokens": "^0.2.0",
-    "@dust-ui/ui": "^0.9.0",
+    "@dust-ui/motion": "^0.4.0",
+    "@dust-ui/tokens": "^0.3.0",
+    "@dust-ui/ui": "^0.10.0",
     "@fontsource-variable/outfit": "^5.3.0",
     "@fontsource/cormorant-garamond": "^5.3.0",
     "@tanstack/react-router": "^1.170.40",

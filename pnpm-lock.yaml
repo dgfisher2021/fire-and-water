@@ -13,14 +13,14 @@ importers:
   .:
     dependencies:
       '@dust-ui/motion':
-        specifier: ^0.3.0
-        version: 0.3.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: ^0.4.0
+        version: 0.4.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@dust-ui/tokens':
-        specifier: ^0.2.0
-        version: 0.2.0
+        specifier: ^0.3.0
+        version: 0.3.0
       '@dust-ui/ui':
-        specifier: ^0.9.0
-        version: 0.9.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: ^0.10.0
+        version: 0.10.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@fontsource-variable/outfit':
         specifier: ^5.3.0
         version: 5.3.0
@@ -670,17 +670,17 @@ packages:
   '@date-fns/tz@1.5.0':
     resolution: {integrity: sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg==}
 
-  '@dust-ui/motion@0.3.0':
-    resolution: {integrity: sha512-F0LItKW6rI96V8Qdt0OcGdGrhK2+WgtyFIC6uClp9B5G3R0SdqVDi13bvuQgc5/eVNpf4l1CcKxkDg1lvO80qg==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.3.0/ac60bd98c8dd905460f3831a3b2dd97a07546822}
+  '@dust-ui/motion@0.4.0':
+    resolution: {integrity: sha512-ZJoZOYeis7IUk5g0flR7YFUHZpr2KQ7NAoiKYJIWtVSaOpZOKuoKMhhegEdQMkqiujVOI8yD5YFkH4VAqYCXCA==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.4.0/f4eb7ccf1e266e9e57190a5aa501995805c745fe}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/tokens@0.2.0':
-    resolution: {integrity: sha512-EQ2mp4rAINvqtJTpn9edMNiCn3gjhCZv/VOIXQZE+eDhbfwr16FVwABEZqUmVH4ddcoStM5LaPXUztmhUmnsbw==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.2.0/7f48e867bb6fd1afdbcfe19937c2b19ca8b186ac}
+  '@dust-ui/tokens@0.3.0':
+    resolution: {integrity: sha512-e/14b1lfix6xK0XYt1U+owJ3jb0ZMB0tobNDrugMiB+7+8yaXNqY81w0vccHi6LKSPMHCzQv5PhYF5e+W4qSow==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.3.0/a9534fcb44859100e1e54f63926dea82e51d07e6}
 
-  '@dust-ui/ui@0.9.0':
-    resolution: {integrity: sha512-Eq/BpQ2nBFOomp3TRBPwUKkrLrh0T21A7SgVuPOr7LKdjPpTdOocOTIP/jzQl96sSp/WHfwlBxvA9Lo2mZ2j/Q==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.9.0/34b535618e5c34840f15c654e0b45b036ff1f67b}
+  '@dust-ui/ui@0.10.0':
+    resolution: {integrity: sha512-zpKV13Ih6r1fcxFsc1Q7hxo4dOAm1vWfnHeDU2pUqQ7B3831rSbEOFPmGCAMUhE5aq7TrG2TkYiWcYhHf2iRwA==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.10.0/f39f6a55b172736e70f7462b07c3d5196ac1fb6a}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
@@ -4399,7 +4399,7 @@ snapshots:
 
   '@date-fns/tz@1.5.0': {}
 
-  '@dust-ui/motion@0.3.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dust-ui/motion@0.4.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       clsx: 2.1.1
       lucide-react: 1.48.0(react@19.2.5)
@@ -4410,9 +4410,9 @@ snapshots:
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
 
-  '@dust-ui/tokens@0.2.0': {}
+  '@dust-ui/tokens@0.3.0': {}
 
-  '@dust-ui/ui@0.9.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dust-ui/ui@0.10.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@base-ui/react': 1.8.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@hookform/resolvers': 5.9.1(ajv@8.20.0)(react-hook-form@7.89.0(@types/react@19.3.0)(react@19.2.5))(zod@4.4.3)

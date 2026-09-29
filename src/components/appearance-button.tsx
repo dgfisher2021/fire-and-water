@@ -15,6 +15,7 @@ const THEMES: ThemeOption[] = [
   { value: 'cool-slate', label: 'Cool slate' },
   { value: 'clean-slate', label: 'Clean slate' },
   { value: 'dark-teal', label: 'Dark teal' },
+  { value: 'portal', label: 'Portal' },
 ]
 
 /**

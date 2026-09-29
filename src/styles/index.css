@@ -7,7 +7,7 @@
 @import '@dust-ui/tokens/themes/clean-slate.css';
 @import '@dust-ui/tokens/themes/cool-slate.css';
 @import '@dust-ui/tokens/themes/dark-teal.css';
-/* portal.css is newer than the published @dust-ui/tokens; add it on the next release. */
+@import '@dust-ui/tokens/themes/portal.css';
 
 /* Self-hosted brand faces so typography survives offline (PWA). */
 @import '@fontsource-variable/outfit';
