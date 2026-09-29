@@ -36,7 +36,11 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   lock-screen prev/next go through `requestTrack`, which the lyrics screen
   follows. Subscribe with selectors: `currentTime` updates every frame.
 - `src/store/toasts.ts` in-frame toasts for `MobileToastStack`.
-- `src/data/tracks.ts` zod-validated track data and lyrics.
+- `src/data/tracks.ts` zod-validated track data and lyrics;
+  `src/data/timing.json` the sing-along start times (per stanza and line)
+  that `LyricsReader` lights lines by (`lib/read-along.ts`,
+  `hooks/use-follow-scroll.ts`). Generated from Whisper word timestamps
+  aligned to the lyrics; missing songs read by scroll.
 - `src/components/` app compositions built to Dust UI blocks rules;
   `src/components/ui/` holds Dust UI components vendored through the
   `@dust-ui-source` door as forks: `mobile-media-player`, `motion-carousel`,

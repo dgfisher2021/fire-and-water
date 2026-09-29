@@ -29,7 +29,8 @@ export function CompareScreen() {
   const duration = usePlayer((s) =>
     isCurrent && s.duration > 0 ? s.duration : t.duration
   )
-  // Sing-along position for the column whose song is loaded.
+  // Sing-along position while either of the pair plays. The verses mirror
+  // each other, so both columns follow the loaded song's timing.
   const singTime = usePlayer((s) =>
     s.track && PAIR.includes(s.track) && s.status !== 'idle'
       ? Math.round(s.currentTime * 10) / 10
@@ -45,8 +46,8 @@ export function CompareScreen() {
     voice: TRACKS[id].voice,
     stanzas: TRACKS[id].lyrics,
     tone,
-    time: loaded === id ? singTime : undefined,
-    timing: TRACKS[id].timing,
+    time: singTime,
+    timing: t.timing,
   })
 
   return (
