@@ -164,7 +164,11 @@ export function LyricsScreen() {
               {t.title}
             </span>
           }
-          subtitle={t.dedicationDated}
+          subtitle={
+            t.lyricsSource === 'transcribed'
+              ? `${t.dedicationDated} · words transcribed by ear`
+              : t.dedicationDated
+          }
           trailing={
             <>
               <div className='w-[124px]'>

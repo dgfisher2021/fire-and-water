@@ -1,8 +1,7 @@
-"""The songs as tracks.ts declares them: id, audio file, lyrics (stanzas of
-lines). Inline lyric arrays are read from tracks.ts itself, the longer ones
-from src/data/lyrics/<id>.json, so this stays the single source of truth."""
+"""The songs as tracks.ts declares them: id and audio file, plus the lyric
+sheet from src/data/lyrics/<id>.json (stanzas of lines, in either the plain
+form or `{ source, stanzas }`), so the app's data stays the single source."""
 
-import ast
 import json
 import pathlib
 import re
@@ -28,10 +27,14 @@ def load_songs():
         end = heads[k + 1].start() if k + 1 < len(heads) else len(src)
         block = src[head.start() : end]
         audio = re.search(r"audioFile: '([^']+)'", block).group(1)
-        inline = re.search(r"lyrics: (\[\n.*?\n    \]),\n", block, re.S)
-        if inline:
-            lyrics = ast.literal_eval(inline.group(1))
-        else:
-            lyrics = json.loads((LYRICS_DIR / f"{song_id}.json").read_text(encoding="utf-8"))
-        songs[song_id] = {"audio": PUBLIC / audio, "lyrics": lyrics}
+        songs[song_id] = {"audio": PUBLIC / audio, "lyrics": load_sheet(song_id)}
     return songs
+
+
+def load_sheet(song_id):
+    """Stanzas from src/data/lyrics/<id>.json, or [] when the song has no sheet."""
+    path = LYRICS_DIR / f"{song_id}.json"
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return data if isinstance(data, list) else data.get("stanzas", [])

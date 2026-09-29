@@ -76,7 +76,10 @@ export function CompareScreen() {
     return {
       key: id,
       tag: shortTitle(id),
-      voice: TRACKS[id].voice,
+      voice:
+        TRACKS[id].lyricsSource === 'transcribed'
+          ? `${TRACKS[id].voice} · transcribed`
+          : TRACKS[id].voice,
       stanzas: TRACKS[id].lyrics,
       color: `var(--${id}-deep)`,
       colorDark: `var(--${id})`,
