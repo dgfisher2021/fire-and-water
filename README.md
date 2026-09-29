@@ -87,8 +87,7 @@ React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`,
 index.html              App shell, meta, pre-paint theme, legacy #hash redirect
 src/routes/             / album · /lyrics/$track now playing · /compare · /more (stubs)
 src/screens/            The four screens
-src/components/         Shell, screen, artwork stage, lyrics reader and split, play button
-src/components/ui/      Dust UI components vendored via @dust-ui-source
+src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker
 src/store/              Player state (one <audio> element) and toasts
 src/data/tracks.ts      Song data; src/data/lyrics/*.json the longer lyrics
 src/styles/index.css    Token contract, presets, brand default, per-song voices

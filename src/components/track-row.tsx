@@ -1,6 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { Check, Play } from 'lucide-react'
-import { MobileListRow } from '@dust-ui/ui'
+import { MobileMediaRow } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { usePlayer } from '@/store/player'
@@ -15,41 +14,36 @@ export type TrackRowProps = {
   onSelect?: (id: TrackId) => void
 }
 
-/** One song in a list: thumbnail, title, dedication and voice, length. */
+/** One song in a list: cover, title, dedication and voice, length, and the playing bars while it plays. */
 export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
   const t = TRACKS[id]
   // 'idle' when another song is loaded; this song's status otherwise.
   const status = usePlayer((s) => (s.track === id ? s.status : 'idle'))
   const play = usePlayer((s) => s.play)
   const navigate = useNavigate()
-  const trailing = selected ? (
-    <Check className='size-4 text-primary' aria-hidden />
-  ) : status !== 'idle' ? (
-    <PlayingBars active={status === 'playing' || status === 'loading'} />
-  ) : (
-    <Play className='size-3.5 text-muted-foreground' aria-hidden />
-  )
+  const active = !selected && status !== 'idle'
   return (
-    <MobileListRow
-      label={
-        <span className='flex items-center gap-3 py-0.5'>
-          <img
-            src={t.art.thumb}
-            alt=''
-            className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-          />
-          <span className='flex min-w-0 flex-col'>
-            <OverflowMarquee className='font-display text-[17px] leading-tight text-foreground'>
-              {t.title}
-            </OverflowMarquee>
-            <span className='truncate text-[11px] text-muted-foreground'>
-              {t.dedication} · {t.voice}
-            </span>
-          </span>
-        </span>
+    <MobileMediaRow
+      leading={
+        <img
+          src={t.art.thumb}
+          alt=''
+          className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+        />
       }
+      title={
+        <OverflowMarquee className='font-display text-[17px] leading-tight text-foreground'>
+          {t.title}
+        </OverflowMarquee>
+      }
+      subtitle={`${t.dedication} · ${t.voice}`}
       value={formatTime(t.duration)}
-      trailing={trailing}
+      state={selected ? 'selected' : active ? 'active' : 'idle'}
+      trailing={
+        active ? (
+          <PlayingBars active={status === 'playing' || status === 'loading'} />
+        ) : undefined
+      }
       onClick={() => {
         if (onSelect) {
           onSelect(id)
