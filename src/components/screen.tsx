@@ -26,7 +26,7 @@ export function Screen({
     >
       <div className={cn('shrink-0', !framed && 'pt-safe')}>{header}</div>
       {scroll ? (
-        <div className='no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(96px+env(safe-area-inset-bottom))]'>
+        <div className='no-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[calc(var(--shell-bottom)+36px)] transition-[padding] duration-300'>
           {children}
         </div>
       ) : (

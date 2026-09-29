@@ -19,6 +19,8 @@ export type LyricsReaderProps = {
    */
   time?: number
   timing?: LyricsTiming
+  /** With `timing`, tapping a sung line jumps the song to it. */
+  onSeekLine?: (seconds: number) => void
   /** `default` is the single full-width reader; `compact` fits a split column. */
   size?: 'default' | 'compact'
   /** Rendered above the stanzas inside the scroll pane (sticky tags). */
@@ -40,6 +42,7 @@ export function LyricsReader({
   contentKey,
   time,
   timing,
+  onSeekLine,
   size = 'default',
   children,
   ref,
@@ -49,6 +52,11 @@ export function LyricsReader({
   const pane = ref ?? own
   const singing = time !== undefined && timing !== undefined
   const position = singing ? activePosition(timing, time) : null
+  const seekTo =
+    onSeekLine && timing
+      ? (stanza: number, line: number) =>
+          onSeekLine(timing.lines[stanza]?.[line] ?? timing.stanzas[stanza])
+      : undefined
 
   useScrollFocus(pane, STANZA, contentKey, !singing)
   const { detached, resume } = useFollowScroll(
@@ -113,7 +121,24 @@ export function LyricsReader({
                 key={j}
                 data-slot='lyrics-line'
                 data-state={lineState(i, j)}
-                className='block transition-[color,text-shadow] duration-200 data-[state=current]:text-foreground data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none'
+                role={seekTo ? 'button' : undefined}
+                tabIndex={seekTo ? 0 : undefined}
+                onClick={seekTo ? () => seekTo(i, j) : undefined}
+                onKeyDown={
+                  seekTo
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          seekTo(i, j)
+                        }
+                      }
+                    : undefined
+                }
+                className={cn(
+                  'block transition-[color,text-shadow] duration-200 data-[state=current]:text-foreground data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
+                  seekTo &&
+                    'cursor-pointer rounded-md hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
+                )}
               >
                 {line}
               </span>

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
 import { useRouterState } from '@tanstack/react-router'
 import {
   Columns2,
@@ -12,11 +12,37 @@ import { DeviceFrame, MobileToastStack, NavBottom } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
+import { MINI_PLAYER_H, useMiniPlayerVisible } from '@/hooks/use-mini-player'
 import { AmbientImageBackdrop } from '@/components/ambient-image-backdrop'
+import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
 
 const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
+
+// NavBottom is 60px plus its safe area: the hardware inset on phones, 18px
+// in the frame. Screens read `--shell-bottom` to clear the bar and the strip.
+const NAV_H_PHONE = 'calc(60px + env(safe-area-inset-bottom))'
+const NAV_H_FRAME = '78px'
+
+function shellVars(framed: boolean, mini: boolean): CSSProperties {
+  const nav = framed ? NAV_H_FRAME : NAV_H_PHONE
+  return {
+    '--shell-bottom': mini ? `calc(${nav} + ${MINI_PLAYER_H}px)` : nav,
+  } as CSSProperties
+}
+
+/** The mini player, pinned just above the nav inside the positioned root. */
+function ShellMini({ framed }: { framed: boolean }) {
+  return (
+    <div
+      className='absolute inset-x-0 z-40 px-3'
+      style={{ bottom: `calc(${framed ? NAV_H_FRAME : NAV_H_PHONE} + 6px)` }}
+    >
+      <MiniPlayer />
+    </div>
+  )
+}
 
 function ShellNav({ fixed }: { fixed: boolean }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
@@ -86,6 +112,7 @@ export type PhoneShellProps = {
  */
 export function PhoneShell({ theme, children }: PhoneShellProps) {
   const framed = useFramed()
+  const mini = useMiniPlayerVisible()
   const [root, setRoot] = useState<HTMLElement | null>(null)
 
   if (!framed) {
@@ -94,6 +121,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
         <div
           ref={setRoot}
           className='relative flex h-dvh flex-col overflow-hidden'
+          style={shellVars(false, mini)}
         >
           <AmbientImageBackdrop
             images={BACKDROPS}
@@ -101,6 +129,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
             className='absolute z-0'
           />
           {children}
+          {mini && <ShellMini framed={false} />}
           <ShellNav fixed />
           <ShellToasts />
         </div>
@@ -129,13 +158,18 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
               </>
             }
           >
-            <div ref={setRoot} className='absolute inset-0 flex flex-col'>
+            <div
+              ref={setRoot}
+              className='absolute inset-0 flex flex-col'
+              style={shellVars(true, mini)}
+            >
               <AmbientImageBackdrop
                 images={BACKDROPS}
                 activeId={theme}
                 className='absolute z-0'
               />
               {children}
+              {mini && <ShellMini framed />}
             </div>
           </DeviceFrame>
         </div>

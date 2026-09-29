@@ -14,12 +14,13 @@ pnpm format     # prettier on src/
 
 ## What this is
 
-A phone app for three songs, built on the Dust UI mobile kit. Four screens
-behind a `NavBottom` whose center action plays and pauses: Album (artwork
-stage + `MobileListGroup` tracklist), Now Playing (`MobileMediaPlayer` card
-above a reading-focus lyrics pane), Compare (the two mirrored songs in
-synced columns with a transport bar) and More (`MobileListGroup` rows for
-appearance, downloads, Drive links, sharing, credits). React 19 +
+A phone app for Dustin's songs, built on the Dust UI mobile kit. Four
+screens behind a `NavBottom` whose center action plays and pauses, with a
+`MiniPlayer` above the bar once a song plays: Album (artwork stage +
+`MobileListGroup` tracklist), Now Playing (`MobileMediaPlayer` card above
+a sing-along lyrics pane), Compare (any two songs in synced columns, picked
+through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
+rows for appearance, downloads, Drive links, sharing, credits). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens` from GitHub Packages.
 

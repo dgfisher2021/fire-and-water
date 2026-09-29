@@ -1,9 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
-import { Ellipsis } from 'lucide-react'
+import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
 import {
   Button,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
   MobilePageHeader,
   SegmentedControl,
   SheetAction,
@@ -11,10 +16,10 @@ import {
 } from '@dust-ui/ui'
 import {
   ALBUM,
-  SPLIT_PAIR,
   TRACKS,
   TRACK_ORDER,
   adjacentTrack,
+  comparePartner,
   type TrackId,
 } from '@/data/tracks'
 import { download, share } from '@/lib/share'
@@ -24,9 +29,6 @@ import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
 import { MobileMediaPlayer } from '@/components/ui/mobile-media-player'
-
-const canSplit = (track: TrackId) =>
-  track === SPLIT_PAIR.left || track === SPLIT_PAIR.right
 
 const VIEW_OPTIONS = [
   { value: 'single', label: 'Lyrics' },
@@ -165,21 +167,23 @@ export function LyricsScreen() {
           subtitle={t.dedicationDated}
           trailing={
             <>
-              {canSplit(track) && (
-                <div className='w-[124px]'>
-                  <SegmentedControl
-                    options={VIEW_OPTIONS}
-                    value='single'
-                    onChange={(v) => {
-                      if (v === 'split') void navigate({ to: '/compare' })
-                    }}
-                    height={30}
-                    trackColor='var(--card)'
-                    thumbColor='var(--accent)'
-                    activeColor='var(--primary)'
-                  />
-                </div>
-              )}
+              <div className='w-[124px]'>
+                <SegmentedControl
+                  options={VIEW_OPTIONS}
+                  value='single'
+                  onChange={(v) => {
+                    if (v === 'split')
+                      void navigate({
+                        to: '/compare',
+                        search: { left: track, right: comparePartner(track) },
+                      })
+                  }}
+                  height={30}
+                  trackColor='var(--card)'
+                  thumbColor='var(--accent)'
+                  activeColor='var(--primary)'
+                />
+              </div>
               <Button
                 variant='ghost'
                 size='icon'
@@ -229,18 +233,30 @@ export function LyricsScreen() {
             contentKey={track}
             time={singTime}
             timing={t.timing}
+            onSeekLine={(seconds) => {
+              if (!isCurrent) play(track)
+              seek(seconds)
+            }}
             className='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
           />
         ) : (
-          <div className='flex h-full flex-col items-center justify-center gap-2 px-10 pb-24 text-center'>
-            <p className='font-display text-2xl text-foreground/70'>
-              Lyrics on their way
-            </p>
-            <p className='text-[13px] text-muted-foreground'>
-              Listen along for now. Swipe to the next song, or come back once
-              the words are in.
-            </p>
-          </div>
+          <Empty className='h-full pb-24'>
+            <EmptyHeader>
+              <EmptyMedia
+                variant='icon'
+                className='bg-card text-muted-foreground'
+              >
+                <ScrollText aria-hidden />
+              </EmptyMedia>
+              <EmptyTitle className='font-display text-2xl font-normal text-foreground/70'>
+                Lyrics on their way
+              </EmptyTitle>
+              <EmptyDescription className='text-[13px]'>
+                Listen along for now. Swipe to the next song, or come back once
+                the words are in.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         )}
       </div>
 
