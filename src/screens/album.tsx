@@ -56,7 +56,7 @@ export function AlbumScreen() {
         <MobilePageHeader
           eyebrow={ALBUM.artist}
           title={
-            <span className='font-display text-[26px] font-normal'>
+            <span className='font-display text-[26px] font-medium'>
               {ALBUM.title}
             </span>
           }
@@ -77,7 +77,7 @@ export function AlbumScreen() {
             key={track}
             className='min-h-[92px] animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
           >
-            <h2 className='font-display text-[26px] leading-[1.15] font-normal text-primary transition-colors duration-700'>
+            <h2 className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700'>
               {t.title}
             </h2>
             <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>

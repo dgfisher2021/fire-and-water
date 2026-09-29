@@ -32,7 +32,7 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
         />
       }
       title={
-        <OverflowMarquee className='font-display text-[17px] leading-tight text-foreground'>
+        <OverflowMarquee className='font-display text-[18px] leading-tight font-medium text-foreground'>
           {t.title}
         </OverflowMarquee>
       }

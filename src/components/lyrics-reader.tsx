@@ -95,9 +95,9 @@ export function LyricsReader({
             singing ? position?.stanza === i || undefined : undefined
           }
           className={cn(
-            'text-center font-display text-foreground/35 transition-colors duration-500',
+            'text-center font-display font-medium text-foreground/50 transition-colors duration-500 dark:[text-shadow:0_1px_14px_rgb(0_0_0/0.55)]',
             singing
-              ? 'data-active:text-foreground/55'
+              ? 'data-active:text-foreground/70'
               : 'data-active:text-foreground',
             size === 'default'
               ? 'mb-8 text-[22px] leading-[1.7] md:text-[26px]'

@@ -104,7 +104,7 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
               </span>
             </div>
             {column.stanzas.length === 0 && (
-              <p className='mt-12 px-2 text-center font-display text-[15px] text-foreground/45'>
+              <p className='mt-12 px-2 text-center font-display text-[15px] font-medium text-foreground/60'>
                 Lyrics on their way
               </p>
             )}
