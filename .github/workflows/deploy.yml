@@ -40,20 +40,15 @@ jobs:
       # classic PAT with read:packages): this repo sits outside the org, so
       # the workflow token cannot be granted access to the packages. The
       # fallback only matters if the repo is ever moved into the org.
+      # Whitespace is stripped because a pasted secret can carry a stray
+      # newline, which would put the token on its own line in .npmrc.
       - name: Authenticate to GitHub Packages
         env:
           DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN || github.token }}
-        run: echo "//npm.pkg.github.com/:_authToken=${DUST_UI_READ_TOKEN}" >> ~/.npmrc
-
-      # Says why an install would fail without revealing the token: a classic
-      # PAT is "ghp_", 40 characters, and lists read:packages in its scopes.
-      - name: Check the package token
-        env:
-          DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN || github.token }}
         run: |
-          echo "prefix ${DUST_UI_READ_TOKEN:0:4}, length ${#DUST_UI_READ_TOKEN}"
-          curl -s -o /dev/null -D - -H "Authorization: token ${DUST_UI_READ_TOKEN}" https://api.github.com/user \
-            | grep -i "^HTTP\|x-oauth-scopes" || true
+          TOKEN="$(printf '%s' "${DUST_UI_READ_TOKEN}" | tr -d '[:space:]')"
+          echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> ~/.npmrc
+          echo "token: ${#TOKEN} characters, prefix ${TOKEN:0:4}"
 
       - name: Install
         run: pnpm install --frozen-lockfile
