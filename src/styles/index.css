@@ -63,19 +63,52 @@
   }
 }
 
-/* The three voices, always addressable (the split view shows two at once). */
+/*
+ * Every song's voice: a bright tone (dark mode accent), a deep tone (light
+ * mode accent and the far end of the play gradient), a glow, and the ink
+ * that sits on the bright tone. Always addressable by song id, so the split
+ * view can show two at once and the credits can tint each row.
+ */
 :root {
   --pencil: oklch(0.7 0.08 60); /* #c4956a */
   --pencil-deep: oklch(0.38 0.07 50); /* #6b4226 */
   --pencil-glow: oklch(0.7 0.08 60 / 42%);
+  --pencil-ink: oklch(0.22 0.04 50);
   --fire: oklch(0.78 0.17 70); /* #f59e0b */
   --fire-deep: oklch(0.48 0.19 28); /* #b91c1c */
   --fire-glow: oklch(0.66 0.2 45 / 45%); /* ember */
+  --fire-ink: oklch(0.22 0.05 50);
   --water: oklch(0.85 0.09 225); /* #7dd3fc */
   --water-deep: oklch(0.33 0.07 250); /* #1e3a5f */
   --water-glow: oklch(0.6 0.19 255 / 45%);
-  /* Type on the bright-to-deep track gradients, in every mode. */
+  --water-ink: oklch(0.2 0.03 250);
+  --memories: oklch(0.8 0.1 300); /* lavender: memory, dream */
+  --memories-deep: oklch(0.38 0.14 300);
+  --memories-glow: oklch(0.65 0.16 300 / 45%);
+  --memories-ink: oklch(0.22 0.05 300);
+  --baritone: oklch(0.8 0.02 260); /* graphite */
+  --baritone-deep: oklch(0.35 0.03 260);
+  --baritone-glow: oklch(0.65 0.05 260 / 40%);
+  --baritone-ink: oklch(0.2 0.02 260);
+  --dust: oklch(0.78 0.05 80); /* ash and sandstone */
+  --dust-deep: oklch(0.36 0.04 60);
+  --dust-glow: oklch(0.7 0.06 75 / 40%);
+  --dust-ink: oklch(0.22 0.03 70);
+  --change: oklch(0.82 0.12 160); /* sage: hope, growth */
+  --change-deep: oklch(0.38 0.1 160);
+  --change-glow: oklch(0.65 0.15 160 / 45%);
+  --change-ink: oklch(0.2 0.04 160);
+  --hearts: oklch(0.8 0.13 10); /* rose */
+  --hearts-deep: oklch(0.45 0.18 10);
+  --hearts-glow: oklch(0.65 0.2 10 / 45%);
+  --hearts-ink: oklch(0.22 0.05 10);
+  /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
+  /* Resting voice before a song is chosen. */
+  --track-bright: var(--water);
+  --track-deep: var(--water-deep);
+  --track-glow: var(--water-glow);
+  --track-ink: var(--water-ink);
 }
 
 /*
@@ -131,56 +164,72 @@
   --overlay: oklch(0 0 0 / 60%);
 
   --primary: var(--water);
-  --primary-foreground: oklch(0.2 0.03 250);
+  --primary-foreground: var(--water-ink);
   --ring: var(--primary);
 }
 
 /*
- * The active track colors the accent on every theme (html[data-track] is set
+ * The active song colors the accent on every theme (html[data-track] is set
  * by usePageMeta). :root[data-track] out-ranks both the brand block above
  * and the presets, and the .dark form out-ranks their dark ladders. Light
  * uses the deep voice for contrast on paper; dark uses the bright one.
  */
-:root {
-  --track-bright: var(--water);
-  --track-deep: var(--water-deep);
-  --track-glow: var(--water-glow);
+:root[data-track] {
+  --primary: var(--track-deep);
+  --primary-foreground: oklch(1 0 0);
+  --ring: var(--primary);
+}
+:root[data-track].dark {
+  --primary: var(--track-bright);
+  --primary-foreground: var(--track-ink);
 }
 :root[data-track='pencil'] {
   --track-bright: var(--pencil);
   --track-deep: var(--pencil-deep);
   --track-glow: var(--pencil-glow);
-  --primary: var(--pencil-deep);
-  --primary-foreground: oklch(1 0 0);
-  --ring: var(--primary);
-}
-:root[data-track='pencil'].dark {
-  --primary: var(--pencil);
-  --primary-foreground: oklch(0.22 0.04 50);
+  --track-ink: var(--pencil-ink);
 }
 :root[data-track='fire'] {
   --track-bright: var(--fire);
   --track-deep: var(--fire-deep);
   --track-glow: var(--fire-glow);
-  --primary: var(--fire-deep);
-  --primary-foreground: oklch(1 0 0);
-  --ring: var(--primary);
-}
-:root[data-track='fire'].dark {
-  --primary: var(--fire);
-  --primary-foreground: oklch(0.22 0.05 50);
+  --track-ink: var(--fire-ink);
 }
 :root[data-track='water'] {
   --track-bright: var(--water);
   --track-deep: var(--water-deep);
   --track-glow: var(--water-glow);
-  --primary: var(--water-deep);
-  --primary-foreground: oklch(1 0 0);
-  --ring: var(--primary);
+  --track-ink: var(--water-ink);
 }
-:root[data-track='water'].dark {
-  --primary: var(--water);
-  --primary-foreground: oklch(0.2 0.03 250);
+:root[data-track='memories'] {
+  --track-bright: var(--memories);
+  --track-deep: var(--memories-deep);
+  --track-glow: var(--memories-glow);
+  --track-ink: var(--memories-ink);
+}
+:root[data-track='baritone'] {
+  --track-bright: var(--baritone);
+  --track-deep: var(--baritone-deep);
+  --track-glow: var(--baritone-glow);
+  --track-ink: var(--baritone-ink);
+}
+:root[data-track='dust'] {
+  --track-bright: var(--dust);
+  --track-deep: var(--dust-deep);
+  --track-glow: var(--dust-glow);
+  --track-ink: var(--dust-ink);
+}
+:root[data-track='change'] {
+  --track-bright: var(--change);
+  --track-deep: var(--change-deep);
+  --track-glow: var(--change-glow);
+  --track-ink: var(--change-ink);
+}
+:root[data-track='hearts'] {
+  --track-bright: var(--hearts);
+  --track-deep: var(--hearts-deep);
+  --track-glow: var(--hearts-glow);
+  --track-ink: var(--hearts-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

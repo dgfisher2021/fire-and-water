@@ -7,6 +7,7 @@ import {
   MobilePageHeader,
   SegmentedControl,
   SheetAction,
+  type SheetActionAction,
 } from '@dust-ui/ui'
 import {
   ALBUM,
@@ -117,6 +118,18 @@ export function LyricsScreen() {
       url: new URL(`lyrics/${track}`, document.baseURI).href,
     })
 
+  const actions: SheetActionAction[] = [
+    { label: 'Share song', onClick: onShare },
+    { label: 'Download audio', onClick: () => download(t.audioFile) },
+  ]
+  if (t.driveLink) {
+    const link = t.driveLink
+    actions.push({
+      label: 'Open in Google Drive',
+      onClick: () => window.open(link, '_blank', 'noopener'),
+    })
+  }
+
   // The action sheet pins inside the shell root (over the nav), so it
   // portals out of the screen's own stacking context.
   const actionSheet =
@@ -124,17 +137,7 @@ export function LyricsScreen() {
       ? createPortal(
           <SheetAction
             title={`${t.title} · ${t.dedicationDated}`}
-            actions={[
-              { label: 'Share song', onClick: onShare },
-              {
-                label: 'Download audio',
-                onClick: () => download(t.audioFile),
-              },
-              {
-                label: 'Open in Google Drive',
-                onClick: () => window.open(t.driveLink, '_blank', 'noopener'),
-              },
-            ]}
+            actions={actions}
             onClose={() => setSheet(false)}
           />,
           shellRoot
@@ -148,7 +151,7 @@ export function LyricsScreen() {
         <MobilePageHeader
           eyebrow={t.voice}
           title={
-            <span className='font-display text-[22px] font-normal text-primary transition-colors duration-700'>
+            <span className='font-display text-[22px] leading-tight font-normal text-primary transition-colors duration-700'>
               {t.title}
             </span>
           }
@@ -212,11 +215,23 @@ export function LyricsScreen() {
       </div>
 
       <div ref={swipeRef} className='min-h-0 flex-1'>
-        <LyricsReader
-          stanzas={t.lyrics}
-          contentKey={track}
-          className='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
-        />
+        {t.lyrics.length > 0 ? (
+          <LyricsReader
+            stanzas={t.lyrics}
+            contentKey={track}
+            className='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
+          />
+        ) : (
+          <div className='flex h-full flex-col items-center justify-center gap-2 px-10 pb-24 text-center'>
+            <p className='font-display text-2xl text-foreground/70'>
+              Lyrics on their way
+            </p>
+            <p className='text-[13px] text-muted-foreground'>
+              Listen along for now. Swipe to the next song, or come back once
+              the words are in.
+            </p>
+          </div>
+        )}
       </div>
 
       {actionSheet}

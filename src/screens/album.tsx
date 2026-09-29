@@ -19,6 +19,10 @@ import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 
 const AUTOPLAY_MS = 10_000
+const ALBUM_TRACKS = TRACK_ORDER.filter(
+  (id) => TRACKS[id].collection === 'album'
+)
+const SINGLES = TRACK_ORDER.filter((id) => TRACKS[id].collection === 'single')
 
 function TrackRow({ id }: { id: TrackId }) {
   const t = TRACKS[id]
@@ -102,7 +106,7 @@ export function AlbumScreen() {
               {ALBUM.title}
             </span>
           }
-          subtitle='Three songs about a brother and a sister'
+          subtitle={`${TRACK_ORDER.length} songs about a brother, a sister, and becoming`}
           trailing={<AppearanceButton />}
           statusBarInset={framed}
         />
@@ -151,9 +155,17 @@ export function AlbumScreen() {
           </div>
         </ArtworkStage>
 
-        <div className='mt-6 animate-fade-up text-left [animation-delay:200ms]'>
-          <MobileListGroup label='Tracks' footer={ALBUM.tagline}>
-            {TRACK_ORDER.map((id) => (
+        <div className='mt-6 flex animate-fade-up flex-col gap-5 text-left [animation-delay:200ms]'>
+          <MobileListGroup label='Fire & Water' footer={ALBUM.tagline}>
+            {ALBUM_TRACKS.map((id) => (
+              <TrackRow key={id} id={id} />
+            ))}
+          </MobileListGroup>
+          <MobileListGroup
+            label='More from Dustin'
+            footer='Songs that came after the trilogy.'
+          >
+            {SINGLES.map((id) => (
               <TrackRow key={id} id={id} />
             ))}
           </MobileListGroup>

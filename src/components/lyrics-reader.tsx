@@ -1,4 +1,5 @@
 import { useRef, type ReactNode, type RefObject } from 'react'
+import { isLyricLabel } from '@/data/tracks'
 import { cn } from '@/lib/utils'
 import { useScrollFocus } from '@/hooks/use-scroll-focus'
 
@@ -18,7 +19,7 @@ export type LyricsReaderProps = {
 /**
  * A vertical lyrics pane: stanzas in the display face, fading at both edges,
  * with reading focus (the stanza crossing the middle brightens, the rest
- * recede). Pure CSS transitions on a `data-active` attribute.
+ * recede). Bracketed lines render as small section or voice labels.
  */
 export function LyricsReader({
   stanzas,
@@ -57,11 +58,21 @@ export function LyricsReader({
               : 'mb-6 text-[17px] leading-[1.65] md:text-xl'
           )}
         >
-          {lines.map((line, j) => (
-            <span key={j} className='block'>
-              {line}
-            </span>
-          ))}
+          {lines.map((line, j) =>
+            isLyricLabel(line) ? (
+              <span
+                key={j}
+                data-slot='lyrics-label'
+                className='mb-1 block font-sans text-[10px] font-medium tracking-[3px] text-primary uppercase opacity-80'
+              >
+                {line.slice(1, -1)}
+              </span>
+            ) : (
+              <span key={j} className='block'>
+                {line}
+              </span>
+            )
+          )}
         </p>
       ))}
     </div>

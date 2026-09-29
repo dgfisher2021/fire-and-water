@@ -37,12 +37,15 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,woff2,jpg,png,svg,webmanifest}'],
         globIgnores: [
           '**/*.m4a',
+          '**/*.mp3',
           '**/*-cyrillic*',
           '**/*-vietnamese*',
           '**/*-latin-ext*',
         ],
         navigateFallback: 'index.html',
-        runtimeCaching: [{ urlPattern: /\.m4a$/, handler: 'NetworkOnly' }],
+        runtimeCaching: [
+          { urlPattern: /\.(m4a|mp3)$/, handler: 'NetworkOnly' },
+        ],
       },
     }),
   ],

@@ -1,12 +1,26 @@
 import { z } from 'zod'
+import baritoneLyrics from './lyrics/baritone.json'
+import changeLyrics from './lyrics/change.json'
+import dustLyrics from './lyrics/dust.json'
+import heartsLyrics from './lyrics/hearts.json'
+import memoriesLyrics from './lyrics/memories.json'
 
-export const trackIdSchema = z.enum(['pencil', 'fire', 'water'])
+export const trackIdSchema = z.enum([
+  'pencil',
+  'fire',
+  'water',
+  'memories',
+  'baritone',
+  'dust',
+  'change',
+  'hearts',
+])
 export type TrackId = z.infer<typeof trackIdSchema>
 
 const trackSchema = z.object({
   id: trackIdSchema,
   title: z.string(),
-  /** Short dedication for the home card. */
+  /** Short dedication for the album card. */
   dedication: z.string(),
   /** Full dedication with the date, for the lyrics header. */
   dedicationDated: z.string(),
@@ -18,12 +32,27 @@ const trackSchema = z.object({
   art: z.object({ full: z.string(), thumb: z.string() }),
   /** Browser chrome color while this track is showing. */
   themeColor: z.string(),
-  driveLink: z.url(),
-  lyrics: z.array(z.array(z.string()).min(1)).min(1),
+  driveLink: z.url().optional(),
+  /** The Fire & Water trilogy, or one of the songs that followed. */
+  collection: z.enum(['album', 'single']),
+  /**
+   * Stanzas of lines. A line wrapped in [brackets] is a label (a section
+   * or a voice) and renders small, not sung.
+   */
+  lyrics: z.array(z.array(z.string()).min(1)),
 })
 export type Track = z.infer<typeof trackSchema>
 
-export const TRACK_ORDER: readonly TrackId[] = ['pencil', 'fire', 'water']
+export const TRACK_ORDER: readonly TrackId[] = [
+  'pencil',
+  'fire',
+  'water',
+  'memories',
+  'baritone',
+  'dust',
+  'change',
+  'hearts',
+]
 
 export const ALBUM = {
   title: 'Fire & Water',
@@ -52,6 +81,7 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#161009',
     driveLink:
       'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',
+    collection: 'album',
     lyrics: [
       [
         'My dear sister,',
@@ -154,6 +184,7 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#170c06',
     driveLink:
       'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',
+    collection: 'album',
     lyrics: [
       [
         'You lit the fire',
@@ -321,6 +352,7 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#0a0e1a',
     driveLink:
       'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',
+    collection: 'album',
     lyrics: [
       [
         'Your fire’s lit,',
@@ -474,6 +506,81 @@ export const TRACKS: Record<TrackId, Track> = {
       ],
     ],
   }),
+  memories: trackSchema.parse({
+    id: 'memories',
+    title: 'Moments to Memories',
+    dedication: 'For Alex, from Dustin',
+    dedicationDated: 'For Alex, from Dustin — September 2026',
+    voice: 'Dustin’s voice, then Dustin Mode',
+    description:
+      'Pencil lines became journals became code. A brother builds a way to keep what time would steal, so his words outlast him. Then what he built speaks to Alex in his voice.',
+    audioFile: 'moments-to-memories.mp3',
+    duration: 358,
+    art: { full: 'assets/memories.jpg', thumb: 'assets/memories-512.jpg' },
+    themeColor: '#120e1c',
+    collection: 'single',
+    lyrics: memoriesLyrics,
+  }),
+  baritone: trackSchema.parse({
+    id: 'baritone',
+    title: 'Pencil and Pen (Baritone Version)',
+    dedication: 'For Alex, from Dustin',
+    dedicationDated: 'For Alex, from Dustin — September 2026',
+    voice: 'Baritone',
+    description:
+      'Pencil and Pen, sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
+    audioFile: 'pencil-and-pen-baritone.mp3',
+    duration: 299,
+    art: { full: 'assets/baritone.jpg', thumb: 'assets/baritone-512.jpg' },
+    themeColor: '#0f1014',
+    collection: 'single',
+    lyrics: baritoneLyrics,
+  }),
+  dust: trackSchema.parse({
+    id: 'dust',
+    title: 'Dust I Become',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'Turned into nothing by someone who always had to be right, he stops begging to be treated the same. Ashes to ashes, dust to dust: he leaves, and becomes his own.',
+    audioFile: 'dust-i-become.mp3',
+    duration: 285,
+    art: { full: 'assets/dust.jpg', thumb: 'assets/dust-512.jpg' },
+    themeColor: '#141210',
+    collection: 'single',
+    lyrics: dustLyrics,
+  }),
+  change: trackSchema.parse({
+    id: 'change',
+    title: 'Not Afraid to Change (Extended Hope)',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Baritone & soprano',
+    description:
+      'A baritone and a soprano trade verses through sleepless nights, red-eyed anxiety and the fear of relapse, and refuse to sabotage themselves. Hope, extended.',
+    audioFile: 'not-afraid-to-change.mp3',
+    duration: 392,
+    art: { full: 'assets/change.jpg', thumb: 'assets/change-512.jpg' },
+    themeColor: '#0c1512',
+    collection: 'single',
+    lyrics: changeLyrics,
+  }),
+  hearts: trackSchema.parse({
+    id: 'hearts',
+    title: 'Opposite Hearts',
+    dedication: 'By Dustin',
+    dedicationDated: 'By Dustin — September 2026',
+    voice: 'Dustin’s voice',
+    description:
+      'Two hearts pulling opposite ways, one song. The lyrics for this one are still on their way.',
+    audioFile: 'opposite-hearts.mp3',
+    duration: 342,
+    art: { full: 'assets/hearts.jpg', thumb: 'assets/hearts-512.jpg' },
+    themeColor: '#1a0c10',
+    collection: 'single',
+    lyrics: heartsLyrics,
+  }),
 }
 
 export function adjacentTrack(id: TrackId, direction: 1 | -1): TrackId {
@@ -483,4 +590,9 @@ export function adjacentTrack(id: TrackId, direction: 1 | -1): TrackId {
 
 export function isLastTrack(id: TrackId) {
   return TRACK_ORDER.indexOf(id) === TRACK_ORDER.length - 1
+}
+
+/** A line wrapped in [brackets] is a section or voice label, not sung. */
+export function isLyricLabel(line: string) {
+  return line.startsWith('[') && line.endsWith(']')
 }

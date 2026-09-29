@@ -11,6 +11,8 @@ import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 
+const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
+
 export function MoreScreen() {
   const framed = useFramed()
   return (
@@ -40,7 +42,7 @@ export function MoreScreen() {
 
         <MobileListGroup
           label='Download'
-          footer='M4A audio, 190 to 400 seconds each.'
+          footer='The trilogy as M4A, the rest as MP3.'
         >
           {TRACK_ORDER.map((id) => (
             <MobileListRow
@@ -54,7 +56,7 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup label='Google Drive'>
-          {TRACK_ORDER.map((id) => (
+          {DRIVE_TRACKS.map((id) => (
             <MobileListRow
               key={id}
               icon={CloudDownload}
@@ -73,7 +75,7 @@ export function MoreScreen() {
             onClick={() =>
               void share({
                 title: `${ALBUM.title} — ${ALBUM.artist}`,
-                text: 'Three original songs exploring the bond between a brother and sister.',
+                text: 'Songs exploring the bond between a brother and sister.',
                 url: document.baseURI,
               })
             }
@@ -85,20 +87,15 @@ export function MoreScreen() {
             icon={Heart}
             color='var(--fire)'
             label='Written and performed by Dustin'
-            value='March 2026'
+            value='2026'
           />
-          <MobileListRow
-            label='Pencil and Pen'
-            value={<Pill color='var(--pencil)'>Dustin</Pill>}
-          />
-          <MobileListRow
-            label='Fire and Water'
-            value={<Pill color='var(--fire)'>Dustin</Pill>}
-          />
-          <MobileListRow
-            label='Water and Fire'
-            value={<Pill color='var(--water)'>as Alex</Pill>}
-          />
+          {TRACK_ORDER.map((id) => (
+            <MobileListRow
+              key={id}
+              label={TRACKS[id].title}
+              value={<Pill color={`var(--${id})`}>{TRACKS[id].voice}</Pill>}
+            />
+          ))}
         </MobileListGroup>
       </div>
     </Screen>

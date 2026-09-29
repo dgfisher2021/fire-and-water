@@ -40,7 +40,8 @@ export function AmbientImageBackdrop({
             src={image.src}
             alt=''
             decoding='async'
-            loading={i === 0 ? 'eager' : 'lazy'}
+            // The active image (and the first) must load now; the rest wait.
+            loading={active || i === 0 ? 'eager' : 'lazy'}
             data-active={active || undefined}
             className={cn(
               'absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-[1800ms] ease-out data-active:opacity-100',
