@@ -47,11 +47,23 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Adding a song
 
-1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.jpg` (longest side about 1024) plus `<id>-512.jpg` (square thumbnail).
-2. Put the lyrics in `src/data/lyrics/<id>.json` as an array of stanzas, each an array of lines. A line wrapped in `[brackets]` is a section or voice label.
-3. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, voice, description, duration). If it answers another song, pair them in `PARTNERS` so Compare opens them together.
-4. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block.
+1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.jpg` (longest side about 1024) plus `<id>-512.jpg` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`.
+2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together.
+3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block.
+4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.
+
+## Lyrics
+
+Lyrics live in `src/data/lyrics/<id>.json` and are picked up by file name (`src/data/lyrics/index.ts` globs the folder), so a song gets its words the moment its file exists. A sheet is an array of stanzas, each an array of lines; a line wrapped in `[brackets]` is a section or voice label. A sheet transcribed from the recording is written as `{ "source": "transcribed", "stanzas": [...] }` and the app labels it "transcribed by ear".
+
+```sh
+python3 scripts/lyrics/import-suno.py                 # every zip in Downloads/suno songs
+python3 scripts/lyrics/import-suno.py some/drop.zip   # or one zip, or a folder
+python3 scripts/lyrics/from-transcript.py hearts      # a sheet from the Whisper transcript
+```
+
+The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given. The transcript builder uses the largest Whisper pass under `scripts/timing/asr*/` (run `transcribe.py` first) and is the fallback for songs Suno exported without words; fix its lines in the JSON as you hear them.
 
 ## Timing the lyrics
 
