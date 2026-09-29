@@ -33,16 +33,22 @@ jobs:
           node-version: '22'
           cache: 'pnpm'
 
-      # @dust-ui/* installs from GitHub Packages (private). The committed
-      # .npmrc carries the scope->registry mapping; the runner supplies auth
-      # here, exactly like a developer's user-level ~/.npmrc. Uses the repo
-      # secret DUST_UI_READ_TOKEN (a classic PAT with read:packages) when
-      # set, else the workflow token, which works once the @dust-ui packages
-      # grant this repository access (package settings, "Manage Actions access").
+      # @dust-ui/* installs from GitHub Packages, owned by the dust-ui
+      # organization. The committed .npmrc carries the scope->registry
+      # mapping; the runner supplies auth here, exactly like a developer's
+      # user-level ~/.npmrc. Needs the repo secret DUST_UI_READ_TOKEN (a
+      # classic PAT with read:packages): this repo sits outside the org, so
+      # the workflow token cannot be granted access to the packages. The
+      # fallback only matters if the repo is ever moved into the org.
+      # Whitespace is stripped because a pasted secret can carry a stray
+      # newline, which would put the token on its own line in .npmrc.
       - name: Authenticate to GitHub Packages
         env:
           DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN || github.token }}
-        run: echo "//npm.pkg.github.com/:_authToken=${DUST_UI_READ_TOKEN}" >> ~/.npmrc
+        run: |
+          TOKEN="$(printf '%s' "${DUST_UI_READ_TOKEN}" | tr -d '[:space:]')"
+          echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> ~/.npmrc
+          echo "token: ${#TOKEN} characters, prefix ${TOKEN:0:4}"
 
       - name: Install
         run: pnpm install --frozen-lockfile
