@@ -19,6 +19,8 @@ LYRICS = ROOT / "src/data/lyrics"
 
 PASSES = ["asr-medium", "asr", "asr-strict"]
 MIN_P = 0.35  # drop words Whisper was unsure of
+LINE_MIN_P = 0.7  # drop a whole line Whisper guessed at (a sung syllable, noise)
+CORRECTIONS = HERE / "corrections.json"  # { "<id>": [[pattern, replacement], ...] }
 LINE_GAP = 0.6  # seconds of silence that end a line
 STANZA_GAP = 1.8  # seconds of silence that end a stanza
 MAX_LINE_WORDS = 10
@@ -41,14 +43,21 @@ def transcript(song_id):
 
 
 def tidy(line):
-    text = " ".join(line).strip().strip(",;")
+    text = " ".join(line).replace(" -", "-").strip().strip(",;")  # "self -reflection"
     return text[:1].upper() + text[1:] if text else text
 
 
 def build(words):
     """Lines end at a pause, at closing punctuation, before a segment-start
     capital, or at the word cap; stanzas at a longer pause or four lines."""
-    stanzas, stanza, line, last_end = [], [], [], None
+    stanzas, stanza, line, probs, last_end = [], [], [], [], None
+
+    def close_line():
+        nonlocal line, probs
+        if line and sum(probs) / len(probs) >= LINE_MIN_P:
+            stanza.append(tidy(line))
+        line, probs = [], []
+
     for w in words:
         word = w["word"].strip()
         if not word or w["p"] < MIN_P:
@@ -61,24 +70,44 @@ def build(words):
             or len(line) >= MAX_LINE_WORDS
             or (long_enough and (prev[-1:] in ".!?" or prev.endswith(",")))
             or (long_enough and starts_segment(word))
+            # First-person lines: "I hold the fear, I hold the fire" splits at the second I.
+            or (len(line) >= 4 and word in PRONOUNS)
         )
         if cut:
-            stanza.append(tidy(line))
-            line = []
-            if gap >= STANZA_GAP or len(stanza) >= MAX_STANZA_LINES:
+            close_line()
+            if stanza and (gap >= STANZA_GAP or len(stanza) >= MAX_STANZA_LINES):
                 stanzas.append(stanza)
                 stanza = []
         line.append(word)
+        probs.append(w["p"])
         last_end = w["end"]
-    if line:
-        stanza.append(tidy(line))
+    close_line()
     if stanza:
         stanzas.append(stanza)
     return stanzas
 
 
+def correct(stanzas, rules):
+    """Spot fixes for words Whisper misheard, kept in corrections.json so a
+    rebuild reproduces them: case-insensitive regex pairs per song."""
+    import re
+
+    fixed = []
+    for stanza in stanzas:
+        lines = []
+        for line in stanza:
+            for pattern, replacement in rules:
+                line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
+            if line.strip():
+                lines.append(line)
+        if lines:
+            fixed.append(lines)
+    return fixed
+
+
 def main():
     force = "--force" in sys.argv
+    corrections = json.loads(CORRECTIONS.read_text(encoding="utf-8")) if CORRECTIONS.exists() else {}
     for song_id in [a for a in sys.argv[1:] if not a.startswith("--")]:
         data, source = transcript(song_id)
         if not data:
@@ -90,7 +119,7 @@ def main():
             if (current if isinstance(current, list) else current.get("stanzas")) and not force:
                 print(song_id, "already has a sheet, kept (use --force)")
                 continue
-        stanzas = build(data["words"])
+        stanzas = correct(build(data["words"]), corrections.get(song_id, []))
         out.write_text(
             json.dumps({"source": "transcribed", "stanzas": stanzas}, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",

@@ -63,7 +63,7 @@ python3 scripts/lyrics/import-suno.py some/drop.zip   # or one zip, or a folder
 python3 scripts/lyrics/from-transcript.py hearts      # a sheet from the Whisper transcript
 ```
 
-The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given. The transcript builder uses the largest Whisper pass under `scripts/timing/asr*/` (run `transcribe.py` first) and is the fallback for songs Suno exported without words; fix its lines in the JSON as you hear them.
+The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, typesets quotes and labels, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given. The transcript builder uses the largest Whisper pass under `scripts/timing/asr*/` (run `transcribe.py` first) and is the fallback for songs Suno exported without words: lines break at pauses, punctuation and phrase starts, and lines Whisper guessed at are dropped. Words it mishears go in `scripts/lyrics/corrections.json` as regex pairs per song (the Raven's Irish chant, for example), so a rebuild reproduces the fix rather than losing a hand edit.
 
 ## Timing the lyrics
 

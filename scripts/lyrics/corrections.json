@@ -1,0 +1,9 @@
+{
+  "raven": [
+    ["\\bfiachvuv\\b", "fiach dubh"],
+    ["\\bFiach\\b(?! dubh)", "Fiach dubh"],
+    ["\\bYom per me\\b", "iompair mé"],
+    ["\\bYom me\\b", "iompair mé"],
+    ["\\bPer me Oh\\b", "iompair mé, ó"]
+  ]
+}
