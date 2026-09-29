@@ -3,7 +3,6 @@ import { MobileMediaRow } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { usePlayer } from '@/store/player'
-import { OverflowMarquee } from '@/components/overflow-marquee'
 import { PlayingBars } from '@/components/playing-bars'
 
 export type TrackRowProps = {
@@ -32,9 +31,9 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
         />
       }
       title={
-        <OverflowMarquee className='font-display text-[18px] leading-tight font-medium text-foreground'>
+        <span className='block truncate font-display text-[18px] leading-tight font-medium text-foreground'>
           {t.title}
-        </OverflowMarquee>
+        </span>
       }
       subtitle={`${t.dedication} · ${t.voice}`}
       value={formatTime(t.duration)}

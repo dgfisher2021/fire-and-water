@@ -31,7 +31,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 - **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it play through. Below, all thirteen songs in one list.
 - **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics, which scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
-- **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together.
+- **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
 - **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads, Google Drive links, sharing, credits.
 - The bottom bar's center action plays and pauses from anywhere, and once a song is playing a mini player sits above the bar on the Album and More screens.
 

@@ -36,6 +36,10 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   element (`src/lib/audio.ts`) by `useAudioEngine`. Album play-through and
   lock-screen prev/next go through `requestTrack`, which the lyrics screen
   follows. Subscribe with selectors: `currentTime` updates every frame.
+  It also remembers the last Compare pair: the Compare tab reopens it while
+  it still holds the focus track (`comparePairFor`), and `RouterLink` turns a
+  query string in a nav href into the Link's `search`. Selectors must return
+  stable values, never a fresh object.
 - `src/store/toasts.ts` in-frame toasts for `MobileToastStack`.
 - `src/data/tracks.ts` zod-validated track data; `src/data/lyrics/<id>.json`
   the lyric sheets, globbed by `src/data/lyrics/index.ts` (plain stanzas or

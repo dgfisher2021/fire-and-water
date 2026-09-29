@@ -83,7 +83,7 @@ export function AlbumScreen() {
             <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>
               {t.dedication} · {formatTime(t.duration)}
             </p>
-            <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/50'>
+            <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60'>
               {t.description}
             </p>
           </div>

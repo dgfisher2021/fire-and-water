@@ -16,7 +16,7 @@ import {
   useShellInsets,
 } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
-import { selectFocusTrack, usePlayer } from '@/store/player'
+import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { MINI_PLAYER_H, useMiniPlayerVisible } from '@/hooks/use-mini-player'
 import { AmbientImageBackdrop } from '@/components/ambient-image-backdrop'
@@ -54,6 +54,10 @@ function ShellMini() {
 function ShellNav({ fixed }: { fixed: boolean }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const focus = usePlayer(selectFocusTrack)
+  const pair = comparePairFor(
+    focus,
+    usePlayer((s) => s.comparePair)
+  )
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
   const toggle = usePlayer((s) => s.toggle)
@@ -77,7 +81,12 @@ function ShellNav({ fixed }: { fixed: boolean }) {
           label: 'Lyrics',
           href: `/lyrics/${focus}`,
         },
-        { key: 'compare', icon: Columns2, label: 'Compare', href: '/compare' },
+        {
+          key: 'compare',
+          icon: Columns2,
+          label: 'Compare',
+          href: `/compare?left=${pair.left}&right=${pair.right}`,
+        },
         { key: 'more', icon: Ellipsis, label: 'More', href: '/more' },
       ]}
       activeKey={active}
