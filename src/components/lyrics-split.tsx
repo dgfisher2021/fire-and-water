@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { ChevronDown, Pause, Play } from 'lucide-react'
 import type { LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
@@ -10,8 +10,9 @@ export type LyricsColumn = {
   tag: ReactNode
   voice: ReactNode
   stanzas: ReadonlyArray<ReadonlyArray<string>>
-  /** CSS color for the column tag (the song's voice token). */
+  /** CSS colors for the column tag on light and dark surfaces (the song's deep and bright tones). */
   color: string
+  colorDark: string
   /** Sing-along position while a song of the pair plays. */
   time?: number
   timing?: LyricsTiming
@@ -58,8 +59,13 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
             className='flex-1'
           >
             <div
-              className='sticky top-0 z-10 mb-3 rounded-b-xl bg-background/70 py-2 text-center font-sans text-[10px] tracking-[3px] uppercase backdrop-blur-md'
-              style={{ color: column.color }}
+              className='sticky top-0 z-10 mb-3 rounded-b-xl bg-background/70 py-2 text-center font-sans text-[10px] tracking-[3px] text-(--voice) uppercase backdrop-blur-md dark:text-(--voice-dark)'
+              style={
+                {
+                  '--voice': column.color,
+                  '--voice-dark': column.colorDark,
+                } as CSSProperties
+              }
             >
               <div className='flex items-center justify-center gap-1'>
                 {column.onPlay && (

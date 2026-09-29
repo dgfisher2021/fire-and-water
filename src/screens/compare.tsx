@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MobilePageHeader, SegmentedControl } from '@dust-ui/ui'
 import { TRACKS, sameLyricShape, type TrackId } from '@/data/tracks'
@@ -19,6 +19,14 @@ type Side = 'left' | 'right'
 /** "Fire & Water", "Not Afraid to Change": the title without its parenthetical. */
 const shortTitle = (id: TrackId) =>
   TRACKS[id].title.replace(' and ', ' & ').replace(/\s*\(.*\)$/, '')
+
+// A song's deep tone on light surfaces, its bright tone on dark ones.
+const VOICE = 'text-(--voice) dark:text-(--voice-dark)'
+const voiceVars = (id: TrackId) =>
+  ({
+    '--voice': `var(--${id}-deep)`,
+    '--voice-dark': `var(--${id})`,
+  }) as CSSProperties
 
 export function CompareScreen() {
   const framed = useFramed()
@@ -70,7 +78,8 @@ export function CompareScreen() {
       tag: shortTitle(id),
       voice: TRACKS[id].voice,
       stanzas: TRACKS[id].lyrics,
-      color: `var(--${id})`,
+      color: `var(--${id}-deep)`,
+      colorDark: `var(--${id})`,
       time: own || mirror ? singTime : undefined,
       timing: own ? TRACKS[id].timing : mirror ? t.timing : undefined,
       onSeekLine: (seconds) => {
@@ -91,11 +100,11 @@ export function CompareScreen() {
           eyebrow='Side by side'
           title={
             <span className='block max-w-[240px] truncate font-display text-[17px] font-normal'>
-              <span style={{ color: `var(--${pair.left})` }}>
+              <span className={VOICE} style={voiceVars(pair.left)}>
                 {shortTitle(pair.left)}
               </span>
               <span className='text-muted-foreground'> × </span>
-              <span style={{ color: `var(--${pair.right})` }}>
+              <span className={VOICE} style={voiceVars(pair.right)}>
                 {shortTitle(pair.right)}
               </span>
             </span>
