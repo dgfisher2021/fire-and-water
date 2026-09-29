@@ -50,8 +50,6 @@ const trackSchema = z.object({
   /** Browser chrome color while this track is showing. */
   themeColor: z.string(),
   driveLink: z.url().optional(),
-  /** The Fire & Water trilogy, or one of the songs that followed. */
-  collection: z.enum(['album', 'single']),
   /**
    * Stanzas of lines. A line wrapped in [brackets] is a label (a section
    * or a voice) and renders small, not sung.
@@ -87,10 +85,27 @@ export const ALBUM = {
   tagline: '“You can’t tame the flame.”',
 } as const
 
-/** The pair the side-by-side view compares. */
+/** The pair the side-by-side view opens with. */
 export const SPLIT_PAIR = { left: 'fire', right: 'water' } as const satisfies {
   left: TrackId
   right: TrackId
+}
+
+/** Songs that answer each other: the natural other half of a comparison. */
+const PARTNERS: Partial<Record<TrackId, TrackId>> = {
+  fire: 'water',
+  water: 'fire',
+  pencil: 'baritone',
+  baritone: 'pencil',
+  waves: 'espoir',
+  espoir: 'waves',
+}
+
+export function comparePartner(id: TrackId): TrackId {
+  return (
+    PARTNERS[id] ??
+    (id === SPLIT_PAIR.left ? SPLIT_PAIR.right : SPLIT_PAIR.left)
+  )
 }
 
 export const TRACKS: Record<TrackId, Track> = {
@@ -108,7 +123,6 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#161009',
     driveLink:
       'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',
-    collection: 'album',
     timing: timingFor('pencil'),
     lyrics: [
       [
@@ -212,7 +226,6 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#170c06',
     driveLink:
       'https://drive.google.com/file/d/1xaNe-xR3muX_Ptnk9gaGRnwNnCzhpg1T/view?usp=drivesdk',
-    collection: 'album',
     timing: timingFor('fire'),
     lyrics: [
       [
@@ -381,7 +394,6 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#0a0e1a',
     driveLink:
       'https://drive.google.com/file/d/1YYdTRD2NAwVekt9VPjAajvD8GQyl727Y/view?usp=drivesdk',
-    collection: 'album',
     timing: timingFor('water'),
     lyrics: [
       [
@@ -548,7 +560,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 358,
     art: { full: 'assets/memories.jpg', thumb: 'assets/memories-512.jpg' },
     themeColor: '#120e1c',
-    collection: 'single',
     timing: timingFor('memories'),
     lyrics: memoriesLyrics,
   }),
@@ -564,7 +575,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 299,
     art: { full: 'assets/baritone.jpg', thumb: 'assets/baritone-512.jpg' },
     themeColor: '#0f1014',
-    collection: 'single',
     timing: timingFor('baritone'),
     lyrics: baritoneLyrics,
   }),
@@ -580,7 +590,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 285,
     art: { full: 'assets/dust.jpg', thumb: 'assets/dust-512.jpg' },
     themeColor: '#141210',
-    collection: 'single',
     timing: timingFor('dust'),
     lyrics: dustLyrics,
   }),
@@ -596,7 +605,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 392,
     art: { full: 'assets/change.jpg', thumb: 'assets/change-512.jpg' },
     themeColor: '#0c1512',
-    collection: 'single',
     timing: timingFor('change'),
     lyrics: changeLyrics,
   }),
@@ -612,7 +620,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 342,
     art: { full: 'assets/hearts.jpg', thumb: 'assets/hearts-512.jpg' },
     themeColor: '#1a0c10',
-    collection: 'single',
     timing: timingFor('hearts'),
     lyrics: heartsLyrics,
   }),
@@ -628,7 +635,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 247,
     art: { full: 'assets/mercy.jpg', thumb: 'assets/mercy-512.jpg' },
     themeColor: '#17120d',
-    collection: 'single',
     timing: timingFor('mercy'),
     lyrics: mercyLyrics,
   }),
@@ -644,7 +650,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 332,
     art: { full: 'assets/raven.jpg', thumb: 'assets/raven-512.jpg' },
     themeColor: '#0a0d1e',
-    collection: 'single',
     timing: timingFor('raven'),
     lyrics: ravenLyrics,
   }),
@@ -660,7 +665,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 320,
     art: { full: 'assets/espoir.jpg', thumb: 'assets/espoir-512.jpg' },
     themeColor: '#070c1a',
-    collection: 'single',
     timing: timingFor('espoir'),
     lyrics: espoirLyrics,
   }),
@@ -676,7 +680,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 240,
     art: { full: 'assets/beautiful.jpg', thumb: 'assets/beautiful-512.jpg' },
     themeColor: '#100c08',
-    collection: 'single',
     timing: timingFor('beautiful'),
     lyrics: beautifulLyrics,
   }),
@@ -692,7 +695,6 @@ export const TRACKS: Record<TrackId, Track> = {
     duration: 317,
     art: { full: 'assets/waves.jpg', thumb: 'assets/waves-512.jpg' },
     themeColor: '#0e0d0a',
-    collection: 'single',
     timing: timingFor('waves'),
     lyrics: wavesLyrics,
   }),
@@ -710,4 +712,11 @@ export function isLastTrack(id: TrackId) {
 /** A line wrapped in [brackets] is a section or voice label, not sung. */
 export function isLyricLabel(line: string) {
   return line.startsWith('[') && line.endsWith(']')
+}
+
+type Lyrics = ReadonlyArray<ReadonlyArray<string>>
+
+/** True when two sheets line up stanza for stanza and line for line, like the mirrored pair. */
+export function sameLyricShape(a: Lyrics, b: Lyrics) {
+  return a.length === b.length && a.every((s, i) => s.length === b[i].length)
 }

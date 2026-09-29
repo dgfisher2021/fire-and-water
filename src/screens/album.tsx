@@ -1,68 +1,18 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Play } from 'lucide-react'
-import {
-  Button,
-  MobileListGroup,
-  MobileListRow,
-  MobilePageHeader,
-  Pill,
-} from '@dust-ui/ui'
-import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
+import { Button, MobileListGroup, MobilePageHeader } from '@dust-ui/ui'
+import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
-import { selectIsActive, usePlayer } from '@/store/player'
+import { usePlayer } from '@/store/player'
 import { useSwipe } from '@/hooks/use-swipe'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { PlayButton } from '@/components/play-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
+import { TrackRow } from '@/components/track-row'
 
 const AUTOPLAY_MS = 10_000
-const ALBUM_TRACKS = TRACK_ORDER.filter(
-  (id) => TRACKS[id].collection === 'album'
-)
-const SINGLES = TRACK_ORDER.filter((id) => TRACKS[id].collection === 'single')
-
-function TrackRow({ id }: { id: TrackId }) {
-  const t = TRACKS[id]
-  const active = usePlayer(selectIsActive(id))
-  const play = usePlayer((s) => s.play)
-  const navigate = useNavigate()
-  return (
-    <MobileListRow
-      label={
-        <span className='flex items-center gap-3 py-0.5'>
-          <img
-            src={t.art.thumb}
-            alt=''
-            className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-          />
-          <span className='flex min-w-0 flex-col'>
-            <span className='truncate font-display text-[17px] leading-tight text-foreground'>
-              {t.title}
-            </span>
-            <span className='truncate text-[11px] text-muted-foreground'>
-              {t.dedication} · {t.voice}
-            </span>
-          </span>
-        </span>
-      }
-      value={formatTime(t.duration)}
-      trailing={
-        active ? (
-          <Pill>Playing</Pill>
-        ) : (
-          <Play className='size-3.5 text-muted-foreground' aria-hidden />
-        )
-      }
-      onClick={() => {
-        play(id)
-        void navigate({ to: '/lyrics/$track', params: { track: id } })
-      }}
-    />
-  )
-}
 
 export function AlbumScreen() {
   const framed = useFramed()
@@ -155,17 +105,9 @@ export function AlbumScreen() {
           </div>
         </ArtworkStage>
 
-        <div className='mt-6 flex animate-fade-up flex-col gap-5 text-left [animation-delay:200ms]'>
-          <MobileListGroup label='Fire & Water' footer={ALBUM.tagline}>
-            {ALBUM_TRACKS.map((id) => (
-              <TrackRow key={id} id={id} />
-            ))}
-          </MobileListGroup>
-          <MobileListGroup
-            label='More from Dustin'
-            footer='Songs that came after the trilogy.'
-          >
-            {SINGLES.map((id) => (
+        <div className='mt-6 animate-fade-up text-left [animation-delay:200ms]'>
+          <MobileListGroup label='Songs' footer={ALBUM.tagline}>
+            {TRACK_ORDER.map((id) => (
               <TrackRow key={id} id={id} />
             ))}
           </MobileListGroup>

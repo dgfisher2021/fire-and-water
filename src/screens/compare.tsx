@@ -1,10 +1,12 @@
-import { useNavigate } from '@tanstack/react-router'
+import { useState } from 'react'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MobilePageHeader, SegmentedControl } from '@dust-ui/ui'
-import { ALBUM, SPLIT_PAIR, TRACKS, type TrackId } from '@/data/tracks'
+import { TRACKS, sameLyricShape, type TrackId } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
-import { LyricsSplit } from '@/components/lyrics-split'
+import { LyricsSplit, type LyricsColumn } from '@/components/lyrics-split'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
+import { SongPicker } from '@/components/song-picker'
 import { MobileMediaPlayer } from '@/components/ui/mobile-media-player'
 
 const VIEW_OPTIONS = [
@@ -12,15 +14,22 @@ const VIEW_OPTIONS = [
   { value: 'split', label: 'Compare' },
 ]
 
-const PAIR: TrackId[] = [SPLIT_PAIR.left, SPLIT_PAIR.right]
+type Side = 'left' | 'right'
+
+/** "Fire & Water", "Not Afraid to Change": the title without its parenthetical. */
+const shortTitle = (id: TrackId) =>
+  TRACKS[id].title.replace(' and ', ' & ').replace(/\s*\(.*\)$/, '')
 
 export function CompareScreen() {
   const framed = useFramed()
   const navigate = useNavigate()
+  const pair = useSearch({ from: '/compare' })
+  const [picking, setPicking] = useState<Side | null>(null)
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
-  // The transport drives whichever of the pair is loaded, else the first.
-  const track = loaded && PAIR.includes(loaded) ? loaded : SPLIT_PAIR.left
+  // The transport drives whichever of the pair is loaded, else the left.
+  const track: TrackId =
+    loaded === pair.left || loaded === pair.right ? loaded : pair.left
   const t = TRACKS[track]
   const isCurrent = loaded === track
   const playing = isCurrent && status === 'playing'
@@ -29,10 +38,16 @@ export function CompareScreen() {
   const duration = usePlayer((s) =>
     isCurrent && s.duration > 0 ? s.duration : t.duration
   )
-  // Sing-along position while either of the pair plays. The verses mirror
-  // each other, so both columns follow the loaded song's timing.
+  // Sing-along position while a song of the pair plays. When the two sheets
+  // share a shape (the mirrored pair) both columns follow the one playing.
+  const mirror = sameLyricShape(
+    TRACKS[pair.left].lyrics,
+    TRACKS[pair.right].lyrics
+  )
   const singTime = usePlayer((s) =>
-    s.track && PAIR.includes(s.track) && s.status !== 'idle'
+    s.track &&
+    (s.track === pair.left || s.track === pair.right) &&
+    s.status !== 'idle'
       ? Math.round(s.currentTime * 10) / 10
       : undefined
   )
@@ -40,15 +55,33 @@ export function CompareScreen() {
   const pause = usePlayer((s) => s.pause)
   const seek = usePlayer((s) => s.seek)
 
-  const column = (id: TrackId, tone: string) => ({
-    key: id,
-    tag: TRACKS[id].title.replace(' and ', ' & '),
-    voice: TRACKS[id].voice,
-    stanzas: TRACKS[id].lyrics,
-    tone,
-    time: singTime,
-    timing: t.timing,
-  })
+  const setSide = (side: Side, id: TrackId) =>
+    navigate({
+      to: '/compare',
+      search: { ...pair, [side]: id },
+      replace: true,
+    })
+
+  const column = (side: Side): LyricsColumn => {
+    const id = pair[side]
+    const own = loaded === id
+    return {
+      key: id,
+      tag: shortTitle(id),
+      voice: TRACKS[id].voice,
+      stanzas: TRACKS[id].lyrics,
+      color: `var(--${id})`,
+      time: own || mirror ? singTime : undefined,
+      timing: own ? TRACKS[id].timing : mirror ? t.timing : undefined,
+      onSeekLine: (seconds) => {
+        if (!own) play(id)
+        seek(seconds)
+      },
+      playing: own && status === 'playing',
+      onPlay: () => (own && status === 'playing' ? pause() : play(id)),
+      onPick: () => setPicking(side),
+    }
+  }
 
   return (
     <Screen
@@ -57,13 +90,17 @@ export function CompareScreen() {
         <MobilePageHeader
           eyebrow='Side by side'
           title={
-            <span className='font-display text-[19px] font-normal whitespace-nowrap'>
-              <span className='text-fire'>Fire & Water</span>
+            <span className='block max-w-[240px] truncate font-display text-[17px] font-normal'>
+              <span style={{ color: `var(--${pair.left})` }}>
+                {shortTitle(pair.left)}
+              </span>
               <span className='text-muted-foreground'> × </span>
-              <span className='text-water'>Water & Fire</span>
+              <span style={{ color: `var(--${pair.right})` }}>
+                {shortTitle(pair.right)}
+              </span>
             </span>
           }
-          subtitle={`Both by Dustin · ${ALBUM.artist}`}
+          subtitle='Tap a name above a column to swap its song'
           trailing={
             <div className='w-[124px]'>
               <SegmentedControl
@@ -88,10 +125,7 @@ export function CompareScreen() {
       }
     >
       <div className='min-h-0 flex-1'>
-        <LyricsSplit
-          left={column(SPLIT_PAIR.left, 'text-fire')}
-          right={column(SPLIT_PAIR.right, 'text-water')}
-        />
+        <LyricsSplit left={column('left')} right={column('right')} />
       </div>
       <div className='shrink-0 px-4 pt-2 pb-[calc(88px+env(safe-area-inset-bottom))]'>
         <MobileMediaPlayer
@@ -109,6 +143,14 @@ export function CompareScreen() {
           className='rounded-2xl border border-border bg-card px-3 py-2 [--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
         />
       </div>
+      {picking && (
+        <SongPicker
+          title={picking === 'left' ? 'Left column' : 'Right column'}
+          value={pair[picking]}
+          onSelect={(id) => void setSide(picking, id)}
+          onClose={() => setPicking(null)}
+        />
+      )}
     </Screen>
   )
 }
