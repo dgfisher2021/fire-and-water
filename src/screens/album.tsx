@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Button, MobileListGroup, MobilePageHeader } from '@dust-ui/ui'
+import {
+  Button,
+  MobileListGroup,
+  MobilePageHeader,
+  useSwipe,
+} from '@dust-ui/ui'
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { usePlayer } from '@/store/player'
-import { useSwipe } from '@/hooks/use-swipe'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { PlayButton } from '@/components/play-button'

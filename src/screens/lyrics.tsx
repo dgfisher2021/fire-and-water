@@ -9,10 +9,12 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
+  MobileMediaPlayer,
   MobilePageHeader,
   SegmentedControl,
   SheetAction,
   type SheetActionAction,
+  useSwipe,
 } from '@dust-ui/ui'
 import {
   ALBUM,
@@ -25,11 +27,9 @@ import {
 } from '@/data/tracks'
 import { download, share } from '@/lib/share'
 import { selectProgress, usePlayer } from '@/store/player'
-import { useSwipe } from '@/hooks/use-swipe'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
-import { MobileMediaPlayer } from '@/components/ui/mobile-media-player'
 
 const VIEW_OPTIONS = [
   { value: 'single', label: 'Lyrics' },

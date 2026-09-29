@@ -1,8 +1,7 @@
-import { createPortal } from 'react-dom'
-import { MobileListGroup, SheetBottom } from '@dust-ui/ui'
-import { TRACK_ORDER, type TrackId } from '@/data/tracks'
+import { MobileListPicker } from '@dust-ui/ui'
+import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
+import { formatTime } from '@/lib/format'
 import { useShellRoot } from '@/components/shell-context'
-import { TrackRow } from '@/components/track-row'
 
 export type SongPickerProps = {
   title: string
@@ -12,10 +11,29 @@ export type SongPickerProps = {
   onClose: () => void
 }
 
-/**
- * A bottom sheet listing every song. Like the action sheet it portals into
- * the shell root so it slides up over the nav, inside the frame.
- */
+// Every song as a picker item: cover, title, dedication and voice, length.
+const ITEMS = TRACK_ORDER.map((id) => {
+  const t = TRACKS[id]
+  return {
+    value: id,
+    title: (
+      <span className='font-display text-[17px] leading-tight text-foreground'>
+        {t.title}
+      </span>
+    ),
+    subtitle: `${t.dedication} · ${t.voice}`,
+    leading: (
+      <img
+        src={t.art.thumb}
+        alt=''
+        className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+      />
+    ),
+    trailing: formatTime(t.duration),
+  }
+})
+
+/** A bottom sheet listing every song, pinned inside the shell root over the nav. */
 export function SongPicker({
   title,
   value,
@@ -23,32 +41,15 @@ export function SongPicker({
   onClose,
 }: SongPickerProps) {
   const root = useShellRoot()
-  if (!root) return null
-  return createPortal(
-    <SheetBottom
+  return (
+    <MobileListPicker
       title={title}
+      items={ITEMS}
+      value={value}
+      onSelect={onSelect}
       onClose={onClose}
-      grabber
-      scrim
+      container={root}
       maxHeight='78%'
-      background='var(--popover)'
-    >
-      <div className='no-scrollbar min-h-0 flex-1 overflow-y-auto px-4 pt-3 pb-[calc(24px+env(safe-area-inset-bottom))]'>
-        <MobileListGroup>
-          {TRACK_ORDER.map((id) => (
-            <TrackRow
-              key={id}
-              id={id}
-              selected={id === value}
-              onSelect={(next) => {
-                onSelect(next)
-                onClose()
-              }}
-            />
-          ))}
-        </MobileListGroup>
-      </div>
-    </SheetBottom>,
-    root
+    />
   )
 }

@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
-import { TRACKS, TRACK_ORDER } from '@/data/tracks'
-import { cn } from '@/lib/utils'
 import {
   MotionCarousel,
   MotionCarouselContent,
   MotionCarouselIndicators,
-} from '@/components/ui/motion-carousel'
-import { MotionTilt } from '@/components/ui/motion-tilt'
+  MotionTilt,
+} from '@dust-ui/motion'
+import { TRACKS, TRACK_ORDER } from '@/data/tracks'
+import { cn } from '@/lib/utils'
 
 export type ArtworkStageProps = {
   index: number

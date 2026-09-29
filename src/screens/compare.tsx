@@ -1,13 +1,16 @@
 import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { MobilePageHeader, SegmentedControl } from '@dust-ui/ui'
+import {
+  MobileMediaPlayer,
+  MobilePageHeader,
+  SegmentedControl,
+} from '@dust-ui/ui'
 import { TRACKS, sameLyricShape, type TrackId } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
 import { LyricsSplit, type LyricsColumn } from '@/components/lyrics-split'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
-import { MobileMediaPlayer } from '@/components/ui/mobile-media-player'
 
 const VIEW_OPTIONS = [
   { value: 'single', label: 'Lyrics' },

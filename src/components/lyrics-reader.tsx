@@ -1,11 +1,9 @@
 import { useRef, type ReactNode, type RefObject } from 'react'
 import { ChevronsDown } from 'lucide-react'
-import { Button } from '@dust-ui/ui'
+import { Button, useFollowScroll, useScrollFocus } from '@dust-ui/ui'
 import { isLyricLabel } from '@/data/tracks'
 import { activePosition, type LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
-import { useFollowScroll } from '@/hooks/use-follow-scroll'
-import { useScrollFocus } from '@/hooks/use-scroll-focus'
 
 const STANZA = '[data-slot="lyrics-stanza"]'
 
@@ -58,12 +56,11 @@ export function LyricsReader({
           onSeekLine(timing.lines[stanza]?.[line] ?? timing.stanzas[stanza])
       : undefined
 
-  useScrollFocus(pane, STANZA, contentKey, !singing)
+  useScrollFocus(pane, STANZA, contentKey, { enabled: !singing })
   const { detached, resume } = useFollowScroll(
-    pane,
-    STANZA,
     position?.stanza ?? null,
-    singing
+    (i) => pane.current?.querySelectorAll<HTMLElement>(STANZA)[i],
+    { root: pane, enabled: singing }
   )
 
   const lineState = (stanza: number, line: number) => {
