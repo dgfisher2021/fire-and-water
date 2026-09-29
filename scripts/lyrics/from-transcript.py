@@ -21,8 +21,15 @@ PASSES = ["asr-medium", "asr", "asr-strict"]
 MIN_P = 0.35  # drop words Whisper was unsure of
 LINE_GAP = 0.6  # seconds of silence that end a line
 STANZA_GAP = 1.8  # seconds of silence that end a stanza
-MAX_LINE_WORDS = 9
+MAX_LINE_WORDS = 10
+MIN_LINE_WORDS = 3  # punctuation and capitals only break a line this long
 MAX_STANZA_LINES = 4
+PRONOUNS = {"I", "I'm", "I'll", "I've", "I'd"}
+
+
+def starts_segment(word):
+    """Whisper capitalises the first word of every segment it decodes."""
+    return word[:1].isupper() and word not in PRONOUNS
 
 
 def transcript(song_id):
@@ -39,13 +46,23 @@ def tidy(line):
 
 
 def build(words):
+    """Lines end at a pause, at closing punctuation, before a segment-start
+    capital, or at the word cap; stanzas at a longer pause or four lines."""
     stanzas, stanza, line, last_end = [], [], [], None
     for w in words:
         word = w["word"].strip()
         if not word or w["p"] < MIN_P:
             continue
         gap = 0 if last_end is None else w["start"] - last_end
-        if line and (gap >= LINE_GAP or len(line) >= MAX_LINE_WORDS):
+        long_enough = len(line) >= MIN_LINE_WORDS
+        prev = line[-1] if line else ""
+        cut = line and (
+            gap >= LINE_GAP
+            or len(line) >= MAX_LINE_WORDS
+            or (long_enough and (prev[-1:] in ".!?" or prev.endswith(",")))
+            or (long_enough and starts_segment(word))
+        )
+        if cut:
             stanza.append(tidy(line))
             line = []
             if gap >= STANZA_GAP or len(stanza) >= MAX_STANZA_LINES:
