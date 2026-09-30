@@ -22,12 +22,19 @@ export async function share(input: ShareInput) {
 }
 
 /** Trigger a file download without leaving the app. */
-export function download(url: string) {
+export function download(url: string, name = '') {
   const a = document.createElement('a')
   a.href = url
-  a.download = ''
+  a.download = name
   a.rel = 'noopener'
   document.body.append(a)
   a.click()
   a.remove()
+}
+
+/** Download text the app built (a lyrics file, a timing fragment) as `name`. */
+export function downloadText(name: string, text: string, type = 'text/plain') {
+  const url = URL.createObjectURL(new Blob([text], { type }))
+  download(url, name)
+  URL.revokeObjectURL(url)
 }

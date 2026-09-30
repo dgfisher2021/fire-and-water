@@ -15,6 +15,7 @@ import {
   type SheetActionAction,
   useSwipe,
 } from '@dust-ui/ui'
+import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
 import {
   ALBUM,
@@ -27,17 +28,20 @@ import {
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
-import { download, share } from '@/lib/share'
+import { toLrc } from '@/lib/lrc'
+import { download, downloadText, share } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
+import { Waveform } from '@/components/waveform'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
-const MEDIA_VARS =
+/** The media player in the open track's voice. */
+export const MEDIA_VARS =
   '[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
 
 export function LyricsScreen() {
@@ -163,6 +167,12 @@ export function LyricsScreen() {
       onClick: () => download(t.audioFile),
     },
   ]
+  const lrc = toLrc(t)
+  if (lrc)
+    actions.push({
+      label: 'Download lyrics (.lrc)',
+      onClick: () => downloadText(`${track}.lrc`, lrc),
+    })
   if (t.driveLink) {
     const link = t.driveLink
     actions.push({
@@ -250,6 +260,15 @@ export function LyricsScreen() {
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
               className={MEDIA_VARS}
+            />
+            <Waveform
+              bins={envelopes[t.audioFile as keyof typeof envelopes]}
+              progress={progress}
+              onSeek={(ratio) => {
+                if (!isCurrent) play(track)
+                seek(ratio * duration)
+              }}
+              className='mt-2 h-7 px-5'
             />
           </div>
         </div>

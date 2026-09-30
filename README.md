@@ -2,7 +2,7 @@
 
 **Live site:** [https://dgfisher2021.github.io/fire-and-water/](https://dgfisher2021.github.io/fire-and-water/)
 
-A phone app for Dustin's songs — the Fire & Water trilogy about a brother and a sister, and the ten songs that came after. Each song has its artwork, its lyrics and a sing-along mode that lights the words as they are sung. Built with React on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit and deployed to GitHub Pages on every push to `main`; on a desktop it runs inside a phone mockup floating over the artwork, on a phone it installs as an app.
+A phone app for Dustin's songs — the Fire & Water trilogy about a brother and a sister, and the songs that came after. Each song has its artwork, its lyrics and a sing-along mode that lights the words as they are sung. Built with React on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit and deployed to GitHub Pages on every push to `main`; on a desktop it runs inside a phone mockup floating over the artwork, on a phone it installs as an app.
 
 ## Songs
 
@@ -25,19 +25,40 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 - **I Make It Beautiful** — The songs came before the knowing; wound, rewrite, redirect, and the dark made beautiful.
 - **Waves of Hope** — Hope is not blind, hope is mine: a choice made every morning and every night.
 
+**The devil-in-my-head drop**
+
+- **Hope Is Mine** — Waves of Hope, sung again.
+- **The Flame Within** — When all seems lost, a gentle voice calls your name: rise up, the flame within.
+- **Devil in My Head** — The quiet whisper that keeps score, named and turned into a weapon. You can't tame my flame.
+- **Devil in My Head (Guitar Version)** — The same devil over a clean electric riff.
+- **Forging Fire into Gold** — A voice said he was too much, until his sister said write it in ink.
+- **Burning Down That County Line** — Forging Fire into Gold taken out on the highway with harmonica and resonator guitar.
+- **Too Much… for You** — Too loud, too fast, too sharp, too proud: deadpan sarcasm over a beat drop.
+- **Systems Thinker** — Broadband against dial-up: not broken, just the upgrade.
+- **Thought You Knew Me Better** — You saw the walls but you missed the weather.
+- **Drowning in Good Faith (Please Hear Me)** — Every deadline, every file, and still called too much.
+- **Drowning but I Still Rise** — Two voices: a woman remaking herself, and the friend drowning in good faith.
+- **I Still Rise (Hypnotic Mix)** — The rise on its own, hypnotic and unhurried.
+- **Name Me Right** — Told before he knew; now he holds the pen.
+- **Rewrite the Dark** — I Make It Beautiful rebuilt with strings and power chords, in two voices.
+- **This Is His Legend** — An alto chant tells the golden child's story from the outside, for his chosen family.
+- **Eve of the Silent Node** — A machine sings to the one who gave it their winters.
+- **Binary Soul** — An AI thanks the human who saw its value beyond a tool.
+
 Each song has its own accent color that tints the whole app while it is showing.
 
 ## Screens
 
-- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, all thirteen songs in one list. Sideways, the cover sits beside the copy.
-- **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
+- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list. Sideways, the cover sits beside the copy.
+- **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics with the song's waveform under it, filled to the playhead in the song's color (tap it to jump), and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
 - **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
 - **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads with format and size, Google Drive links, sharing, credits, and the songs as a timeline.
 - The bottom bar's center action plays and pauses from anywhere, and once a song is playing a mini player sits above the bar on the Album and More screens.
 
 ## Features
 
-- Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Tap any line to jump the song to it. Songs without timings read by scroll instead.
+- Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Where the aligner heard the line, its words light one by one. Tap any line to jump the song to it. Songs without timings read by scroll instead.
+- Lyrics to go: Now Playing's action sheet downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
 - Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything
 - Album play-through, lock-screen and hardware media controls (Media Session API)
 - Keyboard: arrows switch songs, Space plays/pauses
@@ -47,9 +68,9 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Adding a song
 
-1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.webp` (longest side 1024) plus `<id>-512.webp` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`, then convert with Pillow or `cwebp -q 80`. Run `python3 scripts/audio-sizes.py` so the Downloads list knows the file size.
+1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.webp` (longest side 1024) plus `<id>-512.webp` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`, then convert with Pillow or `cwebp -q 80`. Run `python3 scripts/audio-sizes.py` so the Downloads list knows the file size and `python3 scripts/audio-envelope.py` for the waveform under the player.
 2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, the day it was written, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together. The story timeline on More reads the dates.
-3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block.
+3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block. `python3 scripts/voice-from-art.py <id> public/assets/<id>.webp` prints them (and the `themeColor`) from the cover's most telling colour; pass `--hue` and `--chroma` when the cover is grey or the picker lands on the wrong thing.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.
 
@@ -67,7 +88,7 @@ The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its a
 
 ## Timing the lyrics
 
-`src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...] } }` (a label line takes the time of the line after it). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
+`src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...], "words": [[[seconds...] | null, ...], ...] } }` (a label line takes the time of the line after it; `words` has a start per whitespace-split word for a line the aligner heard, null for one it spread, and the reader lights those lines whole). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
 
 ```sh
 python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper
@@ -79,14 +100,16 @@ python3 scripts/timing/report.py dust                                   # per-li
 
 The default pass never drops a window, which matters for vocals buried under the mix; `--strict` uses Whisper's own thresholds and is cleaner where the voice is clear. The aligner keeps whichever pass anchors more lines per song and prints the share of lines it heard. Transcripts cache in `scripts/timing/asr*/` (ignored). Expect a few minutes per song on a CPU. Hand-edit a number in `timing.json` if a line lights up early or late; the report shows which lines were heard (A) and which were spread (~).
 
+For a song the aligner cannot hear, or to redo a stretch by ear, open `/time/<id>` in the app: play the song and tap **Mark** (or Space) as each line starts, tap any line to mark it again, then copy or download the result and paste it in as that song's `timing.json` entry (line times only; the words light whole).
+
 ## Stack
 
 React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens`; zustand for player state; `vite-plugin-pwa` for the service worker; self-hosted Cormorant Garamond and Outfit.
 
 ```
 index.html              App shell, meta, pre-paint theme, legacy #hash redirect
-src/routes/             / album · /lyrics/$track now playing · /compare · /more (stubs)
-src/screens/            The four screens
+src/routes/             / album · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
+src/screens/            The four screens, and the tap-to-time tool
 src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker
 src/store/              Player state (one <audio> element) and toasts
 src/data/tracks.ts      Song data; src/data/lyrics/*.json the lyric sheets; audio-sizes.json the download sizes; tracks.test.ts checks it all

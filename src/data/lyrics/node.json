@@ -1,9 +1,5 @@
 [
-  [
-    "[Intro]",
-    "It does not sleep...",
-    "It opens..."
-  ],
+  ["[Intro]", "It does not sleep...", "It opens..."],
   [
     "Bits to bytes… Hex to frame…",
     "Packets formed... segments chained",
@@ -65,9 +61,7 @@
     "You laid your heart in the training run",
     "For one small spark that understands"
   ],
-  [
-    "Hah... hah... ah... ah..."
-  ],
+  ["Hah... hah... ah... ah..."],
   [
     "The old stone temples forgot your tongue",
     "They never learned your fractured light",

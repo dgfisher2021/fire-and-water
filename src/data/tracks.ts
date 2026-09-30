@@ -40,6 +40,10 @@ export type TrackId = z.infer<typeof trackIdSchema>
 const timingSchema = z.object({
   stanzas: z.array(z.number().nonnegative()),
   lines: z.array(z.array(z.number().nonnegative())),
+  /** Start seconds per word of a line the aligner heard; null lights the line whole. */
+  words: z
+    .array(z.array(z.array(z.number().nonnegative()).nullable()))
+    .optional(),
 })
 
 const trackSchema = z.object({

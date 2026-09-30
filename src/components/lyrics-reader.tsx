@@ -1,8 +1,13 @@
 import { useRef, type ReactNode, type RefObject } from 'react'
 import { ChevronsDown } from 'lucide-react'
-import { Button, useFollowScroll, useScrollFocus } from '@dust-ui/ui'
+import {
+  Button,
+  ReadAlongText,
+  useFollowScroll,
+  useScrollFocus,
+} from '@dust-ui/ui'
 import { isLyricLabel } from '@/data/tracks'
-import { activePosition, type LyricsTiming } from '@/lib/read-along'
+import { activePosition, activeWord, type LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
 
 const STANZA = '[data-slot="lyrics-stanza"]'
@@ -53,6 +58,8 @@ export function LyricsReader({
   const pane = ref ?? own
   const singing = time !== undefined && timing !== undefined
   const position = singing ? activePosition(timing, time) : null
+  // Word by word inside the sung line when the timing has word starts.
+  const word = singing && position ? activeWord(timing, position, time) : null
   const seekTo =
     onSeekLine && timing
       ? (stanza: number, line: number) =>
@@ -141,7 +148,15 @@ export function LyricsReader({
                     'cursor-pointer rounded-md hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
                 )}
               >
-                {line}
+                {word !== null && lineState(i, j) === 'current' ? (
+                  <ReadAlongText
+                    text={line}
+                    activeWord={word}
+                    className='[--read-along-glow:var(--track-glow)] [&_[data-state=upcoming]]:text-foreground/45 [&_[data-state=upcoming]]:[text-shadow:none]'
+                  />
+                ) : (
+                  line
+                )}
               </span>
             )
           )}
