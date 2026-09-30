@@ -11,7 +11,6 @@
 
 /* Self-hosted brand faces so typography survives offline (PWA). */
 @import '@fontsource-variable/outfit';
-@import '@fontsource/cormorant-garamond/300.css';
 @import '@fontsource/cormorant-garamond/400.css';
 
 /*
@@ -24,7 +23,6 @@
 }
 @import '@fontsource/cormorant-garamond/500.css';
 @import '@fontsource/cormorant-garamond/600.css';
-@import '@fontsource/cormorant-garamond/300-italic.css';
 @import '@fontsource/cormorant-garamond/400-italic.css';
 
 /* Tailwind skips node_modules; register the packages' compiled output so
@@ -33,6 +31,8 @@
 @source '../../node_modules/@dust-ui/motion/dist';
 
 @custom-variant dark (&:is(.dark *));
+/* Landscape phones and other short viewports. */
+@custom-variant short (@media (max-height: 560px));
 
 @theme {
   --font-sans:
@@ -42,7 +42,6 @@
   --animate-bg-drift: bg-drift 36s ease-in-out infinite alternate;
   --animate-breathe: breathe 2.6s ease-in-out infinite;
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-playing-bar: playing-bar 1.1s ease-in-out infinite;
 
   @keyframes bg-drift {
     from {
@@ -72,15 +71,6 @@
     }
   }
   /* The "now playing" bars: each bar bounces between a third and full height. */
-  @keyframes playing-bar {
-    0%,
-    100% {
-      height: 30%;
-    }
-    50% {
-      height: 100%;
-    }
-  }
 }
 
 /*

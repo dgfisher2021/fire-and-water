@@ -29,10 +29,10 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Screens
 
-- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it play through. Below, all thirteen songs in one list.
-- **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics, which scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
+- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, all thirteen songs in one list. Sideways, the cover sits beside the copy.
+- **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
 - **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
-- **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads, Google Drive links, sharing, credits.
+- **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads with format and size, Google Drive links, sharing, credits, and the songs as a timeline.
 - The bottom bar's center action plays and pauses from anywhere, and once a song is playing a mini player sits above the bar on the Album and More screens.
 
 ## Features
@@ -47,7 +47,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Adding a song
 
-1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.jpg` (longest side about 1024) plus `<id>-512.jpg` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`.
+1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.webp` (longest side 1024) plus `<id>-512.webp` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`, then convert with Pillow or `cwebp -q 80`. Run `python3 scripts/audio-sizes.py` so the Downloads list knows the file size.
 2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, the day it was written, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together. The story timeline on More reads the dates.
 3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
@@ -89,9 +89,10 @@ src/routes/             / album · /lyrics/$track now playing · /compare · /mo
 src/screens/            The four screens
 src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker
 src/store/              Player state (one <audio> element) and toasts
-src/data/tracks.ts      Song data; src/data/lyrics/*.json the longer lyrics
+src/data/tracks.ts      Song data; src/data/lyrics/*.json the lyric sheets; audio-sizes.json the download sizes; tracks.test.ts checks it all
 src/styles/index.css    Token contract, presets, brand default, per-song voices
-public/                 Audio (*.m4a, *.mp3) and artwork
+public/                 Audio (*.m4a, *.mp3) and artwork (WebP)
+scripts/                Lyrics import, sing-along timing, audio sizes
 claude/                 Specs and analysis
 ```
 
@@ -110,6 +111,7 @@ pnpm install
 pnpm dev        # http://localhost:4600
 pnpm build      # typecheck + production build
 pnpm lint
+pnpm test       # data checks: files, sheets, timing, sizes
 ```
 
 ### Dust UI agent tooling

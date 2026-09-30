@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import {
   Button,
@@ -16,7 +16,7 @@ import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { TrackRow } from '@/components/track-row'
 
-const AUTOPLAY_MS = 10_000
+const AUTOPLAY_MS = 15_000
 
 export function AlbumScreen() {
   const framed = useFramed()
@@ -27,6 +27,9 @@ export function AlbumScreen() {
   const loaded = usePlayer((s) => s.track)
   const play = usePlayer((s) => s.play)
   const pause = usePlayer((s) => s.pause)
+  // The covers turn on their own until the first touch or key; after that
+  // the reader is in charge.
+  const [interacted, setInteracted] = useState(false)
   const track = TRACK_ORDER[index]
   const t = TRACKS[track]
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
@@ -43,8 +46,9 @@ export function AlbumScreen() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') step(1)
-      else if (e.key === 'ArrowLeft') step(-1)
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+      setInteracted(true)
+      step(e.key === 'ArrowRight' ? 1 : -1)
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
@@ -66,28 +70,32 @@ export function AlbumScreen() {
         />
       }
     >
-      <div ref={swipeRef} className='px-4 pt-1 text-center'>
+      <div
+        ref={swipeRef}
+        onPointerDownCapture={() => setInteracted(true)}
+        className='px-4 pt-1 text-center short:text-left'
+      >
         <ArtworkStage
           index={index}
           onIndexChange={setIndex}
-          autoplayMs={anyPlaying ? 0 : AUTOPLAY_MS}
+          autoplayMs={anyPlaying || interacted ? 0 : AUTOPLAY_MS}
           className='animate-fade-up'
         >
           <div
             key={track}
             className='min-h-[92px] animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
           >
-            <h2 className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700'>
+            <h2 className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700 short:text-[22px]'>
               {t.title}
             </h2>
             <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>
               {t.dedication} · {formatTime(t.duration)}
             </p>
-            <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60'>
+            <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60 short:mx-0 short:max-w-[440px]'>
               {t.description}
             </p>
           </div>
-          <div className='mt-4 flex w-full items-center justify-center gap-3'>
+          <div className='mt-4 flex w-full items-center justify-center gap-3 short:justify-start'>
             <PlayButton
               playing={isActive && status === 'playing'}
               loading={isActive && status === 'loading'}

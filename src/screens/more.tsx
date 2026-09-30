@@ -6,7 +6,9 @@ import {
   MobileTimeline,
   type MobileTimelineItem,
 } from '@dust-ui/ui'
+import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
+import { audioLabel } from '@/lib/format'
 import { download, share } from '@/lib/share'
 import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
@@ -56,16 +58,16 @@ export function MoreScreen() {
           />
         </MobileListGroup>
 
-        <MobileListGroup
-          label='Download'
-          footer='The trilogy as M4A, the rest as MP3.'
-        >
+        <MobileListGroup label='Download'>
           {TRACK_ORDER.map((id) => (
             <MobileListRow
               key={id}
               icon={Download}
               label={TRACKS[id].title}
-              value={TRACKS[id].voice}
+              value={audioLabel(
+                TRACKS[id].audioFile,
+                sizes[TRACKS[id].audioFile as keyof typeof sizes]
+              )}
               onClick={() => download(TRACKS[id].audioFile)}
             />
           ))}

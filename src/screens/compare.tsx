@@ -74,6 +74,7 @@ export function CompareScreen() {
           ? `${TRACKS[id].voice} · transcribed`
           : TRACKS[id].voice,
       stanzas: TRACKS[id].lyrics,
+      lang: TRACKS[id].lang,
       color: `var(--${id}-deep)`,
       colorDark: `var(--${id})`,
       time: own || mirror ? singTime : undefined,
@@ -105,7 +106,6 @@ export function CompareScreen() {
               </span>
             </span>
           }
-          subtitle='Tap a title to swap its song'
           statusBarInset={framed}
         />
       }

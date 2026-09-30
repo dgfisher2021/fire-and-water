@@ -15,6 +15,7 @@ import {
   type SheetActionAction,
   useSwipe,
 } from '@dust-ui/ui'
+import sizes from '@/data/audio-sizes.json'
 import {
   ALBUM,
   TRACKS,
@@ -26,11 +27,19 @@ import {
   writtenDate,
   type TrackId,
 } from '@/data/tracks'
+import { audioLabel } from '@/lib/format'
 import { download, share } from '@/lib/share'
+import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
+import { useMediaQuery } from '@/hooks/use-media-query'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
+
+// Landscape phones and the like: no room for the card at all.
+const SHORT_QUERY = '(max-height: 560px)'
+const MEDIA_VARS =
+  '[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
 
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
@@ -60,6 +69,21 @@ export function LyricsScreen() {
   const seek = usePlayer((s) => s.seek)
   const setCarouselIndex = usePlayer((s) => s.setCarouselIndex)
   const [sheet, setSheet] = useState(false)
+
+  // The card folds to a bar once the words have scrolled up (or the pane
+  // follows the song there) and unfolds at the top; short viewports never
+  // show the card. Keyed by track so a new song starts unfolded.
+  const short = useMediaQuery(SHORT_QUERY)
+  const pane = useRef<HTMLDivElement>(null)
+  const [scrolledTrack, setScrolledTrack] = useState<TrackId | null>(null)
+  const collapsed = short || scrolledTrack === track
+  useEffect(() => {
+    const el = pane.current
+    if (!el) return
+    const onScroll = () => setScrolledTrack(el.scrollTop > 48 ? track : null)
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [track])
 
   // The album slide (and so the theme) follows the open track.
   useEffect(() => {
@@ -135,7 +159,10 @@ export function LyricsScreen() {
         }),
     },
     { label: 'Share song', onClick: onShare },
-    { label: 'Download audio', onClick: () => download(t.audioFile) },
+    {
+      label: `Download ${audioLabel(t.audioFile, sizes[t.audioFile as keyof typeof sizes])}`,
+      onClick: () => download(t.audioFile),
+    },
   ]
   if (t.driveLink) {
     const link = t.driveLink
@@ -166,7 +193,10 @@ export function LyricsScreen() {
         <MobilePageHeader
           eyebrow={t.voice}
           title={
-            <span className='line-clamp-2 font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'>
+            <span
+              lang={t.lang}
+              className='line-clamp-2 font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'
+            >
               {t.title}
             </span>
           }
@@ -191,36 +221,75 @@ export function LyricsScreen() {
       }
     >
       <div className='shrink-0 px-4 pb-1'>
-        <MobileMediaPlayer
-          title={t.dedication}
-          artist={ALBUM.title}
-          artwork={
-            <img
-              src={t.art.thumb}
-              alt=''
-              className='size-12 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+        <div
+          inert={collapsed}
+          className={cn(
+            'grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none',
+            collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr]'
+          )}
+        >
+          <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
+            <MobileMediaPlayer
+              title={t.dedication}
+              artist={ALBUM.title}
+              artwork={
+                <img
+                  src={t.art.thumb}
+                  alt=''
+                  className='size-12 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+                />
+              }
+              duration={duration}
+              progress={progress}
+              onSeek={(ratio) => {
+                if (!isCurrent) play(track)
+                seek(ratio * duration)
+              }}
+              playing={playing}
+              loading={loading}
+              onPlayPause={() => (playing ? pause() : play(track))}
+              onSkipBack={() => goTo(adjacentTrack(track, -1))}
+              onSkipForward={() => goTo(adjacentTrack(track, 1))}
+              className={MEDIA_VARS}
             />
-          }
-          duration={duration}
-          progress={progress}
-          onSeek={(ratio) => {
-            if (!isCurrent) play(track)
-            seek(ratio * duration)
-          }}
-          playing={playing}
-          loading={loading}
-          onPlayPause={() => (playing ? pause() : play(track))}
-          onSkipBack={() => goTo(adjacentTrack(track, -1))}
-          onSkipForward={() => goTo(adjacentTrack(track, 1))}
-          className='[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
-        />
+          </div>
+        </div>
+        <div
+          inert={!collapsed}
+          className={cn(
+            'grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none',
+            collapsed ? 'grid-rows-[1fr]' : 'grid-rows-[0fr] opacity-0'
+          )}
+        >
+          <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
+            <MobileMediaPlayer
+              variant='bar'
+              title={t.title}
+              duration={duration}
+              progress={progress}
+              onSeek={(ratio) => {
+                if (!isCurrent) play(track)
+                seek(ratio * duration)
+              }}
+              playing={playing}
+              loading={loading}
+              onPlayPause={() => (playing ? pause() : play(track))}
+              className={cn(
+                'rounded-2xl border border-border bg-card/85 px-3 py-2 backdrop-blur-md',
+                MEDIA_VARS
+              )}
+            />
+          </div>
+        </div>
       </div>
 
       <div ref={swipeRef} className='min-h-0 flex-1'>
         {t.lyrics.length > 0 ? (
           <LyricsReader
             key={track}
+            ref={pane}
             stanzas={t.lyrics}
+            lang={t.lang}
             contentKey={track}
             time={singTime}
             timing={t.timing}

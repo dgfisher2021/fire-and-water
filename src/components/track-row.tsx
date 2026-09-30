@@ -1,9 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
-import { MobileMediaRow } from '@dust-ui/ui'
+import { MobileMediaRow, MobilePlayingBars } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { usePlayer } from '@/store/player'
-import { PlayingBars } from '@/components/playing-bars'
 
 export type TrackRowProps = {
   id: TrackId
@@ -38,9 +37,13 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
       subtitle={`${t.dedication} · ${t.voice}`}
       value={formatTime(t.duration)}
       state={selected ? 'selected' : active ? 'active' : 'idle'}
+      // The row's own bars cannot know playing from paused; these can.
       trailing={
         active ? (
-          <PlayingBars active={status === 'playing' || status === 'loading'} />
+          <MobilePlayingBars
+            active={status === 'playing' || status === 'loading'}
+            color='var(--track-bright)'
+          />
         ) : undefined
       }
       onClick={() => {

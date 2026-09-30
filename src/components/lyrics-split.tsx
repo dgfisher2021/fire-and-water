@@ -10,6 +10,8 @@ export type LyricsColumn = {
   tag: ReactNode
   voice: ReactNode
   stanzas: ReadonlyArray<ReadonlyArray<string>>
+  /** Language of the words (BCP 47). */
+  lang?: string
   /** CSS colors for the column tag on light and dark surfaces (the song's deep and bright tones). */
   color: string
   colorDark: string
@@ -51,6 +53,7 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
           <LyricsReader
             ref={pane}
             stanzas={column.stanzas}
+            lang={column.lang}
             contentKey={column.key}
             time={column.time}
             timing={column.timing}
@@ -101,7 +104,7 @@ export function LyricsSplit({ left, right, className }: LyricsSplitProps) {
                   column.tag
                 )}
               </div>
-              <span className='mt-0.5 block text-[9px] tracking-[1.5px] opacity-60'>
+              <span className='mt-0.5 block text-[10px] tracking-[1.5px] opacity-70'>
                 {column.voice}
               </span>
             </div>
