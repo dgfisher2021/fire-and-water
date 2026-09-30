@@ -132,6 +132,74 @@
   --waves-deep: oklch(0.36 0.06 110);
   --waves-glow: oklch(0.66 0.09 105 / 40%);
   --waves-ink: oklch(0.22 0.04 105);
+  --devil: oklch(0.78 0.07 255); /* night blue */
+  --devil-deep: oklch(0.37 0.08 255);
+  --devil-glow: oklch(0.66 0.07 255 / 42%);
+  --devil-ink: oklch(0.22 0.04 255);
+  --guitar: oklch(0.78 0.1 55); /* amber bokeh */
+  --guitar-deep: oklch(0.37 0.11 55);
+  --guitar-glow: oklch(0.66 0.1 55 / 42%);
+  --guitar-ink: oklch(0.22 0.04 55);
+  --systems: oklch(0.78 0.13 254); /* circuit blue */
+  --systems-deep: oklch(0.37 0.14 254);
+  --systems-glow: oklch(0.66 0.13 254 / 42%);
+  --systems-ink: oklch(0.22 0.04 254);
+  --better: oklch(0.78 0.06 249); /* mountain night */
+  --better-deep: oklch(0.37 0.07 249);
+  --better-glow: oklch(0.66 0.06 249 / 42%);
+  --better-ink: oklch(0.22 0.04 249);
+  --county: oklch(0.78 0.04 80); /* headlight white and asphalt */
+  --county-deep: oklch(0.37 0.04 80);
+  --county-glow: oklch(0.66 0.04 80 / 42%);
+  --county-ink: oklch(0.22 0.04 80);
+  --forging: oklch(0.78 0.13 75); /* forge gold */
+  --forging-deep: oklch(0.37 0.14 75);
+  --forging-glow: oklch(0.66 0.13 75 / 42%);
+  --forging-ink: oklch(0.22 0.04 75);
+  --toomuch: oklch(0.78 0.15 30); /* red dress */
+  --toomuch-deep: oklch(0.37 0.17 30);
+  --toomuch-glow: oklch(0.66 0.15 30 / 42%);
+  --toomuch-ink: oklch(0.22 0.04 30);
+  --name: oklch(0.78 0.1 72); /* gold on stone */
+  --name-deep: oklch(0.37 0.11 72);
+  --name-glow: oklch(0.66 0.1 72 / 42%);
+  --name-ink: oklch(0.22 0.04 72);
+  --rewrite: oklch(0.78 0.11 80); /* gilded storm */
+  --rewrite-deep: oklch(0.37 0.12 80);
+  --rewrite-glow: oklch(0.66 0.11 80 / 42%);
+  --rewrite-ink: oklch(0.22 0.04 80);
+  --rise: oklch(0.78 0.09 66); /* morning gold */
+  --rise-deep: oklch(0.37 0.1 66);
+  --rise-glow: oklch(0.66 0.09 66 / 42%);
+  --rise-ink: oklch(0.22 0.04 66);
+  --hypnotic: oklch(0.78 0.13 55); /* sunset orange */
+  --hypnotic-deep: oklch(0.37 0.14 55);
+  --hypnotic-glow: oklch(0.66 0.13 55 / 42%);
+  --hypnotic-ink: oklch(0.22 0.04 55);
+  --faith: oklch(0.78 0.04 240); /* smoke */
+  --faith-deep: oklch(0.37 0.04 240);
+  --faith-glow: oklch(0.66 0.04 240 / 42%);
+  --faith-ink: oklch(0.22 0.04 240);
+  --legend: oklch(0.78 0.11 205); /* teal glow */
+  --legend-deep: oklch(0.37 0.12 205);
+  --legend-glow: oklch(0.66 0.11 205 / 42%);
+  --legend-ink: oklch(0.22 0.04 205);
+  --node: oklch(0.78 0.16 264); /* electric blue */
+  --node-deep: oklch(0.37 0.18 264);
+  --node-glow: oklch(0.66 0.16 264 / 42%);
+  --node-ink: oklch(0.22 0.04 264);
+  --binary: oklch(0.78 0.12 320); /* magenta neuron */
+  --binary-deep: oklch(0.37 0.13 320);
+  --binary-glow: oklch(0.66 0.12 320 / 42%);
+  --binary-ink: oklch(0.22 0.04 320);
+  --flame: oklch(0.78 0.07 68); /* ochre canvas */
+  --flame-deep: oklch(0.37 0.08 68);
+  --flame-glow: oklch(0.66 0.07 68 / 42%);
+  --flame-ink: oklch(0.22 0.04 68);
+  --hope: oklch(0.78 0.07 310); /* mauve */
+  --hope-deep: oklch(0.37 0.08 310);
+  --hope-glow: oklch(0.66 0.07 310 / 42%);
+  --hope-ink: oklch(0.22 0.04 310);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -290,6 +358,108 @@
   --track-deep: var(--waves-deep);
   --track-glow: var(--waves-glow);
   --track-ink: var(--waves-ink);
+}
+:root[data-track='devil'] {
+  --track-bright: var(--devil);
+  --track-deep: var(--devil-deep);
+  --track-glow: var(--devil-glow);
+  --track-ink: var(--devil-ink);
+}
+:root[data-track='guitar'] {
+  --track-bright: var(--guitar);
+  --track-deep: var(--guitar-deep);
+  --track-glow: var(--guitar-glow);
+  --track-ink: var(--guitar-ink);
+}
+:root[data-track='systems'] {
+  --track-bright: var(--systems);
+  --track-deep: var(--systems-deep);
+  --track-glow: var(--systems-glow);
+  --track-ink: var(--systems-ink);
+}
+:root[data-track='better'] {
+  --track-bright: var(--better);
+  --track-deep: var(--better-deep);
+  --track-glow: var(--better-glow);
+  --track-ink: var(--better-ink);
+}
+:root[data-track='county'] {
+  --track-bright: var(--county);
+  --track-deep: var(--county-deep);
+  --track-glow: var(--county-glow);
+  --track-ink: var(--county-ink);
+}
+:root[data-track='forging'] {
+  --track-bright: var(--forging);
+  --track-deep: var(--forging-deep);
+  --track-glow: var(--forging-glow);
+  --track-ink: var(--forging-ink);
+}
+:root[data-track='toomuch'] {
+  --track-bright: var(--toomuch);
+  --track-deep: var(--toomuch-deep);
+  --track-glow: var(--toomuch-glow);
+  --track-ink: var(--toomuch-ink);
+}
+:root[data-track='name'] {
+  --track-bright: var(--name);
+  --track-deep: var(--name-deep);
+  --track-glow: var(--name-glow);
+  --track-ink: var(--name-ink);
+}
+:root[data-track='rewrite'] {
+  --track-bright: var(--rewrite);
+  --track-deep: var(--rewrite-deep);
+  --track-glow: var(--rewrite-glow);
+  --track-ink: var(--rewrite-ink);
+}
+:root[data-track='rise'] {
+  --track-bright: var(--rise);
+  --track-deep: var(--rise-deep);
+  --track-glow: var(--rise-glow);
+  --track-ink: var(--rise-ink);
+}
+:root[data-track='hypnotic'] {
+  --track-bright: var(--hypnotic);
+  --track-deep: var(--hypnotic-deep);
+  --track-glow: var(--hypnotic-glow);
+  --track-ink: var(--hypnotic-ink);
+}
+:root[data-track='faith'] {
+  --track-bright: var(--faith);
+  --track-deep: var(--faith-deep);
+  --track-glow: var(--faith-glow);
+  --track-ink: var(--faith-ink);
+}
+:root[data-track='legend'] {
+  --track-bright: var(--legend);
+  --track-deep: var(--legend-deep);
+  --track-glow: var(--legend-glow);
+  --track-ink: var(--legend-ink);
+}
+:root[data-track='node'] {
+  --track-bright: var(--node);
+  --track-deep: var(--node-deep);
+  --track-glow: var(--node-glow);
+  --track-ink: var(--node-ink);
+}
+:root[data-track='binary'] {
+  --track-bright: var(--binary);
+  --track-deep: var(--binary-deep);
+  --track-glow: var(--binary-glow);
+  --track-ink: var(--binary-ink);
+}
+:root[data-track='flame'] {
+  --track-bright: var(--flame);
+  --track-deep: var(--flame-deep);
+  --track-glow: var(--flame-glow);
+  --track-ink: var(--flame-ink);
+}
+:root[data-track='hope'] {
+  --track-bright: var(--hope);
+  --track-deep: var(--hope-deep);
+  --track-glow: var(--hope-glow);
+  --track-ink: var(--hope-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

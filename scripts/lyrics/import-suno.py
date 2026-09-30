@@ -65,7 +65,8 @@ def typeset(line):
 
 def parse_sheet(text):
     """Stanzas at blank lines; separator lines dropped; a paragraph that is
-    only labels joins the stanza after it."""
+    only labels joins the stanza after it, or is dropped when nothing is sung
+    after it (an outro cue)."""
     text = text.replace("\r\n", "\n").lstrip("\ufeff").strip()
     if len(text) < 20:
         return None
@@ -79,8 +80,6 @@ def parse_sheet(text):
             continue
         stanzas.append(pending + lines)
         pending = []
-    if pending:
-        stanzas.append(pending)
     return stanzas
 
 
