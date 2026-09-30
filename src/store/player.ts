@@ -102,8 +102,11 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   },
 }))
 
+/** Playhead as 0 to 1, in thousandths so subscribers re-render a few times a second, not every frame. */
 export const selectProgress = (s: PlayerState) =>
-  s.duration > 0 ? Math.min(1, s.currentTime / s.duration) : 0
+  s.duration > 0
+    ? Math.round(Math.min(1, s.currentTime / s.duration) * 1000) / 1000
+    : 0
 
 /** Playing or buffering this track. */
 export const selectIsActive = (track: TrackId) => (s: PlayerState) =>

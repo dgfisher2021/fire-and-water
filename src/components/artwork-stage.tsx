@@ -35,9 +35,15 @@ export function ArtworkStage({
       onIndexChange={onIndexChange}
       variant='fade'
       autoplayInterval={autoplayMs}
-      className={cn('flex w-full flex-col items-center', className)}
+      className={cn(
+        'flex w-full flex-col items-center short:flex-row short:gap-5',
+        className
+      )}
     >
-      <MotionTilt rotation={7} className='relative mb-5 size-[216px]'>
+      <MotionTilt
+        rotation={7}
+        className='relative mb-5 size-[216px] short:mb-0 short:size-[150px] short:shrink-0'
+      >
         <div
           aria-hidden
           data-slot='artwork-glow'
@@ -55,11 +61,11 @@ export function ArtworkStage({
           ))}
         </MotionCarouselContent>
       </MotionTilt>
-      {children}
-      {/* Dots opt out of the 44px touch rule; the whole row is the target. */}
+      <div className='short:min-w-0 short:flex-1'>{children}</div>
+      {/* Each dot is a 20px target drawn as a 6px mark; thirteen fit a phone. */}
       <MotionCarouselIndicators
-        className='static mt-4 translate-x-0 gap-3 py-2'
-        dotClassName='size-2 min-h-0 bg-foreground/15 transition-[background-color,transform] duration-400 data-active:scale-[1.3] data-active:bg-foreground/50'
+        className='static mt-3 translate-x-0 gap-1 py-1 short:hidden'
+        dotClassName="size-5 min-h-0 bg-transparent before:block before:size-1.5 before:rounded-full before:bg-foreground/15 before:transition-[background-color,transform] before:duration-400 before:content-[''] data-active:bg-transparent data-active:before:scale-[1.3] data-active:before:bg-foreground/50"
       />
     </MotionCarousel>
   )

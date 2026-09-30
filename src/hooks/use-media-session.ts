@@ -25,7 +25,7 @@ export function useMediaSession() {
         {
           src: new URL(t.art.thumb, document.baseURI).href,
           sizes: '512x512',
-          type: 'image/jpeg',
+          type: 'image/webp',
         },
       ],
     })

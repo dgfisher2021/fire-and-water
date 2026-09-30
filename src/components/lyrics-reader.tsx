@@ -9,6 +9,8 @@ const STANZA = '[data-slot="lyrics-stanza"]'
 
 export type LyricsReaderProps = {
   stanzas: ReadonlyArray<ReadonlyArray<string>>
+  /** Language of the words (BCP 47), for screen readers and hyphenation. */
+  lang?: string
   /** Identifies the content; re-arms reading focus when it changes. */
   contentKey: string
   /**
@@ -37,6 +39,7 @@ export type LyricsReaderProps = {
  */
 export function LyricsReader({
   stanzas,
+  lang,
   contentKey,
   time,
   timing,
@@ -75,6 +78,7 @@ export function LyricsReader({
   return (
     <div
       ref={pane}
+      lang={lang}
       data-slot='lyrics-reader'
       data-size={size}
       data-singing={singing || undefined}
@@ -109,7 +113,7 @@ export function LyricsReader({
               <span
                 key={j}
                 data-slot='lyrics-label'
-                className='mb-1 block font-sans text-[10px] font-medium tracking-[3px] text-primary uppercase opacity-80'
+                className='mb-1 block font-sans text-[11px] font-medium tracking-[3px] text-primary uppercase opacity-90'
               >
                 {line.slice(1, -1)}
               </span>

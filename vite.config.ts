@@ -16,7 +16,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/*.jpg', 'assets/*.png', 'robots.txt'],
+      includeAssets: ['assets/*.webp', 'assets/*.png', 'robots.txt'],
       manifest: {
         name: 'Fire & Water — Dustin & Alex',
         short_name: 'Fire & Water',
@@ -34,7 +34,7 @@ export default defineConfig({
       workbox: {
         // App shell, artwork and latin fonts precache; audio never does:
         // cached full bodies break range requests (seeking) in some browsers.
-        globPatterns: ['**/*.{js,css,html,woff2,jpg,png,svg,webmanifest}'],
+        globPatterns: ['**/*.{js,css,html,woff2,webp,png,svg,webmanifest}'],
         globIgnores: [
           '**/*.m4a',
           '**/*.mp3',
