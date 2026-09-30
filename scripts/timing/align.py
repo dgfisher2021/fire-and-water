@@ -1,12 +1,14 @@
 """Align each song's lyrics to its Whisper word timestamps and write
-src/data/timing.json as { id: { stanzas: [s], lines: [[s]] } }.
+src/data/timing.json as { id: { stanzas: [s], lines: [[s]], words: [[[s] | null]] } }.
 
 Monotonic sequence alignment (Needleman-Wunsch over normalized tokens with
 fuzzy matches) maps lyric tokens to heard words. A line is anchored at its
 first strongly matched word once at least half of it was heard; unheard
 lines are spread between their anchored neighbours in proportion to their
 length. A stanza starts at its first line; a label line takes the time of the
-line after it.
+line after it. An anchored line also gets a start per word (its heard words
+as heard, the rest spread between them), so the reader can light word by
+word; other lines get null and light as a whole.
 Every transcript pass next to this file (asr/, asr-strict/, ...) is tried and
 the one that anchors the most lines wins.
 
@@ -128,6 +130,35 @@ def spread(values, weights, duration, heard_starts):
     return [round(v, 2) for v in out], unsung
 
 
+def word_times(n, heard, start, end):
+    """A start per word of one anchored line with `n` words: `heard` words
+    [(index, time)] keep their time (one that runs backwards is dropped), the
+    words before the first are spread from the line's start, the ones between
+    two heard words are spread between them, and the tail runs at LEAD_IN per
+    word up to the next line's start."""
+    kept = []
+    for idx, t in sorted(heard):
+        if not kept or t >= kept[-1][1]:
+            kept.append((idx, t))
+    times = [None] * n
+    for idx, t in kept:
+        times[idx] = max(start, t)
+    first = kept[0][0]
+    for k in range(first):
+        times[k] = start + (times[first] - start) * k / first
+    for (a, ta), (b, tb) in zip(kept, kept[1:]):
+        for k in range(a + 1, b):
+            times[k] = times[a] + (times[b] - times[a]) * (k - a) / (b - a)
+    for k in range(kept[-1][0] + 1, n):
+        times[k] = min(end, times[k - 1] + LEAD_IN)
+    out, prev = [], start - 0.05
+    for t in times:
+        t = max(t, prev + 0.05)
+        out.append(round(t, 2))
+        prev = t
+    return out
+
+
 def time_song(stanzas, asr):
     """(timing, anchors, sung line count) for one song against one transcript."""
     words = asr["words"]
@@ -136,40 +167,57 @@ def time_song(stanzas, asr):
     asr_tokens = [t for t, _ in heard]
     starts = [s for _, s in heard]
 
-    lyric_tokens, owner, pos, per_line = [], [], [], {}
+    # A lyric token remembers its index among the line's alignable tokens
+    # (for the anchor lead-in) and among its whitespace-split words (so word
+    # times line up with what the reader splits on).
+    lyric_tokens, owner, pos, word_pos, per_line, word_count = [], [], [], [], {}, {}
     for si, lines in enumerate(stanzas):
         for li, line in enumerate(lines):
             if is_label(line):
                 continue
-            toks = [t for t in (norm(x) for x in line.split()) if t]
+            raw = line.split()
+            word_count[(si, li)] = len(raw)
+            toks = [(k, t) for k, t in ((k, norm(x)) for k, x in enumerate(raw)) if t]
             per_line[(si, li)] = len(toks)
-            for idx, t in enumerate(toks):
+            for idx, (k, t) in enumerate(toks):
                 lyric_tokens.append(t)
                 owner.append((si, li))
                 pos.append(idx)
+                word_pos.append(k)
     mapping = align(lyric_tokens, asr_tokens)
 
     hits = {}
     for tok_idx, mp in enumerate(mapping):
         if mp is not None:
-            hits.setdefault(owner[tok_idx], []).append((pos[tok_idx], starts[mp]))
-    anchors = {}
+            hits.setdefault(owner[tok_idx], []).append((pos[tok_idx], word_pos[tok_idx], starts[mp]))
+    anchors, heard_words = {}, {}
     for key, found in hits.items():
         if len(found) < max(1, math.ceil(per_line[key] / 2)):
             continue
         # Whisper stretches a word over a preceding pause; skip a first word
         # that sits far ahead of the next heard word of the same line.
         k = 0
-        while k + 1 < len(found) and found[k + 1][1] - found[k][1] > MAX_WORD_GAP:
+        while k + 1 < len(found) and found[k + 1][2] - found[k][2] > MAX_WORD_GAP:
             k += 1
-        idx, t = found[k]
+        idx, _, t = found[k]
         anchors[key] = max(0.0, t - LEAD_IN * idx)
+        heard_words[key] = [(w, t) for _, w, t in found[k:]]
 
     flat_keys = [(si, li) for si, lines in enumerate(stanzas) for li, line in enumerate(lines) if not is_label(line)]
     weights = [len(stanzas[si][li]) for si, li in flat_keys]
     flat, unsung_idx = spread([anchors.get(k) for k in flat_keys], weights, asr["duration"], starts)
     line_time = dict(zip(flat_keys, flat))
     unsung = {flat_keys[k] for k in unsung_idx}
+    next_start = {k: flat[i + 1] if i + 1 < len(flat) else asr["duration"] for i, k in enumerate(flat_keys)}
+    words_out = [
+        [
+            word_times(word_count[(si, li)], heard_words[(si, li)], line_time[(si, li)], next_start[(si, li)])
+            if (si, li) in heard_words
+            else None
+            for li in range(len(lines))
+        ]
+        for si, lines in enumerate(stanzas)
+    ]
 
     stanza_out = []
     for si, lines in enumerate(stanzas):
@@ -187,7 +235,7 @@ def time_song(stanzas, asr):
                 after = line_time[(si, li)]
             times.append(round(after, 2))
         lines_out.append(times[::-1])
-    return {"stanzas": stanza_out, "lines": lines_out}, anchors, unsung, len(flat_keys)
+    return {"stanzas": stanza_out, "lines": lines_out, "words": words_out}, anchors, unsung, len(flat_keys)
 
 
 def best_pass(song_id, stanzas):
@@ -203,6 +251,28 @@ def best_pass(song_id, stanzas):
         if best is None or len(anchors) > len(best[1]):
             best = (timing, anchors, unsung, n, d.name, asr)
     return best
+
+
+def dump_timing(timing):
+    """timing.json with the numbers of one stanza on one line, so a time can
+    still be found and hand-edited."""
+
+    def row(value):
+        return json.dumps(value, separators=(", ", ": "))
+
+    out = ["{"]
+    for n, (song_id, t) in enumerate(timing.items()):
+        out.append(f' "{song_id}": {{')
+        out.append(f'  "stanzas": {row(t["stanzas"])},')
+        keys = [k for k in ("lines", "words") if k in t]
+        for m, k in enumerate(keys):
+            out.append(f'  "{k}": [')
+            for i, r in enumerate(t[k]):
+                out.append(f"   {row(r)}" + ("," if i + 1 < len(t[k]) else ""))
+            out.append("  ]" + ("," if m + 1 < len(keys) else ""))
+        out.append(" }" + ("," if n + 1 < len(timing) else ""))
+    out.append("}")
+    return "\n".join(out) + "\n"
 
 
 def main():
@@ -225,7 +295,7 @@ def main():
             f"{song_id}: {len(anchors)}/{n} lines anchored ({100 * len(anchors) / n:.0f}%) via {pass_name}{skipped}, "
             f"first stanza at {result['stanzas'][0]}s, last at {result['stanzas'][-1]}s of {asr['duration']:.0f}s"
         )
-    TIMING_JSON.write_text(json.dumps(timing, indent=1) + "\n", encoding="utf-8")
+    TIMING_JSON.write_text(dump_timing(timing), encoding="utf-8")
 
 
 if __name__ == "__main__":

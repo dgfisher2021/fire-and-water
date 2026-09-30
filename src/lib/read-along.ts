@@ -1,5 +1,13 @@
-/** Start times in seconds: one per stanza, one per line within each stanza. */
-export type LyricsTiming = { stanzas: number[]; lines: number[][] }
+/**
+ * Start times in seconds: one per stanza, one per line within each stanza,
+ * and, for a line the aligner heard, one per whitespace-split word (null
+ * where a line lights as a whole).
+ */
+export type LyricsTiming = {
+  stanzas: number[]
+  lines: number[][]
+  words?: (number[] | null)[][]
+}
 
 export type LyricsPosition = { stanza: number; line: number }
 
@@ -27,4 +35,25 @@ export function activePosition(
     if (lines[j] <= t) line = j
   }
   return { stanza, line }
+}
+
+/**
+ * The word being sung in the line at `position`: -1 before its first word,
+ * else the index of the last word started. Null when the line has no word
+ * times, so the reader lights it whole.
+ */
+export function activeWord(
+  timing: LyricsTiming,
+  position: LyricsPosition,
+  time: number,
+  rate = 1
+): number | null {
+  const starts = timing.words?.[position.stanza]?.[position.line]
+  if (!starts) return null
+  const t = time + LOOK_AHEAD / Math.pow(rate, 0.6)
+  let word = -1
+  for (let k = 0; k < starts.length; k++) {
+    if (starts[k] <= t) word = k
+  }
+  return word
 }

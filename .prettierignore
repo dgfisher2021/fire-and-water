@@ -3,3 +3,6 @@ dev-dist
 node_modules
 src/routeTree.gen.ts
 pnpm-lock.yaml
+# Written by scripts/, one stanza or song per line on purpose
+src/data/timing.json
+src/data/audio-envelopes.json

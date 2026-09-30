@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import envelopes from './audio-envelopes.json'
 import sizes from './audio-sizes.json'
 import { TRACKS, TRACK_ORDER, comparePartner, isLyricLabel } from './tracks'
 
@@ -50,12 +51,36 @@ describe.each(TRACK_ORDER)('%s', (id) => {
     expect((sizes as Record<string, number>)[t.audioFile]).toBeGreaterThan(0)
   })
 
+  it('has a waveform on record', () => {
+    expect((envelopes as Record<string, number[]>)[t.audioFile]).toHaveLength(
+      160
+    )
+  })
+
   it('times every line of its sheet, or none', () => {
     if (!t.timing) return
     expect(t.timing.stanzas).toHaveLength(t.lyrics.length)
     expect(t.timing.lines).toHaveLength(t.lyrics.length)
     t.lyrics.forEach((stanza, i) => {
       expect(t.timing?.lines[i], `stanza ${i}`).toHaveLength(stanza.length)
+    })
+  })
+
+  it('times every word of a line it times by word', () => {
+    const words = t.timing?.words
+    if (!words) return
+    expect(words).toHaveLength(t.lyrics.length)
+    t.lyrics.forEach((stanza, i) => {
+      expect(words[i], `stanza ${i}`).toHaveLength(stanza.length)
+      stanza.forEach((line, j) => {
+        const starts = words[i][j]
+        if (starts === null) return
+        expect(isLyricLabel(line), `label ${i}.${j} timed by word`).toBe(false)
+        expect(starts, `${i}.${j}`).toHaveLength(line.split(/\s+/).length)
+        starts.forEach((s, k) => {
+          if (k > 0) expect(s).toBeGreaterThanOrEqual(starts[k - 1])
+        })
+      })
     })
   })
 
