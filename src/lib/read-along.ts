@@ -16,6 +16,12 @@ export type LyricsPosition = { stanza: number; line: number }
  * line is sung rather than after it; faster playback narrows the lead.
  */
 const LOOK_AHEAD = 0.35
+/**
+ * Words get only the render latency (a tenth-second tick plus the colour
+ * transition): a sung word lasts about a third of a second, so the line's
+ * lead would light the word after the one being sung.
+ */
+const WORD_LOOK_AHEAD = 0.1
 
 /** The stanza and line being sung at `time`, or null before the first one. */
 export function activePosition(
@@ -50,7 +56,7 @@ export function activeWord(
 ): number | null {
   const starts = timing.words?.[position.stanza]?.[position.line]
   if (!starts) return null
-  const t = time + LOOK_AHEAD / Math.pow(rate, 0.6)
+  const t = time + WORD_LOOK_AHEAD / Math.pow(rate, 0.6)
   let word = -1
   for (let k = 0; k < starts.length; k++) {
     if (starts[k] <= t) word = k

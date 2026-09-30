@@ -152,7 +152,7 @@ export function LyricsReader({
                   <ReadAlongText
                     text={line}
                     activeWord={word}
-                    className='[--read-along-glow:var(--track-glow)] [&_[data-state=upcoming]]:text-foreground/45 [&_[data-state=upcoming]]:[text-shadow:none]'
+                    className='[&_[data-state=current]]:text-primary [&_[data-state=current]]:[text-shadow:0_0_24px_var(--track-glow),0_0_6px_var(--track-glow)] [&_[data-state=spoken]]:text-foreground [&_[data-state=upcoming]]:text-foreground/35 [&_[data-state=upcoming]]:[text-shadow:none]'
                   />
                 ) : (
                   line
