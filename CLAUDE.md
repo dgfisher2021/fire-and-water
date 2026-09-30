@@ -59,7 +59,7 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   word timestamps aligned to the lyrics, README "Timing the lyrics");
   missing songs read by scroll.
 - `src/components/` app compositions built to Dust UI blocks rules on the
-  published packages (`@dust-ui/ui` 0.11, `motion` 0.5, `tokens` 0.3): no
+  published packages (`@dust-ui/ui` 0.13, `motion` 0.5, `tokens` 0.3): no
   forks remain, the deltas from specs 20 and 22 shipped upstream. What is
   still app-level and why: `LyricsReader` (line-level sing-along; the
   library's read-along is word-level), `MiniPlayer` (adds a progress ring

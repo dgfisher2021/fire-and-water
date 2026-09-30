@@ -23,7 +23,6 @@ import {
   adjacentTrack,
   comparePartner,
   dedicationLine,
-  shortTitle,
   writtenDate,
   type TrackId,
 } from '@/data/tracks'
@@ -151,7 +150,7 @@ export function LyricsScreen() {
   const partner = comparePartner(track)
   const actions: SheetActionAction[] = [
     {
-      label: `Compare with ${shortTitle(partner)}`,
+      label: `Compare with ${TRACKS[partner].title}`,
       onClick: () =>
         void navigate({
           to: '/compare',
