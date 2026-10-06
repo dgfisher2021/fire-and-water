@@ -77,8 +77,21 @@ describe('groupTracks', () => {
     for (const g of groups) {
       expect(g.ids.length).toBeGreaterThan(0)
       for (const id of g.ids) expect(COLLECTION_OF[id]).toBe(g.collection.key)
-      expect(g.ids).toEqual(sortTracks(g.ids, 'album'))
+      const closing: readonly string[] =
+        'closing' in g.collection ? g.collection.closing : []
+      const open = g.ids.filter((id) => !closing.includes(id))
+      expect(open).toEqual(sortTracks(open, 'album'))
+      expect(g.ids.slice(open.length)).toEqual(
+        closing.filter((id) => g.ids.includes(id as (typeof g.ids)[number]))
+      )
     }
+  })
+
+  it('closes the brother-and-sister group with the three originals', () => {
+    const siblings = groupTracks(shuffled).find(
+      (g) => g.collection.key === 'siblings'
+    )
+    expect(siblings?.ids.slice(-3)).toEqual(['pencil', 'fire', 'water'])
   })
 
   it('omits collections none of the given songs belong to', () => {

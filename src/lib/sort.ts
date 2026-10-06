@@ -46,15 +46,27 @@ export function sortTracks(
   return [...ids].sort(COMPARE[sort])
 }
 
-/** The ids by collection, in COLLECTIONS order and album order within; collections with no song given are left out. */
+/**
+ * The ids by collection, in COLLECTIONS order; album order within, except a
+ * collection's `closing` songs, which come last in their given order.
+ * Collections with no song given are left out.
+ */
 export function groupTracks(
   ids: readonly TrackId[]
 ): { collection: Collection; ids: TrackId[] }[] {
-  return COLLECTIONS.map((collection) => ({
-    collection,
-    ids: sortTracks(
-      ids.filter((id) => COLLECTION_OF[id] === collection.key),
-      'album'
-    ),
-  })).filter((group) => group.ids.length > 0)
+  return COLLECTIONS.map((collection) => {
+    const mine = ids.filter((id) => COLLECTION_OF[id] === collection.key)
+    const closing: readonly TrackId[] =
+      'closing' in collection ? collection.closing : []
+    return {
+      collection,
+      ids: [
+        ...sortTracks(
+          mine.filter((id) => !closing.includes(id)),
+          'album'
+        ),
+        ...closing.filter((id) => mine.includes(id)),
+      ],
+    }
+  }).filter((group) => group.ids.length > 0)
 }

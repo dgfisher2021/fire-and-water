@@ -3,7 +3,8 @@ import type { TrackId } from './tracks'
 /**
  * The album by theme, in display order: the brother-and-sister story first.
  * Every song sits in exactly one collection; a version, remix or mashup
- * sits with its original.
+ * sits with its original. A collection's `closing` songs come last in its
+ * group, in that order; the rest keep album order.
  */
 export const COLLECTIONS = [
   {
@@ -11,6 +12,8 @@ export const COLLECTIONS = [
     label: 'Brother and sister',
     blurb:
       'The story at the heart of the album: a boy who trusted pencil, a sister who wrote in ink, and the elements they taught each other.',
+    // The three originals close the group; what grew out of them comes first.
+    closing: ['pencil', 'fire', 'water'],
   },
   {
     key: 'kin',
@@ -54,7 +57,12 @@ export const COLLECTIONS = [
     blurb:
       'A mind that thinks in networks, and the machine it taught to sing back.',
   },
-] as const satisfies readonly { key: string; label: string; blurb: string }[]
+] as const satisfies readonly {
+  key: string
+  label: string
+  blurb: string
+  closing?: readonly TrackId[]
+}[]
 
 export type Collection = (typeof COLLECTIONS)[number]
 export type CollectionKey = Collection['key']
