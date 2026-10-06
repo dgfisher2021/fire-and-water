@@ -18,8 +18,9 @@ pnpm format     # prettier on src/
 A phone app for Dustin's songs, built on the Dust UI mobile kit. Four
 screens behind a `NavBottom` whose center action plays and pauses, with a
 `MiniPlayer` above the bar once a song plays: Album (artwork stage +
-`MobileListGroup` tracklist), Now Playing (`MobileMediaPlayer` card above
-a sing-along lyrics pane), Compare (any two songs in synced columns, picked
+`MobileListGroup` tracklist under collection headers, or a timeline by the
+day written), Now Playing (`NowPlayingCard` above a sing-along lyrics
+pane), Compare (any two songs in synced columns, picked
 through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
 rows for appearance, downloads, Drive links, sharing, credits). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
@@ -32,22 +33,24 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   positioned root (for `SheetAction`/toast portals) and `useFramed`; the
   `short:` variant (max-height 560px) lays the album stage sideways and
   hides the Now Playing card.
-- `src/screens/lyrics.tsx` keeps the media card and the bar transport both
-  mounted and folds one into the other on the pane's scroll position
-  (grid-rows transition, `inert` on the hidden one).
+- `src/screens/lyrics.tsx` keeps the Now Playing card and bar both mounted
+  and folds one into the other on the pane's scroll position (grid-rows
+  transition, `inert` on the hidden one). A row tap on the Album lands
+  here with the card unfolded; the card carries the song's description.
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
 - `src/routes/` `/` album (`?sort=album|title|written`, zod-validated like
   Compare's pair; the default collection view is stripped so the URL stays
-  clean), `/lyrics/$track` now playing, `/compare`, `/more`, `/story` (the
-  songs as `Item` cards with cover and description, oldest first, reached
-  from More, which keeps the More tab lit), and
-  `/time/$track`, the tap-to-time tool (no tab). The URL owns what is
-  open; the store owns playback.
+  clean; `?sort=written` is the timeline More's "The story so far" opens,
+  and `/story` redirects there for old links), `/lyrics/$track` now
+  playing, `/compare`, `/more`, and `/time/$track`, the tap-to-time tool
+  (no tab). The URL owns what is open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
-  element (`src/lib/audio.ts`) by `useAudioEngine`. Album play-through and
-  lock-screen prev/next go through `requestTrack`, which the lyrics screen
-  follows. Subscribe with selectors: `currentTime` updates every frame.
+  element (`src/lib/audio.ts`) by `useAudioEngine`. A finished song hands
+  off by `playMode` (`nextAfterEnd`: album order, repeat, shuffle; the
+  card's last control cycles it); that and lock-screen prev/next go through
+  `requestTrack`, which the lyrics screen follows. Subscribe with
+  selectors: `currentTime` updates every frame.
   It also remembers the last Compare pair: the Compare tab reopens it while
   it still holds the focus track (`comparePairFor`), and `RouterLink` turns a
   query string in a nav href into the Link's `search`. Selectors must return
@@ -70,7 +73,8 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   `src/data/collections.ts` groups the songs by theme (`COLLECTIONS` in
   display order, `COLLECTION_OF` typed over every `TrackId` so a new song
   must be placed); `src/lib/sort.ts` orders the Album list (`sortTracks`,
-  `groupTracks`) and the `SortButton` offers the orders in a `SheetAction`.
+  `groupTracks`, `groupTracksByMonth` for the timeline) and the
+  `SortButton` offers the orders in a `SheetAction`.
 - `src/components/` app compositions built to Dust UI blocks rules on the
   published packages (`@dust-ui/ui` 0.13, `motion` 0.5, `tokens` 0.3): no
   forks remain, the deltas from specs 20 and 22 shipped upstream, and
@@ -79,8 +83,16 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   is still app-level and why: `LyricsReader` and `LyricsSplit` (the kit's
   `MobileLyricsReader` and `MobileLyricsSplit` are line-level; these light
   the sung line's words with `ReadAlongText`, take `lang`, and tint the
-  split's tags for dark surfaces; that delta is upstream work), `Waveform`
-  (the song's shape under the media card, which has no slot for it),
+  split's tags for dark surfaces; the edge fade is two `ProgressiveBlur`
+  strips over the pane, not a mask on it, because a mask makes the pane a
+  backdrop root and the sung line's glass stops frosting; that delta is
+  upstream work), `NowPlayingCard` and `NowPlayingBar` (the kit's
+  `MobileMediaPlayer` has no slot for a scrubber or a description, so the
+  unfolded control is composed here: `Waveform` is the slider, the
+  description sits under the dedication, Download and the play mode flank
+  the transport; a scrubber render slot on the kit card is the upstream
+  ask; `/time/$track` still uses the kit bar), `Waveform` (the song's shape
+  as a slider: tap, drag, arrow keys),
   `MiniPlayer` (kept instead of `MobileNowPlayingBar` for the progress ring
   around play and the marquee, which the bar has no slot for), `TrackRow`
   and `SongPicker` (song data on `MobileMediaRow`, and `SheetBottom` +

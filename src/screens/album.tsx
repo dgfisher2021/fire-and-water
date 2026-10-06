@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MotionTextMorph } from '@dust-ui/motion'
 import {
@@ -11,7 +11,12 @@ import {
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { filterTracks } from '@/lib/search'
-import { groupTracks, sortTracks, type AlbumSort } from '@/lib/sort'
+import {
+  groupTracks,
+  groupTracksByMonth,
+  sortTracks,
+  type AlbumSort,
+} from '@/lib/sort'
 import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
@@ -29,10 +34,88 @@ const SORT_FOOTER: Partial<Record<AlbumSort, string>> = {
   written: 'Oldest first, by the day each song was written',
 }
 
+const count = (n: number) => `${n} ${n === 1 ? 'song' : 'songs'}`
+
+/** A group's title in the display face with its description as a lead. */
+function GroupHeader({
+  title,
+  blurb,
+  songs,
+}: {
+  title: string
+  blurb?: string
+  songs: number
+}) {
+  return (
+    <header className='px-1 dark:[text-shadow:0_1px_12px_rgb(0_0_0/0.5)]'>
+      <div className='flex items-baseline justify-between gap-3'>
+        <h3 className='font-display text-[22px] leading-tight font-medium text-foreground'>
+          {title}
+        </h3>
+        <span className='shrink-0 text-[11px] tracking-[1px] text-muted-foreground uppercase'>
+          {count(songs)}
+        </span>
+      </div>
+      {blurb && (
+        <p className='mt-1 text-[12.5px] leading-normal text-foreground/70'>
+          {blurb}
+        </p>
+      )}
+    </header>
+  )
+}
+
+/** "Mar 2" in the song's voice: deep on paper, bright on navy. */
+function DayStamp({ id }: { id: TrackId }) {
+  const day = new Date(`${TRACKS[id].written}T12:00:00`).toLocaleString(
+    'en-US',
+    { month: 'short', day: 'numeric' }
+  )
+  return (
+    <span
+      className='text-[11px] font-semibold tracking-[1px] text-(--voice) uppercase dark:text-(--voice-dark)'
+      style={
+        {
+          '--voice': `var(--${id}-deep)`,
+          '--voice-dark': `var(--${id})`,
+        } as CSSProperties
+      }
+    >
+      {day}
+    </span>
+  )
+}
+
+/** The songs by the month they were written, on a rail, a dot per month. */
+function Timeline({ songs }: { songs: readonly TrackId[] }) {
+  return (
+    <ol className='relative flex flex-col gap-6 pl-5'>
+      <div
+        aria-hidden
+        className='absolute top-3 bottom-3 left-[5px] w-px bg-foreground/15'
+      />
+      {groupTracksByMonth(songs).map(({ key, label, ids }) => (
+        <li key={key} className='relative flex flex-col gap-3'>
+          <span
+            aria-hidden
+            className='absolute top-[7px] -left-5 size-[11px] rounded-full border-2 border-background bg-primary shadow-[0_0_12px_var(--track-glow)]'
+          />
+          <GroupHeader title={label} songs={ids.length} />
+          <MobileListGroup aria-label={label}>
+            {ids.map((id) => (
+              <TrackRow key={id} id={id} value={<DayStamp id={id} />} />
+            ))}
+          </MobileListGroup>
+        </li>
+      ))}
+    </ol>
+  )
+}
+
 export function AlbumScreen() {
   const framed = useFramed()
   const navigate = useNavigate()
-  // The list order is in the URL (/?sort=title); album order keeps it clean.
+  // The list order is in the URL (/?sort=title); the collection view keeps it clean.
   const { sort } = useSearch({ from: '/' })
   const setSort = (next: AlbumSort) =>
     void navigate({ to: '/', search: { sort: next }, replace: true })
@@ -46,12 +129,6 @@ export function AlbumScreen() {
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
   const [query, setQuery] = useState('')
-  // One song's story open under its row at a time.
-  const [expanded, setExpanded] = useState<TrackId | null>(null)
-  const storyProps = (id: TrackId) => ({
-    expanded: expanded === id,
-    onToggle: () => setExpanded((open) => (open === id ? null : id)),
-  })
   const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
   const noMatch = songs.length === 0 ? `No song matches “${query}”` : undefined
   // The stage above keeps album order; only the list re-sorts.
@@ -80,6 +157,42 @@ export function AlbumScreen() {
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   })
+
+  const list = noMatch ? (
+    <MobileListGroup label='Songs' footer={noMatch}>
+      {[]}
+    </MobileListGroup>
+  ) : sort === 'collection' ? (
+    <div className='flex flex-col gap-6'>
+      {groupTracks(songs).map(({ collection, ids }) => (
+        <section key={collection.key} className='flex flex-col gap-3'>
+          <GroupHeader
+            title={collection.label}
+            blurb={collection.blurb}
+            songs={ids.length}
+          />
+          <MobileListGroup aria-label={collection.label}>
+            {ids.map((id) => (
+              <TrackRow key={id} id={id} />
+            ))}
+          </MobileListGroup>
+        </section>
+      ))}
+    </div>
+  ) : sort === 'written' ? (
+    <>
+      <Timeline songs={songs} />
+      <p className='px-1 font-display text-[13px] text-muted-foreground italic'>
+        {SORT_FOOTER.written}
+      </p>
+    </>
+  ) : (
+    <MobileListGroup label='Songs' footer={SORT_FOOTER[sort] ?? ALBUM.tagline}>
+      {sortTracks(songs, sort).map((id) => (
+        <TrackRow key={id} id={id} />
+      ))}
+    </MobileListGroup>
+  )
 
   return (
     <Screen
@@ -162,30 +275,7 @@ export function AlbumScreen() {
               trailing={<SortButton value={sort} onChange={setSort} />}
             />
           </div>
-          {sort === 'collection' && !noMatch ? (
-            <div className='flex flex-col gap-5'>
-              {groupTracks(songs).map(({ collection, ids }) => (
-                <MobileListGroup
-                  key={collection.key}
-                  label={collection.label}
-                  footer={collection.blurb}
-                >
-                  {ids.map((id) => (
-                    <TrackRow key={id} id={id} {...storyProps(id)} />
-                  ))}
-                </MobileListGroup>
-              ))}
-            </div>
-          ) : (
-            <MobileListGroup
-              label='Songs'
-              footer={noMatch ?? SORT_FOOTER[sort] ?? ALBUM.tagline}
-            >
-              {sortTracks(songs, sort).map((id) => (
-                <TrackRow key={id} id={id} {...storyProps(id)} />
-              ))}
-            </MobileListGroup>
-          )}
+          {list}
         </div>
       </div>
     </Screen>

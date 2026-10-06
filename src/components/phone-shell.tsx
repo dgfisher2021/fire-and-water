@@ -66,13 +66,13 @@ function ShellNav({ fixed }: { fixed: boolean }) {
   const toggle = usePlayer((s) => s.toggle)
   const playing = status === 'playing' || status === 'loading'
 
-  // The tap-to-time tool lives with the lyrics; the story with More.
+  // The tap-to-time tool lives with the lyrics.
   const active =
     pathname.startsWith('/lyrics') || pathname.startsWith('/time')
       ? 'lyrics'
       : pathname.startsWith('/compare')
         ? 'compare'
-        : pathname.startsWith('/more') || pathname.startsWith('/story')
+        : pathname.startsWith('/more')
           ? 'more'
           : 'album'
 

@@ -819,17 +819,6 @@
   }
 }
 
-/* Lyrics panes fade at both edges. */
-@utility mask-fade-y {
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 4%,
-    black 90%,
-    transparent 100%
-  );
-}
-
 /* Safe-area padding for notched phones (viewport-fit=cover). */
 @utility pt-safe {
   padding-top: env(safe-area-inset-top);
@@ -853,14 +842,20 @@
   [data-slot='ambient-image-backdrop'] {
     display: none !important;
   }
-  [data-slot='lyrics-reader'] {
+  [data-slot='lyrics-reader'],
+  [data-slot='lyrics-pane'] {
+    height: auto;
     overflow: visible;
-    mask-image: none;
-    -webkit-mask-image: none;
     padding: 0;
+  }
+  /* Every stanza on paper, whether or not it had scrolled into view. */
+  [data-slot='lyrics-pane'] > div {
+    opacity: 1 !important;
+    transform: none !important;
   }
   [data-slot='lyrics-stanza'] {
     color: black !important;
+    text-shadow: none !important;
   }
 }
 

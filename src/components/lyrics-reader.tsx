@@ -1,8 +1,9 @@
 import { useRef, type ReactNode, type RefObject } from 'react'
 import { ChevronsDown } from 'lucide-react'
-import { MotionText } from '@dust-ui/motion'
+import { MotionInView, MotionText } from '@dust-ui/motion'
 import {
   Button,
+  ProgressiveBlur,
   ReadAlongText,
   useFollowScroll,
   useScrollFocus,
@@ -31,17 +32,25 @@ export type LyricsReaderProps = {
   size?: 'default' | 'compact'
   /** Rendered above the stanzas inside the scroll pane (sticky tags). */
   children?: ReactNode
-  /** Pass to drive the pane from outside (scroll sync); owned otherwise. */
+  /** Pass to drive the scroll pane from outside (scroll sync); owned otherwise. */
   ref?: RefObject<HTMLDivElement | null>
+  /** On the reader's box (its size in the layout). */
   className?: string
+  /** On the scroll pane inside it (its padding). */
+  paneClassName?: string
 }
 
 /**
- * A vertical lyrics pane: stanzas in the display face, fading at both edges.
- * Without playback it reads by scroll (the stanza crossing the middle
- * brightens); with `time` and `timing` it reads along with the song, line by
- * line, and keeps the sung stanza centred until the reader scrolls away.
- * Bracketed lines render as small section or voice labels.
+ * A vertical lyrics pane: stanzas in the display face, each rising into view
+ * as it is scrolled to, the words blurring away at both edges. Without
+ * playback it reads by scroll (the stanza crossing the middle brightens);
+ * with `time` and `timing` it reads along with the song, line by line, and
+ * keeps the sung stanza centred until the reader scrolls away. Bracketed
+ * lines render as small section or voice labels.
+ *
+ * The edge fade is a pair of blur strips over the pane rather than a mask
+ * on it: a mask would make the pane a backdrop root and the sung line's
+ * glass would have nothing behind it to frost.
  */
 export function LyricsReader({
   stanzas,
@@ -54,6 +63,7 @@ export function LyricsReader({
   children,
   ref,
   className,
+  paneClassName,
 }: LyricsReaderProps) {
   const own = useRef<HTMLDivElement>(null)
   const pane = ref ?? own
@@ -85,122 +95,146 @@ export function LyricsReader({
 
   return (
     <div
-      ref={pane}
       lang={lang}
       data-slot='lyrics-reader'
       data-size={size}
       data-singing={singing || undefined}
-      className={cn(
-        'relative no-scrollbar h-full min-h-0 overflow-y-auto overscroll-contain mask-fade-y',
-        size === 'default'
-          ? 'px-8 pt-[26vh] pb-[45vh] md:px-[20%]'
-          : 'px-3.5 pt-4 pb-16 md:px-6',
-        className
-      )}
+      className={cn('relative h-full min-h-0', className)}
     >
-      {children}
-      {stanzas.map((lines, i) => (
-        <p
-          key={`${contentKey}-${i}`}
-          data-slot='lyrics-stanza'
-          data-active={
-            singing ? position?.stanza === i || undefined : undefined
-          }
-          className={cn(
-            'text-center font-display font-medium text-foreground/50 transition-colors duration-500 dark:[text-shadow:0_1px_14px_rgb(0_0_0/0.55)]',
-            singing
-              ? 'data-active:text-foreground/70'
-              : 'data-active:text-foreground',
-            size === 'default'
-              ? 'mb-8 text-[22px] leading-[1.7] md:text-[26px]'
-              : 'mb-6 text-[17px] leading-[1.65] md:text-xl'
-          )}
-        >
-          {lines.map((line, j) =>
-            isLyricLabel(line) ? (
-              <span
-                key={j}
-                data-slot='lyrics-label'
-                className='mb-1 block font-sans text-[11px] font-medium tracking-[3px] text-primary uppercase opacity-90'
-              >
-                {line.slice(1, -1)}
-              </span>
-            ) : (
-              <span
-                key={j}
-                data-slot='lyrics-line'
-                data-state={lineState(i, j)}
-                role={seekTo ? 'button' : undefined}
-                tabIndex={seekTo ? 0 : undefined}
-                onClick={seekTo ? () => seekTo(i, j) : undefined}
-                onKeyDown={
-                  seekTo
-                    ? (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          seekTo(i, j)
-                        }
-                      }
-                    : undefined
-                }
-                // Each line shrinks to its words and centres, so the sung
-                // line's wash (the song's colour: deep on paper, bright on
-                // navy) hugs the whole line, not the pane.
-                className={cn(
-                  'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
-                  seekTo &&
-                    'cursor-pointer hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
-                )}
-              >
-                {word !== null && lineState(i, j) === 'current' ? (
-                  // Inside the washed line the sung word turns the song's
-                  // colour and pops in on the kit's scale preset (keyed per
-                  // word, so each one animates); sung words settle, upcoming
-                  // ones wait at half strength.
-                  <ReadAlongText
-                    text={line}
-                    activeWord={word}
-                    className='[&_[data-state=current]]:[text-shadow:none] [&_[data-state=upcoming]]:text-foreground/45'
-                    renderToken={(token, state) =>
-                      state === 'current' ? (
-                        <>
-                          <MotionText
-                            key={token.index}
-                            as='span'
-                            per='word'
-                            preset='scale'
-                            duration={0.28}
-                            className='inline-block text-primary [text-shadow:0_0_14px_var(--track-glow)]'
-                          >
-                            {token.word}
-                          </MotionText>
-                          {token.raw.slice(token.word.length)}
-                        </>
-                      ) : (
-                        token.raw
-                      )
-                    }
-                  />
+      <div
+        ref={pane}
+        data-slot='lyrics-pane'
+        className={cn(
+          'no-scrollbar h-full min-h-0 overflow-y-auto overscroll-contain',
+          size === 'default'
+            ? 'px-8 pt-[26vh] pb-[45vh] md:px-[20%]'
+            : 'px-3.5 pt-4 pb-16 md:px-6',
+          paneClassName
+        )}
+      >
+        {children}
+        {stanzas.map((lines, i) => (
+          // Each stanza rises in once as it scrolls into view (the pane is
+          // clipped, so the viewport observer sees only what shows).
+          <MotionInView key={`${contentKey}-${i}`} amount={0.1}>
+            <p
+              data-slot='lyrics-stanza'
+              data-active={
+                singing ? position?.stanza === i || undefined : undefined
+              }
+              // Semibold with a halo in the background tone, so every line
+              // reads over the artwork before it is sung.
+              className={cn(
+                'text-center font-display font-semibold text-foreground/65 transition-colors duration-500 [text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background)]',
+                singing
+                  ? 'data-active:text-foreground/85'
+                  : 'data-active:text-foreground',
+                size === 'default'
+                  ? 'mb-8 text-[22px] leading-[1.7] md:text-[26px]'
+                  : 'mb-6 text-[17px] leading-[1.65] md:text-xl'
+              )}
+            >
+              {lines.map((line, j) =>
+                isLyricLabel(line) ? (
+                  <span
+                    key={j}
+                    data-slot='lyrics-label'
+                    className='mb-1 block font-sans text-[11px] font-medium tracking-[3px] text-primary uppercase opacity-90 [text-shadow:none]'
+                  >
+                    {line.slice(1, -1)}
+                  </span>
                 ) : (
-                  line
-                )}
-              </span>
-            )
-          )}
-        </p>
-      ))}
-      {detached && (
-        <div className='pointer-events-none sticky bottom-6 z-10 flex justify-center'>
-          <Button
-            size='sm'
-            onClick={resume}
-            className='pointer-events-auto rounded-full bg-linear-to-br from-track-bright to-track-deep px-4 text-[12px] tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)]'
-          >
-            <ChevronsDown className='size-3.5' aria-hidden />
-            Back to the song
-          </Button>
-        </div>
-      )}
+                  <span
+                    key={j}
+                    data-slot='lyrics-line'
+                    data-state={lineState(i, j)}
+                    role={seekTo ? 'button' : undefined}
+                    tabIndex={seekTo ? 0 : undefined}
+                    onClick={seekTo ? () => seekTo(i, j) : undefined}
+                    onKeyDown={
+                      seekTo
+                        ? (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault()
+                              seekTo(i, j)
+                            }
+                          }
+                        : undefined
+                    }
+                    // Each line shrinks to its words and centres, so the
+                    // sung line's glass (the list rows' card-at-85% over a
+                    // backdrop blur) hugs the whole line, not the pane.
+                    className={cn(
+                      'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
+                      seekTo &&
+                        'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none'
+                    )}
+                  >
+                    {word !== null && lineState(i, j) === 'current' ? (
+                      // Inside the washed line the sung word turns the
+                      // song's colour and pops in on the kit's scale preset
+                      // (keyed per word, so each one animates); sung words
+                      // settle, upcoming ones wait at half strength.
+                      <ReadAlongText
+                        text={line}
+                        activeWord={word}
+                        className='[&_[data-state=current]]:[text-shadow:none] [&_[data-state=upcoming]]:text-foreground/50'
+                        renderToken={(token, state) =>
+                          state === 'current' ? (
+                            <>
+                              <MotionText
+                                key={token.index}
+                                as='span'
+                                per='word'
+                                preset='scale'
+                                duration={0.28}
+                                className='inline-block text-primary [text-shadow:0_0_14px_var(--track-glow)]'
+                              >
+                                {token.word}
+                              </MotionText>
+                              {token.raw.slice(token.word.length)}
+                            </>
+                          ) : (
+                            token.raw
+                          )
+                        }
+                      />
+                    ) : (
+                      line
+                    )}
+                  </span>
+                )
+              )}
+            </p>
+          </MotionInView>
+        ))}
+        {detached && (
+          <div className='pointer-events-none sticky bottom-6 z-10 flex justify-center'>
+            <Button
+              size='sm'
+              onClick={resume}
+              className='pointer-events-auto rounded-full bg-linear-to-br from-track-bright to-track-deep px-4 text-[12px] tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)]'
+            >
+              <ChevronsDown className='size-3.5' aria-hidden />
+              Back to the song
+            </Button>
+          </div>
+        )}
+      </div>
+      <div
+        aria-hidden
+        data-print='hide'
+        className='pointer-events-none absolute inset-x-0 top-0 z-10 h-8'
+      >
+        <ProgressiveBlur side='top' blur={6} layers={3} />
+      </div>
+      <div
+        aria-hidden
+        data-print='hide'
+        className='pointer-events-none absolute inset-x-0 bottom-0 z-10 h-10'
+      >
+        <ProgressiveBlur side='bottom' blur={6} layers={3} />
+      </div>
     </div>
   )
 }
