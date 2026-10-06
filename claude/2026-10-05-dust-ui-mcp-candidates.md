@@ -189,3 +189,40 @@ Ranked by how much they do for a listener, with the screen they land on.
 - **Others**: charts (40), ai (10), data (9), uploads (5), 3d (2), maps,
   gantt, network-graph, test-data, tokens (1 each); five `theme-*` presets;
   agent items `rules`, `skill`, `skill-motion`, `skill-mockup`; `init`.
+
+## Outcome, the same day (PR #17, branch `feat/dust-ui-adds`)
+
+Adopted: the kit's `AmbientImageBackdrop` (the app copy deleted; the drift
+keyframe renamed to the one the kit references, since the kit ships none),
+`MobileSearchBar` over the album list and inside the song picker with a
+diacritic- and case-insensitive filter (`lib/search.ts`, tested), `QRCode`
+on More (ink on paper in both modes), `MobileConfirmDialog` before "Clear
+all marks", `Pill` through a `TagPill` at the kit's 10px step (download
+formats, "Transcribed by ear"; deep voice tone on light surfaces, bright on
+dark), `GrainOverlay` at 0.05, `MotionTextMorph` on the album title,
+`MotionNumber` on the mark count, `MotionTextShimmer` on the empty lyrics
+state, `MotionScrollProgress` as a hairline under the Now Playing header
+while reading by scroll. `components.json` points at Pages again.
+
+Not adopted, and why:
+
+- `swipe-row`: the kit keeps the action strip mounted behind a closed row,
+  and this app's `--card` is translucent (55% white light, 6% dark), so the
+  actions showed through every row. Needs the kit to hide the strip while
+  closed.
+- `surface` glass: tokens 0.3 defines `--glass*` but maps no
+  `--color-glass*` into the Tailwind theme and ships no `glass-border`
+  utility, so the variant paints neither fill nor rim for a consumer.
+- `motion-group` on the tracklist: `MobileListGroup` wraps each direct child
+  in its own divider cell, so one stagger container collapses the dividers.
+- `motion-transition-panel`: needs a router-level outlet; not attempted.
+- `mobile-now-playing-bar`: `MiniPlayer` stays for the ring around play;
+  CLAUDE.md now says so.
+
+For dust-ui (in order of value to this app): hide `SwipeRow`'s strip while
+closed; map `--color-glass*` and add the `glass-border` utility; ship the
+`ambient-image-drift` keyframe with the backdrop; put `Pill` (8px) and
+`SwipeRow` labels (9px) on the mobile text tokens; the `MobileSearchBar`
+clear button overhangs the field; word-level timing, `lang` and a
+dark-surface tag colour for `MobileLyricsReader` and `MobileLyricsSplit`,
+after which the app's two copies can go.
