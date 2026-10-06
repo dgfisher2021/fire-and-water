@@ -3,7 +3,6 @@ import { ChevronsDown } from 'lucide-react'
 import { MotionInView, MotionText } from '@dust-ui/motion'
 import {
   Button,
-  ProgressiveBlur,
   ReadAlongText,
   useFollowScroll,
   useScrollFocus,
@@ -42,15 +41,13 @@ export type LyricsReaderProps = {
 
 /**
  * A vertical lyrics pane: stanzas in the display face, each rising into view
- * as it is scrolled to, the words blurring away at both edges. Without
- * playback it reads by scroll (the stanza crossing the middle brightens);
- * with `time` and `timing` it reads along with the song, line by line, and
- * keeps the sung stanza centred until the reader scrolls away. Bracketed
- * lines render as small section or voice labels.
- *
- * The bottom edge fades through a blur strip over the pane rather than a
- * mask on it: a mask would make the pane a backdrop root and the sung
- * line's glass would have nothing behind it to frost.
+ * as it is scrolled to. Without playback it reads by scroll (the stanza
+ * crossing the middle brightens); with `time` and `timing` it reads along
+ * with the song, line by line, and keeps the sung stanza centred until the
+ * reader scrolls away. Bracketed lines render as small section or voice
+ * labels. The edges are cut clean: a mask or a blur strip would make the
+ * pane a backdrop root and the sung line's glass would have nothing behind
+ * it to frost.
  */
 export function LyricsReader({
   stanzas,
@@ -222,13 +219,6 @@ export function LyricsReader({
             </Button>
           </div>
         )}
-      </div>
-      <div
-        aria-hidden
-        data-print='hide'
-        className='pointer-events-none absolute inset-x-0 bottom-0 z-10 h-10'
-      >
-        <ProgressiveBlur side='bottom' blur={6} layers={3} />
       </div>
     </div>
   )

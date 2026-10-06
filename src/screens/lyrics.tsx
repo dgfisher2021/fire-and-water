@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
-import { ScrollText } from 'lucide-react'
+import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
-import { MotionScrollProgress, MotionTextShimmer } from '@dust-ui/motion'
+import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
 import {
+  Button,
   Empty,
   EmptyDescription,
   EmptyHeader,
@@ -21,6 +22,7 @@ import {
   adjacentTrack,
   comparePartner,
   dedicationLine,
+  writtenDate,
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
@@ -34,6 +36,7 @@ import { LyricsReader } from '@/components/lyrics-reader'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
+import { TagPill } from '@/components/tag-pill'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
@@ -208,10 +211,41 @@ export function LyricsScreen() {
       : null
 
   return (
-    // No page header: the card carries the title, the date and the menu,
+    // No page header: one title row sits above the control in either state,
     // so the words get the height a header would take.
     <Screen scroll={false}>
       <div className={cn('shrink-0 px-4 pb-1', framed ? 'pt-[52px]' : 'pt-2')}>
+        <div lang={t.lang} className='mb-2 flex items-start gap-3 px-1'>
+          <div className='min-w-0 flex-1'>
+            {/* Morphs as a swipe changes the song, like the stage's title. */}
+            <MotionTextMorph
+              as='h1'
+              className='font-display text-[24px] leading-tight font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]'
+            >
+              {t.title}
+            </MotionTextMorph>
+            <p className='mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
+              <span>Written {writtenDate(t)}</span>
+              {t.lyricsSource === 'transcribed' && (
+                <TagPill
+                  color='var(--track-deep)'
+                  colorDark='var(--track-bright)'
+                >
+                  Transcribed by ear
+                </TagPill>
+              )}
+            </p>
+          </div>
+          <Button
+            variant='ghost'
+            size='icon'
+            aria-label='More actions'
+            onClick={() => setSheet(true)}
+            className='-mr-1 shrink-0 rounded-full bg-card/60 text-muted-foreground backdrop-blur-[6px] hover:text-foreground'
+          >
+            <Ellipsis aria-hidden />
+          </Button>
+        </div>
         <div
           inert={collapsed}
           className={cn(
@@ -234,7 +268,6 @@ export function LyricsScreen() {
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
               onCollapse={() => fold(true)}
-              onMore={() => setSheet(true)}
             />
           </div>
         </div>
@@ -258,7 +291,6 @@ export function LyricsScreen() {
               loading={loading}
               onPlayPause={() => (playing ? pause() : play(track))}
               onExpand={short ? undefined : () => fold(false)}
-              onMore={() => setSheet(true)}
             />
           </div>
         </div>
@@ -270,17 +302,6 @@ export function LyricsScreen() {
         className='relative min-h-0 flex-1'
         style={{ marginBottom: 'var(--shell-bottom)' }}
       >
-        {t.lyrics.length > 0 && (
-          // How far down the words you are while reading by scroll; the
-          // song takes over the pane once it plays, so the line steps aside.
-          <MotionScrollProgress
-            containerRef={pane}
-            className={cn(
-              'absolute inset-x-6 top-0 z-10 h-px bg-track-bright transition-opacity duration-500',
-              singTime !== undefined && 'opacity-0'
-            )}
-          />
-        )}
         {t.lyrics.length > 0 ? (
           <LyricsReader
             key={track}

@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import {
   MotionCarousel,
   MotionCarouselContent,
-  MotionCarouselIndicators,
   MotionTilt,
 } from '@dust-ui/motion'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
@@ -62,12 +61,6 @@ export function ArtworkStage({
         </MotionCarouselContent>
       </MotionTilt>
       <div className='short:min-w-0 short:flex-1'>{children}</div>
-      {/* Each dot is a 16px target drawn as a 5px mark; the row wraps rather
-          than run off a phone (thirty songs are two rows). */}
-      <MotionCarouselIndicators
-        className='static mt-3 max-w-full translate-x-0 flex-wrap justify-center gap-0.5 px-6 py-1 short:hidden'
-        dotClassName="size-4 min-h-0 bg-transparent before:block before:size-[5px] before:rounded-full before:bg-foreground/15 before:transition-[background-color,transform] before:duration-400 before:content-[''] data-active:bg-transparent data-active:before:scale-[1.4] data-active:before:bg-foreground/50"
-      />
     </MotionCarousel>
   )
 }
