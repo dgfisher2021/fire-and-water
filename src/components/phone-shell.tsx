@@ -83,7 +83,7 @@ function ShellNav({ fixed }: { fixed: boolean }) {
   return (
     <NavBottom
       items={[
-        { key: 'album', icon: Disc3, label: 'Album', href: '/' },
+        { key: 'album', icon: Disc3, label: 'Songs', href: '/' },
         {
           key: 'lyrics',
           icon: ScrollText,

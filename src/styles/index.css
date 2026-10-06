@@ -862,9 +862,10 @@
 [data-slot='nav-bottom'] [aria-current='page']::before {
   content: '';
   position: absolute;
-  inset: 3px 10px;
+  inset: 2px 6px;
   z-index: -1;
-  border-radius: 9999px;
+  /* The theme's own radius: a tile, not an oval. */
+  border-radius: var(--radius, 0.625rem);
   background: color-mix(in oklab, var(--primary) 16%, transparent);
 }
 [data-slot='nav-bottom'] [aria-current='page'] > span:first-child {

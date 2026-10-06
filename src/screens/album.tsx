@@ -1,12 +1,7 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MotionTextMorph } from '@dust-ui/motion'
-import {
-  MobileListGroup,
-  MobilePageHeader,
-  MobileSearchBar,
-  useSwipe,
-} from '@dust-ui/ui'
+import { MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { filterTracks } from '@/lib/search'
@@ -16,6 +11,7 @@ import {
   sortTracks,
   type AlbumSort,
 } from '@/lib/sort'
+import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
@@ -194,25 +190,18 @@ export function AlbumScreen() {
   )
 
   return (
-    <Screen
-      header={
-        <MobilePageHeader
-          eyebrow={ALBUM.artist}
-          title={
-            <span className='font-display text-[26px] font-medium'>
-              {ALBUM.title}
-            </span>
-          }
-          subtitle={`${TRACK_ORDER.length} songs about a brother, a sister, and becoming`}
-          trailing={<AppearanceButton />}
-          statusBarInset={framed}
-        />
-      }
-    >
+    // No page header: the theme button alone at the top, then the stage,
+    // whose title does the announcing.
+    <Screen>
+      <div
+        className={cn('flex justify-end px-4', framed ? 'pt-[48px]' : 'pt-1')}
+      >
+        <AppearanceButton />
+      </div>
       <div
         ref={swipeRef}
         onPointerDownCapture={() => setInteracted(true)}
-        className='px-4 pt-1 text-center short:text-left'
+        className='px-4 text-center short:text-left'
       >
         <ArtworkStage
           index={index}
@@ -223,7 +212,7 @@ export function AlbumScreen() {
           <div className='min-h-[92px]'>
             <MotionTextMorph
               as='h2'
-              className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700 short:text-[22px]'
+              className='font-display text-[28px] leading-[1.15] font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)] short:text-[22px]'
             >
               {t.title}
             </MotionTextMorph>
