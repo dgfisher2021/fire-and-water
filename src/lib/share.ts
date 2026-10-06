@@ -12,12 +12,20 @@ export async function share(input: ShareInput) {
     }
     return
   }
-  if (!navigator.clipboard) return
+  await copyText(input.url, 'Link copied')
+}
+
+/** Put text on the clipboard and say so; says so too when the browser will not allow it. */
+export async function copyText(text: string, done = 'Copied') {
+  if (!navigator.clipboard) {
+    useToasts.getState().push('Copying is not available here', 'error')
+    return
+  }
   try {
-    await navigator.clipboard.writeText(input.url)
-    useToasts.getState().push('Link copied', 'success')
+    await navigator.clipboard.writeText(text)
+    useToasts.getState().push(done, 'success')
   } catch {
-    useToasts.getState().push('Could not copy the link', 'error')
+    useToasts.getState().push('Could not copy', 'error')
   }
 }
 

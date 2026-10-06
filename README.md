@@ -94,7 +94,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 ## Features
 
 - Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Where the aligner heard the line, its words light one by one: the sung line carries a wash of the song's colour, the sung word turns that colour with a small pop, sung words settle, upcoming ones wait at half strength. Tap any line to jump the song to it. Songs without timings read by scroll instead.
-- Lyrics to go: Now Playing's action sheet downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
+- Lyrics to go: Now Playing's action sheet copies the words as plain text (title, then the stanzas) and downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
 - Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything, under a faint film grain
 - Reading by scroll, a hairline under the header shows how far down the words you are; it steps aside once the song plays
 - Album play-through by default; the card's last control switches to repeat this song or shuffle. Lock-screen and hardware media controls (Media Session API)
@@ -116,19 +116,34 @@ Each song has its own accent color that tints the whole app while it is showing.
 Lyrics live in `src/data/lyrics/<id>.json` and are picked up by file name (`src/data/lyrics/index.ts` globs the folder), so a song gets its words the moment its file exists. A sheet is an array of stanzas, each an array of lines; a line wrapped in `[brackets]` is a section or voice label. A sheet transcribed from the recording is written as `{ "source": "transcribed", "stanzas": [...] }` and the app labels it "transcribed by ear".
 
 ```sh
-python3 scripts/lyrics/import-suno.py                 # every zip in Downloads/suno songs
+python3 scripts/lyrics/import-suno.py                 # every zip in downloads/ (else Downloads/suno songs)
 python3 scripts/lyrics/import-suno.py some/drop.zip   # or one zip, or a folder
-python3 scripts/lyrics/from-transcript.py hearts      # a sheet from the Whisper transcript
+python3 scripts/lyrics/import-suno.py --force --only=hearts,mercy "downloads/i-love-you-for-you [usesuno.com].zip"
+python3 scripts/lyrics/from-transcript.py raven       # a sheet from the Whisper transcript
 ```
 
-The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, typesets quotes and labels, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given. The transcript builder uses the largest Whisper pass under `scripts/timing/asr*/` (run `transcribe.py` first) and is the fallback for songs Suno exported without words: lines break at pauses, punctuation and phrase starts, and lines Whisper guessed at are dropped. Words it mishears go in `scripts/lyrics/corrections.json` as regex pairs per song (the Raven's Irish chant, for example), so a rebuild reproduces the fix rather than losing a hand edit.
+The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, typesets quotes and labels, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given; `--only` limits a run to the songs named, which is how a sheet is replaced from one zip without touching the rest (re-run the aligner for those songs afterwards, since the timing follows the sheet's shape). Suno's "full download" export leaves thirteen songs' text files empty, while the per-song `[usesuno.com]` zips carry most of them; Magic of the Raven has no text in any export, so its sheet stays transcribed by ear.
+
+The Suno library itself (every song's title, creation date, model version, duration and style prompt, as of 2026-10-06) is saved in `src/data/suno-catalog.json`, checked by `suno-catalog.test.ts`, for the day the remaining songs join the album.
+
+## Converting the downloads
+
+The Suno full-download zips hold M4A files. `scripts/audio-convert.py` turns them into MP3 (LAME V2, tags kept) or WAV (16-bit, 44.1 kHz) with ffmpeg, reading the audio straight out of the zips and skipping songs already converted:
+
+```sh
+python3 scripts/audio-convert.py                              # every zip in downloads/ -> downloads/mp3/
+python3 scripts/audio-convert.py --to wav some/drop.zip       # one zip, as WAV, into downloads/wav/
+python3 scripts/audio-convert.py --lyrics --out ~/songs a.m4a # a file, with its (lyrics).txt beside it
+```
+
+`downloads/` is ignored by git: the zips live there for the scripts, not in the repo. The transcript builder uses the largest Whisper pass under `scripts/timing/asr*/` (run `transcribe.py` first) and is the fallback for songs Suno exported without words: lines break at pauses, punctuation and phrase starts, and lines Whisper guessed at are dropped. Words it mishears go in `scripts/lyrics/corrections.json` as regex pairs per song (the Raven's Irish chant, for example), so a rebuild reproduces the fix rather than losing a hand edit.
 
 ## Timing the lyrics
 
 `src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...], "words": [[[seconds...] | null, ...], ...] } }` (a label line takes the time of the line after it; `words` has a start per whitespace-split word for a line the aligner heard, null for one it spread, and the reader lights those lines whole). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
 
 ```sh
-python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper
+python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper "av<16"   # PyAV 16+ breaks faster-whisper 1.2
 scripts/timing/.venv/bin/python scripts/timing/transcribe.py            # all songs, or pass ids
 scripts/timing/.venv/bin/python scripts/timing/transcribe.py --strict   # optional second pass
 python3 scripts/timing/align.py                                         # writes timing.json
