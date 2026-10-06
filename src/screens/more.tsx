@@ -5,7 +5,6 @@ import {
   CloudDownload,
   Download,
   ExternalLink,
-  Heart,
   Share2,
 } from 'lucide-react'
 import {
@@ -146,11 +145,35 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup label='About'>
+          {/* The artist's note: who the songs are about, in his own words. */}
+          <div className='flex flex-col gap-3 px-3 py-4'>
+            <div className='flex items-center gap-3'>
+              <img
+                src='assets/icon-192.png'
+                alt=''
+                className='size-14 shrink-0 rounded-[14px] shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+              />
+              <div className='min-w-0'>
+                <div className='font-display text-[20px] leading-tight font-medium text-foreground'>
+                  {ALBUM.handle}
+                </div>
+                <div className='mt-0.5 text-[12px] text-muted-foreground'>
+                  Written and performed by Dustin · 2026
+                </div>
+              </div>
+            </div>
+            <p className='text-[13px] leading-relaxed text-foreground/80'>
+              {ALBUM.about}
+            </p>
+            <p className='font-display text-[16px] leading-snug text-primary italic'>
+              {ALBUM.legend}
+            </p>
+          </div>
           <MobileListRow
-            icon={Heart}
-            color='var(--fire)'
-            label='Written and performed by Dustin'
-            value='2026'
+            icon={ExternalLink}
+            label={`${ALBUM.handle} on Suno`}
+            value='suno.com'
+            onClick={() => window.open(ALBUM.sunoUrl, '_blank', 'noopener')}
           />
           <MobileListRow
             icon={BookOpen}

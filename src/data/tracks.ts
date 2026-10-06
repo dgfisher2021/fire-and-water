@@ -172,6 +172,13 @@ export const ALBUM = {
   title: 'Fire & Water',
   artist: 'Dustin & Alex',
   tagline: '“You can’t tame the flame.”',
+  /** The artist on Suno. */
+  handle: 'dgfisher',
+  sunoUrl: 'https://suno.com/@dustin_graham_fisher',
+  /** The About note on the More screen, then its closing line. */
+  about:
+    'These are the stories of a creative and sensitive boy and his fierce younger sister — the golden child and the black sheep. He concealed his feelings, forced to hide his true self, while she bled her pain in ink on the page. As the years passed, he forged himself into a man by teaching himself magic and reclaiming the voice he was taught to fear. He found renewed inner strength not from above but from beside: friendships thick as blood who embraced the love of his heart and the fire of his soul. An engineer, an artist, a visionary. While the world called him too much, he turned out to be exactly enough.',
+  legend: 'You can’t tame his flame. This is his legend.',
 } as const
 
 /** The pair the side-by-side view opens with. */

@@ -22,7 +22,8 @@ screens behind a `NavBottom` whose center action plays and pauses, with a
 day written), Now Playing (`NowPlayingCard` above a sing-along lyrics
 pane), Compare (any two songs in synced columns, picked
 through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
-rows for appearance, downloads, Drive links, sharing, credits). React 19 +
+rows for appearance, downloads, Drive links, sharing, and the About note
+from `ALBUM.about` with the Suno link). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens` from GitHub Packages.
 
