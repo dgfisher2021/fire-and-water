@@ -39,11 +39,12 @@
     'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
 
-  --animate-bg-drift: bg-drift 36s ease-in-out infinite alternate;
+  --animate-ambient-image-drift: ambient-image-drift 36s ease-in-out infinite
+    alternate;
   --animate-breathe: breathe 2.6s ease-in-out infinite;
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  @keyframes bg-drift {
+  @keyframes ambient-image-drift {
     from {
       transform: scale(1);
     }

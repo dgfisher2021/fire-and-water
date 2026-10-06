@@ -1,7 +1,9 @@
-import { MobileListPicker } from '@dust-ui/ui'
+import { useState } from 'react'
+import { MobileListGroup, MobileSearchBar, SheetBottom } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
+import { filterTracks } from '@/lib/search'
 import { useShellRoot } from '@/components/shell-context'
+import { TrackRow } from '@/components/track-row'
 
 export type SongPickerProps = {
   title: string
@@ -11,29 +13,10 @@ export type SongPickerProps = {
   onClose: () => void
 }
 
-// Every song as a picker item: cover, title, dedication and voice, length.
-const ITEMS = TRACK_ORDER.map((id) => {
-  const t = TRACKS[id]
-  return {
-    value: id,
-    title: (
-      <span className='font-display text-[18px] leading-tight font-medium text-foreground'>
-        {t.title}
-      </span>
-    ),
-    subtitle: `${t.dedication} · ${t.voice}`,
-    leading: (
-      <img
-        src={t.art.thumb}
-        alt=''
-        className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-      />
-    ),
-    trailing: formatTime(t.duration),
-  }
-})
-
-/** A bottom sheet listing every song, pinned inside the shell root over the nav. */
+/**
+ * A bottom sheet listing every song behind a search field, pinned inside
+ * the shell root over the nav. Picking a song calls onSelect, then onClose.
+ */
 export function SongPicker({
   title,
   value,
@@ -41,15 +24,44 @@ export function SongPicker({
   onClose,
 }: SongPickerProps) {
   const root = useShellRoot()
+  const [query, setQuery] = useState('')
+  const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
   return (
-    <MobileListPicker
+    <SheetBottom
       title={title}
-      items={ITEMS}
-      value={value}
-      onSelect={onSelect}
       onClose={onClose}
-      container={root}
+      grabber
+      scrim
       maxHeight='78%'
-    />
+      container={root}
+    >
+      <div
+        data-slot='song-picker'
+        className='flex flex-col gap-3 pb-[calc(6px+env(safe-area-inset-bottom))]'
+      >
+        <MobileSearchBar
+          value={query}
+          onChange={setQuery}
+          placeholder='Search songs'
+        />
+        <MobileListGroup
+          role='listbox'
+          aria-label={title}
+          footer={songs.length === 0 ? `No song matches “${query}”` : undefined}
+        >
+          {songs.map((id) => (
+            <TrackRow
+              key={id}
+              id={id}
+              selected={id === value}
+              onSelect={(picked) => {
+                onSelect(picked)
+                onClose()
+              }}
+            />
+          ))}
+        </MobileListGroup>
+      </div>
+    </SheetBottom>
   )
 }

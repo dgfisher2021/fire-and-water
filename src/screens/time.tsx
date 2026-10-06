@@ -1,14 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from '@tanstack/react-router'
 import { Copy, Download, RotateCcw, Undo2 } from 'lucide-react'
-import { Button, MobileMediaPlayer, MobilePageHeader } from '@dust-ui/ui'
+import { createPortal } from 'react-dom'
+import { MotionNumber } from '@dust-ui/motion'
+import {
+  Button,
+  MobileConfirmDialog,
+  MobileMediaPlayer,
+  MobilePageHeader,
+} from '@dust-ui/ui'
 import { TRACKS, isLyricLabel } from '@/data/tracks'
 import { downloadText } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
+import { useFramed, useShellRoot } from '@/components/shell-context'
 import { MEDIA_VARS } from '@/screens/lyrics'
 
 type Marks = Map<string, number>
@@ -56,6 +63,7 @@ export function TimeScreen() {
   const { track } = useParams({ from: '/time/$track' })
   const t = TRACKS[track]
   const framed = useFramed()
+  const shellRoot = useShellRoot()
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
   const isCurrent = loaded === track
@@ -69,6 +77,7 @@ export function TimeScreen() {
   const seek = usePlayer((s) => s.seek)
   const [marks, setMarks] = useState<Marks>(() => new Map())
   const [steps, setSteps] = useState<Step[]>([])
+  const [confirmReset, setConfirmReset] = useState(false)
   const pane = useRef<HTMLDivElement>(null)
 
   const sung = t.lyrics.flatMap((stanza, i) =>
@@ -96,6 +105,7 @@ export function TimeScreen() {
   const reset = () => {
     setMarks(new Map())
     setSteps([])
+    setConfirmReset(false)
   }
   const json = () =>
     JSON.stringify({ [track]: timingFromMarks(t.lyrics, marks) })
@@ -137,7 +147,16 @@ export function TimeScreen() {
               {t.title}
             </span>
           }
-          subtitle={`${marks.size} of ${sung.length} lines marked · Mark or Space as each line starts`}
+          subtitle={
+            <>
+              <MotionNumber
+                value={marks.size}
+                formatter={(v) => String(Math.round(v))}
+                className='tabular-nums'
+              />{' '}
+              of {sung.length} lines marked · Mark or Space as each line starts
+            </>
+          }
           statusBarInset={framed}
         />
       }
@@ -220,7 +239,7 @@ export function TimeScreen() {
           size='icon'
           aria-label='Clear all marks'
           disabled={!marks.size}
-          onClick={reset}
+          onClick={() => setConfirmReset(true)}
         >
           <RotateCcw aria-hidden />
         </Button>
@@ -245,6 +264,18 @@ export function TimeScreen() {
           <Download aria-hidden />
         </Button>
       </div>
+      {confirmReset &&
+        shellRoot &&
+        createPortal(
+          <MobileConfirmDialog
+            title='Clear all marks?'
+            message={`The ${marks.size} ${marks.size === 1 ? 'line' : 'lines'} you have timed on this song will be forgotten.`}
+            confirmLabel='Clear'
+            onConfirm={reset}
+            onCancel={() => setConfirmReset(false)}
+          />,
+          shellRoot
+        )}
     </Screen>
   )
 }

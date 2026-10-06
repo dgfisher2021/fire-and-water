@@ -9,7 +9,9 @@ import {
   ScrollText,
 } from 'lucide-react'
 import {
+  AmbientImageBackdrop,
   DeviceFrame,
+  GrainOverlay,
   MobileToastStack,
   NavBottom,
   ProgressiveBlur,
@@ -19,12 +21,13 @@ import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { MINI_PLAYER_H, useMiniPlayerVisible } from '@/hooks/use-mini-player'
-import { AmbientImageBackdrop } from '@/components/ambient-image-backdrop'
 import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
 
 const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
+// Film grain over the artwork, faint enough to read as paper, not noise.
+const GRAIN = 0.05
 
 /** A soft blur where content runs under the nav and the mini player. */
 function ShellFade() {
@@ -151,6 +154,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
             activeId={theme}
             className='absolute z-0'
           />
+          <GrainOverlay opacity={GRAIN} />
           {children}
           <ShellFade />
           {mini && <ShellMini />}
@@ -192,6 +196,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
                 activeId={theme}
                 className='absolute z-0'
               />
+              <GrainOverlay opacity={GRAIN} />
               {children}
               <ShellFade />
               {mini && <ShellMini />}

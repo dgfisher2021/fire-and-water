@@ -4,15 +4,17 @@ import {
   MobileListRow,
   MobilePageHeader,
   MobileTimeline,
+  QRCode,
   type MobileTimelineItem,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
-import { audioLabel } from '@/lib/format'
+import { audioFormat, formatBytes } from '@/lib/format'
 import { download, share } from '@/lib/share'
 import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
+import { TagPill } from '@/components/tag-pill'
 
 const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
 
@@ -30,6 +32,10 @@ const STORY: MobileTimelineItem[] = TRACK_ORDER.map((id) => {
     icon: Music,
   }
 })
+
+/** The album's front door, wherever the app is served from. */
+const albumUrl = () =>
+  new URL(import.meta.env.BASE_URL, window.location.origin).href
 
 export function MoreScreen() {
   const framed = useFramed()
@@ -64,10 +70,19 @@ export function MoreScreen() {
               key={id}
               icon={Download}
               label={TRACKS[id].title}
-              value={audioLabel(
-                TRACKS[id].audioFile,
-                sizes[TRACKS[id].audioFile as keyof typeof sizes]
-              )}
+              value={
+                <span className='inline-flex items-center gap-2'>
+                  <TagPill
+                    color={`var(--${id}-deep)`}
+                    colorDark={`var(--${id})`}
+                  >
+                    {audioFormat(TRACKS[id].audioFile)}
+                  </TagPill>
+                  {formatBytes(
+                    sizes[TRACKS[id].audioFile as keyof typeof sizes]
+                  )}
+                </span>
+              }
               onClick={() => download(TRACKS[id].audioFile)}
             />
           ))}
@@ -86,7 +101,10 @@ export function MoreScreen() {
           ))}
         </MobileListGroup>
 
-        <MobileListGroup label='Share'>
+        <MobileListGroup
+          label='Share'
+          footer='Scan the code to open the album on another phone.'
+        >
           <MobileListRow
             icon={Share2}
             label='Share the album'
@@ -94,10 +112,16 @@ export function MoreScreen() {
               void share({
                 title: `${ALBUM.title} — ${ALBUM.artist}`,
                 text: 'Songs exploring the bond between a brother and sister.',
-                url: document.baseURI,
+                url: albumUrl(),
               })
             }
           />
+          <div className='flex justify-center py-4'>
+            {/* Ink on paper in both modes: scanners want dark modules on a light ground. */}
+            <div className='rounded-xl bg-background p-3 text-foreground shadow-[0_10px_28px_-18px_var(--track-glow)] dark:bg-foreground dark:text-background'>
+              <QRCode value={albumUrl()} size={128} aria-label='Album link' />
+            </div>
+          </div>
         </MobileListGroup>
 
         <MobileListGroup label='About'>

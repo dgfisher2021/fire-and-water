@@ -8,7 +8,7 @@ export type TrackRowProps = {
   id: TrackId
   /** Marks the row as the chosen one (in a picker): a check replaces the play glyph. */
   selected?: boolean
-  /** Replaces the default tap, which plays the song and opens Now Playing. */
+  /** Replaces the default tap, which plays the song and opens Now Playing; the row becomes a listbox option. */
   onSelect?: (id: TrackId) => void
 }
 
@@ -22,6 +22,8 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
   const active = !selected && status !== 'idle'
   return (
     <MobileMediaRow
+      role={onSelect ? 'option' : undefined}
+      aria-selected={onSelect ? selected : undefined}
       leading={
         <img
           src={t.art.thumb}

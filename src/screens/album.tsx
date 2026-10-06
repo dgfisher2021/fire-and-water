@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
   MobileListGroup,
   MobilePageHeader,
+  MobileSearchBar,
   useSwipe,
 } from '@dust-ui/ui'
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
+import { filterTracks } from '@/lib/search'
 import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
@@ -30,6 +33,8 @@ export function AlbumScreen() {
   // The covers turn on their own until the first touch or key; after that
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
+  const [query, setQuery] = useState('')
+  const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
   const track = TRACK_ORDER[index]
   const t = TRACKS[track]
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
@@ -44,9 +49,11 @@ export function AlbumScreen() {
     onSwipeRight: () => step(-1),
   })
 
+  // Arrows turn the covers, unless the caret is in the search field.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
+      if ((e.target as HTMLElement).tagName === 'INPUT') return
       setInteracted(true)
       step(e.key === 'ArrowRight' ? 1 : -1)
     }
@@ -78,22 +85,27 @@ export function AlbumScreen() {
         <ArtworkStage
           index={index}
           onIndexChange={setIndex}
-          autoplayMs={anyPlaying || interacted ? 0 : AUTOPLAY_MS}
+          autoplayMs={anyPlaying || interacted || query ? 0 : AUTOPLAY_MS}
           className='animate-fade-up'
         >
-          <div
-            key={track}
-            className='min-h-[92px] animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
-          >
-            <h2 className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700 short:text-[22px]'>
+          <div className='min-h-[92px]'>
+            <MotionTextMorph
+              as='h2'
+              className='font-display text-[26px] leading-[1.15] font-medium text-primary transition-colors duration-700 short:text-[22px]'
+            >
               {t.title}
-            </h2>
-            <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>
-              {t.dedication} · {formatTime(t.duration)}
-            </p>
-            <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60 short:mx-0 short:max-w-[440px]'>
-              {t.description}
-            </p>
+            </MotionTextMorph>
+            <div
+              key={track}
+              className='animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
+            >
+              <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>
+                {t.dedication} · {formatTime(t.duration)}
+              </p>
+              <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60 short:mx-0 short:max-w-[440px]'>
+                {t.description}
+              </p>
+            </div>
           </div>
           <div className='mt-4 flex w-full items-center justify-center gap-3 short:justify-start'>
             <PlayButton
@@ -117,9 +129,19 @@ export function AlbumScreen() {
           </div>
         </ArtworkStage>
 
-        <div className='mt-6 animate-fade-up text-left [animation-delay:200ms]'>
-          <MobileListGroup label='Songs' footer={ALBUM.tagline}>
-            {TRACK_ORDER.map((id) => (
+        <div className='mt-6 flex animate-fade-up flex-col gap-3 text-left [animation-delay:200ms]'>
+          <MobileSearchBar
+            value={query}
+            onChange={setQuery}
+            placeholder='Search songs, voices, dedications'
+          />
+          <MobileListGroup
+            label='Songs'
+            footer={
+              songs.length > 0 ? ALBUM.tagline : `No song matches “${query}”`
+            }
+          >
+            {songs.map((id) => (
               <TrackRow key={id} id={id} />
             ))}
           </MobileListGroup>
