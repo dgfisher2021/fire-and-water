@@ -65,14 +65,25 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   JSON files are laid out by their scripts and excluded from Prettier.
 - `src/components/` app compositions built to Dust UI blocks rules on the
   published packages (`@dust-ui/ui` 0.13, `motion` 0.5, `tokens` 0.3): no
-  forks remain, the deltas from specs 20 and 22 shipped upstream. What is
-  still app-level and why: `LyricsReader` (stanza sing-along; the library's
-  `ReadAlongText` lights the words of the sung line inside it), `Waveform`
+  forks remain, the deltas from specs 20 and 22 shipped upstream, and
+  `AmbientImageBackdrop`, `GrainOverlay`, `MobileSearchBar`, `QRCode`,
+  `MobileConfirmDialog` and the motion pieces import as is. What
+  is still app-level and why: `LyricsReader` and `LyricsSplit` (the kit's
+  `MobileLyricsReader` and `MobileLyricsSplit` are line-level; these light
+  the sung line's words with `ReadAlongText`, take `lang`, and tint the
+  split's tags for dark surfaces; that delta is upstream work), `Waveform`
   (the song's shape under the media card, which has no slot for it),
-  `MiniPlayer` (adds a progress ring
-  and a marquee over `MobileNowPlayingBar`), `TrackRow` and `SongPicker`
-  (song data mapped onto `MobileMediaRow` and `MobileListPicker`),
-  `OverflowMarquee`, `ArtworkStage`, `AmbientImageBackdrop`.
+  `MiniPlayer` (kept instead of `MobileNowPlayingBar` for the progress ring
+  around play and the marquee, which the bar has no slot for), `TrackRow`
+  and `SongPicker` (song data on `MobileMediaRow`, and `SheetBottom` +
+  `MobileSearchBar` + those rows), `TagPill` (`Pill` at the kit's smallest
+  readable step), `OverflowMarquee`, `ArtworkStage`. Two kit pieces wait on
+  upstream fixes: `Surface variant='glass'` paints no fill or rim for a
+  consumer (tokens 0.3 ships the `--glass` variables without a
+  `--color-glass` theme mapping or the `glass-border` utility), so the
+  panels keep their `bg-card/85 backdrop-blur-md` recipe; and `SwipeRow`
+  keeps its action strip mounted behind a closed row, which shows through
+  this app's translucent `--card`, so the tracklist has no swipe actions.
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
   the voice tokens (`--pencil`, `--fire`, `--water`) and the per-track
@@ -108,10 +119,15 @@ wide, so the phone layout is verified through the 393px `DeviceFrame`
 
 `.mcp.json` ships the shadcn MCP server and `components.json` declares the
 `@dust-ui` and `@dust-ui-source` registries. Approve the server once with
-`/mcp`. While dust-ui's GitHub Pages is disabled the registries point at a
-local static server (`127.0.0.1:4180`) serving dust-ui's compiled registry;
-swap the URLs back to `https://dgfisher2021.github.io/dust-ui/r/...` when
-Pages is re-enabled.
+`/mcp`. The registries point at dust-ui's GitHub Pages
+(`https://dgfisher2021.github.io/dust-ui/r/...`). Should Pages go down
+again, serve dust-ui's compiled registry locally (`python3 -m http.server
+4180 --bind 127.0.0.1 --directory <dust-ui>/apps/docs/public`) and point
+both URLs at `http://127.0.0.1:4180/r/...`; the server reads
+`components.json` once at start, so restart the session after a swap. The
+`@dust-ui` door's descriptions are boilerplate: the real ones are the
+`description` prop of dust-ui's docs routes and the props are in the
+installed `node_modules/@dust-ui/ui/dist/<name>.d.ts`.
 
 ## Deploy
 

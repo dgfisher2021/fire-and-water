@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from '@tanstack/react-router'
 import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
+import { MotionScrollProgress, MotionTextShimmer } from '@dust-ui/motion'
 import {
   Button,
   Empty,
@@ -36,6 +37,7 @@ import { useMediaQuery } from '@/hooks/use-media-query'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
+import { TagPill } from '@/components/tag-pill'
 import { Waveform } from '@/components/waveform'
 
 // Landscape phones and the like: no room for the card at all.
@@ -210,9 +212,19 @@ export function LyricsScreen() {
             </span>
           }
           subtitle={
-            t.lyricsSource === 'transcribed'
-              ? `Written ${writtenDate(t)} · words transcribed by ear`
-              : `Written ${writtenDate(t)}`
+            t.lyricsSource === 'transcribed' ? (
+              <span className='inline-flex items-center gap-2'>
+                Written {writtenDate(t)}
+                <TagPill
+                  color='var(--track-deep)'
+                  colorDark='var(--track-bright)'
+                >
+                  Transcribed by ear
+                </TagPill>
+              </span>
+            ) : (
+              `Written ${writtenDate(t)}`
+            )
           }
           trailing={
             <Button
@@ -301,7 +313,18 @@ export function LyricsScreen() {
         </div>
       </div>
 
-      <div ref={swipeRef} className='min-h-0 flex-1'>
+      <div ref={swipeRef} className='relative min-h-0 flex-1'>
+        {t.lyrics.length > 0 && (
+          // How far down the words you are while reading by scroll; the
+          // song takes over the pane once it plays, so the line steps aside.
+          <MotionScrollProgress
+            containerRef={pane}
+            className={cn(
+              'absolute inset-x-6 top-0 z-10 h-px bg-track-bright transition-opacity duration-500',
+              singTime !== undefined && 'opacity-0'
+            )}
+          />
+        )}
         {t.lyrics.length > 0 ? (
           <LyricsReader
             key={track}
@@ -326,8 +349,10 @@ export function LyricsScreen() {
               >
                 <ScrollText aria-hidden />
               </EmptyMedia>
-              <EmptyTitle className='font-display text-2xl font-medium text-foreground/80'>
-                Lyrics on their way
+              <EmptyTitle className='font-display text-2xl font-medium'>
+                <MotionTextShimmer as='span' duration={2.6}>
+                  Lyrics on their way
+                </MotionTextShimmer>
               </EmptyTitle>
               <EmptyDescription className='text-[13px]'>
                 Listen along for now. Swipe to the next song, or come back once

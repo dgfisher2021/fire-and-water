@@ -19,8 +19,8 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@dust-ui": "http://127.0.0.1:4180/r/{name}.json",
-    "@dust-ui-source": "http://127.0.0.1:4180/r/source/{name}.json",
+    "@dust-ui": "https://dgfisher2021.github.io/dust-ui/r/{name}.json",
+    "@dust-ui-source": "https://dgfisher2021.github.io/dust-ui/r/source/{name}.json",
     "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json",
     "@magicui": "https://magicui.design/r/{name}.json",
     "@originui": "https://originui.com/r/{name}.json",

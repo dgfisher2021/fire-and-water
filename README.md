@@ -49,17 +49,18 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Screens
 
-- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list. Sideways, the cover sits beside the copy.
+- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list behind a search field (title, dedication or voice; accents and case do not matter). Sideways, the cover sits beside the copy.
 - **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics with the song's waveform under it, filled to the playhead in the song's color (tap it to jump), and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
-- **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
-- **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads with format and size, Google Drive links, sharing, credits, and the songs as a timeline.
+- **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet with a search field; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
+- **More** — appearance (light or dark, theme presets, neutrals, corner radius, density), downloads with format and size, Google Drive links, sharing with a QR code for the album link, credits, and the songs as a timeline.
 - The bottom bar's center action plays and pauses from anywhere, and once a song is playing a mini player sits above the bar on the Album and More screens.
 
 ## Features
 
 - Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Where the aligner heard the line, its words light one by one. Tap any line to jump the song to it. Songs without timings read by scroll instead.
 - Lyrics to go: Now Playing's action sheet downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
-- Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything
+- Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything, under a faint film grain
+- Reading by scroll, a hairline under the header shows how far down the words you are; it steps aside once the song plays
 - Album play-through, lock-screen and hardware media controls (Media Session API)
 - Keyboard: arrows switch songs, Space plays/pauses
 - Shareable deep links — `/lyrics/dust` opens straight to a song (old `#water` links still work); native share sheet on phones, copy-link elsewhere
