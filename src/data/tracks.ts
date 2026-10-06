@@ -287,7 +287,7 @@ export const TRACKS: Record<TrackId, Track> = {
     written: '2026-03-02',
     voice: 'Baritone',
     description:
-      'Pencil and Pen, sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
+      'A boy who only trusted pencil—erasable, safe, fixable—watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies. Sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
     audioFile: 'pencil-and-pen-baritone.mp3',
     duration: 299,
     art: { full: 'assets/baritone.webp', thumb: 'assets/baritone-512.webp' },
