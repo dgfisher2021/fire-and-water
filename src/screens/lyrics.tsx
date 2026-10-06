@@ -28,7 +28,8 @@ import {
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
 import { toLrc } from '@/lib/lrc'
-import { download, downloadText, share } from '@/lib/share'
+import { lyricsToText } from '@/lib/lyrics-text'
+import { copyText, download, downloadText, share } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { useMediaQuery } from '@/hooks/use-media-query'
@@ -164,6 +165,11 @@ export function LyricsScreen() {
       onClick: () => download(t.audioFile),
     },
   ]
+  if (t.lyrics.length > 0)
+    actions.push({
+      label: 'Copy lyrics',
+      onClick: () => void copyText(lyricsToText(t), 'Lyrics copied'),
+    })
   const lrc = toLrc(t)
   if (lrc)
     actions.push({

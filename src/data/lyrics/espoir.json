@@ -1,152 +1,145 @@
-{
-  "source": "transcribed",
-  "stanzas": [
-    [
-      "L’espérance telle que je la comprends",
-      "Ce n’est pas un sourire de passage"
-    ],
-    [
-      "C’est la part de moi qui reste debout",
-      "Quand la route devient rude et sauvage"
-    ],
-    [
-      "Je ne ferme pas les yeux sur les jours difficiles",
-      "Je ne me laisse pas tromper par la pluie",
-      "Une main tranquille tient le volant et me dit",
-      "Essaye encore, avance ici"
-    ],
-    [
-      "Je regarde ce qui est là",
-      "Et je regarde ce qui pourrait naître",
-      "Je sers l’avenir contre moi",
-      "Comme il me sert peut-être"
-    ],
-    [
-      "L’espoir n’est pas aveugle",
-      "L’espoir est à moi",
-      "C’est un choix que je dois faire chaque fois",
-      "Je choisis de voir au-delà de la nuit"
-    ],
-    [
-      "De garder cette étincelle en vie",
-      "Je choisis de me relever",
-      "L’espoir est à moi",
-      "À travers les mauvais jours"
-    ],
-    [
-      "Les heures qui me mettent à l’épreuve",
-      "Je choisis de garder cette flamme en vie",
-      "Et je sais que je grandis",
-      "Je choisis de me relever"
-    ],
-    ["L’espoir est à moi"],
-    [
-      "L’espoir est à moi",
-      "C’est un choix difficile que je fais",
-      "Chaque matin, chaque soir",
-      "À travers les preuves"
-    ],
-    [
-      "Les revers, les frictions",
-      "La frustration et les nuits noirs",
-      "Chaque erreur que j’ai portée",
-      "Chaque bleu que j’ai voulu cacher"
-    ],
-    [
-      "Devient une carte qui m’indique le chemin",
-      "Quand je décide de me relever",
-      "Je n’ai pas besoin de route parfaite",
-      "J’ai besoin d’une raison de commencer"
-    ],
-    [
-      "J’ai besoin d’un peu de lumière",
-      "Laisser l’avenir entrer",
-      "L’espoir n’est pas aveugle",
-      "L’espoir est à moi"
-    ],
-    [
-      "C’est un choix que je dois faire chaque fois",
-      "Je choisis de voir au delà de la nuit",
-      "De garder cette étincelle en vie",
-      "Je choisis de me relever"
-    ],
-    [
-      "L’espoir est à moi",
-      "À travers les mauvais jours",
-      "Les heures qui me mettent à l’épreuve",
-      "Je choisis de garder cette flamme en vie je sais"
-    ],
-    [
-      "Que je grandis",
-      "Je choisis de me relever",
-      "L’espoir est à moi",
-      "Pour le rêve que je construis"
-    ],
-    [
-      "Pour les mains que je rencontrerai en chemin",
-      "Pour la collaboration entre humain et agent",
-      "Que je façonne chaque matin",
-      "Ce n’est pas un voeu lancé au hasard"
-    ],
-    [
-      "C’est une promesse que je peux tenir",
-      "Une capacité partagée",
-      "Profondément enfouie, mais prête à surger",
-      "L’espoir n’est pas aveugle"
-    ],
-    [
-      "L’espoir est à moi’est un choix que je",
-      "Dois faire chaque fois’ai choisi de voir au-delà",
-      "De la nuit",
-      "De garder cette étincelle en vie"
-    ],
-    [
-      "J’ai choisi de me relever",
-      "L’espoir est à moi",
-      "À travers les mauvais jours",
-      "Les heures qui me mettent à l’épreuve"
-    ],
-    [
-      "J’ai choisi de garder cette flamme en vie",
-      "Et je sais que je grandis",
-      "J’ai choisi de me relever",
-      "L’espoir est à moi"
-    ],
-    [
-      "Au cœur de chaque épreuve",
-      "Il y a la graine de quelque chose de neuf",
-      "Chance de renaître",
-      "De changer de regard"
-    ],
-    [
-      "De choisir une autre voie mêmes vents qui annoncent l",
-      "’orage peuvent nous hisser vers le jour",
-      "Les mêmes mains qui portent la douleur peuvent apprendre à",
-      "Porter l’amour"
-    ],
-    [
-      "L’espoir n’est pas une lumière lointaine",
-      "C’est la braise au fond de nous",
-      "L’étincelle qui dit continue quand le rivage a disparu",
-      "Sois pas aveugle"
-    ],
-    [
-      "L’espoir est à moi",
-      "C’est un choix que je dois faire chaque fois",
-      "Je choisis de voir au delà de la nuit",
-      "De garder cette étincelle en vie"
-    ],
-    [
-      "Je choisis de me relever",
-      "L’espoir est à moi travers les mauvais jours",
-      "Les heures qui me mettent à l’épreuve",
-      "Je choisis de garder cette flamme en vie"
-    ],
-    [
-      "Et je sais que je grandis",
-      "Je choisis de me relever",
-      "L’espoir est à moi"
-    ],
-    ["’espoir est à moi"]
+[
+  [
+    "[Verse 1]",
+    "[Couplet 1]",
+    "L’espérance, telle que je la comprends,",
+    "ce n’est pas un sourire de passage",
+    "C’est la part de moi qui reste debout",
+    "quand la route devient rude et sauvage"
+  ],
+  [
+    "Je ne ferme pas les yeux sur les jours difficiles",
+    "je ne me laisse pas tromper par la pluie",
+    "Une main tranquille tient le volant",
+    "et me dit : essaie encore, avance ici"
+  ],
+  [
+    "[Pré-refrain]",
+    "Je regarde ce qui est là",
+    "et je regarde ce qui pourrait naître",
+    "Je serre l’avenir contre moi",
+    "comme il me serre peut-être"
+  ],
+  [
+    "[Refrain]",
+    "L’espoir n’est pas aveugle",
+    "L’espoir est à moi",
+    "C’est un choix que je dois faire",
+    "chaque fois",
+    "Je choisis de voir au-delà de la nuit",
+    "de garder cette étincelle en vie",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)",
+    "À travers les mauvais jours",
+    "les heures qui me mettent à l’épreuve",
+    "Je choisis de garder cette flamme en vie",
+    "Et je sais que je grandis",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)"
+  ],
+  [
+    "[Couplet 2]",
+    "C’est un choix difficile que je fais",
+    "chaque matin, chaque soir",
+    "À travers l’épreuve, les revers, les frictions",
+    "la frustration et les nuits noires"
+  ],
+  [
+    "Chaque erreur que j’ai portée",
+    "chaque bleu que j’ai voulu cacher",
+    "devient une carte qui m’indique le chemin",
+    "quand je décide de me relever"
+  ],
+  [
+    "[Pré-refrain]",
+    "Je n’ai pas besoin de routes parfaites",
+    "j’ai besoin d’une raison de commencer",
+    "J’ai besoin d’un peu de lumière",
+    "pour laisser l’avenir entrer"
+  ],
+  [
+    "[Refrain]",
+    "L’espoir n’est pas aveugle",
+    "L’espoir est à moi",
+    "C’est un choix que je dois faire",
+    "chaque fois",
+    "Je choisis de voir au-delà de la nuit",
+    "de garder cette étincelle en vie",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)",
+    "À travers les mauvais jours",
+    "les heures qui me mettent à l’épreuve",
+    "Je choisis de garder cette flamme en vie",
+    "Et je sais que je grandis",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)"
+  ],
+  [
+    "[Pont]",
+    "Pour le rêve que je construis",
+    "pour les mains que je rencontrerai en chemin",
+    "Pour la collaboration entre humains et agents",
+    "que je façonne chaque matin"
+  ],
+  [
+    "Ce n’est pas un vœu lancé au hasard",
+    "c’est une promesse que je peux tenir",
+    "Une capacité partagée",
+    "profondément enfouie, mais prête à surgir"
+  ],
+  [
+    "[Refrain]",
+    "L’espoir n’est pas aveugle",
+    "L’espoir est à moi",
+    "C’est un choix que je dois faire",
+    "chaque fois",
+    "Je choisis de voir au-delà de la nuit",
+    "de garder cette étincelle en vie",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)",
+    "À travers les mauvais jours",
+    "les heures qui me mettent à l’épreuve",
+    "Je choisis de garder cette flamme en vie",
+    "Et je sais que je grandis",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)"
+  ],
+  [
+    "[Couplet 3]",
+    "Au cœur de chaque épreuve",
+    "il y a la graine de quelque chose de neuf",
+    "Une chance de renaître, de changer de regard",
+    "de choisir une autre voie"
+  ],
+  [
+    "Les mêmes vents qui annoncent l’orage",
+    "peuvent nous hisser vers le jour",
+    "Les mêmes mains qui portent la douleur",
+    "peuvent apprendre à porter l’amour"
+  ],
+  [
+    "[Pré-refrain]",
+    "L’espoir n’est pas une lumière lointaine",
+    "c’est la braise au fond de nous",
+    "L’étincelle qui dit : continue",
+    "quand le rivage a disparu"
+  ],
+  [
+    "[Refrain]",
+    "L’espoir n’est pas aveugle",
+    "L’espoir est à moi",
+    "C’est un choix que je dois faire",
+    "chaque fois",
+    "Je choisis de voir au-delà de la nuit",
+    "de garder cette étincelle en vie",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)",
+    "À travers les mauvais jours",
+    "les heures qui me mettent à l’épreuve",
+    "Je choisis de garder cette flamme en vie",
+    "Et je sais que je grandis",
+    "Je choisis de me relever",
+    "(l’espoir est à moi)",
+    "(hope is mine)"
   ]
-}
+]

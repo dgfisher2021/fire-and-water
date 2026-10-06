@@ -1,14 +1,18 @@
 """Pull lyric sheets out of Suno download zips into src/data/lyrics/<id>.json.
 
-Suno ships `<slug>.mp3` next to `<slug> (lyrics).txt`. Each sheet is matched
-to a song by its audio file name in tracks.ts (accents and suffixes such as
-"-version" or "-extended-hope" are tolerated), split into stanzas at blank
-lines, and written as the plain stanza form the app loads. Empty sheets (a
-few bytes) are reported, not written. An existing sheet that differs is left
-alone unless --force is given, so a transcribed or hand-edited sheet survives.
+Suno ships `<slug>.mp3` (or .m4a) next to `<slug> (lyrics).txt`. Each sheet
+is matched to a song by its audio file name in tracks.ts (accents, a
+" [uuid]" tail and suffixes such as "-version" or "-extended-hope" are
+tolerated), split into stanzas at blank lines, and written as the plain
+stanza form the app loads. Empty sheets (a few bytes) are reported, not
+written. An existing sheet that differs is left alone unless --force is
+given, so a transcribed or hand-edited sheet survives; --only limits the
+run to the songs named, so one zip can fix a few sheets without touching
+the rest.
 
-usage: python3 scripts/lyrics/import-suno.py [--force] [zip-or-folder ...]
-       default folder: /mnt/c/Users/dustinf/Downloads/suno songs
+usage: python3 scripts/lyrics/import-suno.py [--force] [--only=id,id] [zip-or-folder ...]
+       default folder: downloads/ in the repo (ignored by git), else
+       /mnt/c/Users/dustinf/Downloads/suno songs
 """
 
 import json
@@ -23,7 +27,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "scripts/timing"))
 from songs import LYRICS_DIR, load_songs  # noqa: E402
 
-DEFAULT = pathlib.Path("/mnt/c/Users/dustinf/Downloads/suno songs")
+DEFAULTS = [ROOT / "downloads", pathlib.Path("/mnt/c/Users/dustinf/Downloads/suno songs")]
 
 
 def slug(text):
@@ -88,7 +92,8 @@ def parse_sheet(text):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     force = "--force" in sys.argv
-    targets = [pathlib.Path(a) for a in args] or [DEFAULT]
+    only = next((a.split("=", 1)[1].split(",") for a in sys.argv[1:] if a.startswith("--only=")), None)
+    targets = [pathlib.Path(a) for a in args] or [d for d in DEFAULTS if d.exists()][:1]
     zips = []
     for t in targets:
         zips += sorted(t.glob("*.zip")) if t.is_dir() else [t]
@@ -101,6 +106,8 @@ def main():
                     continue
                 sheet_slug = slug(name[: name.lower().rindex("(lyrics)")])
                 song_id = match_song(sheet_slug, songs)
+                if only and song_id not in only:
+                    continue
                 if not song_id:
                     print(f"   ? {name}: no song with a matching audio file")
                     continue

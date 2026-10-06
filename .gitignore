@@ -6,3 +6,5 @@ scripts/timing/.venv/
 __pycache__/
 *.local
 .DS_Store
+# Suno download zips and converted audio (scripts/audio-convert.py, scripts/lyrics/import-suno.py).
+downloads/
