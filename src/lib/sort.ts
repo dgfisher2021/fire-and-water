@@ -48,21 +48,26 @@ export function sortTracks(
 
 /**
  * The ids by collection, in COLLECTIONS order; album order within, except a
- * collection's `closing` songs, which come last in their given order.
- * Collections with no song given are left out.
+ * collection's `opening` songs, which come first, and its `closing` songs,
+ * which come last, each in their given order. Collections with no song
+ * given are left out.
  */
 export function groupTracks(
   ids: readonly TrackId[]
 ): { collection: Collection; ids: TrackId[] }[] {
   return COLLECTIONS.map((collection) => {
     const mine = ids.filter((id) => COLLECTION_OF[id] === collection.key)
+    const opening: readonly TrackId[] =
+      'opening' in collection ? collection.opening : []
     const closing: readonly TrackId[] =
       'closing' in collection ? collection.closing : []
+    const pinned = [...opening, ...closing]
     return {
       collection,
       ids: [
+        ...opening.filter((id) => mine.includes(id)),
         ...sortTracks(
-          mine.filter((id) => !closing.includes(id)),
+          mine.filter((id) => !pinned.includes(id)),
           'album'
         ),
         ...closing.filter((id) => mine.includes(id)),

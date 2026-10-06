@@ -2,10 +2,16 @@ import type { ReactNode } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Play } from 'lucide-react'
 import { Button, MobileMediaRow, MobilePlayingBars } from '@dust-ui/ui'
+import sizes from '@/data/audio-sizes.json'
 import { TRACKS, comparePartner, type TrackId } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
+import { audioLabel, formatTime } from '@/lib/format'
+import { download } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
+
+/** The story panel's pill buttons, in the glass tone. */
+const PILL =
+  'rounded-full border-border bg-card/85 px-4 text-[12px] tracking-[1px] text-muted-foreground shadow-none backdrop-blur-md hover:bg-accent hover:text-foreground'
 
 export type TrackRowProps = {
   id: TrackId
@@ -125,7 +131,8 @@ export function TrackRow({
         )}
       >
         <div className='min-h-0 overflow-hidden'>
-          <div className='flex flex-col gap-3 px-4 pt-1 pb-4'>
+          {/* The Now Playing bar's glass: card at 85% over a backdrop blur. */}
+          <div className='mx-3 mb-3 flex flex-col gap-3 rounded-xl border border-border bg-card/85 p-3 backdrop-blur-md'>
             <p className='text-[12.5px] leading-normal text-foreground/75'>
               {t.description}
             </p>
@@ -134,7 +141,7 @@ export function TrackRow({
                 size='sm'
                 variant='outline'
                 onClick={openLyrics}
-                className='rounded-full border-border bg-card px-4 text-[12px] tracking-[1px] text-muted-foreground shadow-none hover:bg-accent hover:text-foreground'
+                className={PILL}
               >
                 Read lyrics
               </Button>
@@ -147,9 +154,21 @@ export function TrackRow({
                     search: { left: id, right: partner },
                   })
                 }
-                className='rounded-full border-border bg-card px-4 text-[12px] tracking-[1px] text-muted-foreground shadow-none hover:bg-accent hover:text-foreground'
+                className={PILL}
               >
                 Compare with {TRACKS[partner].title}
+              </Button>
+              <Button
+                size='sm'
+                variant='outline'
+                onClick={() => download(t.audioFile)}
+                className={PILL}
+              >
+                Download{' '}
+                {audioLabel(
+                  t.audioFile,
+                  sizes[t.audioFile as keyof typeof sizes]
+                )}
               </Button>
             </div>
           </div>

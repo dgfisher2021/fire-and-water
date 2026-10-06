@@ -150,12 +150,18 @@ export function AlbumScreen() {
         </ArtworkStage>
 
         <div className='mt-6 flex animate-fade-up flex-col gap-3 text-left [animation-delay:200ms]'>
-          <MobileSearchBar
-            value={query}
-            onChange={setQuery}
-            placeholder='Search songs, voices, dedications'
-            trailing={<SortButton value={sort} onChange={setSort} />}
-          />
+          {/* The kit's capsule has no glass variant: it takes the bar's
+              card-at-85% fill through its background prop and the backdrop
+              blur rides on the capsule element inside it. */}
+          <div className='[&>div>div:first-child]:backdrop-blur-md'>
+            <MobileSearchBar
+              value={query}
+              onChange={setQuery}
+              placeholder='Search songs, voices, dedications'
+              background='color-mix(in oklab, var(--card) 85%, transparent)'
+              trailing={<SortButton value={sort} onChange={setSort} />}
+            />
+          </div>
           {sort === 'collection' && !noMatch ? (
             <div className='flex flex-col gap-5'>
               {groupTracks(songs).map(({ collection, ids }) => (

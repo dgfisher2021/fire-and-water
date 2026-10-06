@@ -147,7 +147,7 @@ export function LyricsReader({
                 // line's wash (the song's colour: deep on paper, bright on
                 // navy) hugs the whole line, not the pane.
                 className={cn(
-                  'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-primary/12 data-[state=current]:text-foreground data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
+                  'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
                   seekTo &&
                     'cursor-pointer hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
                 )}
