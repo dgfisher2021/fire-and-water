@@ -47,9 +47,11 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 
 Each song has its own accent color that tints the whole app while it is showing.
 
+**Collections.** The Album list can also be grouped by theme; every song sits in one collection, a version or mashup with its original: **Brother and sister** (Pencil and Pen and its baritone version, Fire and Water, Water and Fire, Moments to Memories, Opposite Hearts), **Hope and rising** (Not Afraid to Change, L’espoir est à moi, Waves of Hope, Hope Is Mine, The Flame Within), **The devil in my head** (Mercy I Owe Myself, Devil in My Head and its guitar version, Forging Fire into Gold, Burning Down That County Line, Name Me Right), **More than enough** (Too Much… for You, Thought You Knew Me Better, Drowning in Good Faith, Drowning but I Still Rise, I Still Rise), **Ashes to stardust** (Dust I Become, Magic of the Raven, I Make It Beautiful, Rewrite the Dark, This Is His Legend) and **Carbon and silicon** (Systems Thinker, Eve of the Silent Node, Binary Soul). They live in `src/data/collections.ts`.
+
 ## Screens
 
-- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list behind a search field (title, dedication or voice; accents and case do not matter). Sideways, the cover sits beside the copy.
+- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list behind a search field (title, dedication or voice; accents and case do not matter). The sort button beside the field orders the list by album, A to Z, the day each song was written, or by collection, where each collection is its own group with its blurb as the footer; the choice lives in the URL (`/?sort=collection`), so a view can be shared, and the search filters within any order. Sideways, the cover sits beside the copy.
 - **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics with the song's waveform under it, filled to the playhead in the song's color (tap it to jump), and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
 - **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet with a search field; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
 - **More** — four short groups: appearance (light or dark, theme presets, neutrals, corner radius, density); sharing, with a QR code for the album link; songs, where "Download a song" and "Open in Google Drive" open the song picker (format and size on each row); and about, with credits and a row into **The story so far**, the songs as a timeline on their own screen with month filter chips.
@@ -109,11 +111,13 @@ React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`,
 
 ```
 index.html              App shell, meta, pre-paint theme, legacy #hash redirect
-src/routes/             / album · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
+src/routes/             / album (?sort=) · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
 src/screens/            The four screens, and the tap-to-time tool
-src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker
+src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker, sort button
 src/store/              Player state (one <audio> element) and toasts
 src/data/tracks.ts      Song data; src/data/lyrics/*.json the lyric sheets; audio-sizes.json the download sizes; tracks.test.ts checks it all
+src/data/collections.ts The songs by theme, for the Album list's "By collection" order
+src/lib/                search.ts the song filter, sort.ts the Album list orders, read-along.ts the sing-along, lrc.ts the LRC export
 src/styles/index.css    Token contract, presets, brand default, per-song voices
 public/                 Audio (*.m4a, *.mp3) and artwork (WebP)
 scripts/                Lyrics import, sing-along timing, audio sizes

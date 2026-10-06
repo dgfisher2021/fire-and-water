@@ -1,0 +1,92 @@
+import { describe, expect, it } from 'vitest'
+import { COLLECTIONS, COLLECTION_OF } from '@/data/collections'
+import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
+import { ALBUM_SORTS, compareTitles, groupTracks, sortTracks } from './sort'
+
+const albumIndex = (id: TrackId) => TRACK_ORDER.indexOf(id)
+const shuffled: TrackId[] = [...TRACK_ORDER].reverse()
+
+describe('compareTitles', () => {
+  it('ignores case and accents', () => {
+    expect(compareTitles('éclair', 'Eclair')).toBe(0)
+    expect(['Zed', 'éclair', 'apple'].sort(compareTitles)).toEqual([
+      'apple',
+      'éclair',
+      'Zed',
+    ])
+  })
+})
+
+describe('sortTracks', () => {
+  it('returns a permutation of the ids given, whatever the sort', () => {
+    const some: TrackId[] = ['binary', 'pencil', 'node']
+    for (const sort of ALBUM_SORTS)
+      expect([...sortTracks(some, sort)].sort()).toEqual([...some].sort())
+  })
+
+  it('restores album order', () => {
+    expect(sortTracks(shuffled, 'album')).toEqual([...TRACK_ORDER])
+    expect(sortTracks(['binary', 'pencil', 'node'], 'album')).toEqual([
+      'pencil',
+      'node',
+      'binary',
+    ])
+  })
+
+  it('sorts A to Z by title', () => {
+    const titles = sortTracks(shuffled, 'title').map((id) => TRACKS[id].title)
+    for (let i = 1; i < titles.length; i++)
+      expect(compareTitles(titles[i - 1], titles[i])).toBeLessThanOrEqual(0)
+    // A version sorts right after its original, the title being a prefix.
+    const ids = sortTracks(shuffled, 'title')
+    expect(ids.indexOf('baritone')).toBe(ids.indexOf('pencil') + 1)
+  })
+
+  it('sorts by the day written, oldest first, album order on a tie', () => {
+    const ids = sortTracks(shuffled, 'written')
+    for (let i = 1; i < ids.length; i++) {
+      const a = TRACKS[ids[i - 1]]
+      const b = TRACKS[ids[i]]
+      expect(a.written <= b.written).toBe(true)
+      if (a.written === b.written)
+        expect(albumIndex(a.id)).toBeLessThan(albumIndex(b.id))
+    }
+    expect(ids[0]).toBe('pencil')
+  })
+
+  it('groups by collection, album order within', () => {
+    const ids = sortTracks(shuffled, 'collection')
+    const rank = (id: TrackId) =>
+      COLLECTIONS.findIndex((c) => c.key === COLLECTION_OF[id])
+    for (let i = 1; i < ids.length; i++) {
+      const a = ids[i - 1]
+      const b = ids[i]
+      expect(rank(a)).toBeLessThanOrEqual(rank(b))
+      if (rank(a) === rank(b)) expect(albumIndex(a)).toBeLessThan(albumIndex(b))
+    }
+    expect(COLLECTION_OF[ids[0]]).toBe(COLLECTIONS[0].key)
+  })
+})
+
+describe('groupTracks', () => {
+  it('lists the collections in order, each with its songs in album order', () => {
+    const groups = groupTracks(shuffled)
+    expect(groups.map((g) => g.collection.key)).toEqual(
+      COLLECTIONS.map((c) => c.key)
+    )
+    for (const g of groups) {
+      expect(g.ids.length).toBeGreaterThan(0)
+      for (const id of g.ids) expect(COLLECTION_OF[id]).toBe(g.collection.key)
+      expect(g.ids).toEqual(sortTracks(g.ids, 'album'))
+    }
+  })
+
+  it('omits collections none of the given songs belong to', () => {
+    const groups = groupTracks(['binary', 'pencil'])
+    expect(groups.map((g) => g.collection.key)).toEqual([
+      COLLECTION_OF.pencil,
+      COLLECTION_OF.binary,
+    ])
+    expect(groupTracks([])).toEqual([])
+  })
+})

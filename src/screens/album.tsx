@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
@@ -11,19 +11,31 @@ import {
 import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { filterTracks } from '@/lib/search'
+import { groupTracks, sortTracks, type AlbumSort } from '@/lib/sort'
 import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { PlayButton } from '@/components/play-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
+import { SortButton } from '@/components/sort-button'
 import { TrackRow } from '@/components/track-row'
 
 const AUTOPLAY_MS = 15_000
 
+/** The one-list footer when the order is not the album's own (which shows the tagline). */
+const SORT_FOOTER: Partial<Record<AlbumSort, string>> = {
+  title: 'A to Z by title',
+  written: 'Oldest first, by the day each song was written',
+}
+
 export function AlbumScreen() {
   const framed = useFramed()
   const navigate = useNavigate()
+  // The list order is in the URL (/?sort=title); album order keeps it clean.
+  const { sort } = useSearch({ from: '/' })
+  const setSort = (next: AlbumSort) =>
+    void navigate({ to: '/', search: { sort: next }, replace: true })
   const index = usePlayer((s) => s.carouselIndex)
   const setIndex = usePlayer((s) => s.setCarouselIndex)
   const status = usePlayer((s) => s.status)
@@ -35,6 +47,8 @@ export function AlbumScreen() {
   const [interacted, setInteracted] = useState(false)
   const [query, setQuery] = useState('')
   const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
+  const noMatch = songs.length === 0 ? `No song matches “${query}”` : undefined
+  // The stage above keeps album order; only the list re-sorts.
   const track = TRACK_ORDER[index]
   const t = TRACKS[track]
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
@@ -134,17 +148,32 @@ export function AlbumScreen() {
             value={query}
             onChange={setQuery}
             placeholder='Search songs, voices, dedications'
+            trailing={<SortButton value={sort} onChange={setSort} />}
           />
-          <MobileListGroup
-            label='Songs'
-            footer={
-              songs.length > 0 ? ALBUM.tagline : `No song matches “${query}”`
-            }
-          >
-            {songs.map((id) => (
-              <TrackRow key={id} id={id} />
-            ))}
-          </MobileListGroup>
+          {sort === 'collection' && !noMatch ? (
+            <div className='flex flex-col gap-5'>
+              {groupTracks(songs).map(({ collection, ids }) => (
+                <MobileListGroup
+                  key={collection.key}
+                  label={collection.label}
+                  footer={collection.blurb}
+                >
+                  {ids.map((id) => (
+                    <TrackRow key={id} id={id} />
+                  ))}
+                </MobileListGroup>
+              ))}
+            </div>
+          ) : (
+            <MobileListGroup
+              label='Songs'
+              footer={noMatch ?? SORT_FOOTER[sort] ?? ALBUM.tagline}
+            >
+              {sortTracks(songs, sort).map((id) => (
+                <TrackRow key={id} id={id} />
+              ))}
+            </MobileListGroup>
+          )}
         </div>
       </div>
     </Screen>
