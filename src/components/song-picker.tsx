@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { MobileListGroup, MobileSearchBar, SheetBottom } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { filterTracks } from '@/lib/search'
@@ -7,25 +7,34 @@ import { TrackRow } from '@/components/track-row'
 
 export type SongPickerProps = {
   title: string
-  /** The song currently in that slot. */
-  value: TrackId
+  /** The songs on offer; the whole album by default. */
+  songs?: readonly TrackId[]
+  /** The song currently in the slot the picker fills, if any. */
+  value?: TrackId
+  /** Right-aligned detail per row; the song's length by default. */
+  detail?: (id: TrackId) => ReactNode
+  /** Glyph on each resting row's trailing edge; the play glyph by default. */
+  trailing?: ReactNode
   onSelect: (id: TrackId) => void
   onClose: () => void
 }
 
 /**
- * A bottom sheet listing every song behind a search field, pinned inside
- * the shell root over the nav. Picking a song calls onSelect, then onClose.
+ * A bottom sheet listing songs behind a search field, pinned inside the
+ * shell root over the nav. Picking a song calls onSelect, then onClose.
  */
 export function SongPicker({
   title,
+  songs = TRACK_ORDER,
   value,
+  detail,
+  trailing,
   onSelect,
   onClose,
 }: SongPickerProps) {
   const root = useShellRoot()
   const [query, setQuery] = useState('')
-  const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
+  const shown = filterTracks(songs, (id) => TRACKS[id], query)
   return (
     <SheetBottom
       title={title}
@@ -47,13 +56,15 @@ export function SongPicker({
         <MobileListGroup
           role='listbox'
           aria-label={title}
-          footer={songs.length === 0 ? `No song matches “${query}”` : undefined}
+          footer={shown.length === 0 ? `No song matches “${query}”` : undefined}
         >
-          {songs.map((id) => (
+          {shown.map((id) => (
             <TrackRow
               key={id}
               id={id}
-              selected={id === value}
+              selected={value !== undefined && id === value}
+              value={detail?.(id)}
+              trailing={trailing}
               onSelect={(picked) => {
                 onSelect(picked)
                 onClose()

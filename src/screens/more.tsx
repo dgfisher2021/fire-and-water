@@ -1,44 +1,54 @@
-import { CloudDownload, Download, Heart, Music, Share2 } from 'lucide-react'
+import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
+import {
+  BookOpen,
+  CloudDownload,
+  Download,
+  ExternalLink,
+  Heart,
+  Share2,
+} from 'lucide-react'
 import {
   MobileListGroup,
   MobileListRow,
   MobilePageHeader,
-  MobileTimeline,
   QRCode,
-  type MobileTimelineItem,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
-import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
+import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
 import { download, share } from '@/lib/share'
+import { useToasts } from '@/store/toasts'
 import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
+import { SongPicker } from '@/components/song-picker'
 import { TagPill } from '@/components/tag-pill'
 
 const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
-
-// The songs as a story, in the order they were written.
-const STORY: MobileTimelineItem[] = TRACK_ORDER.map((id) => {
-  const t = TRACKS[id]
-  return {
-    id,
-    date: t.written,
-    month: new Date(t.written).toLocaleString('en-US', { month: 'short' }),
-    title: t.title,
-    desc: `${t.dedication} · ${t.voice}`,
-    detail: t.description,
-    color: `var(--${id})`,
-    icon: Music,
-  }
-})
 
 /** The album's front door, wherever the app is served from. */
 const albumUrl = () =>
   new URL(import.meta.env.BASE_URL, window.location.origin).href
 
+/** "M4A · 3.2 MB" as a format pill and a size, for a download row. */
+function downloadDetail(id: TrackId) {
+  const file = TRACKS[id].audioFile
+  return (
+    <span className='inline-flex items-center gap-2'>
+      <TagPill color={`var(--${id}-deep)`} colorDark={`var(--${id})`}>
+        {audioFormat(file)}
+      </TagPill>
+      {formatBytes(sizes[file as keyof typeof sizes])}
+    </span>
+  )
+}
+
 export function MoreScreen() {
   const framed = useFramed()
+  const navigate = useNavigate()
+  const [picking, setPicking] = useState<'download' | 'drive' | null>(null)
+
   return (
     <Screen
       header={
@@ -47,7 +57,7 @@ export function MoreScreen() {
           title={
             <span className='font-display text-[26px] font-medium'>More</span>
           }
-          subtitle='Appearance, downloads and the story'
+          subtitle='Appearance, sharing, downloads and the story'
           statusBarInset={framed}
         />
       }
@@ -62,43 +72,6 @@ export function MoreScreen() {
             value='Customize'
             trailing={<AppearanceButton />}
           />
-        </MobileListGroup>
-
-        <MobileListGroup label='Download'>
-          {TRACK_ORDER.map((id) => (
-            <MobileListRow
-              key={id}
-              icon={Download}
-              label={TRACKS[id].title}
-              value={
-                <span className='inline-flex items-center gap-2'>
-                  <TagPill
-                    color={`var(--${id}-deep)`}
-                    colorDark={`var(--${id})`}
-                  >
-                    {audioFormat(TRACKS[id].audioFile)}
-                  </TagPill>
-                  {formatBytes(
-                    sizes[TRACKS[id].audioFile as keyof typeof sizes]
-                  )}
-                </span>
-              }
-              onClick={() => download(TRACKS[id].audioFile)}
-            />
-          ))}
-        </MobileListGroup>
-
-        <MobileListGroup label='Google Drive'>
-          {DRIVE_TRACKS.map((id) => (
-            <MobileListRow
-              key={id}
-              icon={CloudDownload}
-              label={TRACKS[id].title}
-              onClick={() =>
-                window.open(TRACKS[id].driveLink, '_blank', 'noopener')
-              }
-            />
-          ))}
         </MobileListGroup>
 
         <MobileListGroup
@@ -124,6 +97,26 @@ export function MoreScreen() {
           </div>
         </MobileListGroup>
 
+        <MobileListGroup
+          label='Songs'
+          footer='Each download is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
+        >
+          <MobileListRow
+            icon={Download}
+            label='Download a song'
+            value={`${TRACK_ORDER.length} songs`}
+            onClick={() => setPicking('download')}
+          />
+          {DRIVE_TRACKS.length > 0 && (
+            <MobileListRow
+              icon={CloudDownload}
+              label='Open in Google Drive'
+              value={`${DRIVE_TRACKS.length} ${DRIVE_TRACKS.length === 1 ? 'song' : 'songs'}`}
+              onClick={() => setPicking('drive')}
+            />
+          )}
+        </MobileListGroup>
+
         <MobileListGroup label='About'>
           <MobileListRow
             icon={Heart}
@@ -131,24 +124,45 @@ export function MoreScreen() {
             label='Written and performed by Dustin'
             value='2026'
           />
+          <MobileListRow
+            icon={BookOpen}
+            label='The story so far'
+            value={`${TRACK_ORDER.length} songs`}
+            onClick={() => void navigate({ to: '/story' })}
+          />
         </MobileListGroup>
-
-        <section
-          aria-labelledby='story-heading'
-          className='flex flex-col gap-3'
-        >
-          <h3
-            id='story-heading'
-            className='px-1 text-[11px] font-semibold tracking-[1.5px] text-muted-foreground uppercase'
-          >
-            The story so far
-          </h3>
-          <MobileTimeline items={STORY} />
-          <p className='px-1 font-display text-[13px] text-muted-foreground italic'>
-            {ALBUM.tagline}
-          </p>
-        </section>
       </div>
+
+      {picking === 'download' && (
+        <SongPicker
+          title='Download a song'
+          detail={downloadDetail}
+          trailing={
+            <Download className='size-4 text-muted-foreground' aria-hidden />
+          }
+          onSelect={(id) => {
+            download(TRACKS[id].audioFile)
+            useToasts.getState().push(`Downloading ${TRACKS[id].title}`)
+          }}
+          onClose={() => setPicking(null)}
+        />
+      )}
+      {picking === 'drive' && (
+        <SongPicker
+          title='Open in Google Drive'
+          songs={DRIVE_TRACKS}
+          trailing={
+            <ExternalLink
+              className='size-4 text-muted-foreground'
+              aria-hidden
+            />
+          }
+          onSelect={(id) =>
+            window.open(TRACKS[id].driveLink, '_blank', 'noopener')
+          }
+          onClose={() => setPicking(null)}
+        />
+      )}
     </Screen>
   )
 }

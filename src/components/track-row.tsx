@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { MobileMediaRow, MobilePlayingBars } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
@@ -8,12 +9,22 @@ export type TrackRowProps = {
   id: TrackId
   /** Marks the row as the chosen one (in a picker): a check replaces the play glyph. */
   selected?: boolean
+  /** Right-aligned detail; the song's length by default. */
+  value?: ReactNode
+  /** Glyph on the trailing edge of a resting row (a download arrow, a link); the play glyph by default. */
+  trailing?: ReactNode
   /** Replaces the default tap, which plays the song and opens Now Playing; the row becomes a listbox option. */
   onSelect?: (id: TrackId) => void
 }
 
-/** One song in a list: cover, title, dedication and voice, length, and the playing bars while it plays. */
-export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
+/** One song in a list: cover, title, dedication and voice, a detail, and the playing bars while it plays. */
+export function TrackRow({
+  id,
+  selected,
+  value,
+  trailing,
+  onSelect,
+}: TrackRowProps) {
   const t = TRACKS[id]
   // 'idle' when another song is loaded; this song's status otherwise.
   const status = usePlayer((s) => (s.track === id ? s.status : 'idle'))
@@ -37,7 +48,7 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
         </span>
       }
       subtitle={`${t.dedication} · ${t.voice}`}
-      value={formatTime(t.duration)}
+      value={value ?? formatTime(t.duration)}
       state={selected ? 'selected' : active ? 'active' : 'idle'}
       // The row's own bars cannot know playing from paused; these can.
       trailing={
@@ -46,7 +57,9 @@ export function TrackRow({ id, selected, onSelect }: TrackRowProps) {
             active={status === 'playing' || status === 'loading'}
             color='var(--track-bright)'
           />
-        ) : undefined
+        ) : (
+          trailing
+        )
       }
       onClick={() => {
         if (onSelect) {

@@ -220,7 +220,7 @@
 :root:not([data-theme]) {
   --background: oklch(0.965 0.01 80);
   --foreground: oklch(0.22 0.02 265);
-  --card: oklch(1 0 0 / 55%);
+  --card: oklch(1 0 0 / 62%);
   --card-foreground: var(--foreground);
   --popover: oklch(0.99 0.005 80);
   --popover-foreground: var(--foreground);
@@ -245,13 +245,13 @@
 .dark:not([data-theme]) {
   --background: oklch(0.15 0.025 265); /* #0a0e1a deep navy */
   --foreground: oklch(0.94 0.012 75); /* #f0eae2 warm paper */
-  --card: oklch(1 0 0 / 6%);
+  --card: oklch(1 0 0 / 9%);
   --card-foreground: var(--foreground);
   --popover: oklch(0.2 0.03 265);
   --popover-foreground: var(--foreground);
 
   --muted: oklch(1 0 0 / 8%);
-  --muted-foreground: oklch(0.94 0.012 75 / 62%);
+  --muted-foreground: oklch(0.94 0.012 75 / 68%);
   --secondary: var(--muted);
   --secondary-foreground: var(--foreground);
 
