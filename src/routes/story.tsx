@@ -1,7 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { StoryScreen } from '@/screens/story'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
-// Reached from More; the More tab stays lit.
+// The story screen folded into the Album's date-written timeline; old
+// links land there.
 export const Route = createFileRoute('/story')({
-  component: StoryScreen,
+  beforeLoad: () => {
+    throw redirect({ to: '/', search: { sort: 'written' }, replace: true })
+  },
 })

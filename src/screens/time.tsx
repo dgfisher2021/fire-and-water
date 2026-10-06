@@ -16,7 +16,10 @@ import { selectProgress, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
-import { MEDIA_VARS } from '@/screens/lyrics'
+
+/** The kit's transport bar in the open track's voice. */
+const MEDIA_VARS =
+  '[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
 
 type Marks = Map<string, number>
 type Step = { key: string; before: number | undefined }

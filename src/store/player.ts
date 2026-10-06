@@ -13,6 +13,26 @@ export type PlayerStatus = 'idle' | 'loading' | 'playing' | 'paused'
 
 export type ComparePair = { left: TrackId; right: TrackId }
 
+/** What follows a finished song: the next one, the same one again, or any other. */
+export const PLAY_MODES = ['album', 'repeat', 'shuffle'] as const
+export type PlayMode = (typeof PLAY_MODES)[number]
+
+/** The song to play after `track` ends in `mode`; null when the album is over. */
+export function nextAfterEnd(
+  track: TrackId,
+  mode: PlayMode,
+  random: () => number = Math.random
+): TrackId | null {
+  if (mode === 'repeat') return track
+  if (mode === 'shuffle') {
+    const others = TRACK_ORDER.filter((id) => id !== track)
+    return others[
+      Math.min(others.length - 1, Math.floor(random() * others.length))
+    ]
+  }
+  return isLastTrack(track) ? null : adjacentTrack(track, 1)
+}
+
 type PlayerState = {
   /** Track loaded in the audio element; null when nothing is loaded. */
   track: TrackId | null
@@ -29,9 +49,11 @@ type PlayerState = {
   requested: { track: TrackId; seq: number } | null
   /** The last pair the Compare screen showed; the tab reopens it while it still holds the focus track. */
   comparePair: ComparePair | null
+  playMode: PlayMode
 
   setCarouselIndex: (index: number) => void
   setComparePair: (pair: ComparePair) => void
+  cyclePlayMode: () => void
   play: (track: TrackId) => void
   pause: () => void
   toggle: (track: TrackId) => void
@@ -53,9 +75,15 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   carouselIndex: 0,
   requested: null,
   comparePair: null,
+  playMode: 'album',
 
   setCarouselIndex: (index) => set({ carouselIndex: index }),
   setComparePair: (pair) => set({ comparePair: pair }),
+  cyclePlayMode: () =>
+    set((s) => ({
+      playMode:
+        PLAY_MODES[(PLAY_MODES.indexOf(s.playMode) + 1) % PLAY_MODES.length],
+    })),
 
   play: (track) => {
     const audio = getAudio()
@@ -94,11 +122,16 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   },
 
   _sync: (patch) => set(patch),
-  // Album play-through: a finished track hands off to the next one.
+  // A finished track hands off to whatever the play mode says comes next.
   _ended: () => {
-    const { track, requestTrack } = get()
-    if (track && !isLastTrack(track)) requestTrack(adjacentTrack(track, 1))
-    else set((s) => ({ status: 'paused', currentTime: s.duration }))
+    const { track, playMode, requestTrack, seek, play } = get()
+    const next = track ? nextAfterEnd(track, playMode) : null
+    if (next === null)
+      set((s) => ({ status: 'paused', currentTime: s.duration }))
+    else if (next === track) {
+      seek(0)
+      play(next)
+    } else requestTrack(next)
   },
 }))
 

@@ -10,13 +10,11 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-  MobileMediaPlayer,
   MobilePageHeader,
   SheetAction,
   type SheetActionAction,
   useSwipe,
 } from '@dust-ui/ui'
-import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
 import {
   ALBUM,
@@ -35,16 +33,13 @@ import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { LyricsReader } from '@/components/lyrics-reader'
+import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
 import { TagPill } from '@/components/tag-pill'
-import { Waveform } from '@/components/waveform'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
-/** The media player in the open track's voice. */
-export const MEDIA_VARS =
-  '[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
 
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
@@ -250,16 +245,8 @@ export function LyricsScreen() {
           )}
         >
           <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
-            <MobileMediaPlayer
-              title={t.dedication}
-              artist={ALBUM.title}
-              artwork={
-                <img
-                  src={t.art.thumb}
-                  alt=''
-                  className='size-12 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-                />
-              }
+            <NowPlayingCard
+              track={track}
               duration={duration}
               progress={progress}
               onSeek={(ratio) => {
@@ -271,16 +258,6 @@ export function LyricsScreen() {
               onPlayPause={() => (playing ? pause() : play(track))}
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
-              className={MEDIA_VARS}
-            />
-            <Waveform
-              bins={envelopes[t.audioFile as keyof typeof envelopes]}
-              progress={progress}
-              onSeek={(ratio) => {
-                if (!isCurrent) play(track)
-                seek(ratio * duration)
-              }}
-              className='mt-2 h-7 px-5'
             />
           </div>
         </div>
@@ -292,9 +269,8 @@ export function LyricsScreen() {
           )}
         >
           <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
-            <MobileMediaPlayer
-              variant='bar'
-              title={t.title}
+            <NowPlayingBar
+              track={track}
               duration={duration}
               progress={progress}
               onSeek={(ratio) => {
@@ -304,10 +280,6 @@ export function LyricsScreen() {
               playing={playing}
               loading={loading}
               onPlayPause={() => (playing ? pause() : play(track))}
-              className={cn(
-                'rounded-2xl border border-border bg-card/85 px-3 py-2 backdrop-blur-md',
-                MEDIA_VARS
-              )}
             />
           </div>
         </div>
@@ -338,7 +310,7 @@ export function LyricsScreen() {
               if (!isCurrent) play(track)
               seek(seconds)
             }}
-            className='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
+            paneClassName='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
           />
         ) : (
           <Empty className='h-full pb-24'>

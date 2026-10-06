@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { COLLECTIONS, COLLECTION_OF } from '@/data/collections'
 import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { ALBUM_SORTS, compareTitles, groupTracks, sortTracks } from './sort'
+import {
+  ALBUM_SORTS,
+  compareTitles,
+  groupTracks,
+  groupTracksByMonth,
+  sortTracks,
+} from './sort'
 
 const albumIndex = (id: TrackId) => TRACK_ORDER.indexOf(id)
 const shuffled: TrackId[] = [...TRACK_ORDER].reverse()
@@ -106,5 +112,31 @@ describe('groupTracks', () => {
       COLLECTION_OF.binary,
     ])
     expect(groupTracks([])).toEqual([])
+  })
+})
+
+describe('groupTracksByMonth', () => {
+  it('buckets the songs by the month written, oldest first, oldest first within', () => {
+    const groups = groupTracksByMonth(shuffled)
+    expect(groups.flatMap((g) => g.ids)).toEqual(
+      sortTracks(shuffled, 'written')
+    )
+    const keys = groups.map((g) => g.key)
+    expect(keys).toEqual([...keys].sort())
+    expect(new Set(keys).size).toBe(keys.length)
+    for (const g of groups) {
+      expect(g.ids.length).toBeGreaterThan(0)
+      for (const id of g.ids) expect(TRACKS[id].written.slice(0, 7)).toBe(g.key)
+    }
+  })
+
+  it('labels a month in full with its year', () => {
+    const [first] = groupTracksByMonth(['pencil'])
+    expect(first.key).toBe(TRACKS.pencil.written.slice(0, 7))
+    expect(first.label).toBe('March 2026')
+  })
+
+  it('is empty for no songs', () => {
+    expect(groupTracksByMonth([])).toEqual([])
   })
 })

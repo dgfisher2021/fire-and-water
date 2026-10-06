@@ -76,11 +76,10 @@ export function MoreScreen() {
 
         <MobileListGroup
           label='Share'
-          footer='Scan the code to open the album on another phone.'
+          footer='Point a camera at the code to open the album on another phone, or tap the row to send the link.'
         >
-          <MobileListRow
-            icon={Share2}
-            label='Share the album'
+          <button
+            type='button'
             onClick={() =>
               void share({
                 title: `${ALBUM.title} — ${ALBUM.artist}`,
@@ -88,13 +87,42 @@ export function MoreScreen() {
                 url: albumUrl(),
               })
             }
-          />
-          <div className='flex justify-center py-4'>
-            {/* Ink on paper in both modes: scanners want dark modules on a light ground. */}
-            <div className='rounded-xl bg-background p-3 text-foreground shadow-[0_10px_28px_-18px_var(--track-glow)] dark:bg-foreground dark:text-background'>
-              <QRCode value={albumUrl()} size={128} aria-label='Album link' />
+            className='flex w-full cursor-pointer items-center gap-4 px-3 py-3 text-left transition-colors hover:bg-accent/50'
+          >
+            {/* Ink on paper in both modes: scanners want dark modules on a
+                light ground. The cover sits in the middle, modules cleared
+                around it, with the error correction to spare. */}
+            <div className='shrink-0 rounded-[12px] bg-background p-2 text-foreground dark:bg-foreground dark:text-background'>
+              <QRCode
+                value={albumUrl()}
+                size={92}
+                level='H'
+                marginSize={0}
+                imageSettings={{
+                  src: TRACKS[TRACK_ORDER[0]].art.thumb,
+                  width: 24,
+                  height: 24,
+                  excavate: true,
+                }}
+                aria-label='Album link'
+              />
             </div>
-          </div>
+            <div className='min-w-0 flex-1'>
+              <div className='font-display text-[18px] leading-tight font-medium text-foreground'>
+                Share the album
+              </div>
+              <div className='mt-0.5 text-[12px] text-muted-foreground'>
+                {ALBUM.title} · {TRACK_ORDER.length} songs
+              </div>
+              <div className='mt-1 truncate text-[11px] text-muted-foreground-subtle'>
+                {albumUrl().replace(/^https?:\/\//, '')}
+              </div>
+            </div>
+            <Share2
+              className='size-4 shrink-0 text-muted-foreground'
+              aria-hidden
+            />
+          </button>
         </MobileListGroup>
 
         <MobileListGroup
@@ -127,8 +155,10 @@ export function MoreScreen() {
           <MobileListRow
             icon={BookOpen}
             label='The story so far'
-            value={`${TRACK_ORDER.length} songs`}
-            onClick={() => void navigate({ to: '/story' })}
+            value='By date written'
+            onClick={() =>
+              void navigate({ to: '/', search: { sort: 'written' } })
+            }
           />
         </MobileListGroup>
       </div>

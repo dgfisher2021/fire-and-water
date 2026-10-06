@@ -1,9 +1,10 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { MobileMediaPlayer, MobilePageHeader } from '@dust-ui/ui'
+import { MobilePageHeader } from '@dust-ui/ui'
 import { TRACKS, sameLyricShape, shortTitle, type TrackId } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
 import { LyricsSplit, type LyricsColumn } from '@/components/lyrics-split'
+import { NowPlayingBar } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
@@ -114,9 +115,8 @@ export function CompareScreen() {
         <LyricsSplit left={column('left')} right={column('right')} />
       </div>
       <div className='shrink-0 px-4 pt-2 pb-[calc(88px+env(safe-area-inset-bottom))]'>
-        <MobileMediaPlayer
-          variant='bar'
-          title={t.title}
+        <NowPlayingBar
+          track={track}
           duration={duration}
           progress={progress}
           onSeek={(ratio) => {
@@ -126,7 +126,6 @@ export function CompareScreen() {
           playing={playing}
           loading={loading}
           onPlayPause={() => (playing ? pause() : play(track))}
-          className='rounded-2xl border border-border bg-card px-3 py-2 [--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
         />
       </div>
       {picking && (

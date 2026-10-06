@@ -46,6 +46,32 @@ export function sortTracks(
   return [...ids].sort(COMPARE[sort])
 }
 
+export type MonthGroup = {
+  /** "2026-03" */
+  key: string
+  /** "March 2026" */
+  label: string
+  ids: TrackId[]
+}
+
+const monthLabel = (key: string) =>
+  new Date(`${key}-01T12:00:00`).toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  })
+
+/** The ids by the month they were written, oldest first, oldest first within. */
+export function groupTracksByMonth(ids: readonly TrackId[]): MonthGroup[] {
+  const months = new Map<string, TrackId[]>()
+  for (const id of sortTracks(ids, 'written')) {
+    const key = TRACKS[id].written.slice(0, 7)
+    const mine = months.get(key)
+    if (mine) mine.push(id)
+    else months.set(key, [id])
+  }
+  return [...months].map(([key, ids]) => ({ key, label: monthLabel(key), ids }))
+}
+
 /**
  * The ids by collection, in COLLECTIONS order; album order within, except a
  * collection's `opening` songs, which come first, and its `closing` songs,
