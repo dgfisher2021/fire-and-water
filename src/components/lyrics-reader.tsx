@@ -1,5 +1,6 @@
 import { useRef, type ReactNode, type RefObject } from 'react'
 import { ChevronsDown } from 'lucide-react'
+import { MotionText } from '@dust-ui/motion'
 import {
   Button,
   ReadAlongText,
@@ -142,38 +143,43 @@ export function LyricsReader({
                       }
                     : undefined
                 }
+                // Each line shrinks to its words and centres, so the sung
+                // line's wash (the song's colour: deep on paper, bright on
+                // navy) hugs the whole line, not the pane.
                 className={cn(
-                  'block transition-[color,text-shadow] duration-200 data-[state=current]:text-foreground data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
+                  'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-primary/12 data-[state=current]:text-foreground data-[state=current]:[text-shadow:0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/80 motion-reduce:transition-none',
                   seekTo &&
-                    'cursor-pointer rounded-md hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
+                    'cursor-pointer hover:text-foreground/70 focus-visible:text-foreground focus-visible:outline-none'
                 )}
               >
                 {word !== null && lineState(i, j) === 'current' ? (
-                  // The sung word stays the brightest thing on the line: full
-                  // foreground over a wash of the song's colour, glowing in
-                  // it (the kit's --read-along-glow hook); sung words settle,
-                  // upcoming ones wait at half strength.
+                  // Inside the washed line the sung word turns the song's
+                  // colour and pops in on the kit's scale preset (keyed per
+                  // word, so each one animates); sung words settle, upcoming
+                  // ones wait at half strength.
                   <ReadAlongText
                     text={line}
                     activeWord={word}
-                    className='[--read-along-glow:var(--track-glow)] [&_[data-state=upcoming]]:text-foreground/45'
-                    renderToken={(token, state) => (
-                      <>
-                        <span
-                          className={cn(
-                            'rounded-[0.3em] transition-[background-color] duration-150 motion-reduce:transition-none',
-                            // --primary is the song's deep tone on paper
-                            // and its bright tone on navy, so the wash
-                            // reads in both modes.
-                            state === 'current' &&
-                              '-mx-[0.1em] bg-primary/22 px-[0.1em]'
-                          )}
-                        >
-                          {token.word}
-                        </span>
-                        {token.raw.slice(token.word.length)}
-                      </>
-                    )}
+                    className='[&_[data-state=current]]:[text-shadow:none] [&_[data-state=upcoming]]:text-foreground/45'
+                    renderToken={(token, state) =>
+                      state === 'current' ? (
+                        <>
+                          <MotionText
+                            key={token.index}
+                            as='span'
+                            per='word'
+                            preset='scale'
+                            duration={0.28}
+                            className='inline-block text-primary [text-shadow:0_0_14px_var(--track-glow)]'
+                          >
+                            {token.word}
+                          </MotionText>
+                          {token.raw.slice(token.word.length)}
+                        </>
+                      ) : (
+                        token.raw
+                      )
+                    }
                   />
                 ) : (
                   line

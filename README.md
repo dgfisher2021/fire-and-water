@@ -93,7 +93,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 ## Features
 
-- Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Where the aligner heard the line, its words light one by one: the sung word sits brightest on a wash of the song's colour, sung words settle, upcoming ones wait at half strength. Tap any line to jump the song to it. Songs without timings read by scroll instead.
+- Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the current stanza centred; scroll away and a "Back to the song" pill brings you back. Where the aligner heard the line, its words light one by one: the sung line carries a wash of the song's colour, the sung word turns that colour with a small pop, sung words settle, upcoming ones wait at half strength. Tap any line to jump the song to it. Songs without timings read by scroll instead.
 - Lyrics to go: Now Playing's action sheet downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
 - Ambient backdrop: full-bleed artwork that crossfades and drifts behind everything, under a faint film grain
 - Reading by scroll, a hairline under the header shows how far down the words you are; it steps aside once the song plays
