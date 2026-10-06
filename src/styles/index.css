@@ -81,10 +81,6 @@
  * view can show two at once and the credits can tint each row.
  */
 :root {
-  --pencil: oklch(0.7 0.08 60); /* #c4956a */
-  --pencil-deep: oklch(0.38 0.07 50); /* #6b4226 */
-  --pencil-glow: oklch(0.7 0.08 60 / 42%);
-  --pencil-ink: oklch(0.22 0.04 50);
   --fire: oklch(0.78 0.17 70); /* #f59e0b */
   --fire-deep: oklch(0.48 0.19 28); /* #b91c1c */
   --fire-glow: oklch(0.66 0.2 45 / 45%); /* ember */
@@ -397,12 +393,6 @@
 :root[data-track].dark {
   --primary: var(--track-bright);
   --primary-foreground: var(--track-ink);
-}
-:root[data-track='pencil'] {
-  --track-bright: var(--pencil);
-  --track-deep: var(--pencil-deep);
-  --track-glow: var(--pencil-glow);
-  --track-ink: var(--pencil-ink);
 }
 :root[data-track='fire'] {
   --track-bright: var(--fire);
@@ -755,7 +745,6 @@
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
 @theme inline {
-  --color-pencil: var(--pencil);
   --color-fire: var(--fire);
   --color-water: var(--water);
   --color-track-bright: var(--track-bright);
@@ -860,12 +849,27 @@
 }
 
 /*
- * Bottom nav: with the active pill (Material style) only the icon carries the
- * song's tint; the label stays in the text colour and goes bold, as it would
- * on a Material tab bar. The kit tints both (the iOS, no-pill convention) and
- * has no prop for this yet, so the label is restyled through its aria-current
- * hook until NavBottom grows one.
+ * Bottom nav: the active tab sits on one rounded capsule that holds the icon
+ * and the label together, the icon in the song's tint and the label in the
+ * text colour, bold. The kit's activePill draws a 46 by 28 pill behind the
+ * icon alone and has no prop for the capsule yet, so the item is restyled
+ * through its aria-current hook until NavBottom grows one.
  */
+[data-slot='nav-bottom'] [aria-current='page'] {
+  position: relative;
+  isolation: isolate;
+}
+[data-slot='nav-bottom'] [aria-current='page']::before {
+  content: '';
+  position: absolute;
+  inset: 3px 10px;
+  z-index: -1;
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--primary) 16%, transparent);
+}
+[data-slot='nav-bottom'] [aria-current='page'] > span:first-child {
+  background: transparent !important;
+}
 [data-slot='nav-bottom'] [aria-current='page'] > span + span {
   color: var(--foreground);
 }

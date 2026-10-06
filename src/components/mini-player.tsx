@@ -5,9 +5,17 @@ import { TRACKS } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
 import { OverflowMarquee } from '@/components/overflow-marquee'
 
+declare module '@tanstack/react-router' {
+  interface HistoryState {
+    /** Now Playing opens with its control already folded to the bar. */
+    collapsed?: boolean
+  }
+}
+
 /**
- * The strip above the nav: cover, title, a progress hairline, play/pause,
- * and a way back to Now Playing for the song in progress.
+ * The strip above the nav: cover, title, a progress ring around play, and
+ * a way back to Now Playing for the song in progress. It is the folded
+ * control, so it opens Now Playing folded too, with the words showing.
  */
 export function MiniPlayer() {
   const navigate = useNavigate()
@@ -19,7 +27,12 @@ export function MiniPlayer() {
   if (!track) return null
   const t = TRACKS[track]
   const playing = status === 'playing'
-  const open = () => void navigate({ to: '/lyrics/$track', params: { track } })
+  const open = () =>
+    void navigate({
+      to: '/lyrics/$track',
+      params: { track },
+      state: { collapsed: true },
+    })
 
   return (
     <div
@@ -41,7 +54,7 @@ export function MiniPlayer() {
       <button
         type='button'
         onClick={open}
-        className='min-w-0 flex-1 cursor-pointer text-left'
+        className='min-w-0 flex-1 cursor-pointer overflow-hidden text-left'
       >
         <OverflowMarquee className='font-display text-[16px] leading-tight font-medium text-foreground'>
           {t.title}

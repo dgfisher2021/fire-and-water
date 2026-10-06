@@ -1,6 +1,8 @@
 # Fire & Water — Dustin & Alex
 
-**Live site:** [https://dgfisher2021.github.io/fire-and-water/](https://dgfisher2021.github.io/fire-and-water/)
+**Live site:** [https://dgfisher2021.github.io/fire-and-water/](https://dgfisher2021.github.io/fire-and-water/) · **Artist:** [dgfisher on Suno](https://suno.com/@dustin_graham_fisher)
+
+> These are the stories of a creative and sensitive boy and his fierce younger sister — the golden child and the black sheep. He concealed his feelings, forced to hide his true self, while she bled her pain in ink on the page. As the years passed, he forged himself into a man by teaching himself magic and reclaiming the voice he was taught to fear. He found renewed inner strength not from above but from beside: friendships thick as blood who embraced the love of his heart and the fire of his soul. An engineer, an artist, a visionary. While the world called him too much, he turned out to be exactly enough. You can't tame his flame. This is his legend.
 
 A phone app for Dustin's songs — the Fire & Water trilogy about a brother and a sister, and the songs that came after. Each song has its artwork, its lyrics and a sing-along mode that lights the words as they are sung. Built with React on the [Dust UI](https://github.com/dgfisher2021/dust-ui) mobile kit and deployed to GitHub Pages on every push to `main`; on a desktop it runs inside a phone mockup floating over the artwork, on a phone it installs as an app.
 
@@ -8,14 +10,13 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 
 **Fire & Water**
 
-- **Pencil and Pen** — A boy who only trusted pencil — erasable, safe, fixable — watches his sister fill journals in permanent ink.
+- **Pencil and Pen** — A boy who only trusted pencil — erasable, safe, fixable — watches his sister fill journals in permanent ink. Sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.
 - **Fire and Water** — She was fire — bold, roaring, untamed. He was water — patient, adaptive, persistent.
 - **Water and Fire** — The same story through her eyes. Her fire was never theirs to tame.
 
 **More from Dustin**
 
 - **Moments to Memories** — Pencil lines became journals became code; a brother builds a way to keep what time would steal, then what he built speaks to Alex in his voice.
-- **Pencil and Pen (Baritone Version)** — The first song, sung low and rewritten around a chorus.
 - **Dust I Become** — Ashes to ashes, dust to dust: he leaves, and becomes his own.
 - **Not Afraid to Change (Extended Hope)** — A baritone and a soprano refuse to sabotage themselves.
 - **Opposite Hearts** — Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. Words transcribed by ear.
@@ -86,10 +87,10 @@ Each song has its own accent color that tints the whole app while it is showing.
 ## Screens
 
 - **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song behind a search field (title, dedication or voice; accents and case do not matter), grouped by collection by default, each collection under its title in the display face with its blurb as a lead. The sort button beside the field switches to album order, A to Z or the day each song was written, which lays the songs out as a timeline: a month at a time on a rail, each row stamped with its day in the song's colour. The choice lives in the URL (`/?sort=written`), so a view can be shared, and the search filters within any order. Tap a row to open the song on Now Playing with its card unfolded; the play control at the row's edge plays it in place. In the Brother and sister group the baritone Pencil and Pen opens the list and the three originals close it, so what grew out of them sits between. Sideways, the cover sits beside the copy.
-- **Now Playing** — the song's card (cover, dedication, its story, the waveform as the scrubber filled to the playhead in the song's color, the times, then Download · previous / play / next · the play mode) sits on glass above the lyrics and folds into a slim bar (cover, title, elapsed time, a small waveform, play) once the words scroll up, so the song gets the screen; it unfolds at the top. The play mode cycles album order, repeat this song and shuffle. The lyrics are set semibold with a halo in the background tone so every line reads over the artwork, each stanza rises in as it scrolls into view, and reading by scroll the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
+- **Now Playing** — the song's card is the screen's header too: cover, title, the day it was written, dedication and voice, the "…" menu and the fold chevron beside them, then its story, a single-line scrubber with the times, and Download · previous / play / next · the play mode, on glass above the lyrics. It folds into a slim bar (cover, title, elapsed time, the song's waveform as the scrubber, play, the menu, the unfold chevron) once the words scroll up, so the song gets the screen; it unfolds at the top, and the chevrons fold or unfold it by hand. The mini player on the other tabs opens it folded, words first. The play mode cycles album order, repeat this song and shuffle. The lyrics run nearly edge to edge, set semibold with a halo in the background tone so every line reads over the artwork; the sung word sits on a pill of the song's colour so it reads on a graphite voice as well as an ember one; each stanza rises in as it scrolls into view; reading by scroll the stanza in the middle brightens while the rest recede. Section and voice tags render as small bold labels. The pane ends above the bottom bar, so the sung line is never under it. Swipe left or right to change songs; the music keeps going.
 - **Compare** — any two songs in synced-scroll columns with the same glass waveform bar as Now Playing. Tap a column's name to pick its song from a bottom sheet with a search field; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
-- **More** — four short groups: appearance (light or dark, theme presets, neutrals, corner radius, density); sharing, one row with a QR code of the album link (the cover in its middle) that also sends the link on tap; songs, where "Download a song" and "Open in Google Drive" open the song picker (format and size on each row); and about, with credits and **The story so far**, which opens the Album by the day each song was written.
-- The bottom bar's center action plays and pauses from anywhere, and once a song is playing a mini player sits above the bar on the Album and More screens.
+- **More** — four short groups: appearance (light or dark, theme presets, neutrals, corner radius, density); sharing, one row with a QR code of the album link (the cover in its middle) that also sends the link on tap; songs, where "Download a song" and "Open in Google Drive" open the song picker (format and size on each row); and about, with the artist's note (who the songs are about, in his words, closing on "This is his legend"), a row to [dgfisher on Suno](https://suno.com/@dustin_graham_fisher) and **The story so far**, which opens the Album by the day each song was written.
+- The bottom bar's center action plays and pauses from anywhere, the active tab sits on one capsule that holds its icon and label, and once a song is playing a mini player sits above the bar on the Album and More screens.
 
 ## Features
 
@@ -124,7 +125,11 @@ python3 scripts/lyrics/from-transcript.py raven       # a sheet from the Whisper
 
 The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, typesets quotes and labels, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given; `--only` limits a run to the songs named, which is how a sheet is replaced from one zip without touching the rest (re-run the aligner for those songs afterwards, since the timing follows the sheet's shape). Suno's "full download" export leaves thirteen songs' text files empty, while the per-song `[usesuno.com]` zips carry most of them; Magic of the Raven has no text in any export, so its sheet stays transcribed by ear.
 
-The Suno library itself (every song's title, creation date, model version, duration and style prompt, as of 2026-10-06) is saved in `src/data/suno-catalog.json`, checked by `suno-catalog.test.ts`, for the day the remaining songs join the album.
+The Suno library itself (every song's title, creation date, model version, duration and style prompt, as logged from the library screenshots on 2026-10-06) is saved in `src/data/suno-catalog.json` and checked by `suno-catalog.test.ts`. `scripts/suno-catalog.py` enriches it with what the album knows and keeps it current as songs join: `appId` and `addedToApp`, the album's `description`, `files.app` (the file in `public/`) and `files.downloads` (every `zip/member` in `downloads/` whose stem is the title's slug; two versions sharing a title list the same candidates), plus the album songs the log never showed (the original Fire and Water, the remastered Water and Fire) appended with `source: "app"`. With `--dates` it also writes the library's creation dates into `tracks.ts` as `written` for matched songs, which is where the Album's date-written timeline now comes from (the three March songs are dated by hand and left alone); `--copy-to DIR` drops a copy beside the downloads as `song-library-metadata.json`.
+
+```sh
+python3 scripts/suno-catalog.py --dates --copy-to "/mnt/c/Users/dustinf/Desktop/songs"
+```
 
 ## Converting the downloads
 

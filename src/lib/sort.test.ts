@@ -25,15 +25,15 @@ describe('compareTitles', () => {
 
 describe('sortTracks', () => {
   it('returns a permutation of the ids given, whatever the sort', () => {
-    const some: TrackId[] = ['binary', 'pencil', 'node']
+    const some: TrackId[] = ['binary', 'baritone', 'node']
     for (const sort of ALBUM_SORTS)
       expect([...sortTracks(some, sort)].sort()).toEqual([...some].sort())
   })
 
   it('restores album order', () => {
     expect(sortTracks(shuffled, 'album')).toEqual([...TRACK_ORDER])
-    expect(sortTracks(['binary', 'pencil', 'node'], 'album')).toEqual([
-      'pencil',
+    expect(sortTracks(['binary', 'baritone', 'node'], 'album')).toEqual([
+      'baritone',
       'node',
       'binary',
     ])
@@ -45,7 +45,7 @@ describe('sortTracks', () => {
       expect(compareTitles(titles[i - 1], titles[i])).toBeLessThanOrEqual(0)
     // A version sorts right after its original, the title being a prefix.
     const ids = sortTracks(shuffled, 'title')
-    expect(ids.indexOf('baritone')).toBe(ids.indexOf('pencil') + 1)
+    expect(ids.indexOf('plotlight')).toBe(ids.indexOf('plot') + 1)
   })
 
   it('sorts by the day written, oldest first, album order on a tie', () => {
@@ -57,7 +57,7 @@ describe('sortTracks', () => {
       if (a.written === b.written)
         expect(albumIndex(a.id)).toBeLessThan(albumIndex(b.id))
     }
-    expect(ids[0]).toBe('pencil')
+    expect(ids[0]).toBe('baritone')
   })
 
   it('groups by collection, album order within', () => {
@@ -97,18 +97,18 @@ describe('groupTracks', () => {
     }
   })
 
-  it('opens the brother-and-sister group with the baritone and closes it with the three originals', () => {
+  it('opens the brother-and-sister group with the baritone and closes it with the two originals', () => {
     const siblings = groupTracks(shuffled).find(
       (g) => g.collection.key === 'siblings'
     )
     expect(siblings?.ids[0]).toBe('baritone')
-    expect(siblings?.ids.slice(-3)).toEqual(['pencil', 'fire', 'water'])
+    expect(siblings?.ids.slice(-2)).toEqual(['fire', 'water'])
   })
 
   it('omits collections none of the given songs belong to', () => {
-    const groups = groupTracks(['binary', 'pencil'])
+    const groups = groupTracks(['binary', 'baritone'])
     expect(groups.map((g) => g.collection.key)).toEqual([
-      COLLECTION_OF.pencil,
+      COLLECTION_OF.baritone,
       COLLECTION_OF.binary,
     ])
     expect(groupTracks([])).toEqual([])
@@ -131,8 +131,8 @@ describe('groupTracksByMonth', () => {
   })
 
   it('labels a month in full with its year', () => {
-    const [first] = groupTracksByMonth(['pencil'])
-    expect(first.key).toBe(TRACKS.pencil.written.slice(0, 7))
+    const [first] = groupTracksByMonth(['baritone'])
+    expect(first.key).toBe(TRACKS.baritone.written.slice(0, 7))
     expect(first.label).toBe('March 2026')
   })
 

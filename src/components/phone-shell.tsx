@@ -20,7 +20,11 @@ import {
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { useToasts } from '@/store/toasts'
-import { MINI_PLAYER_H, useMiniPlayerVisible } from '@/hooks/use-mini-player'
+import {
+  MINI_PLAYER_GAP,
+  MINI_PLAYER_H,
+  useMiniPlayerVisible,
+} from '@/hooks/use-mini-player'
 import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
@@ -47,7 +51,7 @@ function ShellMini() {
   return (
     <div
       className='absolute inset-x-0 z-40 px-3'
-      style={{ bottom: 'calc(var(--shell-nav) + 6px)' }}
+      style={{ bottom: `calc(var(--shell-nav) + ${MINI_PLAYER_GAP}px)` }}
     >
       <MiniPlayer />
     </div>

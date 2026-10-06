@@ -22,7 +22,8 @@ screens behind a `NavBottom` whose center action plays and pauses, with a
 day written), Now Playing (`NowPlayingCard` above a sing-along lyrics
 pane), Compare (any two songs in synced columns, picked
 through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
-rows for appearance, downloads, Drive links, sharing, credits). React 19 +
+rows for appearance, downloads, Drive links, sharing, and the About note
+from `ALBUM.about` with the Suno link). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens` from GitHub Packages.
 
@@ -35,10 +36,17 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   hides the Now Playing card.
 - `src/screens/lyrics.tsx` keeps the Now Playing card and bar both mounted
   and folds one into the other on the pane's scroll position (grid-rows
-  transition, `inert` on the hidden one). A row tap on the Album lands
-  here with the card unfolded; the card carries the song's description.
+  transition, `inert` on the hidden one). The screen has no
+  `MobilePageHeader`: the card carries the title, the written date, the
+  "…" menu and the description beside the cover (the frame's status-bar
+  inset is padding on the card wrapper). A row tap on the Album lands here
+  with the card unfolded.
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
+  Glass (`bg-card/85 backdrop-blur-md`) needs no backdrop root between it
+  and the artwork: a `mask-image`, an `opacity` below 1, a filter, or a
+  filled opacity animation (the old `animate-fade-up` on the album list)
+  on any ancestor leaves it nothing to frost.
 - `src/routes/` `/` album (`?sort=album|title|written`, zod-validated like
   Compare's pair; the default collection view is stripped so the URL stays
   clean; `?sort=written` is the timeline More's "The story so far" opens,
@@ -72,9 +80,13 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   `lib/lyrics-text.ts` as plain text for the clipboard (`copyText` in
   `lib/share.ts`). Both JSON files are laid out by their scripts and
   excluded from Prettier. `src/data/suno-catalog.json` is the Suno library
-  as of 2026-10-06 (title, creation date, model, duration, style prompt per
-  song; `suno-catalog.test.ts` checks it), reference for the songs not yet
-  in the album. The download zips live in the ignored `downloads/` folder:
+  as logged on 2026-10-06 (title, creation date, model, duration, style
+  prompt per song), enriched by `scripts/suno-catalog.py` with `appId`,
+  `addedToApp`, the album description and file locations, plus `source:
+  "app"` entries for album songs the log missed; `suno-catalog.test.ts`
+  checks it against `TRACK_ORDER`. Re-run the script (with `--dates` for
+  `written`) after adding a song. The download zips live in the ignored
+  `downloads/` folder:
   `scripts/lyrics/import-suno.py` reads sheets from them (`--only=id,id`
   with `--force` replaces a few; re-run `scripts/timing/align.py` for those
   ids after, the timing follows the sheet) and `scripts/audio-convert.py`
@@ -97,11 +109,14 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   backdrop root and the sung line's glass stops frosting; that delta is
   upstream work), `NowPlayingCard` and `NowPlayingBar` (the kit's
   `MobileMediaPlayer` has no slot for a scrubber or a description, so the
-  unfolded control is composed here: `Waveform` is the slider, the
-  description sits under the dedication, Download and the play mode flank
-  the transport; a scrubber render slot on the kit card is the upstream
-  ask; `/time/$track` still uses the kit bar), `Waveform` (the song's shape
-  as a slider: tap, drag, arrow keys),
+  unfolded control is composed here: a single-line `Scrubber` in the card,
+  the `Waveform` as the bar's slider, the description under the
+  dedication, Download and the play mode flanking the transport, and a
+  chevron on each that folds or unfolds by hand (`lyrics.tsx` keeps that
+  choice per song; the mini player asks for the folded state through
+  router `HistoryState.collapsed`); a scrubber render slot on the kit card
+  is the upstream ask; `/time/$track` still uses the kit bar), `Waveform`
+  (the song's shape as a slider: tap, drag, arrow keys),
   `MiniPlayer` (kept instead of `MobileNowPlayingBar` for the progress ring
   around play and the marquee, which the bar has no slot for), `TrackRow`
   and `SongPicker` (song data on `MobileMediaRow`, and `SheetBottom` +
@@ -118,7 +133,7 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   this app's translucent `--card`, so the tracklist has no swipe actions.
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
-  the voice tokens (`--pencil`, `--fire`, `--water`) and the per-track
+  the voice tokens (`--fire`, `--water`, one set per song) and the per-track
   accent on `:root[data-track]`, which out-ranks every theme.
 
 ## Dust UI rules (house rules, non-negotiable)

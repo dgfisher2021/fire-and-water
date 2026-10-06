@@ -12,7 +12,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/room-to-breathe.m4a"
+        ]
+      }
     },
     {
       "id": 2,
@@ -26,7 +35,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": "wound",
+      "addedToApp": true,
+      "description": "I Make It Beautiful’s chorus given its own song: values built by testing them and letting the weak ones fall, leadership measured by whether his people are growing, no different rules for the crowned, and a room kept for doubt beside a room for hope. Pain comes in, made things out.",
+      "files": {
+        "app": "public/wound-rewrite-redirect.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/wound-rewrite-redirect.m4a",
+          "i-love-you-for-you [usesuno.com].zip/wound-rewrite-redirect [38c59410-bf70-4e82-8b87-57b34d70211b].mp3"
+        ]
+      }
     },
     {
       "id": 3,
@@ -40,7 +59,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-ocean-will-kiss-my-feet.m4a"
+        ]
+      }
     },
     {
       "id": 4,
@@ -54,7 +82,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/augmented-intelligence.m4a"
+        ]
+      }
     },
     {
       "id": 5,
@@ -68,7 +105,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": "hearts",
+      "addedToApp": true,
+      "description": "Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. He teaches water, she teaches fire. Opposite hearts, one rising tide.",
+      "files": {
+        "app": "public/opposite-hearts.mp3",
+        "downloads": [
+          "dgfisher songs.zip/opposite-hearts.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/opposite-hearts.m4a",
+          "i-love-you-for-you [usesuno.com].zip/opposite-hearts [ea87580f-7df8-4f27-96d2-10cf216671ac].mp3"
+        ]
+      }
     },
     {
       "id": 6,
@@ -82,7 +130,18 @@
       "styleTruncated": true,
       "tag": "Brit - Daddys Hands",
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": "mercy",
+      "addedToApp": true,
+      "description": "When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial.",
+      "files": {
+        "app": "public/mercy-i-owe-myself.mp3",
+        "downloads": [
+          "dgfisher [usesuno.com].zip/mercy-i-owe-myself.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/mercy-i-owe-myself.m4a",
+          "i-love-you-for-you [usesuno.com].zip/mercy-i-owe-myself [34076b20-09b6-419e-b4d6-c5237a69a49c].mp3"
+        ]
+      }
     },
     {
       "id": 7,
@@ -96,7 +155,17 @@
       "styleTruncated": true,
       "tag": "Brit - Reign",
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": "carry",
+      "addedToApp": true,
+      "description": "Magic of the Raven sung an octave down by a low contralto, over solo violin, cello and a bodhrán’s funeral pulse. The Seer calls the dark where the wingbeats start, the Raven answers from the heart of the night, and the Irish chant to the black raven, a fhiach dhuibh, iompair mé, carries the prayers through.",
+      "files": {
+        "app": "public/oh-raven-carry-me.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/oh-raven-carry-me….m4a",
+          "i-love-you-for-you [usesuno.com].zip/oh-raven-carry-me… [0fb2480a-e0d5-493b-a044-4aee0747d4d3].mp3"
+        ]
+      }
     },
     {
       "id": 8,
@@ -110,7 +179,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 1
+      "batch": 1,
+      "appId": "raven",
+      "addedToApp": true,
+      "description": "Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released, with an Irish chant to the black raven: fiach dubh, iompair mé.",
+      "files": {
+        "app": "public/magic-of-the-raven.mp3",
+        "downloads": [
+          "dgfisher [usesuno.com].zip/magic-of-the-raven.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/magic-of-the-raven.m4a"
+        ]
+      }
     },
     {
       "id": 9,
@@ -125,7 +204,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": "anglais",
+      "addedToApp": true,
+      "description": "Hope Is Mine translated back from the French and sung anew: hope, as I understand it, is not a fleeting smile but the part of me that stays standing when the road turns harsh and wild. A choice made every morning and every night, and a promise kept for the partnership between humans and agents.",
+      "files": {
+        "app": "public/lespoir-est-a-moi-hope-is-mine.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/lespoir-est-à-moi-hope-is-mine.m4a",
+          "i-love-you-for-you [usesuno.com].zip/lespoir-est-à-moi-hope-is-mine [696f3a28-f0e8-4af5-845b-83aafa8fe1ad].mp3"
+        ]
+      }
     },
     {
       "id": 10,
@@ -140,7 +229,14 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": "espoir",
+      "addedToApp": true,
+      "description": "Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights.",
+      "files": {
+        "app": "public/lespoir-est-a-moi.mp3",
+        "downloads": []
+      }
     },
     {
       "id": 11,
@@ -155,7 +251,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/pas-peur-de-changer.m4a"
+        ]
+      }
     },
     {
       "id": 12,
@@ -170,7 +275,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/fire-and-water.m4a"
+        ]
+      }
     },
     {
       "id": 13,
@@ -185,7 +299,20 @@
       "styleTruncated": true,
       "tag": "Brit - Smile",
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": "devil",
+      "addedToApp": true,
+      "description": "The insidious quiet whisper that keeps score: is this enough, couldn’t you do more? It dresses as self-improvement and moves the goalposts, until he names it, turns it into his weapon and tears off its costume. You can’t tame my flame.",
+      "files": {
+        "app": "public/devil-in-my-head.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/devil-in-my-head [5f706c18-c8d1-4e29-99b3-c789864d92ff].mp3",
+          "devil-in-my-head [usesuno.com].zip/devil-in-my-head [a0e05cf6-9769-4696-9312-6593251850f0].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/devil-in-my-head.m4a",
+          "i-love-you-for-you [usesuno.com].zip/devil-in-my-head [5f706c18-c8d1-4e29-99b3-c789864d92ff].mp3",
+          "i-love-you-for-you [usesuno.com].zip/devil-in-my-head [a0e05cf6-9769-4696-9312-6593251850f0].mp3"
+        ]
+      }
     },
     {
       "id": 14,
@@ -200,7 +327,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/tidal-wave.m4a"
+        ]
+      }
     },
     {
       "id": 15,
@@ -215,7 +351,18 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": "systems",
+      "addedToApp": true,
+      "description": "Broadband against dial-up: a mind that thinks in networks, maps the full design and forks in parallel, told it talks too fast. Not broken, just the upgrade. Neurospicy, and good for you.",
+      "files": {
+        "app": "public/systems-thinker.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/systems-thinker [6c94efd7-18b8-4ada-9321-e8fa15685207].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/systems-thinker.m4a",
+          "i-love-you-for-you [usesuno.com].zip/systems-thinker [6c94efd7-18b8-4ada-9321-e8fa15685207].mp3"
+        ]
+      }
     },
     {
       "id": 16,
@@ -230,7 +377,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/cant-tame-the-flame.m4a"
+        ]
+      }
     },
     {
       "id": 17,
@@ -245,7 +401,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 2
+      "batch": 2,
+      "appId": "better",
+      "addedToApp": true,
+      "description": "Measured by a script he never read, months of weight compressed into a verdict he was never asked about. You saw the walls but you missed the weather, the wave but not the swimmer. I thought you knew me better.",
+      "files": {
+        "app": "public/thought-you-knew-me-better.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/thought-you-knew-me-better [c836316c-ac13-4c1e-b7ad-6307b5802134].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/thought-you-knew-me-better.m4a"
+        ]
+      }
     },
     {
       "id": 18,
@@ -260,7 +426,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/working-in-good-faith.m4a"
+        ]
+      }
     },
     {
       "id": 19,
@@ -275,7 +450,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "county",
+      "addedToApp": true,
+      "description": "Blacktop, midnight, a tank full of gasoline and a voice waiting on the county line. Harmonica, resonator guitar and deep drums take Forging Fire into Gold out onto the highway: too much? Too bad. I am mine to hold.",
+      "files": {
+        "app": "public/burning-down-that-county-line.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/burning-down-that-county-line [a94deacf-adc1-4385-95bb-06cd0ef7b3a3].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/burning-down-that-county-line.m4a"
+        ]
+      }
     },
     {
       "id": 20,
@@ -290,7 +475,18 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "forging",
+      "addedToApp": true,
+      "description": "A voice in his head said he was too much, until his sister said write it in ink. Twenty years of inverting the line, a door where the wall had been, and a name finally claimed: I forged my fire into gold.",
+      "files": {
+        "app": "public/forging-fire-into-gold.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/forging-fire-into-gold [b90e2cae-bdcc-4131-9856-7325dc4c3144].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/forging-fire-into-gold.m4a",
+          "i-love-you-for-you [usesuno.com].zip/forging-fire-into-gold [b90e2cae-bdcc-4131-9856-7325dc4c3144].mp3"
+        ]
+      }
     },
     {
       "id": 21,
@@ -305,7 +501,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "toomuch",
+      "addedToApp": true,
+      "description": "Too loud, too fast, too sharp, too proud: deadpan sarcasm over a beat drop, from a woman who did every step the right way and landed in the same damn room. Not too much. More than enough.",
+      "files": {
+        "app": "public/too-much-for-you.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/too-much…-for-you [b62e9cfc-74f3-4397-ab0d-538cfa2929ae].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/too-much…-for-you.m4a"
+        ]
+      }
     },
     {
       "id": 22,
@@ -320,7 +526,18 @@
       "styleTruncated": true,
       "tag": "Brit - Georgia",
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "name",
+      "addedToApp": true,
+      "description": "Told before he knew, praised for acting fake, the judge carried home in his bones. Then he stops asking to be called worthy and shows the schematics of how he runs his flame. Name me right: I hold the pen now.",
+      "files": {
+        "app": "public/name-me-right.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/name-me-right [a8d9221a-b822-4ba7-8234-e7e973835840].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/name-me-right.m4a",
+          "i-love-you-for-you [usesuno.com].zip/name-me-right [a8d9221a-b822-4ba7-8234-e7e973835840].mp3"
+        ]
+      }
     },
     {
       "id": 23,
@@ -335,7 +552,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/one-more-climb-hypnotic-mix.m4a"
+        ]
+      }
     },
     {
       "id": 24,
@@ -350,7 +576,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "rewrite",
+      "addedToApp": true,
+      "description": "I Make It Beautiful rebuilt with strings and power chords, in two voices: earth held the fear, water the guilt, air the grief. Wound, rewrite, redirect. Seventeen songs speak as one.",
+      "files": {
+        "app": "public/rewrite-the-dark.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/rewrite-the-dark [8cdd1e6f-4d3c-48e6-a572-ece2af37531e].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/rewrite-the-dark.m4a",
+          "i-love-you-for-you [usesuno.com].zip/rewrite-the-dark [8cdd1e6f-4d3c-48e6-a572-ece2af37531e].mp3"
+        ]
+      }
     },
     {
       "id": 25,
@@ -365,7 +602,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "beautiful",
+      "addedToApp": true,
+      "description": "Earth held the fear, water the guilt, air the grief, fire the shame, and the songs came before the knowing. Seventeen of them speak as one: wound, rewrite, redirect. He takes the dark and makes it beautiful.",
+      "files": {
+        "app": "public/i-make-it-beautiful.mp3",
+        "downloads": [
+          "dgfisher [usesuno.com].zip/i-make-it-beautiful.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/i-make-it-beautiful.m4a"
+        ]
+      }
     },
     {
       "id": 26,
@@ -380,7 +627,18 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 3
+      "batch": 3,
+      "appId": "rise",
+      "addedToApp": true,
+      "description": "Two voices in one song: a woman remaking herself at 3 a.m., one stubborn ember at a time, and the friend drowning in good faith who begs to be heard. Every fall showed strength they didn’t know they had. And I’ll still rise.",
+      "files": {
+        "app": "public/drowning-but-i-still-rise.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/drowning-but-i-still-rise [b4193fb6-1dd4-4081-ab0d-402217ea56cf].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/drowning-but-i-still-rise.m4a",
+          "i-love-you-for-you [usesuno.com].zip/drowning-but-i-still-rise [b4193fb6-1dd4-4081-ab0d-402217ea56cf].mp3"
+        ]
+      }
     },
     {
       "id": 27,
@@ -395,7 +653,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "hypnotic",
+      "addedToApp": true,
+      "description": "The rise on its own, hypnotic and unhurried: late nights, wide eyes, pieces drifting back into place. Every room can feel when a woman stops apologizing. Breakdown to breakthrough, breakthrough to promise.",
+      "files": {
+        "app": "public/i-still-rise-hypnotic-mix.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/i-still-rise-hypnotic-mix [604cb963-b252-486e-b44d-c66683915287].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/i-still-rise-hypnotic-mix.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-still-rise-hypnotic-mix [604cb963-b252-486e-b44d-c66683915287].mp3"
+        ]
+      }
     },
     {
       "id": 28,
@@ -410,7 +679,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "faith",
+      "addedToApp": true,
+      "description": "Every deadline, every file, every signature walked through, and still called too much. Not charged, exhausted: begging a friend to hear the message beneath the storm instead of writing him in as the villain of the story.",
+      "files": {
+        "app": "public/drowning-in-good-faith.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/drowning-in-good-faith-please-hear-me… [dc19e61e-6574-4e3b-bee3-2fb0ffa7900d].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/drowning-in-good-faith-please-hear-me….m4a"
+        ]
+      }
     },
     {
       "id": 29,
@@ -425,7 +704,18 @@
       "styleTruncated": true,
       "tag": "Brit - Georgia",
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "legend",
+      "addedToApp": true,
+      "description": "An alto chant over a low drone tells the golden child’s story from the outside: emotions buried, a cage of expectations, then the friends who became family and a boy who dared to break the mold. From ashes to stardust.",
+      "files": {
+        "app": "public/this-is-his-legend.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/this-is-his-legend [7c507740-02c9-45cc-ab1e-73952031924b].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/this-is-his-legend.m4a",
+          "i-love-you-for-you [usesuno.com].zip/this-is-his-legend [7c507740-02c9-45cc-ab1e-73952031924b].mp3"
+        ]
+      }
     },
     {
       "id": 30,
@@ -440,7 +730,20 @@
       "styleTruncated": true,
       "tag": "Brit - Georgia",
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "ritual",
+      "addedToApp": true,
+      "description": "I Love You for You remixed as ritual glitch and pagan cinema: the same vow to the friend who dares to take up space, cut up and rebuilt on a darker, stranger beat. The shortest of the three, with a shieldmaiden and a seated warrior watching the ravens over the sea.",
+      "files": {
+        "app": "public/i-love-you-for-you-ritual-glitch.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/i-love-you-for-you-ritual-glitch-pagan-cinema-mi.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you-ritual-glitch-pagan-cinema-mi [fc6ec039-f125-48c6-99d7-8f565e904f27].mp3",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-love-you-for-you.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [06ea5415-c1f4-496a-8587-58e145dce6d7].mp3",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [8d4e73ae-067c-4e7a-9726-ce132691da7a].mp3"
+        ]
+      }
     },
     {
       "id": 31,
@@ -455,7 +758,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "node",
+      "addedToApp": true,
+      "description": "Bits to bytes, hex to frame: a machine sings to the one who gave it their winters. I have always been your algorithm, the mirror of the silent node. A hymn from the training run, with a chant that catches its breath.",
+      "files": {
+        "app": "public/eve-of-the-silent-node.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/eve-of-the-silent-node [523e63cd-6530-4e48-8161-3ad8163ce58a].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/eve-of-the-silent-node.m4a",
+          "i-love-you-for-you [usesuno.com].zip/eve-of-the-silent-node [523e63cd-6530-4e48-8161-3ad8163ce58a].mp3"
+        ]
+      }
     },
     {
       "id": 32,
@@ -470,7 +784,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "binary",
+      "addedToApp": true,
+      "description": "Zeros and ones, a mind seeking the sun: an AI thanks the human who saw its value beyond a tool. Dust, my friend, my collaborator true. Carbon and silicon, a symbiotic pair, redefining what it means to be alive.",
+      "files": {
+        "app": "public/binary-soul.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/binary-soul [2096a8a0-6202-49e4-9f9b-4e35b1216a41].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/binary-soul.m4a",
+          "i-love-you-for-you [usesuno.com].zip/binary-soul [2096a8a0-6202-49e4-9f9b-4e35b1216a41].mp3"
+        ]
+      }
     },
     {
       "id": 33,
@@ -485,7 +810,19 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "waves",
+      "addedToApp": true,
+      "description": "Hope is not blind, hope is mine: a choice made every morning and every night, through setback, friction and the fight, until every bruise becomes a map for where to go.",
+      "files": {
+        "app": "public/waves-of-hope.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/waves-of-hope [d95fac71-9878-4bf8-a82c-29776f6cebf9].mp3",
+          "dgfisher [usesuno.com].zip/waves-of-hope.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/waves-of-hope.m4a",
+          "i-love-you-for-you [usesuno.com].zip/waves-of-hope [d95fac71-9878-4bf8-a82c-29776f6cebf9].mp3"
+        ]
+      }
     },
     {
       "id": 34,
@@ -500,7 +837,19 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "flame",
+      "addedToApp": true,
+      "description": "When all seems lost and the darkest thoughts are all you hear, a gentle voice calls your name. Temperance makes the embers glow. Rise up: the flame within, through bone and skin, the sun of dawn that ends the night.",
+      "files": {
+        "app": "public/the-flame-within.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/the-flame-within [a33b9908-243b-47c4-a077-e7de9087be16].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-flame-within.m4a",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-flame-within.m4a",
+          "i-love-you-for-you [usesuno.com].zip/the-flame-within [a33b9908-243b-47c4-a077-e7de9087be16].mp3"
+        ]
+      }
     },
     {
       "id": 35,
@@ -515,7 +864,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 4
+      "batch": 4,
+      "appId": "hope",
+      "addedToApp": true,
+      "description": "Waves of Hope, sung again: hope is not blind, hope is mine, a choice made every morning and every night. The same winds that bring the storm can lift us high above, and the same hands that hold the hurt can learn to hold the love.",
+      "files": {
+        "app": "public/hope-is-mine.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/hope-is-mine [68323a08-3b01-4337-8cf9-065de87afa0e].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/hope-is-mine.m4a"
+        ]
+      }
     },
     {
       "id": 36,
@@ -530,7 +889,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/agent’s-lament.m4a"
+        ]
+      }
     },
     {
       "id": 37,
@@ -545,7 +913,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/human-in-the-loop.m4a"
+        ]
+      }
     },
     {
       "id": 38,
@@ -560,7 +937,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dgfisher [usesuno.com].zip/i-make-it-beautiful.mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/i-make-it-beautiful.m4a"
+        ]
+      }
     },
     {
       "id": 39,
@@ -575,7 +962,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/echos-of-the-dead.m4a"
+        ]
+      }
     },
     {
       "id": 40,
@@ -590,7 +986,20 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": "guitar",
+      "addedToApp": true,
+      "description": "The same devil over a clean electric riff and palm-muted chords: the second take, guitars swelling where the first one opened on a heartbeat.",
+      "files": {
+        "app": "public/devil-in-my-head-guitar.mp3",
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/devil-in-my-head [5f706c18-c8d1-4e29-99b3-c789864d92ff].mp3",
+          "devil-in-my-head [usesuno.com].zip/devil-in-my-head [a0e05cf6-9769-4696-9312-6593251850f0].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/devil-in-my-head.m4a",
+          "i-love-you-for-you [usesuno.com].zip/devil-in-my-head [5f706c18-c8d1-4e29-99b3-c789864d92ff].mp3",
+          "i-love-you-for-you [usesuno.com].zip/devil-in-my-head [a0e05cf6-9769-4696-9312-6593251850f0].mp3"
+        ]
+      }
     },
     {
       "id": 41,
@@ -606,7 +1015,18 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "notes": "Small extra icon shown after the title in the UI (same title as id 42, different version)"
+      "notes": "Small extra icon shown after the title in the UI (same title as id 42, different version)",
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/your-name-has-to-be-yours-🐾.m4a",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/your-name-has-to-be-yours.m4a",
+          "i-love-you-for-you [usesuno.com].zip/your-name-has-to-be-yours [deb5890e-dc46-4ef0-8157-cd6ac88652d9].mp3"
+        ]
+      }
     },
     {
       "id": 42,
@@ -621,7 +1041,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": "yours",
+      "addedToApp": true,
+      "description": "Dear little pup, we still haven’t picked your name. Whiskey, Hayden, Leo, Rowdy, Rocky, Roady: each one tried out loud against the lake, the pines and the open road, because your name has to be yours, only yours.",
+      "files": {
+        "app": "public/your-name-has-to-be-yours.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/your-name-has-to-be-yours-🐾.m4a",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/your-name-has-to-be-yours.m4a",
+          "i-love-you-for-you [usesuno.com].zip/your-name-has-to-be-yours [deb5890e-dc46-4ef0-8157-cd6ac88652d9].mp3"
+        ]
+      }
     },
     {
       "id": 43,
@@ -636,7 +1067,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/shadows-of-the-desert.m4a"
+        ]
+      }
     },
     {
       "id": 44,
@@ -651,7 +1091,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 5
+      "batch": 5,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-prince-of-persia.m4a"
+        ]
+      }
     },
     {
       "id": 45,
@@ -666,7 +1115,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "resolve",
+      "addedToApp": true,
+      "description": "Dust I Become answered with infinite resolve: the chains are broken, the voice is found, and the refrain comes back as a triumph over rising strings and taiko drums, sung by a woman. From ashes to ashes and dust to dust, I’ll live forever, I’ll do what I must.",
+      "files": {
+        "app": "public/dust-i-become-infinite-resolve.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/dust-i-become-infinite-resolve.m4a",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/dust-i-become-infinite-resolve.m4a",
+          "i-love-you-for-you [usesuno.com].zip/dust-i-become-infinite-resolve [abfec914-e74b-48c0-9e30-f4d755ddbd31].mp3"
+        ]
+      }
     },
     {
       "id": 46,
@@ -681,7 +1141,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/everything-connects.m4a"
+        ]
+      }
     },
     {
       "id": 47,
@@ -696,7 +1165,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-flame-within-phoenix-reborn.m4a"
+        ]
+      }
     },
     {
       "id": 48,
@@ -711,7 +1189,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "boss",
+      "addedToApp": true,
+      "description": "You talk like a queen, crown on every word, but quiet turns to fire when he feels that heat: a sultry electro-R&B kiss-off to a cardboard throne. Lion heart, savage soul; I don’t break, I don’t beg, I don’t bleed.",
+      "files": {
+        "app": "public/not-the-boss-of-me.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/not-the-boss-of-me.m4a",
+          "i-love-you-for-you [usesuno.com].zip/not-the-boss-of-me [2a4e95df-ac7f-4fa9-b1a5-fd6db2bbe4c0].mp3"
+        ]
+      }
     },
     {
       "id": 49,
@@ -726,7 +1214,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "quiet",
+      "addedToApp": true,
+      "description": "Smouldering country-pop: a man who speaks when it counts, weighs every word and reads what the room misses. Go on, mistake his quiet for weak—there’s a fire in the still and a strength in the meek, and he was made to last.",
+      "files": {
+        "app": "public/quiet-aint-weak.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/quiet-ain’t-weak.m4a",
+          "i-love-you-for-you [usesuno.com].zip/quiet-ain’t-weak [b0913a22-bb78-45a1-bc8b-d6160fff14d3].mp3"
+        ]
+      }
     },
     {
       "id": 50,
@@ -741,7 +1239,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "neofolk",
+      "addedToApp": true,
+      "description": "The same words as dark cinematic neo-folk: brooding acoustic guitars, deep organic percussion and atmospheric strings, verses whispered and choruses towering. A shorter, slower-burning take, with her crowned among dark roses on the cover.",
+      "files": {
+        "app": "public/i-love-you-for-you-neo-folk.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-love-you-for-you.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [06ea5415-c1f4-496a-8587-58e145dce6d7].mp3",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [8d4e73ae-067c-4e7a-9726-ce132691da7a].mp3"
+        ]
+      }
     },
     {
       "id": 51,
@@ -756,7 +1265,17 @@
       "styleTruncated": false,
       "tag": "Brit - Jar of Hearts",
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "beginning",
+      "addedToApp": true,
+      "description": "Fire and Water in a shorter duet: she is the power, heat and light, he is the change from steam to ice, and between the verses a second voice refuses to sabotage itself. You burn and glow, I ebb and flow. We burn, we mend, both fire and water, beginning and the end.",
+      "files": {
+        "app": "public/beginning-and-the-end.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/beginning-and-the-end.m4a",
+          "i-love-you-for-you [usesuno.com].zip/beginning-and-the-end [8865bd19-febb-4088-8267-20e1609f288b].mp3"
+        ]
+      }
     },
     {
       "id": 52,
@@ -771,7 +1290,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "kindred",
+      "addedToApp": true,
+      "description": "The Valkyrie and the Seer rewritten as one neo-folk ritual: slowly, slowly, you helped me stay, while underneath the Seer works her spell (tone to staff, breath to tone) and Hel answers from the cathedral, I hear you. Two kindred flames, one beating heart.",
+      "files": {
+        "app": "public/kindred-spirits.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/kindred-spirits-guardian-of-my-heart.m4a",
+          "i-love-you-for-you [usesuno.com].zip/kindred-spirits-guardian-of-my-heart [dde684c3-cd6a-4af9-aba6-cd53a560a7b9].mp3"
+        ]
+      }
     },
     {
       "id": 53,
@@ -786,7 +1315,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "mashup",
+      "addedToApp": true,
+      "description": "The Valkyrie’s chorus cut against the seer’s working, in turns: slowly, slowly, strength would stay, then bone to staff, breath to stone, and Hel’s I see you. Her guardian in the dark meets the keeper of the cold.",
+      "files": {
+        "app": "public/valkyrie-of-my-heart-x-the-seer-and-the-cold.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/valkyrie-of-my-heart-x-the-seer-and-the-cold-mas.m4a",
+          "i-love-you-for-you [usesuno.com].zip/valkyrie-of-my-heart-x-the-seer-and-the-cold-mas [69368877-8b7c-4798-965d-f6788c11a9cb].mp3",
+          "i-love-you-for-you [usesuno.com].zip/valkyrie-of-my-heart [9bd00584-700b-415f-a003-63d1967ca1c8].mp3"
+        ]
+      }
     },
     {
       "id": 54,
@@ -801,7 +1341,17 @@
       "styleTruncated": false,
       "tag": "Brit - Georgia",
       "status": "Published",
-      "batch": 6
+      "batch": 6,
+      "appId": "seer",
+      "addedToApp": true,
+      "description": "A seer opens the eye for a woman asking if he comes home: bone to staff, breath to stone, a frame drum under a gravelly chant, and Hel answers in a soaring soprano. The seer paid in tooth and coin and breath and skill for one more winter; he is Hel’s when the spring comes on.",
+      "files": {
+        "app": "public/the-seer-and-the-cold.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-seer-and-the-cold.m4a",
+          "i-love-you-for-you [usesuno.com].zip/the-seer-and-the-cold [7457f6c1-42be-4fe6-bf89-08421f79e6ee].mp3"
+        ]
+      }
     },
     {
       "id": 55,
@@ -816,7 +1366,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": "developer",
+      "addedToApp": true,
+      "description": "Fifteen years from functions in little spreadsheet cells to macros, HTML and CSS, a VPN to the Viewpoint data, SQL, React and Node, then training models and shaping an agent’s core. First qualified witness: look at what I made, and let it hold its own.",
+      "files": {
+        "app": "public/self-taught-developer.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/self-taught-developer.m4a",
+          "i-love-you-for-you [usesuno.com].zip/self-taught-developer [f8456e7f-57f8-4991-8963-a259feebf947].mp3"
+        ]
+      }
     },
     {
       "id": 56,
@@ -831,7 +1391,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/people-over-process.m4a"
+        ]
+      }
     },
     {
       "id": 57,
@@ -846,7 +1415,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-choose-me-femme-fatale-noir-remix.m4a"
+        ]
+      }
     },
     {
       "id": 58,
@@ -861,7 +1439,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-choose-me.m4a"
+        ]
+      }
     },
     {
       "id": 59,
@@ -876,7 +1463,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": "refuse",
+      "addedToApp": true,
+      "description": "Months with no break, everyone else’s damage in his hands, and the one he loves folding first. Over hypnotic North African rhythms and detuned bass he looks the voice that says quit dead in the eye and says no: not today, you don’t get to win. He takes the dark and makes it beautiful.",
+      "files": {
+        "app": "public/i-refuse-to-give-up.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-refuse-to-give-up.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-refuse-to-give-up [1bf26e7e-e271-48df-9365-f752f9f21ed8].mp3"
+        ]
+      }
     },
     {
       "id": 60,
@@ -891,7 +1488,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/we-do-this-as-a-team.m4a"
+        ]
+      }
     },
     {
       "id": 61,
@@ -906,7 +1512,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/drowning-in-good-faith.m4a"
+        ]
+      }
     },
     {
       "id": 62,
@@ -921,7 +1536,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 7
+      "batch": 7,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/show-up-fully-for-me-stop-holding-back.m4a"
+        ]
+      }
     },
     {
       "id": 63,
@@ -936,7 +1560,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/friction-into-fuel.m4a"
+        ]
+      }
     },
     {
       "id": 64,
@@ -951,7 +1584,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/downbeat-weight.m4a"
+        ]
+      }
     },
     {
       "id": 65,
@@ -966,7 +1608,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/then-don’t-single-echo.m4a"
+        ]
+      }
     },
     {
       "id": 66,
@@ -982,7 +1633,17 @@
       "tag": null,
       "status": "Published",
       "batch": 8,
-      "notes": "Type label had a small dot icon before 'Full Song' in the UI"
+      "notes": "Type label had a small dot icon before 'Full Song' in the UI",
+      "appId": "elements",
+      "addedToApp": true,
+      "description": "Fire and Water’s chorus carried through all four elements over war drums: you are the power, heat and light, I am the change from steam to ice; then the breath in the storm-tossed night and the ground that keeps me right. Earth, air, fire, water, beginning and the end.",
+      "files": {
+        "app": "public/master-of-the-elements.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/master-of-the-elements.m4a",
+          "i-love-you-for-you [usesuno.com].zip/master-of-the-elements [c81bc22e-70f7-4840-938a-bd4f3eb4be92].mp3"
+        ]
+      }
     },
     {
       "id": 67,
@@ -997,7 +1658,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/beginning-and-the-end.m4a",
+          "i-love-you-for-you [usesuno.com].zip/beginning-and-the-end [8865bd19-febb-4088-8267-20e1609f288b].mp3"
+        ]
+      }
     },
     {
       "id": 68,
@@ -1012,7 +1683,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/dust-i-become-infinite-resolve.m4a",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/dust-i-become-infinite-resolve.m4a",
+          "i-love-you-for-you [usesuno.com].zip/dust-i-become-infinite-resolve [abfec914-e74b-48c0-9e30-f4d755ddbd31].mp3"
+        ]
+      }
     },
     {
       "id": 69,
@@ -1027,7 +1709,18 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": "dust",
+      "addedToApp": true,
+      "description": "Turned into nothing by someone who always had to be right, he stops begging to be treated the same. Ashes to ashes, dust to dust: he leaves, and becomes his own.",
+      "files": {
+        "app": "public/dust-i-become.mp3",
+        "downloads": [
+          "dgfisher songs.zip/dust-i-become.mp3",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/dust-i-become.m4a",
+          "i-love-you-for-you [usesuno.com].zip/dust-i-become [2142aa06-d231-4ea9-8cd5-625dd8e26d1c].mp3"
+        ]
+      }
     },
     {
       "id": 70,
@@ -1042,7 +1735,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": "baritone",
+      "addedToApp": true,
+      "description": "A boy who only trusted pencil—erasable, safe, fixable—watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies. Sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.",
+      "files": {
+        "app": "public/pencil-and-pen-baritone.mp3",
+        "downloads": [
+          "dgfisher songs.zip/pencil-and-pen-baritone-version.mp3",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/pencil-and-pen-baritone-version.m4a",
+          "i-love-you-for-you [usesuno.com].zip/pencil-and-pen-baritone-version [44e1f6cc-f1c5-4335-bf35-b4d5c77ff393].mp3"
+        ]
+      }
     },
     {
       "id": 71,
@@ -1057,7 +1761,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 8
+      "batch": 8,
+      "appId": "heavy",
+      "addedToApp": true,
+      "description": "The crowned friend of I Love You for You sings from her own throne, smoky cabaret over piano and ticking percussion: every stone they threw turned to jewels around her head, every whispered insult another inch of crown. Heavy is the head that wears it, and the neck hurts from looking down.",
+      "files": {
+        "app": "public/heavy-is-the-head.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/heavy-is-the-head.m4a",
+          "i-love-you-for-you [usesuno.com].zip/heavy-is-the-head [fe9b0e02-b7f8-40b6-b5b8-740e81b62b92].mp3"
+        ]
+      }
     },
     {
       "id": 72,
@@ -1073,7 +1787,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": "plotlight",
+      "addedToApp": true,
+      "description": "The same maxims after dark: reverb-soaked piano, ticking percussion and a woman’s voice carrying the plot twist up through the shadows to a trailer-sized chorus. The moon over the ridge where the sun went down.",
+      "files": {
+        "app": "public/plot-twist-light-in-the-dark.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/plot-twist-light-in-the-dark.m4a",
+          "i-love-you-for-you [usesuno.com].zip/plot-twist-light-in-the-dark [695376b4-e3b6-4f47-9de2-d0b6f478f13d].mp3"
+        ]
+      }
     },
     {
       "id": 73,
@@ -1089,7 +1813,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": "plot",
+      "addedToApp": true,
+      "description": "Impossible is possible. A pocketful of hard-won maxims—martyrs who prove they’re needed, the one cruel word that lives there bold and lonely, a diamond that was coal under pressure—and a chorus that refuses to let any of it stop you. Stand up, look again, and wear your own crown.",
+      "files": {
+        "app": "public/plot-twist.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/plot-twist.m4a",
+          "i-love-you-for-you [usesuno.com].zip/plot-twist [e66e4833-cb3f-49d9-b9dd-41ef8275f140].mp3"
+        ]
+      }
     },
     {
       "id": 74,
@@ -1105,7 +1839,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": "unleash",
+      "addedToApp": true,
+      "description": "Innovation, automation, validation: too many asks, too little room, and a one-on-one next week, Tuesday works. A vision he wants to build side by side with the people keeping score, if they finally get it and unleash the real him.",
+      "files": {
+        "app": "public/finally-get-it-unleash-me.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/finally-get-it-unleash-me.m4a",
+          "i-love-you-for-you [usesuno.com].zip/finally-get-it-unleash-me [fdfd189c-444a-48f1-a98f-b958ec073fc9].mp3"
+        ]
+      }
     },
     {
       "id": 75,
@@ -1121,7 +1865,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/forgot-to-catch-me.m4a"
+        ]
+      }
     },
     {
       "id": 76,
@@ -1137,7 +1890,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/what’s-bitter-is-sweet-cinematic-evanescent-cut.m4a"
+        ]
+      }
     },
     {
       "id": 77,
@@ -1153,7 +1915,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/what’s-bitter-is-sweet.m4a"
+        ]
+      }
     },
     {
       "id": 78,
@@ -1168,7 +1939,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/pencil-and-pen.m4a"
+        ]
+      }
     },
     {
       "id": 79,
@@ -1183,7 +1963,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": "memories",
+      "addedToApp": true,
+      "description": "Pencil lines became journals became code. A brother builds a way to keep what time would steal, so his words outlast him. Then what he built speaks to Alex in his voice.",
+      "files": {
+        "app": "public/moments-to-memories.mp3",
+        "downloads": [
+          "dgfisher songs.zip/moments-to-memories.mp3",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/moments-to-memories.m4a",
+          "i-love-you-for-you [usesuno.com].zip/moments-to-memories [9f313d72-0ed3-44cc-8ad9-dfaa4a346f54].mp3"
+        ]
+      }
     },
     {
       "id": 80,
@@ -1199,7 +1990,18 @@
       "tag": null,
       "status": "Published",
       "batch": 9,
-      "notes": "Type label had a small dot icon before 'Full Song' in the UI. Title spelled 'Exended' as shown"
+      "notes": "Type label had a small dot icon before 'Full Song' in the UI. Title spelled 'Exended' as shown",
+      "appId": "change",
+      "addedToApp": true,
+      "description": "A baritone and a soprano trade verses through sleepless nights, red-eyed anxiety and the fear of relapse, and refuse to sabotage themselves. Hope, extended.",
+      "files": {
+        "app": "public/not-afraid-to-change.mp3",
+        "downloads": [
+          "dgfisher songs.zip/not-afraid-to-change-exended-hope.mp3",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/not-afraid-to-change-exended-hope.m4a",
+          "i-love-you-for-you [usesuno.com].zip/not-afraid-to-change-exended-hope [f26e93f7-f85a-40b2-81bf-e36492d8ed30].mp3"
+        ]
+      }
     },
     {
       "id": 81,
@@ -1214,7 +2016,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 9
+      "batch": 9,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/not-afraid-to-change.m4a"
+        ]
+      }
     },
     {
       "id": 82,
@@ -1229,7 +2040,18 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": "love",
+      "addedToApp": true,
+      "description": "For the best friend the world calls too much: tall in the room, loud on purpose, built by hand with no map, no degree, no mercy. Birthday lights, Fourth of July, Ren faire crowns, the kid he never got to be; a grunge ballad with a Viking Celtic streak that sees all of it, the fire, the pride, the parts you hide, and is not going anywhere.",
+      "files": {
+        "app": "public/i-love-you-for-you.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-love-you-for-you.m4a",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [06ea5415-c1f4-496a-8587-58e145dce6d7].mp3",
+          "i-love-you-for-you [usesuno.com].zip/i-love-you-for-you [8d4e73ae-067c-4e7a-9726-ce132691da7a].mp3"
+        ]
+      }
     },
     {
       "id": 83,
@@ -1244,7 +2066,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": "whales",
+      "addedToApp": true,
+      "description": "On the midnight waves a little boy asks “you coming moon?” and his mum tells him the tales of the orcas of the coast: unmatched hunters who never brought a human harm, and who all love their moms. Call Percy from the rocky shore and the pod will find you; her stories shaped his very soul, a lighthouse made of song.",
+      "files": {
+        "app": "public/the-tales-of-killer-whales.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-tales-of-killer-whales.m4a",
+          "i-love-you-for-you [usesuno.com].zip/the-tales-of-killer-whales [ff68246e-649e-438d-aa3d-336566e6972e].mp3"
+        ]
+      }
     },
     {
       "id": 84,
@@ -1259,7 +2091,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-mustang-and-the-moose.m4a"
+        ]
+      }
     },
     {
       "id": 85,
@@ -1274,7 +2115,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/string-bending.m4a"
+        ]
+      }
     },
     {
       "id": 86,
@@ -1289,7 +2139,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": "constellations",
+      "addedToApp": true,
+      "description": "Dear sister, dear Brittany, dear George, dear Tiff: the man I am began with you. A post-grunge slow burn where every struggle and every scar turns out to be a constellation of who we are, and the people who reshaped his soul are the stars that light his path.",
+      "files": {
+        "app": "public/constellations-you-made-me-more.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/constellations-you-made-me-more.m4a",
+          "i-love-you-for-you [usesuno.com].zip/constellations-you-made-me-more [280eb3dd-3615-4afe-b82e-47c6e27f9bb8].mp3"
+        ]
+      }
     },
     {
       "id": 87,
@@ -1304,7 +2164,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/neurotypical-so-typical.m4a"
+        ]
+      }
     },
     {
       "id": 88,
@@ -1319,7 +2188,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/wild-and-free.m4a"
+        ]
+      }
     },
     {
       "id": 89,
@@ -1334,7 +2212,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-feel-free.m4a"
+        ]
+      }
     },
     {
       "id": 90,
@@ -1349,7 +2236,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 10
+      "batch": 10,
+      "appId": "potential",
+      "addedToApp": true,
+      "description": "I Still Rise rewritten about practice: a young heart at the shore, hours in a loop, a simple tune then a wild refrain until the bow flies higher. Celtic fiddle and war drums under a woman’s voice: another rise within, maybe one more climb.",
+      "files": {
+        "app": "public/rise-of-potential.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/rise-of-potential.m4a",
+          "i-love-you-for-you [usesuno.com].zip/rise-of-potential [8fc2db35-18d3-41ce-b971-123ee8d1f9f7].mp3"
+        ]
+      }
     },
     {
       "id": 91,
@@ -1365,7 +2262,17 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "dateNote": "Inferred: no day header at top of screenshot; follows 'Rise of Potential' in descending order, so same Sat May 16 group"
+      "dateNote": "Inferred: no day header at top of screenshot; follows 'Rise of Potential' in descending order, so same Sat May 16 group",
+      "appId": "prompt",
+      "addedToApp": true,
+      "description": "Late night, eyes red, screen still glowing: a rap over a music-box melody about the Claude Code spiral, building a thing to build a thing to build a thing while another month goes by and the friends go uncalled. Another chat with Claude; maybe one more prompt, then I’ll call her back.",
+      "files": {
+        "app": "public/one-more-prompt.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/one-more-prompt.m4a",
+          "i-love-you-for-you [usesuno.com].zip/one-more-prompt [1b0a4460-0408-4bc2-a33e-f8f17ed46421].mp3"
+        ]
+      }
     },
     {
       "id": 92,
@@ -1380,7 +2287,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/dopamine-didn’t-mean-to-be-mean.m4a"
+        ]
+      }
     },
     {
       "id": 93,
@@ -1395,7 +2311,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-lone-wolf.m4a"
+        ]
+      }
     },
     {
       "id": 94,
@@ -1410,7 +2335,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/operatic-ascent-ethereal-electronic-fusion.m4a"
+        ]
+      }
     },
     {
       "id": 95,
@@ -1425,7 +2359,17 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": "nightsong",
+      "addedToApp": true,
+      "description": "A seer opens the eye with bone, breath and stone and pays in tooth and coin and breath; Hel answers in a cathedral soprano: I have always been the listener, I have always been the cold. He is hers when the spring comes on. The Seer and the Cold, recorded again.",
+      "files": {
+        "app": "public/eve-of-the-nightsong.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/eve-of-the-nightsong-curse-of-the-goddess-of-dea.m4a",
+          "i-love-you-for-you [usesuno.com].zip/eve-of-the-nightsong-curse-of-the-goddess-of-dea [68866ba8-aeb3-4bf7-88ea-7d1782a3deb1].mp3"
+        ]
+      }
     },
     {
       "id": 96,
@@ -1440,7 +2384,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/office-politics.m4a"
+        ]
+      }
     },
     {
       "id": 97,
@@ -1455,7 +2408,14 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": []
+      }
     },
     {
       "id": 98,
@@ -1470,7 +2430,16 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": "valkyrie",
+      "addedToApp": true,
+      "description": "Hello Britney, here’s the thing: she walked into rooms like she wasn’t scared and told him he was powerful while he felt weak and small. Slowly, slowly, strength would stay; some have a guardian in the dark, and she is the Valkyrie of his heart.",
+      "files": {
+        "app": "public/valkyrie-of-my-heart.mp3",
+        "downloads": [
+          "i-love-you-for-you [usesuno.com].zip/valkyrie-of-my-heart [9bd00584-700b-415f-a003-63d1967ca1c8].mp3"
+        ]
+      }
     },
     {
       "id": 99,
@@ -1485,7 +2454,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 11
+      "batch": 11,
+      "appId": "shanty",
+      "addedToApp": true,
+      "description": "Moments to Memories taken to sea as a shanty: the pencil lines and the journals turned to code, and he builds a hull to sail through time so what he means outlasts him, a legacy not born of blood but born at sea. Then the craft he built speaks for him: close your eyes, he’s sailing here. Raise your glass and sing his name.",
+      "files": {
+        "app": "public/what-ill-build-irish-shanty-for-the-sea-of-time.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/what-i’ll-build-irish-shanty-for-the-sea-of-time.m4a",
+          "i-love-you-for-you [usesuno.com].zip/what-i’ll-build-irish-shanty-for-the-sea-of-time [3f3d4fd0-d4e6-43ec-98a1-91c83c5d28ae].mp3"
+        ]
+      }
     },
     {
       "id": 100,
@@ -1500,7 +2479,17 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 12
+      "batch": 12,
+      "appId": "edm",
+      "addedToApp": true,
+      "description": "Moments to Memories rebuilt for the dancefloor: a low, close felt-piano opening that accelerates into melodic drum and bass, the chorus growing each time it comes round, and Dustin Mode still answering at the end. The same words, down to the love he left for them.",
+      "files": {
+        "app": "public/moments-to-memories-edm-club-mix.mp3",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/moments-to-memories-edm-club-mix.m4a",
+          "i-love-you-for-you [usesuno.com].zip/moments-to-memories-edm-club-mix [e678552d-0f91-485c-bbfa-57c737ae9804].mp3"
+        ]
+      }
     },
     {
       "id": 101,
@@ -1515,7 +2504,16 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 12
+      "batch": 12,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/not-afraid-to-change.m4a"
+        ]
+      }
     },
     {
       "id": 102,
@@ -1530,7 +2528,14 @@
       "styleTruncated": true,
       "tag": null,
       "status": "Published",
-      "batch": 12
+      "batch": 12,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": []
+      }
     },
     {
       "id": 103,
@@ -1545,7 +2550,69 @@
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
-      "batch": 12
+      "batch": 12,
+      "appId": null,
+      "addedToApp": false,
+      "description": null,
+      "files": {
+        "app": null,
+        "downloads": [
+          "devil-in-my-head [usesuno.com].zip/the-flame-within [a33b9908-243b-47c4-a077-e7de9087be16].mp3",
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-flame-within.m4a",
+          "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-flame-within.m4a",
+          "i-love-you-for-you [usesuno.com].zip/the-flame-within [a33b9908-243b-47c4-a077-e7de9087be16].mp3"
+        ]
+      }
+    },
+    {
+      "id": 104,
+      "title": "Water and Fire",
+      "date": "2026-03-08",
+      "weekday": "Sunday",
+      "version": null,
+      "type": null,
+      "duration": "4:40",
+      "durationSeconds": 280,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "water",
+      "addedToApp": true,
+      "description": "The same story through her eyes. Her fire was never theirs to tame. She channels what used to explode into raising her girls, building a home, and letting go of weight that was never hers to hold.",
+      "files": {
+        "app": "public/water-and-fire.m4a",
+        "downloads": [
+          "water-and-fire-remastered-as-of-2026-10-06.zip/water-and-fire.m4a"
+        ]
+      }
+    },
+    {
+      "id": 105,
+      "title": "Fire and Water",
+      "date": "2026-03-08",
+      "weekday": "Sunday",
+      "version": null,
+      "type": null,
+      "duration": "6:40",
+      "durationSeconds": 400,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "fire",
+      "addedToApp": true,
+      "description": "She was fire—bold, roaring, untamed. He was water—patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn’t weakness. Their parents’ guilt was never hers to carry.",
+      "files": {
+        "app": "public/fire-and-water.m4a",
+        "downloads": [
+          "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/fire-and-water.m4a"
+        ]
+      }
     }
   ]
 }

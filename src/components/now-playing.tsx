@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import {
+  ChevronDown,
+  ChevronUp,
   Download,
+  Ellipsis,
   ListMusic,
   Pause,
   Play,
@@ -13,17 +16,18 @@ import {
 import { Button, LoaderSpinner } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
-import { ALBUM, TRACKS, type Track, type TrackId } from '@/data/tracks'
+import { TRACKS, writtenDate, type Track, type TrackId } from '@/data/tracks'
 import { audioLabel, formatTime } from '@/lib/format'
 import { download } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { OverflowMarquee } from '@/components/overflow-marquee'
+import { TagPill } from '@/components/tag-pill'
 import { Waveform } from '@/components/waveform'
 
-/** The Now Playing bar's glass: card at 85% over a backdrop blur. */
-const GLASS = 'border border-border bg-card/85 backdrop-blur-md'
+/** The Now Playing glass: card at 75% over a 10px backdrop blur, a shade lighter than the list rows. */
+const GLASS = 'border border-border bg-card/75 backdrop-blur-[10px]'
 
 const MODES: Record<PlayMode, { icon: LucideIcon; label: string }> = {
   album: { icon: ListMusic, label: 'Album order' },
@@ -51,6 +55,8 @@ export type NowPlayingProps = {
   loading?: boolean
   onPlayPause: () => void
   onSeek: (ratio: number) => void
+  /** Opens the song's action sheet; the "…" hides without it. */
+  onMore?: () => void
   className?: string
 }
 
@@ -102,6 +108,7 @@ function Control({
   icon: Icon,
   on = false,
   fill = false,
+  className,
 }: {
   label: string
   onClick: () => void
@@ -109,6 +116,7 @@ function Control({
   /** Lit in the song's accent (a play mode that is on). */
   on?: boolean
   fill?: boolean
+  className?: string
 }) {
   return (
     <Button
@@ -118,7 +126,8 @@ function Control({
       onClick={onClick}
       className={cn(
         'size-10 shrink-0 rounded-full transition-opacity hover:opacity-70',
-        on ? 'text-primary' : 'text-foreground'
+        on ? 'text-primary' : 'text-foreground',
+        className
       )}
     >
       <Icon
@@ -130,15 +139,90 @@ function Control({
   )
 }
 
+/**
+ * A single-line scrubber: tap or drag along the track, arrow keys step
+ * five seconds, the thumb grows while dragging.
+ */
+function Scrubber({
+  progress,
+  duration,
+  onSeek,
+}: Pick<NowPlayingProps, 'progress' | 'duration' | 'onSeek'>) {
+  const track = useRef<HTMLDivElement>(null)
+  const [scrubbing, setScrubbing] = useState(false)
+  const seekAt = (x: number) => {
+    const r = track.current?.getBoundingClientRect()
+    if (!r || r.width === 0) return
+    onSeek(Math.min(1, Math.max(0, (x - r.left) / r.width)))
+  }
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (duration <= 0) return
+    const step = 5 / duration
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      onSeek(Math.min(1, progress + step))
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      onSeek(Math.max(0, progress - step))
+    }
+  }
+  const down = (e: PointerEvent<HTMLDivElement>) => {
+    setScrubbing(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    seekAt(e.clientX)
+  }
+  return (
+    <div
+      ref={track}
+      role='slider'
+      aria-label='Seek'
+      aria-valuemin={0}
+      aria-valuemax={Math.round(duration)}
+      aria-valuenow={Math.round(progress * duration)}
+      aria-valuetext={formatTime(progress * duration)}
+      tabIndex={0}
+      data-scrubbing={scrubbing || undefined}
+      onKeyDown={onKeyDown}
+      onPointerDown={down}
+      onPointerMove={(e) => scrubbing && seekAt(e.clientX)}
+      onPointerUp={() => setScrubbing(false)}
+      onPointerCancel={() => setScrubbing(false)}
+      className='relative flex h-6 w-full cursor-pointer touch-none items-center outline-none focus-visible:[&>div:first-child]:ring-2 focus-visible:[&>div:first-child]:ring-ring/50'
+    >
+      <div className='h-[5px] w-full overflow-hidden rounded-full bg-foreground/15'>
+        <div
+          className={cn(
+            'h-full rounded-full bg-linear-to-r from-track-deep to-track-bright',
+            !scrubbing && 'transition-[width] duration-150 ease-linear'
+          )}
+          style={{ width: `${progress * 100}%` }}
+        />
+      </div>
+      <div
+        aria-hidden
+        className={cn(
+          'absolute size-3 -translate-x-1/2 rounded-full bg-foreground shadow-[0_1px_6px_rgb(0_0_0/0.5)] transition-transform duration-150',
+          scrubbing && 'scale-125'
+        )}
+        style={{ left: `${progress * 100}%` }}
+      />
+    </div>
+  )
+}
+
 export type NowPlayingCardProps = NowPlayingProps & {
   onSkipBack: () => void
   onSkipForward: () => void
+  /** Folds the card into the bar; the chevron hides without it. */
+  onCollapse?: () => void
 }
 
 /**
- * The unfolded Now Playing control: cover, dedication, the song's story,
- * its waveform as the scrubber, then Download · previous · play · next and
- * the play mode (album order, repeat, shuffle).
+ * The unfolded Now Playing control, and the screen's header too: cover,
+ * title, the day it was written, dedication and voice, the "…" menu and
+ * the fold chevron beside them, then the song's story, a single-line
+ * scrubber, and Download · previous · play · next and the play mode
+ * (album order, repeat, shuffle).
  */
 export function NowPlayingCard({
   track,
@@ -150,6 +234,8 @@ export function NowPlayingCard({
   onSeek,
   onSkipBack,
   onSkipForward,
+  onCollapse,
+  onMore,
   className,
 }: NowPlayingCardProps) {
   const t = TRACKS[track]
@@ -170,20 +256,54 @@ export function NowPlayingCard({
       data-slot='now-playing-card'
       className={cn(GLASS, 'flex flex-col gap-3 rounded-[18px] p-4', className)}
     >
-      <div className='flex items-center gap-3'>
+      <div className='flex items-start gap-3'>
         <img
           src={t.art.thumb}
           alt=''
-          className='size-14 shrink-0 rounded-[12px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          className='size-[72px] shrink-0 rounded-[14px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
         />
-        <div className='min-w-0 flex-1'>
-          <div className='truncate font-display text-[18px] leading-tight font-medium text-foreground'>
-            {t.dedication}
+        <div className='min-w-0 flex-1 self-center'>
+          <h1
+            lang={t.lang}
+            className='line-clamp-2 font-display text-[20px] leading-tight font-medium text-primary transition-colors duration-700'
+          >
+            {t.title}
+          </h1>
+          <div className='mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground'>
+            <span>Written {writtenDate(t)}</span>
+            {t.lyricsSource === 'transcribed' && (
+              <TagPill
+                color='var(--track-deep)'
+                colorDark='var(--track-bright)'
+              >
+                Transcribed by ear
+              </TagPill>
+            )}
           </div>
           <div className='mt-0.5 truncate text-[12px] text-muted-foreground'>
-            {ALBUM.title} · {t.voice}
+            {t.dedication} · {t.voice}
           </div>
         </div>
+        {(onMore || onCollapse) && (
+          <div className='-mt-1 -mr-2 flex shrink-0 flex-col'>
+            {onMore && (
+              <Control
+                label='More actions'
+                icon={Ellipsis}
+                onClick={onMore}
+                className='size-9 text-muted-foreground'
+              />
+            )}
+            {onCollapse && (
+              <Control
+                label='Collapse player'
+                icon={ChevronUp}
+                onClick={onCollapse}
+                className='size-9 text-muted-foreground'
+              />
+            )}
+          </div>
+        )}
       </div>
       {/* The song's story, four lines at a time; a tap shows the rest. */}
       <button
@@ -198,14 +318,8 @@ export function NowPlayingCard({
         {t.description}
       </button>
       <div>
-        <Waveform
-          bins={binsFor(t)}
-          progress={progress}
-          duration={duration}
-          onSeek={onSeek}
-          className='h-9'
-        />
-        <div className='mt-1 flex justify-between text-[11px] text-muted-foreground tabular-nums'>
+        <Scrubber progress={progress} duration={duration} onSeek={onSeek} />
+        <div className='flex justify-between text-[11px] text-muted-foreground tabular-nums'>
           <span>{formatTime(progress * duration)}</span>
           <span>-{formatTime(duration - progress * duration)}</span>
         </div>
@@ -241,9 +355,15 @@ export function NowPlayingCard({
   )
 }
 
+export type NowPlayingBarProps = NowPlayingProps & {
+  /** Unfolds the card; the chevron hides without it. */
+  onExpand?: () => void
+}
+
 /**
- * The folded Now Playing control: cover, title, the elapsed time, a slim
- * waveform scrubber and play. Takes the card's place once the words scroll.
+ * The folded Now Playing control: cover, title, the elapsed time, the
+ * song's waveform as the scrubber, play, the "…" menu and a chevron that
+ * unfolds the card. Takes the card's place once the words scroll.
  */
 export function NowPlayingBar({
   track,
@@ -253,8 +373,10 @@ export function NowPlayingBar({
   loading,
   onPlayPause,
   onSeek,
+  onMore,
+  onExpand,
   className,
-}: NowPlayingProps) {
+}: NowPlayingBarProps) {
   const t = TRACKS[track]
   return (
     <div
@@ -263,7 +385,7 @@ export function NowPlayingBar({
       data-slot='now-playing-bar'
       className={cn(
         GLASS,
-        'flex items-center gap-3 rounded-2xl px-3 py-2',
+        'flex w-full max-w-full items-center gap-2.5 overflow-hidden rounded-2xl px-3 py-2',
         className
       )}
     >
@@ -272,11 +394,13 @@ export function NowPlayingBar({
         alt=''
         className='size-9 shrink-0 rounded-[8px] object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
       />
-      <div className='min-w-0 flex-1'>
-        <div className='flex items-baseline justify-between gap-2'>
-          <OverflowMarquee className='min-w-0 flex-1 font-display text-[15px] leading-tight font-medium text-foreground'>
-            {t.title}
-          </OverflowMarquee>
+      <div className='min-w-0 flex-1 overflow-hidden'>
+        <div className='flex items-baseline gap-2'>
+          <div className='min-w-0 flex-1 overflow-hidden'>
+            <OverflowMarquee className='font-display text-[15px] leading-tight font-medium text-foreground'>
+              {t.title}
+            </OverflowMarquee>
+          </div>
           <span className='shrink-0 text-[10.5px] text-muted-foreground tabular-nums'>
             {formatTime(progress * duration)} / {formatTime(duration)}
           </span>
@@ -295,6 +419,26 @@ export function NowPlayingBar({
         loading={loading}
         onClick={onPlayPause}
       />
+      {(onMore || onExpand) && (
+        <div className='-mr-2 flex shrink-0 items-center'>
+          {onMore && (
+            <Control
+              label='More actions'
+              icon={Ellipsis}
+              onClick={onMore}
+              className='size-8 text-muted-foreground'
+            />
+          )}
+          {onExpand && (
+            <Control
+              label='Expand player'
+              icon={ChevronDown}
+              onClick={onExpand}
+              className='size-8 text-muted-foreground'
+            />
+          )}
+        </div>
+      )}
     </div>
   )
 }
