@@ -143,7 +143,7 @@ python3 scripts/audio-convert.py --lyrics --out ~/songs a.m4a # a file, with its
 `src/data/timing.json` holds one start time per stanza and per line, `{ "<id>": { "stanzas": [seconds...], "lines": [[seconds...], ...], "words": [[[seconds...] | null, ...], ...] } }` (a label line takes the time of the line after it; `words` has a start per whitespace-split word for a line the aligner heard, null for one it spread, and the reader lights those lines whole). `scripts/timing/` regenerates it: Whisper transcribes each song with word timestamps, then the known lyrics are aligned to the transcript and the unheard lines are spread between the heard ones.
 
 ```sh
-python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper
+python3 -m venv scripts/timing/.venv && scripts/timing/.venv/bin/pip install faster-whisper "av<16"   # PyAV 16+ breaks faster-whisper 1.2
 scripts/timing/.venv/bin/python scripts/timing/transcribe.py            # all songs, or pass ids
 scripts/timing/.venv/bin/python scripts/timing/transcribe.py --strict   # optional second pass
 python3 scripts/timing/align.py                                         # writes timing.json

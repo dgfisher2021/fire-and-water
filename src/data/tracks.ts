@@ -277,7 +277,7 @@ export const TRACKS: Record<TrackId, Track> = {
     description:
       'The same story through her eyes. Her fire was never theirs to tame. She channels what used to explode into raising her girls, building a home, and letting go of weight that was never hers to hold.',
     audioFile: 'water-and-fire.m4a',
-    duration: 295,
+    duration: 280,
     art: { full: 'assets/water.webp', thumb: 'assets/water-512.webp' },
     themeColor: '#0a0e1a',
     driveLink:
