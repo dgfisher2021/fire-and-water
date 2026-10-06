@@ -27,6 +27,8 @@ DEFAULT = pathlib.Path("/mnt/c/Users/dustinf/Downloads/suno songs")
 
 
 def slug(text):
+    """Ascii, lower, dashed; apostrophes dropped (ain’t -> aint) so sheets match the audio stems."""
+    text = re.sub(r"[’']", "", text)
     text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 

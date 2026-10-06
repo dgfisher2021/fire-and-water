@@ -10,7 +10,15 @@ const FAMILIES: TrackId[][] = [
   ['devil', 'guitar'],
   ['forging', 'county'],
   ['faith', 'rise', 'hypnotic'],
-  ['beautiful', 'rewrite'],
+  ['beautiful', 'rewrite', 'wound'],
+  ['plot', 'plotlight'],
+  ['love', 'neofolk', 'ritual'],
+  ['valkyrie', 'mashup', 'kindred'],
+  ['seer', 'nightsong'],
+  ['dust', 'resolve'],
+  ['memories', 'edm', 'shanty'],
+  ['raven', 'carry'],
+  ['espoir', 'anglais'],
 ]
 
 describe('the collections', () => {
