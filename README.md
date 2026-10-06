@@ -123,7 +123,11 @@ python3 scripts/lyrics/from-transcript.py raven       # a sheet from the Whisper
 
 The importer matches each `<slug> (lyrics).txt` in a Suno zip to a song by its audio file name, splits the text at blank lines, typesets quotes and labels, reports sheets the export left empty, and never overwrites a sheet that differs unless `--force` is given; `--only` limits a run to the songs named, which is how a sheet is replaced from one zip without touching the rest (re-run the aligner for those songs afterwards, since the timing follows the sheet's shape). Suno's "full download" export leaves thirteen songs' text files empty, while the per-song `[usesuno.com]` zips carry most of them; Magic of the Raven has no text in any export, so its sheet stays transcribed by ear.
 
-The Suno library itself (every song's title, creation date, model version, duration and style prompt, as of 2026-10-06) is saved in `src/data/suno-catalog.json`, checked by `suno-catalog.test.ts`, for the day the remaining songs join the album.
+The Suno library itself (every song's title, creation date, model version, duration and style prompt, as logged from the library screenshots on 2026-10-06) is saved in `src/data/suno-catalog.json` and checked by `suno-catalog.test.ts`. `scripts/suno-catalog.py` enriches it with what the album knows and keeps it current as songs join: `appId` and `addedToApp`, the album's `description`, `files.app` (the file in `public/`) and `files.downloads` (every `zip/member` in `downloads/` whose stem is the title's slug; two versions sharing a title list the same candidates), plus the album songs the log never showed (the original Fire and Water, the remastered Water and Fire) appended with `source: "app"`. With `--dates` it also writes the library's creation dates into `tracks.ts` as `written` for matched songs, which is where the Album's date-written timeline now comes from (the three March songs are dated by hand and left alone); `--copy-to DIR` drops a copy beside the downloads as `song-library-metadata.json`.
+
+```sh
+python3 scripts/suno-catalog.py --dates --copy-to "/mnt/c/Users/dustinf/Desktop/songs"
+```
 
 ## Converting the downloads
 

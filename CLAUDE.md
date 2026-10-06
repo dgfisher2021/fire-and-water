@@ -76,9 +76,13 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   `lib/lyrics-text.ts` as plain text for the clipboard (`copyText` in
   `lib/share.ts`). Both JSON files are laid out by their scripts and
   excluded from Prettier. `src/data/suno-catalog.json` is the Suno library
-  as of 2026-10-06 (title, creation date, model, duration, style prompt per
-  song; `suno-catalog.test.ts` checks it), reference for the songs not yet
-  in the album. The download zips live in the ignored `downloads/` folder:
+  as logged on 2026-10-06 (title, creation date, model, duration, style
+  prompt per song), enriched by `scripts/suno-catalog.py` with `appId`,
+  `addedToApp`, the album description and file locations, plus `source:
+  "app"` entries for album songs the log missed; `suno-catalog.test.ts`
+  checks it against `TRACK_ORDER`. Re-run the script (with `--dates` for
+  `written`) after adding a song. The download zips live in the ignored
+  `downloads/` folder:
   `scripts/lyrics/import-suno.py` reads sheets from them (`--only=id,id`
   with `--force` replaces a few; re-run `scripts/timing/align.py` for those
   ids after, the timing follows the sheet) and `scripts/audio-convert.py`

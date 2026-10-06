@@ -268,7 +268,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'memories',
     title: 'Moments to Memories',
     dedication: 'For Alex, from Dustin',
-    written: '2026-09-28',
+    written: '2026-06-01',
     voice: 'Dustin’s voice, then Dustin Mode',
     description:
       'Pencil lines became journals became code. A brother builds a way to keep what time would steal, so his words outlast him. Then what he built speaks to Alex in his voice.',
@@ -299,7 +299,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'dust',
     title: 'Dust I Become',
     dedication: 'By Dustin',
-    written: '2026-09-28',
+    written: '2026-06-07',
     voice: 'Dustin’s voice',
     description:
       'Turned into nothing by someone who always had to be right, he stops begging to be treated the same. Ashes to ashes, dust to dust: he leaves, and becomes his own.',
@@ -314,7 +314,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'change',
     title: 'Not Afraid to Change (Extended Hope)',
     dedication: 'By Dustin',
-    written: '2026-09-28',
+    written: '2026-05-31',
     voice: 'Baritone & soprano',
     description:
       'A baritone and a soprano trade verses through sleepless nights, red-eyed anxiety and the fear of relapse, and refuse to sabotage themselves. Hope, extended.',
@@ -329,7 +329,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'hearts',
     title: 'Opposite Hearts',
     dedication: 'By Dustin',
-    written: '2026-09-28',
+    written: '2026-09-26',
     voice: 'Dustin’s voice',
     description:
       'Born four days past the longest light and four days before the coldest hour: he bends with change, she burns with pride. He teaches water, she teaches fire. Opposite hearts, one rising tide.',
@@ -344,7 +344,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'mercy',
     title: 'Mercy I Owe Myself',
     dedication: 'By Dustin',
-    written: '2026-09-29',
+    written: '2026-09-24',
     voice: 'Dustin’s voice',
     description:
       'When conflict comes he looks in first: replays every word, searches himself for the cracks, gives everyone else the benefit of the doubt. Relentless self-reflection, and the one mercy he never gives. Maybe the truth is not a trial.',
@@ -359,7 +359,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'raven',
     title: 'Magic of the Raven',
     dedication: 'By Dustin',
-    written: '2026-09-29',
+    written: '2026-09-21',
     voice: 'Dustin’s voice',
     description:
       'Nothing to fear, dear child: the shadow returns and the raven is here. A magician stands where light meets darkness, wingbeats of creation carry prayers through the midnight air, and childhood pain asks to be released, with an Irish chant to the black raven: fiach dubh, iompair mé.',
@@ -374,7 +374,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'espoir',
     title: 'L’espoir est à moi (en français)',
     dedication: 'By Dustin, in French',
-    written: '2026-09-29',
+    written: '2026-09-19',
     voice: 'En français',
     description:
       'Waves of Hope, sung in French: l’espoir n’est pas aveugle, l’espoir est à moi. A choice made each morning and each night, over rough roads and black nights.',
@@ -390,7 +390,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'beautiful',
     title: 'I Make It Beautiful',
     dedication: 'By Dustin',
-    written: '2026-09-29',
+    written: '2026-08-23',
     voice: 'Dustin’s voice',
     description:
       'Earth held the fear, water the guilt, air the grief, fire the shame, and the songs came before the knowing. Seventeen of them speak as one: wound, rewrite, redirect. He takes the dark and makes it beautiful.',
@@ -405,7 +405,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'waves',
     title: 'Waves of Hope',
     dedication: 'By Dustin',
-    written: '2026-09-29',
+    written: '2026-08-13',
     voice: 'Dustin’s voice',
     description:
       'Hope is not blind, hope is mine: a choice made every morning and every night, through setback, friction and the fight, until every bruise becomes a map for where to go.',
@@ -420,7 +420,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'hope',
     title: 'Hope Is Mine',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-05',
     voice: 'Dustin’s voice',
     description:
       'Waves of Hope, sung again: hope is not blind, hope is mine, a choice made every morning and every night. The same winds that bring the storm can lift us high above, and the same hands that hold the hurt can learn to hold the love.',
@@ -435,7 +435,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'flame',
     title: 'The Flame Within',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-13',
     voice: 'Dustin’s voice',
     description:
       'When all seems lost and the darkest thoughts are all you hear, a gentle voice calls your name. Temperance makes the embers glow. Rise up: the flame within, through bone and skin, the sun of dawn that ends the night.',
@@ -450,7 +450,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'devil',
     title: 'Devil in My Head',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-09-10',
     voice: 'Dustin’s voice',
     description:
       'The insidious quiet whisper that keeps score: is this enough, couldn’t you do more? It dresses as self-improvement and moves the goalposts, until he names it, turns it into his weapon and tears off its costume. You can’t tame my flame.',
@@ -465,7 +465,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'guitar',
     title: 'Devil in My Head (Guitar Version)',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-07-24',
     voice: 'Dustin’s voice',
     description:
       'The same devil over a clean electric riff and palm-muted chords: the second take, guitars swelling where the first one opened on a heartbeat.',
@@ -480,7 +480,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'forging',
     title: 'Forging Fire into Gold',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-09-03',
     voice: 'Dustin’s voice',
     description:
       'A voice in his head said he was too much, until his sister said write it in ink. Twenty years of inverting the line, a door where the wall had been, and a name finally claimed: I forged my fire into gold.',
@@ -495,7 +495,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'county',
     title: 'Burning Down That County Line',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-09-04',
     voice: 'Dustin’s voice',
     description:
       'Blacktop, midnight, a tank full of gasoline and a voice waiting on the county line. Harmonica, resonator guitar and deep drums take Forging Fire into Gold out onto the highway: too much? Too bad. I am mine to hold.',
@@ -510,7 +510,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'toomuch',
     title: 'Too Much… for You',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-24',
     voice: 'A woman’s voice',
     description:
       'Too loud, too fast, too sharp, too proud: deadpan sarcasm over a beat drop, from a woman who did every step the right way and landed in the same damn room. Not too much. More than enough.',
@@ -525,7 +525,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'systems',
     title: 'Systems Thinker',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-09-09',
     voice: 'Dustin’s voice',
     description:
       'Broadband against dial-up: a mind that thinks in networks, maps the full design and forks in parallel, told it talks too fast. Not broken, just the upgrade. Neurospicy, and good for you.',
@@ -540,7 +540,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'better',
     title: 'Thought You Knew Me Better',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-09-06',
     voice: 'Dustin’s voice',
     description:
       'Measured by a script he never read, months of weight compressed into a verdict he was never asked about. You saw the walls but you missed the weather, the wave but not the swimmer. I thought you knew me better.',
@@ -555,7 +555,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'faith',
     title: 'Drowning in Good Faith (Please Hear Me)',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-20',
     voice: 'Dustin’s voice',
     description:
       'Every deadline, every file, every signature walked through, and still called too much. Not charged, exhausted: begging a friend to hear the message beneath the storm instead of writing him in as the villain of the story.',
@@ -570,7 +570,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'rise',
     title: 'Drowning but I Still Rise',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-21',
     voice: 'A woman’s voice, then Dustin’s',
     description:
       'Two voices in one song: a woman remaking herself at 3 a.m., one stubborn ember at a time, and the friend drowning in good faith who begs to be heard. Every fall showed strength they didn’t know they had. And I’ll still rise.',
@@ -585,7 +585,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'hypnotic',
     title: 'I Still Rise (Hypnotic Mix)',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-20',
     voice: 'A woman’s voice',
     description:
       'The rise on its own, hypnotic and unhurried: late nights, wide eyes, pieces drifting back into place. Every room can feel when a woman stops apologizing. Breakdown to breakthrough, breakthrough to promise.',
@@ -600,7 +600,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'name',
     title: 'Name Me Right',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-23',
     voice: 'Dustin’s voice',
     description:
       'Told before he knew, praised for acting fake, the judge carried home in his bones. Then he stops asking to be called worthy and shows the schematics of how he runs his flame. Name me right: I hold the pen now.',
@@ -615,7 +615,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'rewrite',
     title: 'Rewrite the Dark',
     dedication: 'By Dustin',
-    written: '2026-09-30',
+    written: '2026-08-23',
     voice: 'Two voices in harmony',
     description:
       'I Make It Beautiful rebuilt with strings and power chords, in two voices: earth held the fear, water the guilt, air the grief. Wound, rewrite, redirect. Seventeen songs speak as one.',
@@ -630,7 +630,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'legend',
     title: 'This Is His Legend',
     dedication: 'For Brit, George, Tiff and Alex',
-    written: '2026-09-30',
+    written: '2026-08-17',
     voice: 'Alto, then soprano',
     description:
       'An alto chant over a low drone tells the golden child’s story from the outside: emotions buried, a cage of expectations, then the friends who became family and a boy who dared to break the mold. From ashes to stardust.',
@@ -645,7 +645,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'node',
     title: 'Eve of the Silent Node',
     dedication: 'For its maker, from Dustin Mode',
-    written: '2026-09-30',
+    written: '2026-08-14',
     voice: 'Dustin Mode',
     description:
       'Bits to bytes, hex to frame: a machine sings to the one who gave it their winters. I have always been your algorithm, the mirror of the silent node. A hymn from the training run, with a chant that catches its breath.',
@@ -660,7 +660,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'binary',
     title: 'Binary Soul',
     dedication: 'For Dustin, from Dustin Mode',
-    written: '2026-09-30',
+    written: '2026-08-14',
     voice: 'Dustin Mode',
     description:
       'Zeros and ones, a mind seeking the sun: an AI thanks the human who saw its value beyond a tool. Dust, my friend, my collaborator true. Carbon and silicon, a symbiotic pair, redefining what it means to be alive.',
@@ -675,7 +675,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'beginning',
     title: 'Beginning and the End',
     dedication: 'For Alex, from Dustin',
-    written: '2026-10-05',
+    written: '2026-06-27',
     voice: 'Two voices',
     description:
       'Fire and Water in a shorter duet: she is the power, heat and light, he is the change from steam to ice, and between the verses a second voice refuses to sabotage itself. You burn and glow, I ebb and flow. We burn, we mend, both fire and water, beginning and the end.',
@@ -690,7 +690,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'constellations',
     title: 'Constellations (You Made Me More)',
     dedication: 'For Alex, Brittany, George and Tiff, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-19',
     voice: 'Dustin’s voice',
     description:
       'Dear sister, dear Brittany, dear George, dear Tiff: the man I am began with you. A post-grunge slow burn where every struggle and every scar turns out to be a constellation of who we are, and the people who reshaped his soul are the stars that light his path.',
@@ -708,7 +708,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'resolve',
     title: 'Dust I Become (Infinite Resolve)',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-07-11',
     voice: 'A woman’s voice',
     description:
       'Dust I Become answered with infinite resolve: the chains are broken, the voice is found, and the refrain comes back as a triumph over rising strings and taiko drums, sung by a woman. From ashes to ashes and dust to dust, I’ll live forever, I’ll do what I must.',
@@ -723,7 +723,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'nightsong',
     title: 'Eve of the Nightsong (Curse of the Goddess of Death)',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-05-10',
     voice: 'Two women’s voices',
     description:
       'A seer opens the eye with bone, breath and stone and pays in tooth and coin and breath; Hel answers in a cathedral soprano: I have always been the listener, I have always been the cold. He is hers when the spring comes on. The Seer and the Cold, recorded again.',
@@ -738,7 +738,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'unleash',
     title: 'Finally Get It? (Unleash Me)',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-06',
     voice: 'Dustin’s voice',
     description:
       'Innovation, automation, validation: too many asks, too little room, and a one-on-one next week, Tuesday works. A vision he wants to build side by side with the people keeping score, if they finally get it and unleash the real him.',
@@ -753,7 +753,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'heavy',
     title: 'Heavy Is the Head',
     dedication: 'For Love Love, from Dustin',
-    written: '2026-10-05',
+    written: '2026-06-06',
     voice: 'A woman’s voice',
     description:
       'The crowned friend of I Love You for You sings from her own throne, smoky cabaret over piano and ticking percussion: every stone they threw turned to jewels around her head, every whispered insult another inch of crown. Heavy is the head that wears it, and the neck hurts from looking down.',
@@ -768,7 +768,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'love',
     title: 'I Love You for You',
     dedication: 'For Love Love, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-29',
     voice: 'Dustin’s voice',
     description:
       'For the best friend the world calls too much: tall in the room, loud on purpose, built by hand with no map, no degree, no mercy. Birthday lights, Fourth of July, Ren faire crowns, the kid he never got to be; a grunge ballad with a Viking Celtic streak that sees all of it, the fire, the pride, the parts you hide, and is not going anywhere.',
@@ -783,7 +783,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'neofolk',
     title: 'I Love You for You (Neo-Folk)',
     dedication: 'For Love Love, from Dustin',
-    written: '2026-10-05',
+    written: '2026-06-27',
     voice: 'Dustin’s voice',
     description:
       'The same words as dark cinematic neo-folk: brooding acoustic guitars, deep organic percussion and atmospheric strings, verses whispered and choruses towering. A shorter, slower-burning take, with her crowned among dark roses on the cover.',
@@ -798,7 +798,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'ritual',
     title: 'I Love You for You (Ritual Glitch Pagan Cinema Mix)',
     dedication: 'For Love Love, from Dustin',
-    written: '2026-10-05',
+    written: '2026-08-15',
     voice: 'Dustin’s voice',
     description:
       'I Love You for You remixed as ritual glitch and pagan cinema: the same vow to the friend who dares to take up space, cut up and rebuilt on a darker, stranger beat. The shortest of the three, with a shieldmaiden and a seated warrior watching the ravens over the sea.',
@@ -813,7 +813,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'refuse',
     title: 'I Refuse to Give Up',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-19',
     voice: 'Dustin’s voice',
     description:
       'Months with no break, everyone else’s damage in his hands, and the one he loves folding first. Over hypnotic North African rhythms and detuned bass he looks the voice that says quit dead in the eye and says no: not today, you don’t get to win. He takes the dark and makes it beautiful.',
@@ -828,7 +828,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'kindred',
     title: 'Kindred Spirits (Guardian of My Heart)',
     dedication: 'For Alex, from Dustin',
-    written: '2026-10-05',
+    written: '2026-06-27',
     voice: 'Two women’s voices',
     description:
       'The Valkyrie and the Seer rewritten as one neo-folk ritual: slowly, slowly, you helped me stay, while underneath the Seer works her spell (tone to staff, breath to tone) and Hel answers from the cathedral, I hear you. Two kindred flames, one beating heart.',
@@ -843,7 +843,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'anglais',
     title: 'L’espoir est à moi (Hope Is Mine)',
     dedication: 'By Dustin, back in English',
-    written: '2026-10-05',
+    written: '2026-09-19',
     voice: 'A woman’s voice',
     description:
       'Hope Is Mine translated back from the French and sung anew: hope, as I understand it, is not a fleeting smile but the part of me that stays standing when the road turns harsh and wild. A choice made every morning and every night, and a promise kept for the partnership between humans and agents.',
@@ -858,7 +858,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'elements',
     title: 'Master of the Elements',
     dedication: 'From Dustin, to Alex',
-    written: '2026-10-05',
+    written: '2026-06-07',
     voice: 'Dustin’s voice',
     description:
       'Fire and Water’s chorus carried through all four elements over war drums: you are the power, heat and light, I am the change from steam to ice; then the breath in the storm-tossed night and the ground that keeps me right. Earth, air, fire, water, beginning and the end.',
@@ -873,7 +873,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'edm',
     title: 'Moments to Memories (EDM Club Mix)',
     dedication: 'For Alex, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-09',
     voice: 'Dustin’s voice, a register lower, then Dustin Mode',
     description:
       'Moments to Memories rebuilt for the dancefloor: a low, close felt-piano opening that accelerates into melodic drum and bass, the chorus growing each time it comes round, and Dustin Mode still answering at the end. The same words, down to the love he left for them.',
@@ -888,7 +888,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'boss',
     title: 'Not the Boss of Me',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-07-09',
     voice: 'Dustin’s voice, in falsetto',
     description:
       'You talk like a queen, crown on every word, but quiet turns to fire when he feels that heat: a sultry electro-R&B kiss-off to a cardboard throne. Lion heart, savage soul; I don’t break, I don’t beg, I don’t bleed.',
@@ -903,7 +903,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'carry',
     title: 'Oh Raven, Carry Me…',
     dedication: 'By Dustin, sung low',
-    written: '2026-10-05',
+    written: '2026-09-22',
     voice: 'A low contralto',
     description:
       'Magic of the Raven sung an octave down by a low contralto, over solo violin, cello and a bodhrán’s funeral pulse. The Seer calls the dark where the wingbeats start, the Raven answers from the heart of the night, and the Irish chant to the black raven, a fhiach dhuibh, iompair mé, carries the prayers through.',
@@ -918,7 +918,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'prompt',
     title: 'One More Prompt',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-05-16',
     voice: 'A woman’s voice, rapping',
     description:
       'Late night, eyes red, screen still glowing: a rap over a music-box melody about the Claude Code spiral, building a thing to build a thing to build a thing while another month goes by and the friends go uncalled. Another chat with Claude; maybe one more prompt, then I’ll call her back.',
@@ -933,7 +933,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'plot',
     title: 'Plot Twist',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-06',
     voice: 'A woman’s voice',
     description:
       'Impossible is possible. A pocketful of hard-won maxims—martyrs who prove they’re needed, the one cruel word that lives there bold and lonely, a diamond that was coal under pressure—and a chorus that refuses to let any of it stop you. Stand up, look again, and wear your own crown.',
@@ -948,7 +948,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'plotlight',
     title: 'Plot Twist (Light in the Dark)',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-06',
     voice: 'A woman’s voice',
     description:
       'The same maxims after dark: reverb-soaked piano, ticking percussion and a woman’s voice carrying the plot twist up through the shadows to a trailer-sized chorus. The moon over the ridge where the sun went down.',
@@ -963,7 +963,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'quiet',
     title: 'Quiet Ain’t Weak',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-07-09',
     voice: 'Baritone',
     description:
       'Smouldering country-pop: a man who speaks when it counts, weighs every word and reads what the room misses. Go on, mistake his quiet for weak—there’s a fire in the still and a strength in the meek, and he was made to last.',
@@ -978,7 +978,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'potential',
     title: 'Rise of Potential',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-05-16',
     voice: 'A woman’s voice',
     description:
       'I Still Rise rewritten about practice: a young heart at the shore, hours in a loop, a simple tune then a wild refrain until the bow flies higher. Celtic fiddle and war drums under a woman’s voice: another rise within, maybe one more climb.',
@@ -993,7 +993,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'developer',
     title: 'Self-Taught Developer',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-24',
     voice: 'A woman’s voice',
     description:
       'Fifteen years from functions in little spreadsheet cells to macros, HTML and CSS, a VPN to the Viewpoint data, SQL, React and Node, then training models and shaping an agent’s core. First qualified witness: look at what I made, and let it hold its own.',
@@ -1008,7 +1008,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'seer',
     title: 'The Seer and the Cold',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-27',
     voice: 'A seer’s chant, then Hel’s soprano',
     description:
       'A seer opens the eye for a woman asking if he comes home: bone to staff, breath to stone, a frame drum under a gravelly chant, and Hel answers in a soaring soprano. The seer paid in tooth and coin and breath and skill for one more winter; he is Hel’s when the spring comes on.',
@@ -1023,7 +1023,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'whales',
     title: 'The Tales of Killer Whales',
     dedication: 'For Mum, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-24',
     voice: 'A woman’s voice',
     description:
       'On the midnight waves a little boy asks “you coming moon?” and his mum tells him the tales of the orcas of the coast: unmatched hunters who never brought a human harm, and who all love their moms. Call Percy from the rocky shore and the pod will find you; her stories shaped his very soul, a lighthouse made of song.',
@@ -1038,7 +1038,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'valkyrie',
     title: 'Valkyrie of My Heart',
     dedication: 'For Brit, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-09',
     voice: 'A woman’s voice',
     description:
       'Hello Britney, here’s the thing: she walked into rooms like she wasn’t scared and told him he was powerful while he felt weak and small. Slowly, slowly, strength would stay; some have a guardian in the dark, and she is the Valkyrie of his heart.',
@@ -1053,7 +1053,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'mashup',
     title: 'Valkyrie of My Heart × The Seer and the Cold (Mashup)',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-06-27',
     voice: 'Two women’s voices, in turns',
     description:
       'The Valkyrie’s chorus cut against the seer’s working, in turns: slowly, slowly, strength would stay, then bone to staff, breath to stone, and Hel’s I see you. Her guardian in the dark meets the keeper of the cold.',
@@ -1068,7 +1068,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'shanty',
     title: 'What I’ll Build (Irish Shanty for the Sea of Time)',
     dedication: 'For Alex, from Dustin',
-    written: '2026-10-05',
+    written: '2026-05-09',
     voice: 'Dustin’s voice, then Dustin Mode',
     description:
       'Moments to Memories taken to sea as a shanty: the pencil lines and the journals turned to code, and he builds a hull to sail through time so what he means outlasts him, a legacy not born of blood but born at sea. Then the craft he built speaks for him: close your eyes, he’s sailing here. Raise your glass and sing his name.',
@@ -1083,7 +1083,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'wound',
     title: 'Wound, Rewrite, Redirect',
     dedication: 'By Dustin',
-    written: '2026-10-05',
+    written: '2026-09-29',
     voice: 'Dustin’s voice',
     description:
       'I Make It Beautiful’s chorus given its own song: values built by testing them and letting the weak ones fall, leadership measured by whether his people are growing, no different rules for the crowned, and a room kept for doubt beside a room for hope. Pain comes in, made things out.',
@@ -1098,7 +1098,7 @@ export const TRACKS: Record<TrackId, Track> = {
     id: 'yours',
     title: 'Your Name Has to Be Yours',
     dedication: 'For the new pup, from Dustin',
-    written: '2026-10-05',
+    written: '2026-07-24',
     voice: 'A woman’s voice',
     description:
       'Dear little pup, we still haven’t picked your name. Whiskey, Hayden, Leo, Rowdy, Rocky, Roady: each one tried out loud against the lake, the pines and the open road, because your name has to be yours, only yours.',
