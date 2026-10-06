@@ -573,3 +573,14 @@
     color: black !important;
   }
 }
+
+/*
+ * Bottom nav: with the active pill (Material style) only the icon carries the
+ * song's tint; the label stays in the text colour and goes bold, as it would
+ * on a Material tab bar. The kit tints both (the iOS, no-pill convention) and
+ * has no prop for this yet, so the label is restyled through its aria-current
+ * hook until NavBottom grows one.
+ */
+[data-slot='nav-bottom'] [aria-current='page'] > span + span {
+  color: var(--foreground);
+}
