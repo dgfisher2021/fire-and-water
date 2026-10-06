@@ -91,7 +91,7 @@ export function MoreScreen() {
             {/* Ink on paper in both modes: scanners want dark modules on a
                 light ground. The cover sits in the middle, modules cleared
                 around it, with the error correction to spare. */}
-            <div className='shrink-0 rounded-[12px] bg-background p-2 text-foreground dark:bg-foreground dark:text-background'>
+            <div className='shrink-0 rounded-md bg-background p-2 text-foreground dark:bg-foreground dark:text-background'>
               <QRCode
                 value={albumUrl()}
                 size={92}
@@ -151,7 +151,7 @@ export function MoreScreen() {
               <img
                 src='assets/icon-192.png'
                 alt=''
-                className='size-14 shrink-0 rounded-[14px] shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+                className='size-14 shrink-0 rounded-md shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
               />
               <div className='min-w-0'>
                 <div className='font-display text-[20px] leading-tight font-medium text-foreground'>

@@ -37,7 +37,7 @@ export function MiniPlayer() {
   return (
     <div
       data-slot='mini-player'
-      className='flex animate-in items-center gap-3 rounded-2xl border border-border bg-card/85 p-2 shadow-[0_12px_32px_-14px_var(--track-glow)] backdrop-blur-md duration-300 fade-in-0 slide-in-from-bottom-2'
+      className='flex animate-in items-center gap-3 rounded-lg border border-border bg-card/85 p-2 shadow-[0_12px_32px_-14px_var(--track-glow)] backdrop-blur-md duration-300 fade-in-0 slide-in-from-bottom-2'
     >
       <button
         type='button'
@@ -48,7 +48,7 @@ export function MiniPlayer() {
         <img
           src={t.art.thumb}
           alt=''
-          className='size-10 rounded-[9px] object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
+          className='size-10 rounded-sm object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
         />
       </button>
       <button
@@ -92,7 +92,7 @@ export function MiniPlayer() {
         size='icon'
         aria-label='Open Now Playing'
         onClick={open}
-        className='size-8 shrink-0 rounded-full text-muted-foreground hover:text-foreground'
+        className='size-8 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
       >
         <ChevronUp aria-hidden />
       </Button>

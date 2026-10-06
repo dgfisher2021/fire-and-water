@@ -241,7 +241,7 @@ export function LyricsScreen() {
             size='icon'
             aria-label='More actions'
             onClick={() => setSheet(true)}
-            className='-mr-1 shrink-0 rounded-full bg-card/60 text-muted-foreground backdrop-blur-[6px] hover:text-foreground'
+            className='-mr-1 shrink-0 rounded-md bg-card/60 text-muted-foreground backdrop-blur-[6px] hover:text-foreground'
           >
             <Ellipsis aria-hidden />
           </Button>

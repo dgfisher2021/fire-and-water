@@ -21,7 +21,7 @@ export function PlayButton({
     <Button
       onClick={onClick}
       className={cn(
-        'h-11 gap-2 rounded-[14px] bg-linear-to-br from-track-bright to-track-deep px-6 text-[13px] font-medium tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)] transition-[transform,filter] duration-200 hover:scale-[1.03] hover:brightness-110 active:scale-[0.97]',
+        'h-11 gap-2 rounded-md bg-linear-to-br from-track-bright to-track-deep px-6 text-[13px] font-medium tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)] transition-[transform,filter] duration-200 hover:scale-[1.03] hover:brightness-110 active:scale-[0.97]',
         className
       )}
     >

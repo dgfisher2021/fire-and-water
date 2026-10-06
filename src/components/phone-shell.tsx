@@ -106,7 +106,7 @@ function ShellNav({ fixed }: { fixed: boolean }) {
         background:
           'linear-gradient(135deg, var(--track-bright), var(--track-deep))',
         color: 'var(--track-foreground)',
-        shadow: '0 8px 22px var(--track-glow)',
+        shadow: 'var(--nav-center-glow)',
       }}
       activePill
       labels

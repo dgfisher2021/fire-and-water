@@ -259,13 +259,13 @@ export function NowPlayingCard({
     <section
       aria-label={`${t.title} player`}
       data-slot='now-playing-card'
-      className={cn(GLASS, 'flex flex-col gap-3 rounded-[18px] p-4', className)}
+      className={cn(GLASS, 'flex flex-col gap-3 rounded-lg p-4', className)}
     >
       <div className='flex items-start gap-3'>
         <img
           src={t.art.thumb}
           alt=''
-          className='size-[72px] shrink-0 rounded-[14px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          className='size-[72px] shrink-0 rounded-md object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
         />
         {/* The song's meaning, three lines at a time; a tap shows the rest. */}
         <button
@@ -361,7 +361,7 @@ export function NowPlayingBar({
       onClick={onExpand}
       className={cn(
         GLASS,
-        'flex w-full max-w-full items-center gap-3 overflow-hidden rounded-2xl px-3 py-2',
+        'flex w-full max-w-full items-center gap-3 overflow-hidden rounded-lg px-3 py-2',
         onExpand && 'cursor-pointer',
         className
       )}
@@ -379,7 +379,7 @@ export function NowPlayingBar({
         <img
           src={t.art.thumb}
           alt=''
-          className='size-10 rounded-[9px] object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
+          className='size-10 rounded-sm object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
         />
       </button>
       <div
