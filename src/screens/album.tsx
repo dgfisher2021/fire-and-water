@@ -8,7 +8,7 @@ import {
   MobileSearchBar,
   useSwipe,
 } from '@dust-ui/ui'
-import { ALBUM, TRACKS, TRACK_ORDER } from '@/data/tracks'
+import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { filterTracks } from '@/lib/search'
 import { groupTracks, sortTracks, type AlbumSort } from '@/lib/sort'
@@ -46,6 +46,12 @@ export function AlbumScreen() {
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
   const [query, setQuery] = useState('')
+  // One song's story open under its row at a time.
+  const [expanded, setExpanded] = useState<TrackId | null>(null)
+  const storyProps = (id: TrackId) => ({
+    expanded: expanded === id,
+    onToggle: () => setExpanded((open) => (open === id ? null : id)),
+  })
   const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
   const noMatch = songs.length === 0 ? `No song matches “${query}”` : undefined
   // The stage above keeps album order; only the list re-sorts.
@@ -159,7 +165,7 @@ export function AlbumScreen() {
                   footer={collection.blurb}
                 >
                   {ids.map((id) => (
-                    <TrackRow key={id} id={id} />
+                    <TrackRow key={id} id={id} {...storyProps(id)} />
                   ))}
                 </MobileListGroup>
               ))}
@@ -170,7 +176,7 @@ export function AlbumScreen() {
               footer={noMatch ?? SORT_FOOTER[sort] ?? ALBUM.tagline}
             >
               {sortTracks(songs, sort).map((id) => (
-                <TrackRow key={id} id={id} />
+                <TrackRow key={id} id={id} {...storyProps(id)} />
               ))}
             </MobileListGroup>
           )}
