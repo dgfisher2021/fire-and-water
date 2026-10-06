@@ -37,10 +37,11 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   (grid-rows transition, `inert` on the hidden one).
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
-- `src/routes/` `/` album (`?sort=title|written|collection`, zod-validated
-  like Compare's pair; album order is stripped so the URL stays clean),
-  `/lyrics/$track` now playing, `/compare`, `/more`, `/story` (the
-  timeline, reached from More, which keeps the More tab lit), and
+- `src/routes/` `/` album (`?sort=album|title|written`, zod-validated like
+  Compare's pair; the default collection view is stripped so the URL stays
+  clean), `/lyrics/$track` now playing, `/compare`, `/more`, `/story` (the
+  songs as `Item` cards with cover and description, oldest first, reached
+  from More, which keeps the More tab lit), and
   `/time/$track`, the tap-to-time tool (no tab). The URL owns what is
   open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
