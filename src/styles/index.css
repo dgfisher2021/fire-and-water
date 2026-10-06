@@ -874,3 +874,13 @@
 [data-slot='nav-bottom'] [aria-current='page'] > span + span {
   color: var(--foreground);
 }
+
+/*
+ * Glass, the Now Playing bar's recipe (card at 85% over a backdrop blur),
+ * on the kit's list groups: they paint their card with inline styles and
+ * have no glass variant yet, so the blur rides on the slot's card element.
+ */
+[data-slot='mobile-list-group'] > div:first-child {
+  background: color-mix(in oklab, var(--card) 85%, transparent) !important;
+  backdrop-filter: blur(12px);
+}

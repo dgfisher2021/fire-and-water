@@ -3,8 +3,9 @@ import type { TrackId } from './tracks'
 /**
  * The album by theme, in display order: the brother-and-sister story first.
  * Every song sits in exactly one collection; a version, remix or mashup
- * sits with its original. A collection's `closing` songs come last in its
- * group, in that order; the rest keep album order.
+ * sits with its original. A collection's `opening` songs come first in its
+ * group and its `closing` songs last, each in the given order; the rest
+ * keep album order.
  */
 export const COLLECTIONS = [
   {
@@ -12,7 +13,9 @@ export const COLLECTIONS = [
     label: 'Brother and sister',
     blurb:
       'The story at the heart of the album: a boy who trusted pencil, a sister who wrote in ink, and the elements they taught each other.',
-    // The three originals close the group; what grew out of them comes first.
+    // The baritone Pencil and Pen opens the group and the three originals
+    // close it; what grew out of them sits between.
+    opening: ['baritone'],
     closing: ['pencil', 'fire', 'water'],
   },
   {
@@ -61,6 +64,7 @@ export const COLLECTIONS = [
   key: string
   label: string
   blurb: string
+  opening?: readonly TrackId[]
   closing?: readonly TrackId[]
 }[]
 

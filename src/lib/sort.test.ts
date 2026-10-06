@@ -77,20 +77,25 @@ describe('groupTracks', () => {
     for (const g of groups) {
       expect(g.ids.length).toBeGreaterThan(0)
       for (const id of g.ids) expect(COLLECTION_OF[id]).toBe(g.collection.key)
+      const opening: readonly string[] =
+        'opening' in g.collection ? g.collection.opening : []
       const closing: readonly string[] =
         'closing' in g.collection ? g.collection.closing : []
-      const open = g.ids.filter((id) => !closing.includes(id))
-      expect(open).toEqual(sortTracks(open, 'album'))
-      expect(g.ids.slice(open.length)).toEqual(
-        closing.filter((id) => g.ids.includes(id as (typeof g.ids)[number]))
-      )
+      const has = (id: string) => g.ids.includes(id as (typeof g.ids)[number])
+      const head = opening.filter(has)
+      const tail = closing.filter(has)
+      const middle = g.ids.slice(head.length, g.ids.length - tail.length)
+      expect(g.ids.slice(0, head.length)).toEqual(head)
+      expect(middle).toEqual(sortTracks(middle, 'album'))
+      expect(g.ids.slice(g.ids.length - tail.length)).toEqual(tail)
     }
   })
 
-  it('closes the brother-and-sister group with the three originals', () => {
+  it('opens the brother-and-sister group with the baritone and closes it with the three originals', () => {
     const siblings = groupTracks(shuffled).find(
       (g) => g.collection.key === 'siblings'
     )
+    expect(siblings?.ids[0]).toBe('baritone')
     expect(siblings?.ids.slice(-3)).toEqual(['pencil', 'fire', 'water'])
   })
 
