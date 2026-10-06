@@ -38,8 +38,9 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
 - `src/routes/` `/` album, `/lyrics/$track` now playing, `/compare`,
-  `/more`, and `/time/$track`, the tap-to-time tool (no tab). The URL owns
-  what is open; the store owns playback.
+  `/more`, `/story` (the timeline, reached from More, which keeps the More
+  tab lit), and `/time/$track`, the tap-to-time tool (no tab). The URL
+  owns what is open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
   element (`src/lib/audio.ts`) by `useAudioEngine`. Album play-through and
   lock-screen prev/next go through `requestTrack`, which the lyrics screen
@@ -76,8 +77,11 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   `MiniPlayer` (kept instead of `MobileNowPlayingBar` for the progress ring
   around play and the marquee, which the bar has no slot for), `TrackRow`
   and `SongPicker` (song data on `MobileMediaRow`, and `SheetBottom` +
-  `MobileSearchBar` + those rows), `TagPill` (`Pill` at the kit's smallest
-  readable step), `OverflowMarquee`, `ArtworkStage`. Two kit pieces wait on
+  `MobileSearchBar` + those rows; More reuses the picker for downloads and
+  Drive links with a `detail` per row), `TagPill` (`Pill` at the kit's
+  smallest readable step), `OverflowMarquee`, `ArtworkStage` (the art is
+  `min(216px, 28dvh)` so the stage's actions stay above the mini player on
+  short phones). Two kit pieces wait on
   upstream fixes: `Surface variant='glass'` paints no fill or rim for a
   consumer (tokens 0.3 ships the `--glass` variables without a
   `--color-glass` theme mapping or the `glass-border` utility), so the

@@ -11,6 +11,7 @@ export function useMiniPlayerVisible() {
   return (
     loaded &&
     !pathname.startsWith('/lyrics') &&
-    !pathname.startsWith('/compare')
+    !pathname.startsWith('/compare') &&
+    !pathname.startsWith('/time')
   )
 }

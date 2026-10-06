@@ -149,10 +149,31 @@ export function LyricsReader({
                 )}
               >
                 {word !== null && lineState(i, j) === 'current' ? (
+                  // The sung word stays the brightest thing on the line: full
+                  // foreground over a wash of the song's colour, glowing in
+                  // it (the kit's --read-along-glow hook); sung words settle,
+                  // upcoming ones wait at half strength.
                   <ReadAlongText
                     text={line}
                     activeWord={word}
-                    className='[&_[data-state=current]]:text-primary [&_[data-state=current]]:[text-shadow:0_0_24px_var(--track-glow),0_0_6px_var(--track-glow)] [&_[data-state=spoken]]:text-foreground [&_[data-state=upcoming]]:text-foreground/35 [&_[data-state=upcoming]]:[text-shadow:none]'
+                    className='[--read-along-glow:var(--track-glow)] [&_[data-state=upcoming]]:text-foreground/45'
+                    renderToken={(token, state) => (
+                      <>
+                        <span
+                          className={cn(
+                            'rounded-[0.3em] transition-[background-color] duration-150 motion-reduce:transition-none',
+                            // --primary is the song's deep tone on paper
+                            // and its bright tone on navy, so the wash
+                            // reads in both modes.
+                            state === 'current' &&
+                              '-mx-[0.1em] bg-primary/22 px-[0.1em]'
+                          )}
+                        >
+                          {token.word}
+                        </span>
+                        {token.raw.slice(token.word.length)}
+                      </>
+                    )}
                   />
                 ) : (
                   line
