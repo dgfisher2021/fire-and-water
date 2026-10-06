@@ -3,6 +3,7 @@ import {
   ChevronDown,
   ChevronUp,
   Download,
+  Ellipsis,
   ListMusic,
   Pause,
   Play,
@@ -15,17 +16,18 @@ import {
 import { Button, LoaderSpinner } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
-import { ALBUM, TRACKS, type Track, type TrackId } from '@/data/tracks'
+import { TRACKS, writtenDate, type Track, type TrackId } from '@/data/tracks'
 import { audioLabel, formatTime } from '@/lib/format'
 import { download } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
 import { useToasts } from '@/store/toasts'
 import { OverflowMarquee } from '@/components/overflow-marquee'
+import { TagPill } from '@/components/tag-pill'
 import { Waveform } from '@/components/waveform'
 
-/** The Now Playing bar's glass: card at 85% over a backdrop blur. */
-const GLASS = 'border border-border bg-card/85 backdrop-blur-md'
+/** The Now Playing glass: card at 75% over a 10px backdrop blur, a shade lighter than the list rows. */
+const GLASS = 'border border-border bg-card/75 backdrop-blur-[10px]'
 
 const MODES: Record<PlayMode, { icon: LucideIcon; label: string }> = {
   album: { icon: ListMusic, label: 'Album order' },
@@ -53,6 +55,8 @@ export type NowPlayingProps = {
   loading?: boolean
   onPlayPause: () => void
   onSeek: (ratio: number) => void
+  /** Opens the song's action sheet; the "…" hides without it. */
+  onMore?: () => void
   className?: string
 }
 
@@ -214,9 +218,11 @@ export type NowPlayingCardProps = NowPlayingProps & {
 }
 
 /**
- * The unfolded Now Playing control: cover, dedication, the song's story,
- * a single-line scrubber, then Download · previous · play · next and the
- * play mode (album order, repeat, shuffle). A chevron folds it away.
+ * The unfolded Now Playing control, and the screen's header too: cover,
+ * title, the day it was written, dedication and voice, the "…" menu and
+ * the fold chevron beside them, then the song's story, a single-line
+ * scrubber, and Download · previous · play · next and the play mode
+ * (album order, repeat, shuffle).
  */
 export function NowPlayingCard({
   track,
@@ -229,6 +235,7 @@ export function NowPlayingCard({
   onSkipBack,
   onSkipForward,
   onCollapse,
+  onMore,
   className,
 }: NowPlayingCardProps) {
   const t = TRACKS[track]
@@ -249,27 +256,53 @@ export function NowPlayingCard({
       data-slot='now-playing-card'
       className={cn(GLASS, 'flex flex-col gap-3 rounded-[18px] p-4', className)}
     >
-      <div className='flex items-center gap-3'>
+      <div className='flex items-start gap-3'>
         <img
           src={t.art.thumb}
           alt=''
-          className='size-14 shrink-0 rounded-[12px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          className='size-[72px] shrink-0 rounded-[14px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
         />
-        <div className='min-w-0 flex-1'>
-          <div className='truncate font-display text-[18px] leading-tight font-medium text-foreground'>
-            {t.dedication}
+        <div className='min-w-0 flex-1 self-center'>
+          <h1
+            lang={t.lang}
+            className='line-clamp-2 font-display text-[20px] leading-tight font-medium text-primary transition-colors duration-700'
+          >
+            {t.title}
+          </h1>
+          <div className='mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground'>
+            <span>Written {writtenDate(t)}</span>
+            {t.lyricsSource === 'transcribed' && (
+              <TagPill
+                color='var(--track-deep)'
+                colorDark='var(--track-bright)'
+              >
+                Transcribed by ear
+              </TagPill>
+            )}
           </div>
           <div className='mt-0.5 truncate text-[12px] text-muted-foreground'>
-            {ALBUM.title} · {t.voice}
+            {t.dedication} · {t.voice}
           </div>
         </div>
-        {onCollapse && (
-          <Control
-            label='Collapse player'
-            icon={ChevronUp}
-            onClick={onCollapse}
-            className='-mr-2 text-muted-foreground'
-          />
+        {(onMore || onCollapse) && (
+          <div className='-mt-1 -mr-2 flex shrink-0 flex-col'>
+            {onMore && (
+              <Control
+                label='More actions'
+                icon={Ellipsis}
+                onClick={onMore}
+                className='size-9 text-muted-foreground'
+              />
+            )}
+            {onCollapse && (
+              <Control
+                label='Collapse player'
+                icon={ChevronUp}
+                onClick={onCollapse}
+                className='size-9 text-muted-foreground'
+              />
+            )}
+          </div>
         )}
       </div>
       {/* The song's story, four lines at a time; a tap shows the rest. */}
@@ -329,8 +362,8 @@ export type NowPlayingBarProps = NowPlayingProps & {
 
 /**
  * The folded Now Playing control: cover, title, the elapsed time, the
- * song's waveform as the scrubber, play, and a chevron that unfolds the
- * card. Takes the card's place once the words scroll.
+ * song's waveform as the scrubber, play, the "…" menu and a chevron that
+ * unfolds the card. Takes the card's place once the words scroll.
  */
 export function NowPlayingBar({
   track,
@@ -340,6 +373,7 @@ export function NowPlayingBar({
   loading,
   onPlayPause,
   onSeek,
+  onMore,
   onExpand,
   className,
 }: NowPlayingBarProps) {
@@ -351,7 +385,7 @@ export function NowPlayingBar({
       data-slot='now-playing-bar'
       className={cn(
         GLASS,
-        'flex w-full max-w-full items-center gap-3 overflow-hidden rounded-2xl px-3 py-2',
+        'flex w-full max-w-full items-center gap-2.5 overflow-hidden rounded-2xl px-3 py-2',
         className
       )}
     >
@@ -385,13 +419,25 @@ export function NowPlayingBar({
         loading={loading}
         onClick={onPlayPause}
       />
-      {onExpand && (
-        <Control
-          label='Expand player'
-          icon={ChevronDown}
-          onClick={onExpand}
-          className='-mr-2 -ml-1 size-9 text-muted-foreground'
-        />
+      {(onMore || onExpand) && (
+        <div className='-mr-2 flex shrink-0 items-center'>
+          {onMore && (
+            <Control
+              label='More actions'
+              icon={Ellipsis}
+              onClick={onMore}
+              className='size-8 text-muted-foreground'
+            />
+          )}
+          {onExpand && (
+            <Control
+              label='Expand player'
+              icon={ChevronDown}
+              onClick={onExpand}
+              className='size-8 text-muted-foreground'
+            />
+          )}
+        </div>
       )}
     </div>
   )

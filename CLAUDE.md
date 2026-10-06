@@ -36,8 +36,11 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   hides the Now Playing card.
 - `src/screens/lyrics.tsx` keeps the Now Playing card and bar both mounted
   and folds one into the other on the pane's scroll position (grid-rows
-  transition, `inert` on the hidden one). A row tap on the Album lands
-  here with the card unfolded; the card carries the song's description.
+  transition, `inert` on the hidden one). The screen has no
+  `MobilePageHeader`: the card carries the title, the written date, the
+  "…" menu and the description beside the cover (the frame's status-bar
+  inset is padding on the card wrapper). A row tap on the Album lands here
+  with the card unfolded.
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
   Glass (`bg-card/85 backdrop-blur-md`) needs no backdrop root between it

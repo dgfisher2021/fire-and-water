@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
-import { Ellipsis, ScrollText } from 'lucide-react'
+import { ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
 import { MotionScrollProgress, MotionTextShimmer } from '@dust-ui/motion'
 import {
-  Button,
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-  MobilePageHeader,
   SheetAction,
   type SheetActionAction,
   useSwipe,
@@ -23,7 +21,6 @@ import {
   adjacentTrack,
   comparePartner,
   dedicationLine,
-  writtenDate,
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
@@ -37,7 +34,6 @@ import { LyricsReader } from '@/components/lyrics-reader'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
-import { TagPill } from '@/components/tag-pill'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
@@ -212,50 +208,10 @@ export function LyricsScreen() {
       : null
 
   return (
-    <Screen
-      scroll={false}
-      header={
-        <MobilePageHeader
-          eyebrow={t.voice}
-          title={
-            <span
-              lang={t.lang}
-              className='line-clamp-2 font-display text-[22px] leading-tight font-medium text-primary transition-colors duration-700'
-            >
-              {t.title}
-            </span>
-          }
-          subtitle={
-            t.lyricsSource === 'transcribed' ? (
-              <span className='inline-flex items-center gap-2'>
-                Written {writtenDate(t)}
-                <TagPill
-                  color='var(--track-deep)'
-                  colorDark='var(--track-bright)'
-                >
-                  Transcribed by ear
-                </TagPill>
-              </span>
-            ) : (
-              `Written ${writtenDate(t)}`
-            )
-          }
-          trailing={
-            <Button
-              variant='ghost'
-              size='icon'
-              aria-label='More actions'
-              onClick={() => setSheet(true)}
-              className='rounded-full bg-card text-muted-foreground hover:text-foreground'
-            >
-              <Ellipsis aria-hidden />
-            </Button>
-          }
-          statusBarInset={framed}
-        />
-      }
-    >
-      <div className='shrink-0 px-4 pb-1'>
+    // No page header: the card carries the title, the date and the menu,
+    // so the words get the height a header would take.
+    <Screen scroll={false}>
+      <div className={cn('shrink-0 px-4 pb-1', framed ? 'pt-[52px]' : 'pt-2')}>
         <div
           inert={collapsed}
           className={cn(
@@ -278,6 +234,7 @@ export function LyricsScreen() {
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
               onCollapse={() => fold(true)}
+              onMore={() => setSheet(true)}
             />
           </div>
         </div>
@@ -301,6 +258,7 @@ export function LyricsScreen() {
               loading={loading}
               onPlayPause={() => (playing ? pause() : play(track))}
               onExpand={short ? undefined : () => fold(false)}
+              onMore={() => setSheet(true)}
             />
           </div>
         </div>
