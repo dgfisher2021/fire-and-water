@@ -46,16 +46,16 @@ export function ArtworkStage({
         <div
           aria-hidden
           data-slot='artwork-glow'
-          className='absolute -inset-6 -z-10 rounded-[48px] bg-track-glow opacity-70 blur-[56px] transition-colors duration-[1800ms]'
+          className='absolute -inset-6 -z-10 rounded-4xl bg-track-glow opacity-70 blur-[56px] transition-colors duration-[1800ms]'
         />
-        <MotionCarouselContent className='size-full rounded-[20px] shadow-[0_24px_60px_rgb(0_0_0/0.55)]'>
+        <MotionCarouselContent className='size-full rounded-xl shadow-[0_24px_60px_rgb(0_0_0/0.55)]'>
           {TRACK_ORDER.map((id) => (
             <img
               key={id}
               src={TRACKS[id].art.full}
               alt={`${TRACKS[id].title} album artwork`}
               decoding='async'
-              className='size-full rounded-[20px] object-cover'
+              className='size-full rounded-xl object-cover'
             />
           ))}
         </MotionCarouselContent>

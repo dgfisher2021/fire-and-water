@@ -1,5 +1,11 @@
-import { useRef, type ReactNode, type RefObject } from 'react'
-import { ChevronsDown } from 'lucide-react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from 'react'
+import { ChevronsDown, ChevronsUp } from 'lucide-react'
 import { MotionInView, MotionText } from '@dust-ui/motion'
 import {
   Button,
@@ -80,6 +86,22 @@ export function LyricsReader({
     (i) => pane.current?.querySelectorAll<HTMLElement>(STANZA)[i],
     { root: pane, enabled: singing }
   )
+  // Which side of the pane the sung stanza went past, for the way-back pill.
+  const sungStanza = position?.stanza ?? null
+  const [songAbove, setSongAbove] = useState(false)
+  useEffect(() => {
+    const el = pane.current
+    if (!el || sungStanza === null) return
+    const onScroll = () => {
+      const stanza = el.querySelectorAll<HTMLElement>(STANZA)[sungStanza]
+      if (!stanza) return
+      setSongAbove(
+        stanza.getBoundingClientRect().bottom < el.getBoundingClientRect().top
+      )
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [pane, sungStanza])
 
   const lineState = (stanza: number, line: number) => {
     if (!position) return undefined
@@ -162,7 +184,7 @@ export function LyricsReader({
                     // sung line's glass (the list rows' card-at-85% over a
                     // backdrop blur) hugs the whole line, not the pane.
                     className={cn(
-                      'mx-auto -my-0.5 block w-fit max-w-full rounded-xl px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
+                      'mx-auto -my-0.5 block w-fit max-w-full rounded-lg px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
                       seekTo &&
                         'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none'
                     )}
@@ -207,19 +229,33 @@ export function LyricsReader({
             </p>
           </MotionInView>
         ))}
-        {detached && (
-          <div className='pointer-events-none sticky bottom-6 z-10 flex justify-center'>
-            <Button
-              size='sm'
-              onClick={resume}
-              className='pointer-events-auto rounded-full bg-linear-to-br from-track-bright to-track-deep px-4 text-[12px] tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)]'
-            >
-              <ChevronsDown className='size-3.5' aria-hidden />
-              Back to the song
-            </Button>
-          </div>
-        )}
       </div>
+      {detached && (
+        // Over the pane, on the edge the song went past; the narrow
+        // Compare columns keep it at the bottom, clear of their tags.
+        <div
+          key={songAbove ? 'above' : 'below'}
+          className={cn(
+            'pointer-events-none absolute inset-x-0 z-10 flex animate-in justify-center duration-300 fade-in-0 motion-reduce:animate-none',
+            songAbove && size === 'default'
+              ? 'top-3 slide-in-from-top-2'
+              : 'bottom-6 slide-in-from-bottom-2'
+          )}
+        >
+          <Button
+            size='sm'
+            onClick={resume}
+            className='pointer-events-auto rounded-lg bg-linear-to-br from-track-bright to-track-deep px-4 text-[12px] tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)]'
+          >
+            {songAbove ? (
+              <ChevronsUp className='size-3.5' aria-hidden />
+            ) : (
+              <ChevronsDown className='size-3.5' aria-hidden />
+            )}
+            Back to the song
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -21,7 +21,8 @@ export type TrackRowProps = {
 /**
  * One song in a list: cover, title, dedication and voice, a detail, and the
  * playing bars while it plays. Without a mode the tap opens Now Playing with
- * the song's card unfolded, and the control at the edge plays it in place.
+ * the song's card unfolded; the control at the edge plays it there too and
+ * pauses it in place.
  */
 export function TrackRow({
   id,
@@ -47,7 +48,7 @@ export function TrackRow({
         <img
           src={t.art.thumb}
           alt=''
-          className='size-11 shrink-0 rounded-[10px] object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          className='size-11 shrink-0 rounded-sm object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
         />
       }
       title={
@@ -67,7 +68,7 @@ export function TrackRow({
             trailing
           )
         ) : (
-          // A real control: playing from the list without leaving it.
+          // Starting a song opens Now Playing; pausing stays in the list.
           <Button
             variant='ghost'
             size='icon'
@@ -75,9 +76,12 @@ export function TrackRow({
             onClick={(e) => {
               e.stopPropagation()
               if (playing) pause()
-              else play(id)
+              else {
+                play(id)
+                void navigate({ to: '/lyrics/$track', params: { track: id } })
+              }
             }}
-            className='size-9 shrink-0 rounded-full text-muted-foreground hover:text-foreground'
+            className='size-9 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
           >
             {active ? (
               <MobilePlayingBars active={playing} color='var(--track-bright)' />
