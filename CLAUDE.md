@@ -37,10 +37,12 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   (grid-rows transition, `inert` on the hidden one).
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
-- `src/routes/` `/` album, `/lyrics/$track` now playing, `/compare`,
-  `/more`, `/story` (the timeline, reached from More, which keeps the More
-  tab lit), and `/time/$track`, the tap-to-time tool (no tab). The URL
-  owns what is open; the store owns playback.
+- `src/routes/` `/` album (`?sort=title|written|collection`, zod-validated
+  like Compare's pair; album order is stripped so the URL stays clean),
+  `/lyrics/$track` now playing, `/compare`, `/more`, `/story` (the
+  timeline, reached from More, which keeps the More tab lit), and
+  `/time/$track`, the tap-to-time tool (no tab). The URL owns what is
+  open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
   element (`src/lib/audio.ts`) by `useAudioEngine`. Album play-through and
   lock-screen prev/next go through `requestTrack`, which the lyrics screen
@@ -64,6 +66,10 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   "Timing the lyrics"), or by hand on the `/time/$track` page; missing songs
   read by scroll. `lib/lrc.ts` writes the same data out as an LRC file. Both
   JSON files are laid out by their scripts and excluded from Prettier.
+  `src/data/collections.ts` groups the songs by theme (`COLLECTIONS` in
+  display order, `COLLECTION_OF` typed over every `TrackId` so a new song
+  must be placed); `src/lib/sort.ts` orders the Album list (`sortTracks`,
+  `groupTracks`) and the `SortButton` offers the orders in a `SheetAction`.
 - `src/components/` app compositions built to Dust UI blocks rules on the
   published packages (`@dust-ui/ui` 0.13, `motion` 0.5, `tokens` 0.3): no
   forks remain, the deltas from specs 20 and 22 shipped upstream, and

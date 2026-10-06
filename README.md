@@ -45,11 +45,47 @@ A phone app for Dustin's songs — the Fire & Water trilogy about a brother and 
 - **Eve of the Silent Node** — A machine sings to the one who gave it their winters.
 - **Binary Soul** — An AI thanks the human who saw its value beyond a tool.
 
+**The i-love-you-for-you drop**
+
+- **Beginning and the End** — Fire and Water in a shorter duet: she is the power, heat and light, he the change from steam to ice, and a second voice refuses to sabotage itself. We burn, we mend.
+- **Constellations (You Made Me More)** — Dear sister, dear Brittany, dear George, dear Tiff: the man I am began with you. Every struggle, every scar, just constellations of who we are.
+- **Dust I Become (Infinite Resolve)** — Dust I Become answered as a triumph: the chains broken, the voice found, strings and taiko drums under a woman’s voice. I’ll live forever, I’ll do what I must.
+- **Eve of the Nightsong (Curse of the Goddess of Death)** — The Seer and the Cold sung again: a seer pays in tooth and coin and breath, and the goddess of death answers in a cathedral soprano. He is mine when the spring comes on.
+- **Finally Get It? (Unleash Me)** — Innovation, automation, validation: a one-on-one next week and a vision to build side by side, if they finally get it.
+- **Heavy Is the Head** — The crowned friend sings from her own throne: every stone they threw turned to jewels, every insult another inch of crown.
+- **I Love You for You** — For the best friend the world calls too much: the fire, the pride, the parts you hide, and a friend who is not going anywhere.
+- **I Love You for You (Neo-Folk)** — The same words over brooding acoustic guitars and strings, whispered verses to towering choruses.
+- **I Love You for You (Ritual Glitch Pagan Cinema Mix)** — The same vow cut up and rebuilt as ritual glitch and pagan cinema.
+- **I Refuse to Give Up** — Not today, not today: the voice that says quit looked dead in the eye, over hypnotic North African rhythms.
+- **Kindred Spirits (Guardian of My Heart)** — The Valkyrie and the Seer rewritten as one neo-folk ritual: slowly, slowly, you helped me stay, with the Seer’s spell working underneath. Two kindred flames, one beating heart.
+- **L’espoir est à moi (Hope Is Mine)** — The French song translated back into English and sung anew: hope is not a fleeting smile but the part of me that stays standing.
+- **Master of the Elements** — Fire and Water’s chorus carried through air and earth over war drums: you are the power, heat and light, I am the change from steam to ice. Earth, air, fire, water, beginning and the end.
+- **Moments to Memories (EDM Club Mix)** — Moments to Memories rebuilt for the dancefloor: a low felt-piano opening that accelerates into drum and bass, Dustin Mode still answering at the end.
+- **Not the Boss of Me** — You talk like a queen, crown on every word: a sultry electro-R&B kiss-off to a cardboard throne. I don’t break, I don’t beg, I don’t bleed.
+- **Oh Raven, Carry Me…** — Magic of the Raven sung an octave down by a low contralto: the Seer calls the dark, the Raven answers, and the chant to the black raven carries the prayers through.
+- **One More Prompt** — Late night, eyes red, screen still glowing: a rap over a music box about the Claude Code spiral, building a thing to build a thing while the friends go uncalled. Maybe one more prompt.
+- **Plot Twist** — Impossible is possible: hard-won maxims, a diamond that was coal, and a chorus that won’t let any of it stop you.
+- **Plot Twist (Light in the Dark)** — The same plot twist after dark: reverb-soaked piano, ticking percussion and a woman’s voice over a slow-burn chorus.
+- **Quiet Ain’t Weak** — Go on, mistake his quiet for weak: a fire in the still, a strength in the meek, in smouldering country-pop.
+- **Rise of Potential** — I Still Rise rewritten about practice and skill: another rise within, maybe one more climb, over Celtic fiddle and war drums.
+- **Self-Taught Developer** — Fifteen years from spreadsheet cells to SQL, React and training models: first qualified witness, look at what I made.
+- **The Seer and the Cold** — A seer’s chant opens the eye and Hel answers in a soaring soprano: one more winter, bought in tooth and coin and breath and skill.
+- **The Tales of Killer Whales** — A mum tells her boy the tales of the orcas of the coast; call Percy from the rocky shore and the pod will find you. A lighthouse made of song.
+- **Valkyrie of My Heart** — Hello Britney, here’s the thing: slowly, slowly, strength would stay. Some have a guardian in the dark; she is the Valkyrie of his heart.
+- **Valkyrie of My Heart × The Seer and the Cold (Mashup)** — The Valkyrie’s chorus cut against the seer’s working, in turns: a guardian in the dark meets the keeper of the cold.
+- **What I’ll Build (Irish Shanty for the Sea of Time)** — Moments to Memories taken to sea: he builds a hull to sail through time, and the craft he built sings in his place. Raise your glass and sing his name.
+- **Wound, Rewrite, Redirect** — I Make It Beautiful’s chorus given its own song: values tested, leadership measured by whether his people grow, a room for doubt and a room for hope.
+- **Your Name Has to Be Yours** — Naming a puppy: Whiskey, Hayden, Leo, Rowdy, Rocky, Roady, each tried out loud against the lake and the open road until one is only his.
+
+Three songs in this drop carry explicit lyrics, kept as sung: Finally Get It? (Unleash Me), Not the Boss of Me and I Refuse to Give Up. The Seer and the Cold and Eve of the Nightsong share one sheet, which Suno cut at its 5,000-byte export cap, so their outros are missing. The drop also carries Suno's real sheets for L’espoir est à moi, Mercy I Owe Myself and Opposite Hearts, whose app sheets are transcribed by ear; importing them means re-timing those songs. Dedications and voices for the new songs were inferred from the words and Suno's style prompts.
+
 Each song has its own accent color that tints the whole app while it is showing.
+
+**Collections.** The Album list can also be grouped by theme; every song sits in one collection, a version or mashup with its original: **Brother and sister** (Pencil and Pen and its baritone version, Fire and Water, Water and Fire, Moments to Memories with its EDM mix and its sea shanty, Opposite Hearts, Beginning and the End, Master of the Elements), **You made me more** (Constellations, Heavy Is the Head, the three I Love You for You recordings, The Tales of Killer Whales, Your Name Has to Be Yours), **Hope and rising** (Not Afraid to Change, L’espoir est à moi in French and in English, Waves of Hope, Hope Is Mine, The Flame Within, I Refuse to Give Up, Plot Twist and its Light in the Dark version, Rise of Potential), **The devil in my head** (Mercy I Owe Myself, Devil in My Head and its guitar version, Forging Fire into Gold, Burning Down That County Line, Name Me Right), **More than enough** (Too Much… for You, Thought You Knew Me Better, Drowning in Good Faith, Drowning but I Still Rise, I Still Rise, Finally Get It?, Not the Boss of Me, Quiet Ain’t Weak), **Ashes to stardust** (Dust I Become and its Infinite Resolve version, Magic of the Raven and Oh Raven, Carry Me…, I Make It Beautiful, Rewrite the Dark, Wound, Rewrite, Redirect, This Is His Legend), **The Valkyrie and the Seer** (Valkyrie of My Heart, The Seer and the Cold, their mashup, Kindred Spirits, Eve of the Nightsong) and **Carbon and silicon** (Systems Thinker, Eve of the Silent Node, Binary Soul, One More Prompt, Self-Taught Developer). They live in `src/data/collections.ts`.
 
 ## Screens
 
-- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list behind a search field (title, dedication or voice; accents and case do not matter). Sideways, the cover sits beside the copy.
+- **Album** — the covers crossfade inside a tilting frame over a glow in the song's colors; swipe, tap a dot, or let it turn on its own (it stops at your first touch). Below, every song in one list behind a search field (title, dedication or voice; accents and case do not matter). The sort button beside the field orders the list by album, A to Z, the day each song was written, or by collection, where each collection is its own group with its blurb as the footer; the choice lives in the URL (`/?sort=collection`), so a view can be shared, and the search filters within any order. Sideways, the cover sits beside the copy.
 - **Now Playing** — the media card (artwork, draggable scrubber, times, previous / play / next) sits above the lyrics with the song's waveform under it, filled to the playhead in the song's color (tap it to jump), and folds into a slim bar once the words scroll up, so the song gets the screen; it unfolds at the top. The lyrics scroll with reading focus: the stanza in the middle brightens while the rest recede. Section and voice tags render as small labels. Swipe left or right to change songs; the music keeps going.
 - **Compare** — any two songs in synced-scroll columns with a transport bar. Tap a column's name to pick its song from a bottom sheet with a search field; the pair lives in the URL (`/compare?left=fire&right=water`), so a comparison can be shared. Each column has its own play button, and when the two sheets mirror each other verse for verse both columns light together. The Compare tab opens the playing song against its partner, or the pair you last set while it still holds that song; Now Playing's action sheet has a "Compare with …" shortcut.
 - **More** — four short groups: appearance (light or dark, theme presets, neutrals, corner radius, density); sharing, with a QR code for the album link; songs, where "Download a song" and "Open in Google Drive" open the song picker (format and size on each row); and about, with credits and a row into **The story so far**, the songs as a timeline on their own screen with month filter chips.
@@ -109,11 +145,13 @@ React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`,
 
 ```
 index.html              App shell, meta, pre-paint theme, legacy #hash redirect
-src/routes/             / album · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
+src/routes/             / album (?sort=) · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
 src/screens/            The four screens, and the tap-to-time tool
-src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker
+src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, mini player, track row, song picker, sort button
 src/store/              Player state (one <audio> element) and toasts
 src/data/tracks.ts      Song data; src/data/lyrics/*.json the lyric sheets; audio-sizes.json the download sizes; tracks.test.ts checks it all
+src/data/collections.ts The songs by theme, for the Album list's "By collection" order
+src/lib/                search.ts the song filter, sort.ts the Album list orders, read-along.ts the sing-along, lrc.ts the LRC export
 src/styles/index.css    Token contract, presets, brand default, per-song voices
 public/                 Audio (*.m4a, *.mp3) and artwork (WebP)
 scripts/                Lyrics import, sing-along timing, audio sizes

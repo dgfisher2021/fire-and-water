@@ -201,6 +201,122 @@
   --hope-deep: oklch(0.37 0.08 310);
   --hope-glow: oklch(0.66 0.07 310 / 42%);
   --hope-ink: oklch(0.22 0.04 310);
+  --beginning: oklch(0.78 0.09 31); /* ember courtyard */
+  --beginning-deep: oklch(0.37 0.1 31);
+  --beginning-glow: oklch(0.66 0.09 31 / 42%);
+  --beginning-ink: oklch(0.22 0.04 31);
+  --constellations: oklch(0.78 0.09 248); /* starlit blue */
+  --constellations-deep: oklch(0.37 0.1 248);
+  --constellations-glow: oklch(0.66 0.09 248 / 42%);
+  --constellations-ink: oklch(0.22 0.04 248);
+  --resolve: oklch(0.78 0.1 78); /* storm gold */
+  --resolve-deep: oklch(0.37 0.11 78);
+  --resolve-glow: oklch(0.66 0.1 78 / 42%);
+  --resolve-ink: oklch(0.22 0.04 78);
+  --nightsong: oklch(0.78 0.09 210); /* cold rune glow */
+  --nightsong-deep: oklch(0.37 0.1 210);
+  --nightsong-glow: oklch(0.66 0.09 210 / 42%);
+  --nightsong-ink: oklch(0.22 0.04 210);
+  --unleash: oklch(0.78 0.15 325); /* neon pink */
+  --unleash-deep: oklch(0.37 0.17 325);
+  --unleash-glow: oklch(0.66 0.15 325 / 42%);
+  --unleash-ink: oklch(0.22 0.04 325);
+  --heavy: oklch(0.78 0.12 20); /* crimson velvet */
+  --heavy-deep: oklch(0.37 0.13 20);
+  --heavy-glow: oklch(0.66 0.12 20 / 42%);
+  --heavy-ink: oklch(0.22 0.04 20);
+  --love: oklch(0.78 0.11 285); /* violet nebula */
+  --love-deep: oklch(0.37 0.12 285);
+  --love-glow: oklch(0.66 0.11 285 / 42%);
+  --love-ink: oklch(0.22 0.04 285);
+  --neofolk: oklch(0.78 0.1 345); /* wine and dark roses */
+  --neofolk-deep: oklch(0.37 0.11 345);
+  --neofolk-glow: oklch(0.66 0.1 345 / 42%);
+  --neofolk-ink: oklch(0.22 0.04 345);
+  --ritual: oklch(0.78 0.1 230); /* sea and slate */
+  --ritual-deep: oklch(0.37 0.11 230);
+  --ritual-glow: oklch(0.66 0.1 230 / 42%);
+  --ritual-ink: oklch(0.22 0.04 230);
+  --refuse: oklch(0.78 0.12 82); /* ember dust */
+  --refuse-deep: oklch(0.37 0.13 82);
+  --refuse-glow: oklch(0.66 0.12 82 / 42%);
+  --refuse-ink: oklch(0.22 0.04 82);
+  --kindred: oklch(0.78 0.09 61); /* gilt wings */
+  --kindred-deep: oklch(0.37 0.1 61);
+  --kindred-glow: oklch(0.66 0.09 61 / 42%);
+  --kindred-ink: oklch(0.22 0.04 61);
+  --anglais: oklch(0.78 0.11 77); /* sun-ray gold */
+  --anglais-deep: oklch(0.37 0.12 77);
+  --anglais-glow: oklch(0.66 0.11 77 / 42%);
+  --anglais-ink: oklch(0.22 0.04 77);
+  --elements: oklch(0.78 0.14 290); /* nebula violet */
+  --elements-deep: oklch(0.37 0.15 290);
+  --elements-glow: oklch(0.66 0.14 290 / 42%);
+  --elements-ink: oklch(0.22 0.04 290);
+  --edm: oklch(0.78 0.14 280); /* laser violet */
+  --edm-deep: oklch(0.37 0.15 280);
+  --edm-glow: oklch(0.66 0.14 280 / 42%);
+  --edm-ink: oklch(0.22 0.04 280);
+  --boss: oklch(0.78 0.12 350); /* spotlight wine and petals */
+  --boss-deep: oklch(0.37 0.13 350);
+  --boss-glow: oklch(0.66 0.12 350 / 42%);
+  --boss-ink: oklch(0.22 0.04 350);
+  --carry: oklch(0.78 0.09 283); /* moonlit violet, past the raven's indigo */
+  --carry-deep: oklch(0.37 0.1 283);
+  --carry-glow: oklch(0.66 0.09 283 / 42%);
+  --carry-ink: oklch(0.22 0.04 283);
+  --prompt: oklch(0.78 0.11 218); /* monitor glow */
+  --prompt-deep: oklch(0.37 0.12 218);
+  --prompt-glow: oklch(0.66 0.11 218 / 42%);
+  --prompt-ink: oklch(0.22 0.04 218);
+  --plot: oklch(0.78 0.14 35); /* sunset over the ridge */
+  --plot-deep: oklch(0.37 0.15 35);
+  --plot-glow: oklch(0.66 0.14 35 / 42%);
+  --plot-ink: oklch(0.22 0.04 35);
+  --plotlight: oklch(0.78 0.08 272); /* moonlit indigo */
+  --plotlight-deep: oklch(0.37 0.09 272);
+  --plotlight-glow: oklch(0.66 0.08 272 / 42%);
+  --plotlight-ink: oklch(0.22 0.04 272);
+  --quiet: oklch(0.78 0.14 51); /* desert sandstone */
+  --quiet-deep: oklch(0.37 0.15 51);
+  --quiet-glow: oklch(0.66 0.14 51 / 42%);
+  --quiet-ink: oklch(0.22 0.04 51);
+  --potential: oklch(0.78 0.07 87); /* pale gold glow */
+  --potential-deep: oklch(0.37 0.08 87);
+  --potential-glow: oklch(0.66 0.07 87 / 42%);
+  --potential-ink: oklch(0.22 0.04 87);
+  --developer: oklch(0.78 0.1 243); /* constellation blue */
+  --developer-deep: oklch(0.37 0.11 243);
+  --developer-glow: oklch(0.66 0.1 243 / 42%);
+  --developer-ink: oklch(0.22 0.04 243);
+  --seer: oklch(0.78 0.08 212); /* rune ice */
+  --seer-deep: oklch(0.37 0.09 212);
+  --seer-glow: oklch(0.66 0.08 212 / 42%);
+  --seer-ink: oklch(0.22 0.04 212);
+  --whales: oklch(0.78 0.1 231); /* ocean blue */
+  --whales-deep: oklch(0.37 0.11 231);
+  --whales-glow: oklch(0.66 0.1 231 / 42%);
+  --whales-ink: oklch(0.22 0.04 231);
+  --valkyrie: oklch(0.78 0.13 95); /* valkyrie gold */
+  --valkyrie-deep: oklch(0.37 0.14 95);
+  --valkyrie-glow: oklch(0.66 0.13 95 / 42%);
+  --valkyrie-ink: oklch(0.22 0.04 95);
+  --mashup: oklch(0.78 0.09 175); /* watercolour viridian */
+  --mashup-deep: oklch(0.37 0.1 175);
+  --mashup-glow: oklch(0.66 0.09 175 / 42%);
+  --mashup-ink: oklch(0.22 0.04 175);
+  --shanty: oklch(0.78 0.09 280); /* starlit indigo */
+  --shanty-deep: oklch(0.37 0.1 280);
+  --shanty-glow: oklch(0.66 0.09 280 / 42%);
+  --shanty-ink: oklch(0.22 0.04 280);
+  --wound: oklch(0.78 0.09 85); /* gold through a charcoal storm */
+  --wound-deep: oklch(0.37 0.1 85);
+  --wound-glow: oklch(0.66 0.09 85 / 42%);
+  --wound-ink: oklch(0.22 0.04 85);
+  --yours: oklch(0.78 0.12 62); /* whiskey amber on a dock at dusk */
+  --yours-deep: oklch(0.37 0.13 62);
+  --yours-glow: oklch(0.66 0.12 62 / 42%);
+  --yours-ink: oklch(0.22 0.04 62);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -462,6 +578,180 @@
   --track-glow: var(--hope-glow);
   --track-ink: var(--hope-ink);
 }
+:root[data-track='beginning'] {
+  --track-bright: var(--beginning);
+  --track-deep: var(--beginning-deep);
+  --track-glow: var(--beginning-glow);
+  --track-ink: var(--beginning-ink);
+}
+:root[data-track='constellations'] {
+  --track-bright: var(--constellations);
+  --track-deep: var(--constellations-deep);
+  --track-glow: var(--constellations-glow);
+  --track-ink: var(--constellations-ink);
+}
+:root[data-track='resolve'] {
+  --track-bright: var(--resolve);
+  --track-deep: var(--resolve-deep);
+  --track-glow: var(--resolve-glow);
+  --track-ink: var(--resolve-ink);
+}
+:root[data-track='nightsong'] {
+  --track-bright: var(--nightsong);
+  --track-deep: var(--nightsong-deep);
+  --track-glow: var(--nightsong-glow);
+  --track-ink: var(--nightsong-ink);
+}
+:root[data-track='unleash'] {
+  --track-bright: var(--unleash);
+  --track-deep: var(--unleash-deep);
+  --track-glow: var(--unleash-glow);
+  --track-ink: var(--unleash-ink);
+}
+:root[data-track='heavy'] {
+  --track-bright: var(--heavy);
+  --track-deep: var(--heavy-deep);
+  --track-glow: var(--heavy-glow);
+  --track-ink: var(--heavy-ink);
+}
+:root[data-track='love'] {
+  --track-bright: var(--love);
+  --track-deep: var(--love-deep);
+  --track-glow: var(--love-glow);
+  --track-ink: var(--love-ink);
+}
+:root[data-track='neofolk'] {
+  --track-bright: var(--neofolk);
+  --track-deep: var(--neofolk-deep);
+  --track-glow: var(--neofolk-glow);
+  --track-ink: var(--neofolk-ink);
+}
+:root[data-track='ritual'] {
+  --track-bright: var(--ritual);
+  --track-deep: var(--ritual-deep);
+  --track-glow: var(--ritual-glow);
+  --track-ink: var(--ritual-ink);
+}
+:root[data-track='refuse'] {
+  --track-bright: var(--refuse);
+  --track-deep: var(--refuse-deep);
+  --track-glow: var(--refuse-glow);
+  --track-ink: var(--refuse-ink);
+}
+:root[data-track='kindred'] {
+  --track-bright: var(--kindred);
+  --track-deep: var(--kindred-deep);
+  --track-glow: var(--kindred-glow);
+  --track-ink: var(--kindred-ink);
+}
+:root[data-track='anglais'] {
+  --track-bright: var(--anglais);
+  --track-deep: var(--anglais-deep);
+  --track-glow: var(--anglais-glow);
+  --track-ink: var(--anglais-ink);
+}
+:root[data-track='elements'] {
+  --track-bright: var(--elements);
+  --track-deep: var(--elements-deep);
+  --track-glow: var(--elements-glow);
+  --track-ink: var(--elements-ink);
+}
+:root[data-track='edm'] {
+  --track-bright: var(--edm);
+  --track-deep: var(--edm-deep);
+  --track-glow: var(--edm-glow);
+  --track-ink: var(--edm-ink);
+}
+:root[data-track='boss'] {
+  --track-bright: var(--boss);
+  --track-deep: var(--boss-deep);
+  --track-glow: var(--boss-glow);
+  --track-ink: var(--boss-ink);
+}
+:root[data-track='carry'] {
+  --track-bright: var(--carry);
+  --track-deep: var(--carry-deep);
+  --track-glow: var(--carry-glow);
+  --track-ink: var(--carry-ink);
+}
+:root[data-track='prompt'] {
+  --track-bright: var(--prompt);
+  --track-deep: var(--prompt-deep);
+  --track-glow: var(--prompt-glow);
+  --track-ink: var(--prompt-ink);
+}
+:root[data-track='plot'] {
+  --track-bright: var(--plot);
+  --track-deep: var(--plot-deep);
+  --track-glow: var(--plot-glow);
+  --track-ink: var(--plot-ink);
+}
+:root[data-track='plotlight'] {
+  --track-bright: var(--plotlight);
+  --track-deep: var(--plotlight-deep);
+  --track-glow: var(--plotlight-glow);
+  --track-ink: var(--plotlight-ink);
+}
+:root[data-track='quiet'] {
+  --track-bright: var(--quiet);
+  --track-deep: var(--quiet-deep);
+  --track-glow: var(--quiet-glow);
+  --track-ink: var(--quiet-ink);
+}
+:root[data-track='potential'] {
+  --track-bright: var(--potential);
+  --track-deep: var(--potential-deep);
+  --track-glow: var(--potential-glow);
+  --track-ink: var(--potential-ink);
+}
+:root[data-track='developer'] {
+  --track-bright: var(--developer);
+  --track-deep: var(--developer-deep);
+  --track-glow: var(--developer-glow);
+  --track-ink: var(--developer-ink);
+}
+:root[data-track='seer'] {
+  --track-bright: var(--seer);
+  --track-deep: var(--seer-deep);
+  --track-glow: var(--seer-glow);
+  --track-ink: var(--seer-ink);
+}
+:root[data-track='whales'] {
+  --track-bright: var(--whales);
+  --track-deep: var(--whales-deep);
+  --track-glow: var(--whales-glow);
+  --track-ink: var(--whales-ink);
+}
+:root[data-track='valkyrie'] {
+  --track-bright: var(--valkyrie);
+  --track-deep: var(--valkyrie-deep);
+  --track-glow: var(--valkyrie-glow);
+  --track-ink: var(--valkyrie-ink);
+}
+:root[data-track='mashup'] {
+  --track-bright: var(--mashup);
+  --track-deep: var(--mashup-deep);
+  --track-glow: var(--mashup-glow);
+  --track-ink: var(--mashup-ink);
+}
+:root[data-track='shanty'] {
+  --track-bright: var(--shanty);
+  --track-deep: var(--shanty-deep);
+  --track-glow: var(--shanty-glow);
+  --track-ink: var(--shanty-ink);
+}
+:root[data-track='wound'] {
+  --track-bright: var(--wound);
+  --track-deep: var(--wound-deep);
+  --track-glow: var(--wound-glow);
+  --track-ink: var(--wound-ink);
+}
+:root[data-track='yours'] {
+  --track-bright: var(--yours);
+  --track-deep: var(--yours-deep);
+  --track-glow: var(--yours-glow);
+  --track-ink: var(--yours-ink);
+}
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
 @theme inline {
@@ -572,4 +862,15 @@
   [data-slot='lyrics-stanza'] {
     color: black !important;
   }
+}
+
+/*
+ * Bottom nav: with the active pill (Material style) only the icon carries the
+ * song's tint; the label stays in the text colour and goes bold, as it would
+ * on a Material tab bar. The kit tints both (the iOS, no-pill convention) and
+ * has no prop for this yet, so the label is restyled through its aria-current
+ * hook until NavBottom grows one.
+ */
+[data-slot='nav-bottom'] [aria-current='page'] > span + span {
+  color: var(--foreground);
 }
