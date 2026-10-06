@@ -39,6 +39,10 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   here with the card unfolded; the card carries the song's description.
 - `src/components/screen.tsx` one screen: `MobilePageHeader` on top
   (status-bar inset in the frame, safe-area on phones), scroll pane below.
+  Glass (`bg-card/85 backdrop-blur-md`) needs no backdrop root between it
+  and the artwork: a `mask-image`, an `opacity` below 1, a filter, or a
+  filled opacity animation (the old `animate-fade-up` on the album list)
+  on any ancestor leaves it nothing to frost.
 - `src/routes/` `/` album (`?sort=album|title|written`, zod-validated like
   Compare's pair; the default collection view is stripped so the URL stays
   clean; `?sort=written` is the timeline More's "The story so far" opens,
@@ -97,11 +101,14 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   backdrop root and the sung line's glass stops frosting; that delta is
   upstream work), `NowPlayingCard` and `NowPlayingBar` (the kit's
   `MobileMediaPlayer` has no slot for a scrubber or a description, so the
-  unfolded control is composed here: `Waveform` is the slider, the
-  description sits under the dedication, Download and the play mode flank
-  the transport; a scrubber render slot on the kit card is the upstream
-  ask; `/time/$track` still uses the kit bar), `Waveform` (the song's shape
-  as a slider: tap, drag, arrow keys),
+  unfolded control is composed here: a single-line `Scrubber` in the card,
+  the `Waveform` as the bar's slider, the description under the
+  dedication, Download and the play mode flanking the transport, and a
+  chevron on each that folds or unfolds by hand (`lyrics.tsx` keeps that
+  choice per song; the mini player asks for the folded state through
+  router `HistoryState.collapsed`); a scrubber render slot on the kit card
+  is the upstream ask; `/time/$track` still uses the kit bar), `Waveform`
+  (the song's shape as a slider: tap, drag, arrow keys),
   `MiniPlayer` (kept instead of `MobileNowPlayingBar` for the progress ring
   around play and the marquee, which the bar has no slot for), `TrackRow`
   and `SongPicker` (song data on `MobileMediaRow`, and `SheetBottom` +
@@ -118,7 +125,7 @@ TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
   this app's translucent `--card`, so the tracklist has no swipe actions.
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
-  the voice tokens (`--pencil`, `--fire`, `--water`) and the per-track
+  the voice tokens (`--fire`, `--water`, one set per song) and the per-track
   accent on `:root[data-track]`, which out-ranks every theme.
 
 ## Dust UI rules (house rules, non-negotiable)

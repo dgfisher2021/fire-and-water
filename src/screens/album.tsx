@@ -2,7 +2,6 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { MotionTextMorph } from '@dust-ui/motion'
 import {
-  Button,
   MobileListGroup,
   MobilePageHeader,
   MobileSearchBar,
@@ -240,7 +239,7 @@ export function AlbumScreen() {
               </p>
             </div>
           </div>
-          <div className='mt-4 flex w-full items-center justify-center gap-3 short:justify-start'>
+          <div className='mt-4 flex w-full items-center justify-center short:justify-start'>
             <PlayButton
               playing={isActive && status === 'playing'}
               loading={isActive && status === 'loading'}
@@ -252,17 +251,13 @@ export function AlbumScreen() {
                 }
               }}
             />
-            <Button
-              variant='outline'
-              onClick={openLyrics}
-              className='h-11 rounded-xl border-border bg-card px-5 text-[13px] tracking-[1px] text-muted-foreground shadow-none hover:bg-accent hover:text-foreground'
-            >
-              Read Lyrics
-            </Button>
           </div>
         </ArtworkStage>
 
-        <div className='mt-6 flex animate-fade-up flex-col gap-3 text-left [animation-delay:200ms]'>
+        {/* No entrance animation here: a filled opacity animation makes this
+            wrapper a backdrop root and the capsule's and rows' glass stops
+            frosting the artwork behind them. */}
+        <div className='mt-6 flex flex-col gap-3 text-left'>
           {/* The kit's capsule has no glass variant: it takes the bar's
               card-at-85% fill through its background prop and the backdrop
               blur rides on the capsule element inside it. */}

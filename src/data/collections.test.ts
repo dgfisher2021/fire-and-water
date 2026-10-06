@@ -4,7 +4,6 @@ import { TRACK_ORDER, type TrackId } from './tracks'
 
 // A version, remix or mashup sits with its original.
 const FAMILIES: TrackId[][] = [
-  ['pencil', 'baritone'],
   ['fire', 'water'],
   ['waves', 'hope', 'espoir'],
   ['devil', 'guitar'],

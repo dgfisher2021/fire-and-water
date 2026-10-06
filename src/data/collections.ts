@@ -16,7 +16,7 @@ export const COLLECTIONS = [
     // The baritone Pencil and Pen opens the group and the three originals
     // close it; what grew out of them sits between.
     opening: ['baritone'],
-    closing: ['pencil', 'fire', 'water'],
+    closing: ['fire', 'water'],
   },
   {
     key: 'kin',
@@ -73,7 +73,6 @@ export type CollectionKey = Collection['key']
 
 /** Each song's one collection; a new track id fails to compile until it has one. */
 export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
-  pencil: 'siblings',
   fire: 'siblings',
   water: 'siblings',
   memories: 'siblings',

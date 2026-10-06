@@ -3,7 +3,6 @@ import { lyricsFor } from './lyrics'
 import timingData from './timing.json'
 
 export const trackIdSchema = z.enum([
-  'pencil',
   'fire',
   'water',
   'memories',
@@ -109,14 +108,13 @@ export type Track = z.infer<typeof trackSchema>
 const timingFor = (id: TrackId) => (timingData as Record<string, unknown>)[id]
 
 export const TRACK_ORDER: readonly TrackId[] = [
-  'pencil',
-  'fire',
+  'baritone',
   'water',
   'memories',
-  'baritone',
+  'hearts',
+  'fire',
   'dust',
   'change',
-  'hearts',
   'mercy',
   'raven',
   'espoir',
@@ -186,8 +184,6 @@ export const SPLIT_PAIR = { left: 'fire', right: 'water' } as const satisfies {
 const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   fire: 'water',
   water: 'fire',
-  pencil: 'baritone',
-  baritone: 'pencil',
   waves: 'espoir',
   espoir: 'waves',
   hope: 'waves',
@@ -234,23 +230,6 @@ export function comparePartner(id: TrackId): TrackId {
 }
 
 export const TRACKS: Record<TrackId, Track> = {
-  pencil: trackSchema.parse({
-    id: 'pencil',
-    title: 'Pencil and Pen',
-    dedication: 'For Alex, from Dustin',
-    written: '2026-03-02',
-    voice: 'Dustin’s voice',
-    description:
-      'A boy who only trusted pencil—erasable, safe, fixable—watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies.',
-    audioFile: 'pencil-and-pen.m4a',
-    duration: 190,
-    art: { full: 'assets/pencil.webp', thumb: 'assets/pencil-512.webp' },
-    themeColor: '#161009',
-    driveLink:
-      'https://drive.google.com/file/d/1alDGqv4GfkOC7aRniQswafWXkRDxqAkS/view?usp=drivesdk',
-    timing: timingFor('pencil'),
-    ...lyricsFor('pencil'),
-  }),
   fire: trackSchema.parse({
     id: 'fire',
     title: 'Fire and Water',
@@ -302,9 +281,10 @@ export const TRACKS: Record<TrackId, Track> = {
   }),
   baritone: trackSchema.parse({
     id: 'baritone',
-    title: 'Pencil and Pen (Baritone Version)',
+    title: 'Pencil and Pen',
     dedication: 'For Alex, from Dustin',
-    written: '2026-09-28',
+    // The song as first written, in March; the baritone cut replaced the original.
+    written: '2026-03-02',
     voice: 'Baritone',
     description:
       'Pencil and Pen, sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',

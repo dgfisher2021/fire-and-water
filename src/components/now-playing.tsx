@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import {
+  ChevronDown,
+  ChevronUp,
   Download,
   ListMusic,
   Pause,
@@ -102,6 +104,7 @@ function Control({
   icon: Icon,
   on = false,
   fill = false,
+  className,
 }: {
   label: string
   onClick: () => void
@@ -109,6 +112,7 @@ function Control({
   /** Lit in the song's accent (a play mode that is on). */
   on?: boolean
   fill?: boolean
+  className?: string
 }) {
   return (
     <Button
@@ -118,7 +122,8 @@ function Control({
       onClick={onClick}
       className={cn(
         'size-10 shrink-0 rounded-full transition-opacity hover:opacity-70',
-        on ? 'text-primary' : 'text-foreground'
+        on ? 'text-primary' : 'text-foreground',
+        className
       )}
     >
       <Icon
@@ -130,15 +135,88 @@ function Control({
   )
 }
 
+/**
+ * A single-line scrubber: tap or drag along the track, arrow keys step
+ * five seconds, the thumb grows while dragging.
+ */
+function Scrubber({
+  progress,
+  duration,
+  onSeek,
+}: Pick<NowPlayingProps, 'progress' | 'duration' | 'onSeek'>) {
+  const track = useRef<HTMLDivElement>(null)
+  const [scrubbing, setScrubbing] = useState(false)
+  const seekAt = (x: number) => {
+    const r = track.current?.getBoundingClientRect()
+    if (!r || r.width === 0) return
+    onSeek(Math.min(1, Math.max(0, (x - r.left) / r.width)))
+  }
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (duration <= 0) return
+    const step = 5 / duration
+    if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      onSeek(Math.min(1, progress + step))
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      onSeek(Math.max(0, progress - step))
+    }
+  }
+  const down = (e: PointerEvent<HTMLDivElement>) => {
+    setScrubbing(true)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    seekAt(e.clientX)
+  }
+  return (
+    <div
+      ref={track}
+      role='slider'
+      aria-label='Seek'
+      aria-valuemin={0}
+      aria-valuemax={Math.round(duration)}
+      aria-valuenow={Math.round(progress * duration)}
+      aria-valuetext={formatTime(progress * duration)}
+      tabIndex={0}
+      data-scrubbing={scrubbing || undefined}
+      onKeyDown={onKeyDown}
+      onPointerDown={down}
+      onPointerMove={(e) => scrubbing && seekAt(e.clientX)}
+      onPointerUp={() => setScrubbing(false)}
+      onPointerCancel={() => setScrubbing(false)}
+      className='relative flex h-6 w-full cursor-pointer touch-none items-center outline-none focus-visible:[&>div:first-child]:ring-2 focus-visible:[&>div:first-child]:ring-ring/50'
+    >
+      <div className='h-[5px] w-full overflow-hidden rounded-full bg-foreground/15'>
+        <div
+          className={cn(
+            'h-full rounded-full bg-linear-to-r from-track-deep to-track-bright',
+            !scrubbing && 'transition-[width] duration-150 ease-linear'
+          )}
+          style={{ width: `${progress * 100}%` }}
+        />
+      </div>
+      <div
+        aria-hidden
+        className={cn(
+          'absolute size-3 -translate-x-1/2 rounded-full bg-foreground shadow-[0_1px_6px_rgb(0_0_0/0.5)] transition-transform duration-150',
+          scrubbing && 'scale-125'
+        )}
+        style={{ left: `${progress * 100}%` }}
+      />
+    </div>
+  )
+}
+
 export type NowPlayingCardProps = NowPlayingProps & {
   onSkipBack: () => void
   onSkipForward: () => void
+  /** Folds the card into the bar; the chevron hides without it. */
+  onCollapse?: () => void
 }
 
 /**
  * The unfolded Now Playing control: cover, dedication, the song's story,
- * its waveform as the scrubber, then Download · previous · play · next and
- * the play mode (album order, repeat, shuffle).
+ * a single-line scrubber, then Download · previous · play · next and the
+ * play mode (album order, repeat, shuffle). A chevron folds it away.
  */
 export function NowPlayingCard({
   track,
@@ -150,6 +228,7 @@ export function NowPlayingCard({
   onSeek,
   onSkipBack,
   onSkipForward,
+  onCollapse,
   className,
 }: NowPlayingCardProps) {
   const t = TRACKS[track]
@@ -184,6 +263,14 @@ export function NowPlayingCard({
             {ALBUM.title} · {t.voice}
           </div>
         </div>
+        {onCollapse && (
+          <Control
+            label='Collapse player'
+            icon={ChevronUp}
+            onClick={onCollapse}
+            className='-mr-2 text-muted-foreground'
+          />
+        )}
       </div>
       {/* The song's story, four lines at a time; a tap shows the rest. */}
       <button
@@ -198,14 +285,8 @@ export function NowPlayingCard({
         {t.description}
       </button>
       <div>
-        <Waveform
-          bins={binsFor(t)}
-          progress={progress}
-          duration={duration}
-          onSeek={onSeek}
-          className='h-9'
-        />
-        <div className='mt-1 flex justify-between text-[11px] text-muted-foreground tabular-nums'>
+        <Scrubber progress={progress} duration={duration} onSeek={onSeek} />
+        <div className='flex justify-between text-[11px] text-muted-foreground tabular-nums'>
           <span>{formatTime(progress * duration)}</span>
           <span>-{formatTime(duration - progress * duration)}</span>
         </div>
@@ -241,9 +322,15 @@ export function NowPlayingCard({
   )
 }
 
+export type NowPlayingBarProps = NowPlayingProps & {
+  /** Unfolds the card; the chevron hides without it. */
+  onExpand?: () => void
+}
+
 /**
- * The folded Now Playing control: cover, title, the elapsed time, a slim
- * waveform scrubber and play. Takes the card's place once the words scroll.
+ * The folded Now Playing control: cover, title, the elapsed time, the
+ * song's waveform as the scrubber, play, and a chevron that unfolds the
+ * card. Takes the card's place once the words scroll.
  */
 export function NowPlayingBar({
   track,
@@ -253,8 +340,9 @@ export function NowPlayingBar({
   loading,
   onPlayPause,
   onSeek,
+  onExpand,
   className,
-}: NowPlayingProps) {
+}: NowPlayingBarProps) {
   const t = TRACKS[track]
   return (
     <div
@@ -263,7 +351,7 @@ export function NowPlayingBar({
       data-slot='now-playing-bar'
       className={cn(
         GLASS,
-        'flex items-center gap-3 rounded-2xl px-3 py-2',
+        'flex w-full max-w-full items-center gap-3 overflow-hidden rounded-2xl px-3 py-2',
         className
       )}
     >
@@ -272,11 +360,13 @@ export function NowPlayingBar({
         alt=''
         className='size-9 shrink-0 rounded-[8px] object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
       />
-      <div className='min-w-0 flex-1'>
-        <div className='flex items-baseline justify-between gap-2'>
-          <OverflowMarquee className='min-w-0 flex-1 font-display text-[15px] leading-tight font-medium text-foreground'>
-            {t.title}
-          </OverflowMarquee>
+      <div className='min-w-0 flex-1 overflow-hidden'>
+        <div className='flex items-baseline gap-2'>
+          <div className='min-w-0 flex-1 overflow-hidden'>
+            <OverflowMarquee className='font-display text-[15px] leading-tight font-medium text-foreground'>
+              {t.title}
+            </OverflowMarquee>
+          </div>
           <span className='shrink-0 text-[10.5px] text-muted-foreground tabular-nums'>
             {formatTime(progress * duration)} / {formatTime(duration)}
           </span>
@@ -295,6 +385,14 @@ export function NowPlayingBar({
         loading={loading}
         onClick={onPlayPause}
       />
+      {onExpand && (
+        <Control
+          label='Expand player'
+          icon={ChevronDown}
+          onClick={onExpand}
+          className='-mr-2 -ml-1 size-9 text-muted-foreground'
+        />
+      )}
     </div>
   )
 }

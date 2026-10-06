@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from '@tanstack/react-router'
+import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
 import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
 import { MotionScrollProgress, MotionTextShimmer } from '@dust-ui/motion'
@@ -72,12 +72,25 @@ export function LyricsScreen() {
   const [sheet, setSheet] = useState(false)
 
   // The card folds to a bar once the words have scrolled up (or the pane
-  // follows the song there) and unfolds at the top; short viewports never
-  // show the card. Keyed by track so a new song starts unfolded.
+  // follows the song there) and unfolds at the top, unless the reader has
+  // folded or unfolded it by hand for this song, or arrived from the mini
+  // player asking for it folded; short viewports never show the card.
   const short = useMediaQuery(SHORT_QUERY)
   const pane = useRef<HTMLDivElement>(null)
   const [scrolledTrack, setScrolledTrack] = useState<TrackId | null>(null)
-  const collapsed = short || scrolledTrack === track
+  const [manual, setManual] = useState<{
+    track: TrackId
+    collapsed: boolean
+  } | null>(null)
+  const arrivedFolded = useRouterState({
+    select: (s) => s.location.state.collapsed === true,
+  })
+  const collapsed =
+    short ||
+    (manual?.track === track
+      ? manual.collapsed
+      : arrivedFolded || scrolledTrack === track)
+  const fold = (next: boolean) => setManual({ track, collapsed: next })
   useEffect(() => {
     const el = pane.current
     if (!el) return
@@ -250,7 +263,7 @@ export function LyricsScreen() {
             collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr]'
           )}
         >
-          <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
+          <div className='min-h-0 min-w-0 overflow-clip [overflow-clip-margin:24px]'>
             <NowPlayingCard
               track={track}
               duration={duration}
@@ -264,6 +277,7 @@ export function LyricsScreen() {
               onPlayPause={() => (playing ? pause() : play(track))}
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
+              onCollapse={() => fold(true)}
             />
           </div>
         </div>
@@ -274,7 +288,7 @@ export function LyricsScreen() {
             collapsed ? 'grid-rows-[1fr]' : 'grid-rows-[0fr] opacity-0'
           )}
         >
-          <div className='min-h-0 overflow-clip [overflow-clip-margin:24px]'>
+          <div className='min-h-0 min-w-0 overflow-clip [overflow-clip-margin:24px]'>
             <NowPlayingBar
               track={track}
               duration={duration}
@@ -286,12 +300,18 @@ export function LyricsScreen() {
               playing={playing}
               loading={loading}
               onPlayPause={() => (playing ? pause() : play(track))}
+              onExpand={short ? undefined : () => fold(false)}
             />
           </div>
         </div>
       </div>
 
-      <div ref={swipeRef} className='relative min-h-0 flex-1'>
+      {/* The pane ends above the nav, so the sung line is never under it. */}
+      <div
+        ref={swipeRef}
+        className='relative min-h-0 flex-1'
+        style={{ marginBottom: 'var(--shell-bottom)' }}
+      >
         {t.lyrics.length > 0 && (
           // How far down the words you are while reading by scroll; the
           // song takes over the pane once it plays, so the line steps aside.
@@ -316,7 +336,7 @@ export function LyricsScreen() {
               if (!isCurrent) play(track)
               seek(seconds)
             }}
-            paneClassName='px-6 pt-8 pb-[calc(140px+env(safe-area-inset-bottom))]'
+            paneClassName='px-4 pt-6 pb-[40vh]'
           />
         ) : (
           <Empty className='h-full pb-24'>

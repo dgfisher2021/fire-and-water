@@ -48,9 +48,9 @@ export type LyricsReaderProps = {
  * keeps the sung stanza centred until the reader scrolls away. Bracketed
  * lines render as small section or voice labels.
  *
- * The edge fade is a pair of blur strips over the pane rather than a mask
- * on it: a mask would make the pane a backdrop root and the sung line's
- * glass would have nothing behind it to frost.
+ * The bottom edge fades through a blur strip over the pane rather than a
+ * mask on it: a mask would make the pane a backdrop root and the sung
+ * line's glass would have nothing behind it to frost.
  */
 export function LyricsReader({
   stanzas,
@@ -107,7 +107,7 @@ export function LyricsReader({
         className={cn(
           'no-scrollbar h-full min-h-0 overflow-y-auto overscroll-contain',
           size === 'default'
-            ? 'px-8 pt-[26vh] pb-[45vh] md:px-[20%]'
+            ? 'px-5 pt-[26vh] pb-[45vh] md:px-[14%]'
             : 'px-3.5 pt-4 pb-16 md:px-6',
           paneClassName
         )}
@@ -139,7 +139,7 @@ export function LyricsReader({
                   <span
                     key={j}
                     data-slot='lyrics-label'
-                    className='mb-1 block font-sans text-[11px] font-medium tracking-[3px] text-primary uppercase opacity-90 [text-shadow:none]'
+                    className='mb-1 block font-sans text-[11px] font-bold tracking-[3px] text-primary uppercase [text-shadow:0_1px_2px_var(--background),0_2px_12px_var(--background)]'
                   >
                     {line.slice(1, -1)}
                   </span>
@@ -171,10 +171,12 @@ export function LyricsReader({
                     )}
                   >
                     {word !== null && lineState(i, j) === 'current' ? (
-                      // Inside the washed line the sung word turns the
-                      // song's colour and pops in on the kit's scale preset
-                      // (keyed per word, so each one animates); sung words
-                      // settle, upcoming ones wait at half strength.
+                      // Inside the washed line the sung word sits on a pill
+                      // of the song's colour in its ink, so it reads on a
+                      // graphite voice as well as an ember one, and pops in
+                      // on the kit's scale preset (keyed per word, so each
+                      // one animates); sung words settle, upcoming ones wait
+                      // at half strength.
                       <ReadAlongText
                         text={line}
                         activeWord={word}
@@ -188,7 +190,7 @@ export function LyricsReader({
                                 per='word'
                                 preset='scale'
                                 duration={0.28}
-                                className='inline-block text-primary [text-shadow:0_0_14px_var(--track-glow)]'
+                                className='inline-block rounded-md bg-primary px-1.5 text-primary-foreground [text-shadow:none]'
                               >
                                 {token.word}
                               </MotionText>
@@ -220,13 +222,6 @@ export function LyricsReader({
             </Button>
           </div>
         )}
-      </div>
-      <div
-        aria-hidden
-        data-print='hide'
-        className='pointer-events-none absolute inset-x-0 top-0 z-10 h-8'
-      >
-        <ProgressiveBlur side='top' blur={6} layers={3} />
       </div>
       <div
         aria-hidden
