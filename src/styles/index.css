@@ -39,19 +39,9 @@
     'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
 
-  --animate-ambient-image-drift: ambient-image-drift 36s ease-in-out infinite
-    alternate;
   --animate-breathe: breathe 2.6s ease-in-out infinite;
   --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  @keyframes ambient-image-drift {
-    from {
-      transform: scale(1);
-    }
-    to {
-      transform: scale(1.07);
-    }
-  }
   @keyframes breathe {
     0%,
     100% {
@@ -429,6 +419,26 @@
   --femme-deep: oklch(0.37 0.14 18);
   --femme-glow: oklch(0.66 0.13 18 / 42%);
   --femme-ink: oklch(0.22 0.04 18);
+  --wildfolk: oklch(0.78 0.08 70); /* sunset over the sea cliffs */
+  --wildfolk-deep: oklch(0.37 0.09 70);
+  --wildfolk-glow: oklch(0.66 0.08 70 / 42%);
+  --wildfolk-ink: oklch(0.22 0.04 70);
+  --dream: oklch(0.78 0.07 240); /* pencil and blueprint */
+  --dream-deep: oklch(0.37 0.08 240);
+  --dream-glow: oklch(0.66 0.07 240 / 42%);
+  --dream-ink: oklch(0.22 0.04 240);
+  --bittercut: oklch(0.78 0.06 297); /* violet shadow in the roots */
+  --bittercut-deep: oklch(0.37 0.07 297);
+  --bittercut-glow: oklch(0.66 0.06 297 / 42%);
+  --bittercut-ink: oklch(0.22 0.04 297);
+  --bending: oklch(0.78 0.13 295); /* a galaxy held in two hands */
+  --bending-deep: oklch(0.37 0.14 295);
+  --bending-glow: oklch(0.66 0.13 295 / 42%);
+  --bending-ink: oklch(0.22 0.04 295);
+  --operatic: oklch(0.78 0.11 248); /* ethereal blue light */
+  --operatic-deep: oklch(0.37 0.12 248);
+  --operatic-glow: oklch(0.66 0.11 248 / 42%);
+  --operatic-ink: oklch(0.22 0.04 248);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -1031,6 +1041,36 @@
   --track-deep: var(--femme-deep);
   --track-glow: var(--femme-glow);
   --track-ink: var(--femme-ink);
+}
+:root[data-track='wildfolk'] {
+  --track-bright: var(--wildfolk);
+  --track-deep: var(--wildfolk-deep);
+  --track-glow: var(--wildfolk-glow);
+  --track-ink: var(--wildfolk-ink);
+}
+:root[data-track='dream'] {
+  --track-bright: var(--dream);
+  --track-deep: var(--dream-deep);
+  --track-glow: var(--dream-glow);
+  --track-ink: var(--dream-ink);
+}
+:root[data-track='bittercut'] {
+  --track-bright: var(--bittercut);
+  --track-deep: var(--bittercut-deep);
+  --track-glow: var(--bittercut-glow);
+  --track-ink: var(--bittercut-ink);
+}
+:root[data-track='bending'] {
+  --track-bright: var(--bending);
+  --track-deep: var(--bending-deep);
+  --track-glow: var(--bending-glow);
+  --track-ink: var(--bending-ink);
+}
+:root[data-track='operatic'] {
+  --track-bright: var(--operatic);
+  --track-deep: var(--operatic-deep);
+  --track-glow: var(--operatic-glow);
+  --track-ink: var(--operatic-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

@@ -90,6 +90,11 @@ export const trackIdSchema = z.enum([
   'desert',
   'firemix',
   'femme',
+  'wildfolk',
+  'dream',
+  'bittercut',
+  'bending',
+  'operatic',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -224,6 +229,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'desert',
   'firemix',
   'femme',
+  'wildfolk',
+  'dream',
+  'bittercut',
+  'bending',
+  'operatic',
 ]
 
 export const ALBUM = {
@@ -301,6 +311,8 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   dopamine: 'neuro',
   femme: 'choose',
   firemix: 'beginning',
+  wildfolk: 'wild',
+  bittercut: 'bitter',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1625,6 +1637,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#160607',
     timing: timingFor('femme'),
     ...lyricsFor('femme'),
+  }),
+  wildfolk: trackSchema.parse({
+    id: 'wildfolk',
+    title: 'Wild and Free (Neo-Folk Mix)',
+    dedication: 'By Dustin',
+    written: '2026-05-09',
+    voice: 'A woman’s voice',
+    description:
+      'Wild and Free as an uplifting neo-folk anthem: warm drums and atmospheric strings under a woman’s voice. The scars they named were never hers; she is the mustang, wild and free, and she turns his shadows into day.',
+    audioFile: 'wild-and-free-neo-folk-mix.mp3',
+    duration: 341,
+    art: { full: 'assets/wildfolk.webp', thumb: 'assets/wildfolk-512.webp' },
+    themeColor: '#120901',
+    timing: timingFor('wildfolk'),
+    ...lyricsFor('wildfolk'),
+  }),
+  dream: trackSchema.parse({
+    id: 'dream',
+    title: 'Dream, Deduce, Design',
+    dedication: 'By Dustin',
+    written: '2026-10-07',
+    voice: 'Dustin’s voice, through a vocoder',
+    description:
+      'His name as a creed, three verbs to a letter down DUSTIN FISHER: dream, deduce, design; understand, undertake, update; study, suggest, share. Hypnotic ritual trance over a low cello, climbing all the way.',
+    audioFile: 'dream-deduce-design.mp3',
+    duration: 311,
+    art: { full: 'assets/dream.webp', thumb: 'assets/dream-512.webp' },
+    themeColor: '#030c14',
+    timing: timingFor('dream'),
+    ...lyricsFor('dream'),
+  }),
+  bittercut: trackSchema.parse({
+    id: 'bittercut',
+    title: 'What’s Bitter Is Sweet (Cinematic Evanescent Cut)',
+    dedication: 'By Dustin',
+    written: '2026-06-06',
+    voice: 'A woman’s voice',
+    description:
+      'What’s bitter is sweet, cut longer and more cinematic: the whispered don’t do it, the anguished belts, and the plea to stop the lies and save her from herself, with more room for the storm.',
+    audioFile: 'whats-bitter-is-sweet-cinematic-cut.mp3',
+    duration: 324,
+    art: { full: 'assets/bittercut.webp', thumb: 'assets/bittercut-512.webp' },
+    themeColor: '#0c0913',
+    timing: timingFor('bittercut'),
+    ...lyricsFor('bittercut'),
+  }),
+  bending: trackSchema.parse({
+    id: 'bending',
+    title: 'String Bending',
+    dedication: 'By Dustin',
+    written: '2026-05-19',
+    voice: 'Instrumental',
+    description:
+      'Cinematic folk-pop without words: rising violin lines over timpani and taiko, a choir stack and hand drums building to a breakdown in a wide hall.',
+    audioFile: 'string-bending.mp3',
+    duration: 179,
+    art: { full: 'assets/bending.webp', thumb: 'assets/bending-512.webp' },
+    themeColor: '#0c0816',
+    timing: timingFor('bending'),
+    ...lyricsFor('bending'),
+  }),
+  operatic: trackSchema.parse({
+    id: 'operatic',
+    title: 'Operatic Ascent (Ethereal Electronic Fusion)',
+    dedication: 'By Dustin',
+    written: '2026-05-10',
+    voice: 'Wordless vocals',
+    description:
+      'A long ethereal rise: shimmering pads and airy wordless voices over slowly evolving motifs, one chakra at a time.',
+    audioFile: 'operatic-ascent.mp3',
+    duration: 220,
+    art: { full: 'assets/operatic.webp', thumb: 'assets/operatic-512.webp' },
+    themeColor: '#020c17',
+    timing: timingFor('operatic'),
+    ...lyricsFor('operatic'),
   }),
 }
 
