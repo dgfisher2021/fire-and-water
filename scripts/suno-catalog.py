@@ -54,6 +54,7 @@ OVERRIDES = {
     99: "shanty",
     16: "untamed",
     36: "lament",
+    65: "dont",
 }
 # Songs whose `written` is the day the words were written, not the render.
 HAND_DATED = {"baritone", "fire", "water"}
