@@ -889,6 +889,24 @@
     0 10px 26px -6px var(--track-glow), 0 0 22px -2px var(--track-glow),
     var(--nav-center-edge);
 }
+/*
+ * Larger than the kit's 54px, lifted further, at the theme radius, and the
+ * bar above the mini player and the page so the lifted half overlays them
+ * (sheets and toasts sit at 150 and up).
+ */
+[data-slot='nav-bottom'] {
+  z-index: 60 !important;
+}
+[data-slot='nav-bottom'] button[aria-label='Primary action'] {
+  width: 4rem !important;
+  height: 4rem !important;
+  margin-top: -1.75rem !important;
+  border-radius: calc(var(--radius) * 1.4) !important;
+}
+[data-slot='nav-bottom'] button[aria-label='Primary action'] > svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
 @keyframes nav-center-swell {
   50% {
     box-shadow:
