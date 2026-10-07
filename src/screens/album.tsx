@@ -1,6 +1,5 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { MotionTextMorph } from '@dust-ui/motion'
 import { MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
@@ -19,6 +18,7 @@ import { PlayButton } from '@/components/play-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SortButton } from '@/components/sort-button'
+import { TitleMorph } from '@/components/title-morph'
 import { TrackRow } from '@/components/track-row'
 
 const AUTOPLAY_MS = 15_000
@@ -210,12 +210,13 @@ export function AlbumScreen() {
           className='animate-fade-up'
         >
           <div className='min-h-[92px]'>
-            <MotionTextMorph
+            <TitleMorph
               as='h2'
+              maxChars={22}
               className='font-display text-[28px] leading-[1.15] font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)] short:text-[22px]'
             >
               {t.title}
-            </MotionTextMorph>
+            </TitleMorph>
             <div
               key={track}
               className='animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
