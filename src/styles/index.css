@@ -389,6 +389,26 @@
   --wild-deep: oklch(0.37 0.11 34);
   --wild-glow: oklch(0.66 0.1 34 / 42%);
   --wild-ink: oklch(0.22 0.04 34);
+  --feelfree: oklch(0.78 0.1 32); /* lakeside sunset */
+  --feelfree-deep: oklch(0.37 0.11 32);
+  --feelfree-glow: oklch(0.66 0.1 32 / 42%);
+  --feelfree-ink: oklch(0.22 0.04 32);
+  --office: oklch(0.78 0.14 25); /* red glow behind closed doors */
+  --office-deep: oklch(0.37 0.15 25);
+  --office-glow: oklch(0.66 0.14 25 / 42%);
+  --office-ink: oklch(0.22 0.04 25);
+  --working: oklch(0.78 0.08 234); /* moonlight on the ridge */
+  --working-deep: oklch(0.37 0.09 234);
+  --working-glow: oklch(0.66 0.08 234 / 42%);
+  --working-ink: oklch(0.22 0.04 234);
+  --people: oklch(0.78 0.11 250); /* starfield over the cliff */
+  --people-deep: oklch(0.37 0.12 250);
+  --people-glow: oklch(0.66 0.11 250 / 42%);
+  --people-ink: oklch(0.22 0.04 250);
+  --friction: oklch(0.78 0.13 75); /* golden light through the pines */
+  --friction-deep: oklch(0.37 0.14 75);
+  --friction-glow: oklch(0.66 0.13 75 / 42%);
+  --friction-ink: oklch(0.22 0.04 75);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -931,6 +951,36 @@
   --track-deep: var(--wild-deep);
   --track-glow: var(--wild-glow);
   --track-ink: var(--wild-ink);
+}
+:root[data-track='feelfree'] {
+  --track-bright: var(--feelfree);
+  --track-deep: var(--feelfree-deep);
+  --track-glow: var(--feelfree-glow);
+  --track-ink: var(--feelfree-ink);
+}
+:root[data-track='office'] {
+  --track-bright: var(--office);
+  --track-deep: var(--office-deep);
+  --track-glow: var(--office-glow);
+  --track-ink: var(--office-ink);
+}
+:root[data-track='working'] {
+  --track-bright: var(--working);
+  --track-deep: var(--working-deep);
+  --track-glow: var(--working-glow);
+  --track-ink: var(--working-ink);
+}
+:root[data-track='people'] {
+  --track-bright: var(--people);
+  --track-deep: var(--people-deep);
+  --track-glow: var(--people-glow);
+  --track-ink: var(--people-ink);
+}
+:root[data-track='friction'] {
+  --track-bright: var(--friction);
+  --track-deep: var(--friction-deep);
+  --track-glow: var(--friction-glow);
+  --track-ink: var(--friction-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

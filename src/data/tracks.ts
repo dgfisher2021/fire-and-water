@@ -80,6 +80,11 @@ export const trackIdSchema = z.enum([
   'mustang',
   'neuro',
   'wild',
+  'feelfree',
+  'office',
+  'working',
+  'people',
+  'friction',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -204,6 +209,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'mustang',
   'neuro',
   'wild',
+  'feelfree',
+  'office',
+  'working',
+  'people',
+  'friction',
 ]
 
 export const ALBUM = {
@@ -276,6 +286,8 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   wild: 'mustang',
   forgot: 'bitter',
   bitter: 'forgot',
+  working: 'faith',
+  people: 'working',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1449,6 +1461,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#160604',
     timing: timingFor('wild'),
     ...lyricsFor('wild'),
+  }),
+  feelfree: trackSchema.parse({
+    id: 'feelfree',
+    title: 'I Feel Free',
+    dedication: 'For Tiff and Pean, from Dustin',
+    written: '2026-05-16',
+    voice: 'Dustin’s voice',
+    description:
+      'Left the town that called his brain a fluke and learned to make himself smaller, until Tiff and Pean stood at the water’s edge calling the name he tried to lose. Big rock-country for an ADHD mind finally breathing deep: the fast talk, the deep feel, the storm inside. I feel free.',
+    audioFile: 'i-feel-free.mp3',
+    duration: 292,
+    art: { full: 'assets/feelfree.webp', thumb: 'assets/feelfree-512.webp' },
+    themeColor: '#160604',
+    timing: timingFor('feelfree'),
+    ...lyricsFor('feelfree'),
+  }),
+  office: trackSchema.parse({
+    id: 'office',
+    title: 'Office Politics',
+    dedication: 'By Dustin',
+    written: '2026-05-09',
+    voice: 'Solo voice',
+    description:
+      'A perfect peer who walked in smiling: a united front with the execs in the room, a door closed while chasing their own name. Dark alt-pop for being someone’s friend only on the surface. Hurt me, break me, use me, and I keep asking why.',
+    audioFile: 'office-politics.mp3',
+    duration: 264,
+    art: { full: 'assets/office.webp', thumb: 'assets/office-512.webp' },
+    themeColor: '#160605',
+    timing: timingFor('office'),
+    ...lyricsFor('office'),
+  }),
+  working: trackSchema.parse({
+    id: 'working',
+    title: 'Working in Good Faith',
+    dedication: 'By Dustin',
+    written: '2026-09-05',
+    voice: 'A woman’s voice',
+    description:
+      'You say I kept you in the dark; from where I stood I never saw that fear. Two people reading different warning signs: you thought I was hiding progress, I thought I was buying time. Our maps did not align, but I have been working in good faith.',
+    audioFile: 'working-in-good-faith.mp3',
+    duration: 350,
+    art: { full: 'assets/working.webp', thumb: 'assets/working-512.webp' },
+    themeColor: '#020d15',
+    timing: timingFor('working'),
+    ...lyricsFor('working'),
+  }),
+  people: trackSchema.parse({
+    id: 'people',
+    title: 'People Over Process',
+    dedication: 'By Dustin',
+    written: '2026-06-21',
+    voice: 'Solo voice',
+    description:
+      'Honest about the struggle and branded reckless, fragile, faithless. Never faithless: standing in the fire and stepping out. Not begging to be seen, but choosing the team that believes in him; conventional checklists were never his shape. Explicit, kept as sung.',
+    audioFile: 'people-over-process.mp3',
+    duration: 364,
+    art: { full: 'assets/people.webp', thumb: 'assets/people-512.webp' },
+    themeColor: '#030c17',
+    timing: timingFor('people'),
+    ...lyricsFor('people'),
+  }),
+  friction: trackSchema.parse({
+    id: 'friction',
+    title: 'Friction Into Fuel',
+    dedication: 'For Pierce, Ethan, Fed and Omar, from Dustin',
+    written: '2026-06-11',
+    voice: 'Solo voice',
+    description:
+      'A thank-you to the team that holds his scattered branches: Pierce with the plan, Ethan on the portal, Fed shaping the chaos, Omar keeping everyone in the know. If he moves too fast it is his wiring, not his pride, and they keep turning the friction into fuel.',
+    audioFile: 'friction-into-fuel.mp3',
+    duration: 319,
+    art: { full: 'assets/friction.webp', thumb: 'assets/friction-512.webp' },
+    themeColor: '#120900',
+    timing: timingFor('friction'),
+    ...lyricsFor('friction'),
   }),
 }
 
