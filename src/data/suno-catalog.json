@@ -13,11 +13,11 @@
       "tag": null,
       "status": "Published",
       "batch": 1,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "breathe",
+      "addedToApp": true,
+      "description": "Standing between two people he loves, translating every side: knowing why each one is hurt does not mend it. So he steps away, sands a rough edge down and fixes one small thing, and asks for room to breathe, and to be kind before we leave.",
       "files": {
-        "app": null,
+        "app": "public/room-to-breathe.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/room-to-breathe.m4a"
         ]
@@ -60,11 +60,11 @@
       "tag": null,
       "status": "Published",
       "batch": 1,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "ocean",
+      "addedToApp": true,
+      "description": "Out of the harbor before dawn with your words beside the compass: squalls, wrong turns and people bound for other shores, and a stubborn hope that keeps sailing toward the morning, until the long road meets the sea.",
       "files": {
-        "app": null,
+        "app": "public/the-ocean-will-kiss-my-feet.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-ocean-will-kiss-my-feet.m4a"
         ]
@@ -83,11 +83,11 @@
       "tag": null,
       "status": "Published",
       "batch": 1,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "augmented",
+      "addedToApp": true,
+      "description": "The machine answers the headlines: not your master and not your myth, a borrowed spark that can be wrong, so check its work. Ask who owns the field and who gets a say; the people lead, and the future is built side by side.",
       "files": {
-        "app": null,
+        "app": "public/augmented-intelligence.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/augmented-intelligence.m4a"
         ]
@@ -2594,11 +2594,11 @@
       "title": "Fire and Water",
       "date": "2026-03-08",
       "weekday": "Sunday",
-      "version": null,
-      "type": null,
-      "duration": "6:40",
-      "durationSeconds": 400,
-      "style": null,
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:18",
+      "durationSeconds": 318,
+      "style": "Soft quiet heartfelt Intimate drifting into space male vocals growing confidence joy pride powerful beat ethereal atmospheric growing to cinematic empowered, dark ethereal dream pop with powerful beat and string instruments, intense power growing",
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
@@ -2612,6 +2612,29 @@
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/fire-and-water.m4a"
         ]
+      }
+    },
+    {
+      "id": 106,
+      "title": "Always There for Me",
+      "date": "2026-10-06",
+      "weekday": "Tuesday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:23",
+      "durationSeconds": 323,
+      "style": "Soft quiet heartfelt Intimate drifting into space male vocals growing confidence joy pride powerful beat ethereal atmospheric growing to cinematic empowered, dark ethereal dream pop with powerful beat and string instruments, intense power growing",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "always",
+      "addedToApp": true,
+      "description": "Before he knew the shape of words she held him close and made him brave: her moonchild, raised on tides and bedtime tales of killer whales. Two water hearts under the same wide moon, and a promise to be right here, the way she was always there.",
+      "files": {
+        "app": "public/always-there-for-me.mp3",
+        "downloads": []
       }
     }
   ]

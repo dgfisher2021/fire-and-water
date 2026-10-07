@@ -61,6 +61,10 @@ export const trackIdSchema = z.enum([
   'shanty',
   'wound',
   'yours',
+  'always',
+  'breathe',
+  'ocean',
+  'augmented',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -166,6 +170,10 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'shanty',
   'wound',
   'yours',
+  'always',
+  'breathe',
+  'ocean',
+  'augmented',
 ]
 
 export const ALBUM = {
@@ -227,6 +235,8 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   mashup: 'valkyrie',
   shanty: 'memories',
   wound: 'beautiful',
+  always: 'whales',
+  whales: 'always',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -246,7 +256,7 @@ export const TRACKS: Record<TrackId, Track> = {
     description:
       'She was fire—bold, roaring, untamed. He was water—patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn’t weakness. Their parents’ guilt was never hers to carry.',
     audioFile: 'fire-and-water.m4a',
-    duration: 400,
+    duration: 318,
     art: { full: 'assets/fire.webp', thumb: 'assets/fire-512.webp' },
     themeColor: '#170c06',
     driveLink:
@@ -1115,6 +1125,66 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#140801',
     timing: timingFor('yours'),
     ...lyricsFor('yours'),
+  }),
+  always: trackSchema.parse({
+    id: 'always',
+    title: 'Always There for Me',
+    dedication: 'For Mum, from Dustin',
+    written: '2026-10-06',
+    voice: 'Dustin’s voice',
+    description:
+      'Before he knew the shape of words she held him close and made him brave: her moonchild, raised on tides and bedtime tales of killer whales. Two water hearts under the same wide moon, and a promise to be right here, the way she was always there.',
+    audioFile: 'always-there-for-me.mp3',
+    duration: 323,
+    art: { full: 'assets/always.webp', thumb: 'assets/always-512.webp' },
+    themeColor: '#080a18',
+    timing: timingFor('always'),
+    ...lyricsFor('always'),
+  }),
+  breathe: trackSchema.parse({
+    id: 'breathe',
+    title: 'Room to Breathe',
+    dedication: 'By Dustin',
+    written: '2026-10-04',
+    voice: 'Solo voice',
+    description:
+      'Standing between two people he loves, translating every side: knowing why each one is hurt does not mend it. So he steps away, sands a rough edge down and fixes one small thing, and asks for room to breathe, and to be kind before we leave.',
+    audioFile: 'room-to-breathe.mp3',
+    duration: 190,
+    art: { full: 'assets/breathe.webp', thumb: 'assets/breathe-512.webp' },
+    themeColor: '#100a03',
+    timing: timingFor('breathe'),
+    ...lyricsFor('breathe'),
+  }),
+  ocean: trackSchema.parse({
+    id: 'ocean',
+    title: 'The Ocean Will Kiss My Feet',
+    dedication: 'By Dustin',
+    written: '2026-09-28',
+    voice: 'Solo voice',
+    description:
+      'Out of the harbor before dawn with your words beside the compass: squalls, wrong turns and people bound for other shores, and a stubborn hope that keeps sailing toward the morning, until the long road meets the sea.',
+    audioFile: 'the-ocean-will-kiss-my-feet.mp3',
+    duration: 243,
+    art: { full: 'assets/ocean.webp', thumb: 'assets/ocean-512.webp' },
+    themeColor: '#020c17',
+    timing: timingFor('ocean'),
+    ...lyricsFor('ocean'),
+  }),
+  augmented: trackSchema.parse({
+    id: 'augmented',
+    title: 'Augmented Intelligence',
+    dedication: 'By Dustin',
+    written: '2026-09-27',
+    voice: 'Dustin’s voice',
+    description:
+      'The machine answers the headlines: not your master and not your myth, a borrowed spark that can be wrong, so check its work. Ask who owns the field and who gets a say; the people lead, and the future is built side by side.',
+    audioFile: 'augmented-intelligence.mp3',
+    duration: 284,
+    art: { full: 'assets/augmented.webp', thumb: 'assets/augmented-512.webp' },
+    themeColor: '#050b18',
+    timing: timingFor('augmented'),
+    ...lyricsFor('augmented'),
   }),
 }
 

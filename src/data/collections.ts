@@ -89,6 +89,8 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   ritual: 'kin',
   whales: 'kin',
   yours: 'kin',
+  always: 'kin',
+  breathe: 'kin',
   change: 'rising',
   espoir: 'rising',
   waves: 'rising',
@@ -99,6 +101,7 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   plot: 'rising',
   plotlight: 'rising',
   potential: 'rising',
+  ocean: 'rising',
   mercy: 'critic',
   devil: 'critic',
   guitar: 'critic',
@@ -131,4 +134,5 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   binary: 'silicon',
   prompt: 'silicon',
   developer: 'silicon',
+  augmented: 'silicon',
 }
