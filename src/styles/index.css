@@ -313,6 +313,22 @@
   --yours-deep: oklch(0.37 0.13 62);
   --yours-glow: oklch(0.66 0.12 62 / 42%);
   --yours-ink: oklch(0.22 0.04 62);
+  --always: oklch(0.78 0.09 277); /* moonlit violet over the ridge */
+  --always-deep: oklch(0.37 0.1 277);
+  --always-glow: oklch(0.66 0.09 277 / 42%);
+  --always-ink: oklch(0.22 0.04 277);
+  --breathe: oklch(0.78 0.06 80); /* pencil on sketchbook cream */
+  --breathe-deep: oklch(0.37 0.07 80);
+  --breathe-glow: oklch(0.66 0.06 80 / 42%);
+  --breathe-ink: oklch(0.22 0.04 80);
+  --ocean: oklch(0.78 0.1 245); /* glacier water under the peaks */
+  --ocean-deep: oklch(0.37 0.11 245);
+  --ocean-glow: oklch(0.66 0.1 245 / 42%);
+  --ocean-ink: oklch(0.22 0.04 245);
+  --augmented: oklch(0.78 0.16 260); /* circuit-light electric blue */
+  --augmented-deep: oklch(0.37 0.18 260);
+  --augmented-glow: oklch(0.66 0.16 260 / 42%);
+  --augmented-ink: oklch(0.22 0.04 260);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -741,6 +757,30 @@
   --track-deep: var(--yours-deep);
   --track-glow: var(--yours-glow);
   --track-ink: var(--yours-ink);
+}
+:root[data-track='always'] {
+  --track-bright: var(--always);
+  --track-deep: var(--always-deep);
+  --track-glow: var(--always-glow);
+  --track-ink: var(--always-ink);
+}
+:root[data-track='breathe'] {
+  --track-bright: var(--breathe);
+  --track-deep: var(--breathe-deep);
+  --track-glow: var(--breathe-glow);
+  --track-ink: var(--breathe-ink);
+}
+:root[data-track='ocean'] {
+  --track-bright: var(--ocean);
+  --track-deep: var(--ocean-deep);
+  --track-glow: var(--ocean-glow);
+  --track-ink: var(--ocean-ink);
+}
+:root[data-track='augmented'] {
+  --track-bright: var(--augmented);
+  --track-deep: var(--augmented-deep);
+  --track-glow: var(--augmented-glow);
+  --track-ink: var(--augmented-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

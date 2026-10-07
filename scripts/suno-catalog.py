@@ -141,6 +141,12 @@ def main():
 
     data = json.loads(CATALOG.read_text(encoding="utf-8"))
     library = [s for s in data["songs"] if s.get("source") != "app"]
+    # What a hand edit added to an app entry (a style read off the song page) survives a rerun.
+    kept = {
+        s["appId"]: {k: s[k] for k in ("version", "type", "style", "styleTruncated", "tag") if s.get(k)}
+        for s in data["songs"]
+        if s.get("source") == "app"
+    }
     tracks = load_tracks()
     mapping = match(library, tracks)
     index = zip_index([d for d in [DOWNLOADS, *args.zips] if d.exists()])
@@ -199,6 +205,7 @@ def main():
                 "description": t["description"],
                 "files": files(app_id, t["title"]),
             }
+            | kept.get(app_id, {})
         )
         next_id += 1
 
