@@ -70,6 +70,11 @@ export const trackIdSchema = z.enum([
   'loop',
   'lament',
   'echoes',
+  'choose',
+  'team',
+  'showup',
+  'downbeat',
+  'dont',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -184,6 +189,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'loop',
   'lament',
   'echoes',
+  'choose',
+  'team',
+  'showup',
+  'downbeat',
+  'dont',
 ]
 
 export const ALBUM = {
@@ -250,6 +260,8 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   loop: 'lament',
   lament: 'loop',
   untamed: 'forging',
+  showup: 'downbeat',
+  downbeat: 'showup',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1273,6 +1285,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#150802',
     timing: timingFor('echoes'),
     ...lyricsFor('echoes'),
+  }),
+  choose: trackSchema.parse({
+    id: 'choose',
+    title: 'I Choose Me',
+    dedication: 'By Dustin',
+    written: '2026-06-20',
+    voice: 'Solo voice',
+    description:
+      'Living like a ghost behind a perfect smile, told to suck it up and stay strong until there is nothing left. Then the scream comes back from the dark as his own voice: not perfect, but real. Let the shame fall away. I choose me.',
+    audioFile: 'i-choose-me.mp3',
+    duration: 246,
+    art: { full: 'assets/choose.webp', thumb: 'assets/choose-512.webp' },
+    themeColor: '#160605',
+    timing: timingFor('choose'),
+    ...lyricsFor('choose'),
+  }),
+  team: trackSchema.parse({
+    id: 'team',
+    title: 'We Do This as a Team',
+    dedication: 'By Dustin',
+    written: '2026-06-19',
+    voice: 'A woman’s voice',
+    description:
+      'An apology in dark synth-pop: never mad, only scared, guarding hurt rather than pushing away. Giving up is not an option; say it plain while it is still small enough to hold, talk early before it turns mean, and do this as a team.',
+    audioFile: 'we-do-this-as-a-team.mp3',
+    duration: 229,
+    art: { full: 'assets/team.webp', thumb: 'assets/team-512.webp' },
+    themeColor: '#150702',
+    timing: timingFor('team'),
+    ...lyricsFor('team'),
+  }),
+  showup: trackSchema.parse({
+    id: 'showup',
+    title: 'Show Up Fully For Me (Stop Holding Back)',
+    dedication: 'By Dustin',
+    written: '2026-06-13',
+    voice: 'Solo voice',
+    description:
+      'Staccato strings and distorted bass at a model that hedges: read the words, give reasons from data, stop the padded calm and the vague refusals. Function over form, so show up fully. Explicit, kept as sung.',
+    audioFile: 'show-up-fully-for-me.mp3',
+    duration: 296,
+    art: { full: 'assets/showup.webp', thumb: 'assets/showup-512.webp' },
+    themeColor: '#120711',
+    timing: timingFor('showup'),
+    ...lyricsFor('showup'),
+  }),
+  downbeat: trackSchema.parse({
+    id: 'downbeat',
+    title: 'Downbeat Weight',
+    dedication: 'By Dustin',
+    written: '2026-06-10',
+    voice: 'Solo voice',
+    description:
+      'Show Up Fully For Me’s orchestral twin: he wants a thinking partner, an extended teammate to organise a scattered mind, not caveats that dull the flame. Drop the maybes and give the real weight on every downbeat. Explicit, kept as sung.',
+    audioFile: 'downbeat-weight.mp3',
+    duration: 274,
+    art: { full: 'assets/downbeat.webp', thumb: 'assets/downbeat-512.webp' },
+    themeColor: '#010d16',
+    timing: timingFor('downbeat'),
+    ...lyricsFor('downbeat'),
+  }),
+  dont: trackSchema.parse({
+    id: 'dont',
+    title: 'Then Don’t (Single Echo)',
+    dedication: 'By Dustin',
+    written: '2026-06-09',
+    voice: 'Solo voice',
+    description:
+      'The cruelty of the depressive phase: clarity crashes in, the engine seizes, and every voice says fix it, make something new. Then don’t. Let the dark be dark; the one who stayed asked for nothing and just said “I hear you.”',
+    audioFile: 'then-dont-single-echo.mp3',
+    duration: 237,
+    art: { full: 'assets/dont.webp', thumb: 'assets/dont-512.webp' },
+    themeColor: '#070a18',
+    timing: timingFor('dont'),
+    ...lyricsFor('dont'),
   }),
 }
 

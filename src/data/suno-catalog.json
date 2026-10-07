@@ -1440,11 +1440,11 @@
       "tag": null,
       "status": "Published",
       "batch": 7,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "choose",
+      "addedToApp": true,
+      "description": "Living like a ghost behind a perfect smile, told to suck it up and stay strong until there is nothing left. Then the scream comes back from the dark as his own voice: not perfect, but real. Let the shame fall away. I choose me.",
       "files": {
-        "app": null,
+        "app": "public/i-choose-me.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-choose-me.m4a"
         ]
@@ -1489,11 +1489,11 @@
       "tag": null,
       "status": "Published",
       "batch": 7,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "team",
+      "addedToApp": true,
+      "description": "An apology in dark synth-pop: never mad, only scared, guarding hurt rather than pushing away. Giving up is not an option; say it plain while it is still small enough to hold, talk early before it turns mean, and do this as a team.",
       "files": {
-        "app": null,
+        "app": "public/we-do-this-as-a-team.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/we-do-this-as-a-team.m4a"
         ]
@@ -1537,11 +1537,11 @@
       "tag": null,
       "status": "Published",
       "batch": 7,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "showup",
+      "addedToApp": true,
+      "description": "Staccato strings and distorted bass at a model that hedges: read the words, give reasons from data, stop the padded calm and the vague refusals. Function over form, so show up fully. Explicit, kept as sung.",
       "files": {
-        "app": null,
+        "app": "public/show-up-fully-for-me.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/show-up-fully-for-me-stop-holding-back.m4a"
         ]
@@ -1585,11 +1585,11 @@
       "tag": null,
       "status": "Published",
       "batch": 8,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "downbeat",
+      "addedToApp": true,
+      "description": "Show Up Fully For Me’s orchestral twin: he wants a thinking partner, an extended teammate to organise a scattered mind, not caveats that dull the flame. Drop the maybes and give the real weight on every downbeat. Explicit, kept as sung.",
       "files": {
-        "app": null,
+        "app": "public/downbeat-weight.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/downbeat-weight.m4a"
         ]
@@ -1609,11 +1609,11 @@
       "tag": null,
       "status": "Published",
       "batch": 8,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "dont",
+      "addedToApp": true,
+      "description": "The cruelty of the depressive phase: clarity crashes in, the engine seizes, and every voice says fix it, make something new. Then don’t. Let the dark be dark; the one who stayed asked for nothing and just said “I hear you.”",
       "files": {
-        "app": null,
+        "app": "public/then-dont-single-echo.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/then-don’t-single-echo.m4a"
         ]

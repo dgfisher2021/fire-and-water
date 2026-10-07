@@ -349,6 +349,26 @@
   --echoes-deep: oklch(0.37 0.12 55);
   --echoes-glow: oklch(0.66 0.11 55 / 42%);
   --echoes-ink: oklch(0.22 0.04 55);
+  --choose: oklch(0.78 0.1 30); /* skin and shadow, a mask coming off */
+  --choose-deep: oklch(0.37 0.11 30);
+  --choose-glow: oklch(0.66 0.1 30 / 42%);
+  --choose-ink: oklch(0.22 0.04 30);
+  --team: oklch(0.78 0.09 47); /* warm light on two faces */
+  --team-deep: oklch(0.37 0.1 47);
+  --team-glow: oklch(0.66 0.09 47 / 42%);
+  --team-ink: oklch(0.22 0.04 47);
+  --showup: oklch(0.78 0.15 330); /* neon magenta circuit */
+  --showup-deep: oklch(0.37 0.16 330);
+  --showup-glow: oklch(0.66 0.15 330 / 42%);
+  --showup-ink: oklch(0.22 0.04 330);
+  --downbeat: oklch(0.78 0.16 240); /* holographic blue */
+  --downbeat-deep: oklch(0.37 0.17 240);
+  --downbeat-glow: oklch(0.66 0.16 240 / 42%);
+  --downbeat-ink: oklch(0.22 0.04 240);
+  --dont: oklch(0.78 0.11 272); /* violet dark that holds its shape */
+  --dont-deep: oklch(0.37 0.12 272);
+  --dont-glow: oklch(0.66 0.11 272 / 42%);
+  --dont-ink: oklch(0.22 0.04 272);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -831,6 +851,36 @@
   --track-deep: var(--echoes-deep);
   --track-glow: var(--echoes-glow);
   --track-ink: var(--echoes-ink);
+}
+:root[data-track='choose'] {
+  --track-bright: var(--choose);
+  --track-deep: var(--choose-deep);
+  --track-glow: var(--choose-glow);
+  --track-ink: var(--choose-ink);
+}
+:root[data-track='team'] {
+  --track-bright: var(--team);
+  --track-deep: var(--team-deep);
+  --track-glow: var(--team-glow);
+  --track-ink: var(--team-ink);
+}
+:root[data-track='showup'] {
+  --track-bright: var(--showup);
+  --track-deep: var(--showup-deep);
+  --track-glow: var(--showup-glow);
+  --track-ink: var(--showup-ink);
+}
+:root[data-track='downbeat'] {
+  --track-bright: var(--downbeat);
+  --track-deep: var(--downbeat-deep);
+  --track-glow: var(--downbeat-glow);
+  --track-ink: var(--downbeat-ink);
+}
+:root[data-track='dont'] {
+  --track-bright: var(--dont);
+  --track-deep: var(--dont-deep);
+  --track-glow: var(--dont-glow);
+  --track-ink: var(--dont-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
