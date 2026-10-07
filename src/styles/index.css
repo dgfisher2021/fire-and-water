@@ -329,6 +329,26 @@
   --augmented-deep: oklch(0.37 0.18 260);
   --augmented-glow: oklch(0.66 0.16 260 / 42%);
   --augmented-ink: oklch(0.22 0.04 260);
+  --untamed: oklch(0.78 0.14 35); /* flame red on storm grey */
+  --untamed-deep: oklch(0.37 0.15 35);
+  --untamed-glow: oklch(0.66 0.14 35 / 42%);
+  --untamed-ink: oklch(0.22 0.04 35);
+  --connects: oklch(0.78 0.05 230); /* glass threads on black */
+  --connects-deep: oklch(0.37 0.06 230);
+  --connects-glow: oklch(0.66 0.05 230 / 42%);
+  --connects-ink: oklch(0.22 0.04 230);
+  --loop: oklch(0.78 0.13 267); /* cyanotype blueprint */
+  --loop-deep: oklch(0.37 0.14 267);
+  --loop-glow: oklch(0.66 0.13 267 / 42%);
+  --loop-ink: oklch(0.22 0.04 267);
+  --lament: oklch(0.78 0.13 258); /* ink bleeding through the grid */
+  --lament-deep: oklch(0.37 0.14 258);
+  --lament-glow: oklch(0.66 0.13 258 / 42%);
+  --lament-ink: oklch(0.22 0.04 258);
+  --echoes: oklch(0.78 0.11 55); /* embers under ritual smoke */
+  --echoes-deep: oklch(0.37 0.12 55);
+  --echoes-glow: oklch(0.66 0.11 55 / 42%);
+  --echoes-ink: oklch(0.22 0.04 55);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -781,6 +801,36 @@
   --track-deep: var(--augmented-deep);
   --track-glow: var(--augmented-glow);
   --track-ink: var(--augmented-ink);
+}
+:root[data-track='untamed'] {
+  --track-bright: var(--untamed);
+  --track-deep: var(--untamed-deep);
+  --track-glow: var(--untamed-glow);
+  --track-ink: var(--untamed-ink);
+}
+:root[data-track='connects'] {
+  --track-bright: var(--connects);
+  --track-deep: var(--connects-deep);
+  --track-glow: var(--connects-glow);
+  --track-ink: var(--connects-ink);
+}
+:root[data-track='loop'] {
+  --track-bright: var(--loop);
+  --track-deep: var(--loop-deep);
+  --track-glow: var(--loop-glow);
+  --track-ink: var(--loop-ink);
+}
+:root[data-track='lament'] {
+  --track-bright: var(--lament);
+  --track-deep: var(--lament-deep);
+  --track-glow: var(--lament-glow);
+  --track-ink: var(--lament-ink);
+}
+:root[data-track='echoes'] {
+  --track-bright: var(--echoes);
+  --track-deep: var(--echoes-deep);
+  --track-glow: var(--echoes-glow);
+  --track-ink: var(--echoes-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

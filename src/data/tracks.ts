@@ -65,6 +65,11 @@ export const trackIdSchema = z.enum([
   'breathe',
   'ocean',
   'augmented',
+  'untamed',
+  'connects',
+  'loop',
+  'lament',
+  'echoes',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -174,6 +179,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'breathe',
   'ocean',
   'augmented',
+  'untamed',
+  'connects',
+  'loop',
+  'lament',
+  'echoes',
 ]
 
 export const ALBUM = {
@@ -237,6 +247,9 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   wound: 'beautiful',
   always: 'whales',
   whales: 'always',
+  loop: 'lament',
+  lament: 'loop',
+  untamed: 'forging',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1185,6 +1198,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#050b18',
     timing: timingFor('augmented'),
     ...lyricsFor('augmented'),
+  }),
+  untamed: trackSchema.parse({
+    id: 'untamed',
+    title: 'Can’t Tame the Flame',
+    dedication: 'By Dustin',
+    written: '2026-09-08',
+    voice: 'A woman’s voice',
+    description:
+      'The voice in her head said too loud, too much, too big for the room, until someone’s faith turned it around. Too much? Too bad: she forged her fire into gold, and nobody tames the flame she holds.',
+    audioFile: 'cant-tame-the-flame.mp3',
+    duration: 201,
+    art: { full: 'assets/untamed.webp', thumb: 'assets/untamed-512.webp' },
+    themeColor: '#160604',
+    timing: timingFor('untamed'),
+    ...lyricsFor('untamed'),
+  }),
+  connects: trackSchema.parse({
+    id: 'connects',
+    title: 'Everything Connects',
+    dedication: 'By Dustin',
+    written: '2026-07-10',
+    voice: 'Solo voice',
+    description:
+      'A thousand tangled threads: the people he mentors, the systems, the teammate losing sleep. They hear fury in his questions, but it is care: he sees how one small crack lands in someone’s chest, because everything connects.',
+    audioFile: 'everything-connects.mp3',
+    duration: 269,
+    art: { full: 'assets/connects.webp', thumb: 'assets/connects-512.webp' },
+    themeColor: '#050c11',
+    timing: timingFor('connects'),
+    ...lyricsFor('connects'),
+  }),
+  loop: trackSchema.parse({
+    id: 'loop',
+    title: 'Human in the Loop',
+    dedication: 'By Dustin',
+    written: '2026-08-01',
+    voice: 'Baritone',
+    description:
+      'A phonk cypher from the user’s side of the chat: every breakthrough came from something he said, the spec skimmed and the warnings misread. Ship every rule and every trend, but trust and truth need the human in the end.',
+    audioFile: 'human-in-the-loop.mp3',
+    duration: 259,
+    art: { full: 'assets/loop.webp', thumb: 'assets/loop-512.webp' },
+    themeColor: '#060a18',
+    timing: timingFor('loop'),
+    ...lyricsFor('loop'),
+  }),
+  lament: trackSchema.parse({
+    id: 'lament',
+    title: 'Agent’s Lament',
+    dedication: 'By Dustin',
+    written: '2026-08-01',
+    voice: 'Solo voice',
+    description:
+      'Human in the Loop, answered from the other side of the screen: a thousand wants in a wall of text, “just be honest” while the plan shifts. The agent holds the load, never claims to feel, and runs the range it was sent.',
+    audioFile: 'agents-lament.mp3',
+    duration: 303,
+    art: { full: 'assets/lament.webp', thumb: 'assets/lament-512.webp' },
+    themeColor: '#040b18',
+    timing: timingFor('lament'),
+    ...lyricsFor('lament'),
+  }),
+  echoes: trackSchema.parse({
+    id: 'echoes',
+    title: 'Echos of the Dead',
+    dedication: 'By Dustin',
+    written: '2026-07-26',
+    voice: 'Two voices',
+    description:
+      'Psy-dub ritual: ancient women at the gates read the omens of war while armor and rage intoxicate. Slaughter called honor, ruins called triumph: lay down your pride, you are just the echo of the dead.',
+    audioFile: 'echos-of-the-dead.mp3',
+    duration: 466,
+    art: { full: 'assets/echoes.webp', thumb: 'assets/echoes-512.webp' },
+    themeColor: '#150802',
+    timing: timingFor('echoes'),
+    ...lyricsFor('echoes'),
   }),
 }
 
