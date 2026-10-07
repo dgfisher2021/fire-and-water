@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
 import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
-import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
+import { MotionTextShimmer } from '@dust-ui/motion'
 import {
   Button,
   Empty,
@@ -37,6 +37,7 @@ import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
 import { TagPill } from '@/components/tag-pill'
+import { TitleMorph } from '@/components/title-morph'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
@@ -218,12 +219,13 @@ export function LyricsScreen() {
         <div lang={t.lang} className='mb-2 flex items-start gap-3 px-1'>
           <div className='min-w-0 flex-1'>
             {/* Morphs as a swipe changes the song, like the stage's title. */}
-            <MotionTextMorph
+            <TitleMorph
               as='h1'
+              maxChars={22}
               className='font-display text-[24px] leading-tight font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]'
             >
               {t.title}
-            </MotionTextMorph>
+            </TitleMorph>
             <p className='mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
               <span>Written {writtenDate(t)}</span>
               {t.lyricsSource === 'transcribed' && (

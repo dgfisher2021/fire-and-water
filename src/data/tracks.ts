@@ -300,7 +300,7 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   people: 'working',
   dopamine: 'neuro',
   femme: 'choose',
-  firemix: 'fire',
+  firemix: 'beginning',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1597,12 +1597,13 @@ export const TRACKS: Record<TrackId, Track> = {
   }),
   firemix: trackSchema.parse({
     id: 'firemix',
-    title: 'Fire and Water (Mashup)',
+    title:
+      'Elements of Change (Not Afraid to Change × Beginning and the End Mashup)',
     dedication: 'From Dustin, to Alex',
     written: '2026-09-15',
     voice: 'Solo voice',
     description:
-      'Fire and Water meets Not Afraid to Change: you lit the fire inside of me, and I don’t want to sabotage myself. Room to trip and try again, a little smoke and a little spark, enough to make a path through the dark.',
+      'Not Afraid to Change crossed with Beginning and the End: you lit the fire inside of me, and I don’t want to sabotage myself. Room to trip and try again, a little smoke and a little spark, enough to make a path through the dark.',
     audioFile: 'fire-and-water-mashup.mp3',
     duration: 263,
     art: { full: 'assets/firemix.webp', thumb: 'assets/firemix-512.webp' },
