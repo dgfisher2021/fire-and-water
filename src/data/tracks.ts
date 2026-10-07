@@ -95,6 +95,9 @@ export const trackIdSchema = z.enum([
   'bittercut',
   'bending',
   'operatic',
+  'tidal',
+  'prince',
+  'sleepless',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -234,6 +237,9 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'bittercut',
   'bending',
   'operatic',
+  'tidal',
+  'prince',
+  'sleepless',
 ]
 
 export const ALBUM = {
@@ -313,6 +319,8 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   firemix: 'beginning',
   wildfolk: 'wild',
   bittercut: 'bitter',
+  prince: 'desert',
+  desert: 'prince',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1712,6 +1720,51 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#020c17',
     timing: timingFor('operatic'),
     ...lyricsFor('operatic'),
+  }),
+  tidal: trackSchema.parse({
+    id: 'tidal',
+    title: 'Tidal Wave',
+    dedication: 'By Dustin',
+    written: '2026-09-10',
+    voice: 'A woman’s voice',
+    description:
+      'She held it back in the ocean and called it restraint, until you pulled the pin at the edge of the blue. Energetic electronic dance: every buried feeling breaking through, a wall of gray. I’m a tidal wave, get out of my way.',
+    audioFile: 'tidal-wave.mp3',
+    duration: 278,
+    art: { full: 'assets/tidal.webp', thumb: 'assets/tidal-512.webp' },
+    themeColor: '#010d16',
+    timing: timingFor('tidal'),
+    ...lyricsFor('tidal'),
+  }),
+  prince: trackSchema.parse({
+    id: 'prince',
+    title: 'The Prince of Persia',
+    dedication: 'By Dustin',
+    written: '2026-07-17',
+    voice: 'Wordless vocals',
+    description:
+      'Middle Eastern fusion: an oud in rapid tremolo, a breathy ney flute, darbuka and riq, and a voice that only sings aah. The sands of time before Shadows of the Desert gave them words.',
+    audioFile: 'the-prince-of-persia.mp3',
+    duration: 202,
+    art: { full: 'assets/prince.webp', thumb: 'assets/prince-512.webp' },
+    themeColor: '#120900',
+    timing: timingFor('prince'),
+    ...lyricsFor('prince'),
+  }),
+  sleepless: trackSchema.parse({
+    id: 'sleepless',
+    title: 'Sleepless Nights',
+    dedication: 'By Dustin',
+    written: '2026-05-02',
+    voice: 'Beatbox and a solo voice',
+    description:
+      'Mouth-percussion electro for the nights glued to the screen: four weeks behind, versions shifting like sand, and commits that tell the tale. Please work, don’t let me down tonight. Explicit, kept as sung.',
+    audioFile: 'sleepless-nights.mp3',
+    duration: 215,
+    art: { full: 'assets/sleepless.webp', thumb: 'assets/sleepless-512.webp' },
+    themeColor: '#100714',
+    timing: timingFor('sleepless'),
+    ...lyricsFor('sleepless'),
   }),
 }
 

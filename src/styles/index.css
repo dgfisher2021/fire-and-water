@@ -439,6 +439,18 @@
   --operatic-deep: oklch(0.37 0.12 248);
   --operatic-glow: oklch(0.66 0.11 248 / 42%);
   --operatic-ink: oklch(0.22 0.04 248);
+  --tidal: oklch(0.78 0.09 240); /* storm water over the city */
+  --tidal-deep: oklch(0.37 0.1 240);
+  --tidal-glow: oklch(0.66 0.09 240 / 42%);
+  --tidal-ink: oklch(0.22 0.04 240);
+  --prince: oklch(0.78 0.1 78); /* gold sand through the hourglass */
+  --prince-deep: oklch(0.37 0.11 78);
+  --prince-glow: oklch(0.66 0.1 78 / 42%);
+  --prince-ink: oklch(0.22 0.04 78);
+  --sleepless: oklch(0.78 0.13 315); /* neon keyboard glow at 3 a.m. */
+  --sleepless-deep: oklch(0.37 0.14 315);
+  --sleepless-glow: oklch(0.66 0.13 315 / 42%);
+  --sleepless-ink: oklch(0.22 0.04 315);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -1071,6 +1083,24 @@
   --track-deep: var(--operatic-deep);
   --track-glow: var(--operatic-glow);
   --track-ink: var(--operatic-ink);
+}
+:root[data-track='tidal'] {
+  --track-bright: var(--tidal);
+  --track-deep: var(--tidal-deep);
+  --track-glow: var(--tidal-glow);
+  --track-ink: var(--tidal-ink);
+}
+:root[data-track='prince'] {
+  --track-bright: var(--prince);
+  --track-deep: var(--prince-deep);
+  --track-glow: var(--prince-glow);
+  --track-ink: var(--prince-ink);
+}
+:root[data-track='sleepless'] {
+  --track-bright: var(--sleepless);
+  --track-deep: var(--sleepless-deep);
+  --track-glow: var(--sleepless-glow);
+  --track-ink: var(--sleepless-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */

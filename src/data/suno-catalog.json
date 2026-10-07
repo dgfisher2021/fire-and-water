@@ -328,11 +328,11 @@
       "tag": null,
       "status": "Published",
       "batch": 2,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "tidal",
+      "addedToApp": true,
+      "description": "She held it back in the ocean and called it restraint, until you pulled the pin at the edge of the blue. Energetic electronic dance: every buried feeling breaking through, a wall of gray. I’m a tidal wave, get out of my way.",
       "files": {
-        "app": null,
+        "app": "public/tidal-wave.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/tidal-wave.m4a"
         ]
@@ -1092,11 +1092,11 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "prince",
+      "addedToApp": true,
+      "description": "Middle Eastern fusion: an oud in rapid tremolo, a breathy ney flute, darbuka and riq, and a voice that only sings aah. The sands of time before Shadows of the Desert gave them words.",
       "files": {
-        "app": null,
+        "app": "public/the-prince-of-persia.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/the-prince-of-persia.m4a"
         ]
@@ -2529,11 +2529,11 @@
       "tag": null,
       "status": "Published",
       "batch": 12,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "sleepless",
+      "addedToApp": true,
+      "description": "Mouth-percussion electro for the nights glued to the screen: four weeks behind, versions shifting like sand, and commits that tell the tale. Please work, don’t let me down tonight. Explicit, kept as sung.",
       "files": {
-        "app": null,
+        "app": "public/sleepless-nights.mp3",
         "downloads": []
       }
     },
