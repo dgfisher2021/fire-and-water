@@ -378,11 +378,11 @@
       "tag": null,
       "status": "Published",
       "batch": 2,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "untamed",
+      "addedToApp": true,
+      "description": "The voice in her head said too loud, too much, too big for the room, until someone’s faith turned it around. Too much? Too bad: she forged her fire into gold, and nobody tames the flame she holds.",
       "files": {
-        "app": null,
+        "app": "public/cant-tame-the-flame.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/cant-tame-the-flame.m4a"
         ]
@@ -890,11 +890,11 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "lament",
+      "addedToApp": true,
+      "description": "Human in the Loop, answered from the other side of the screen: a thousand wants in a wall of text, “just be honest” while the plan shifts. The agent holds the load, never claims to feel, and runs the range it was sent.",
       "files": {
-        "app": null,
+        "app": "public/agents-lament.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/agent’s-lament.m4a"
         ]
@@ -914,11 +914,11 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "loop",
+      "addedToApp": true,
+      "description": "A phonk cypher from the user’s side of the chat: every breakthrough came from something he said, the spec skimmed and the warnings misread. Ship every rule and every trend, but trust and truth need the human in the end.",
       "files": {
-        "app": null,
+        "app": "public/human-in-the-loop.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/human-in-the-loop.m4a"
         ]
@@ -963,11 +963,11 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "echoes",
+      "addedToApp": true,
+      "description": "Psy-dub ritual: ancient women at the gates read the omens of war while armor and rage intoxicate. Slaughter called honor, ruins called triumph: lay down your pride, you are just the echo of the dead.",
       "files": {
-        "app": null,
+        "app": "public/echos-of-the-dead.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/echos-of-the-dead.m4a"
         ]
@@ -1142,11 +1142,11 @@
       "tag": null,
       "status": "Published",
       "batch": 6,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "connects",
+      "addedToApp": true,
+      "description": "A thousand tangled threads: the people he mentors, the systems, the teammate losing sleep. They hear fury in his questions, but it is care: he sees how one small crack lands in someone’s chest, because everything connects.",
       "files": {
-        "app": null,
+        "app": "public/everything-connects.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/everything-connects.m4a"
         ]
