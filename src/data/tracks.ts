@@ -75,6 +75,11 @@ export const trackIdSchema = z.enum([
   'showup',
   'downbeat',
   'dont',
+  'forgot',
+  'bitter',
+  'mustang',
+  'neuro',
+  'wild',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -194,6 +199,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'showup',
   'downbeat',
   'dont',
+  'forgot',
+  'bitter',
+  'mustang',
+  'neuro',
+  'wild',
 ]
 
 export const ALBUM = {
@@ -262,6 +272,10 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   untamed: 'forging',
   showup: 'downbeat',
   downbeat: 'showup',
+  mustang: 'wild',
+  wild: 'mustang',
+  forgot: 'bitter',
+  bitter: 'forgot',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1360,6 +1374,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#070a18',
     timing: timingFor('dont'),
     ...lyricsFor('dont'),
+  }),
+  forgot: trackSchema.parse({
+    id: 'forgot',
+    title: 'Forgot To Catch Me',
+    dedication: 'By Dustin',
+    written: '2026-06-06',
+    voice: 'Solo voice',
+    description:
+      'A heart bottled in poison, delicious and tempting, and a promise to always be there that left the room cold. Rusted nails hold her still in a chair of withered wood: you hurt me deep, then walked away, and forgot to catch me when I fell.',
+    audioFile: 'forgot-to-catch-me.mp3',
+    duration: 239,
+    art: { full: 'assets/forgot.webp', thumb: 'assets/forgot-512.webp' },
+    themeColor: '#0a0a13',
+    timing: timingFor('forgot'),
+    ...lyricsFor('forgot'),
+  }),
+  bitter: trackSchema.parse({
+    id: 'bitter',
+    title: 'What’s bitter is sweet',
+    dedication: 'By Dustin',
+    written: '2026-06-06',
+    voice: 'A woman’s voice',
+    description:
+      'A gothic lament that begins in a whisper, don’t do it, and builds to anguished belts: a bittersweet lie, betrayal that kills within, a forbidden nightmare of her own demise. Stop your lies, hear my cries, and save me from myself.',
+    audioFile: 'whats-bitter-is-sweet.mp3',
+    duration: 269,
+    art: { full: 'assets/bitter.webp', thumb: 'assets/bitter-512.webp' },
+    themeColor: '#060c13',
+    timing: timingFor('bitter'),
+    ...lyricsFor('bitter'),
+  }),
+  mustang: trackSchema.parse({
+    id: 'mustang',
+    title: 'The Mustang and the Moose',
+    dedication: 'By Dustin',
+    written: '2026-05-19',
+    voice: 'Dustin’s voice',
+    description:
+      'She is wildfire on the valley wind, kicking against every fence; he moves like patient mountains, a steady shadow at her side. Two halves of one bright soul under the northern lights: from him she learns a steady pace, from her he learns to run.',
+    audioFile: 'the-mustang-and-the-moose.mp3',
+    duration: 413,
+    art: { full: 'assets/mustang.webp', thumb: 'assets/mustang-512.webp' },
+    themeColor: '#010f07',
+    timing: timingFor('mustang'),
+    ...lyricsFor('mustang'),
+  }),
+  neuro: trackSchema.parse({
+    id: 'neuro',
+    title: 'Neurotypical (So Typical)',
+    dedication: 'By Dustin',
+    written: '2026-05-18',
+    voice: 'Solo voice',
+    description:
+      'You say I talk too fast? My mind runs on broadband while yours buffers on dial-up. An electro-pop banger that goes from sly to full-throttle: he thinks in networks and reads between the lines, and he is not broken.',
+    audioFile: 'neurotypical-so-typical.mp3',
+    duration: 261,
+    art: { full: 'assets/neuro.webp', thumb: 'assets/neuro-512.webp' },
+    themeColor: '#000f0f',
+    timing: timingFor('neuro'),
+    ...lyricsFor('neuro'),
+  }),
+  wild: trackSchema.parse({
+    id: 'wild',
+    title: 'Wild and Free',
+    dedication: 'By Dustin',
+    written: '2026-05-16',
+    voice: 'Solo voice',
+    description:
+      'Raspy southern rock with a violin: she wears the weight of every season and laughs it off, the scars they named were never hers, and the voice inside never wins for long. She is the mustang, wild and free, and she turns his shadows into day.',
+    audioFile: 'wild-and-free.mp3',
+    duration: 350,
+    art: { full: 'assets/wild.webp', thumb: 'assets/wild-512.webp' },
+    themeColor: '#160604',
+    timing: timingFor('wild'),
+    ...lyricsFor('wild'),
   }),
 }
 

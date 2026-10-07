@@ -1866,11 +1866,11 @@
       "tag": null,
       "status": "Published",
       "batch": 9,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "forgot",
+      "addedToApp": true,
+      "description": "A heart bottled in poison, delicious and tempting, and a promise to always be there that left the room cold. Rusted nails hold her still in a chair of withered wood: you hurt me deep, then walked away, and forgot to catch me when I fell.",
       "files": {
-        "app": null,
+        "app": "public/forgot-to-catch-me.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/forgot-to-catch-me.m4a"
         ]
@@ -1916,11 +1916,11 @@
       "tag": null,
       "status": "Published",
       "batch": 9,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "bitter",
+      "addedToApp": true,
+      "description": "A gothic lament that begins in a whisper, don’t do it, and builds to anguished belts: a bittersweet lie, betrayal that kills within, a forbidden nightmare of her own demise. Stop your lies, hear my cries, and save me from myself.",
       "files": {
-        "app": null,
+        "app": "public/whats-bitter-is-sweet.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/what’s-bitter-is-sweet.m4a"
         ]
@@ -2092,11 +2092,11 @@
       "tag": null,
       "status": "Published",
       "batch": 10,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "mustang",
+      "addedToApp": true,
+      "description": "She is wildfire on the valley wind, kicking against every fence; he moves like patient mountains, a steady shadow at her side. Two halves of one bright soul under the northern lights: from him she learns a steady pace, from her he learns to run.",
       "files": {
-        "app": null,
+        "app": "public/the-mustang-and-the-moose.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-mustang-and-the-moose.m4a"
         ]
@@ -2165,11 +2165,11 @@
       "tag": null,
       "status": "Published",
       "batch": 10,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "neuro",
+      "addedToApp": true,
+      "description": "You say I talk too fast? My mind runs on broadband while yours buffers on dial-up. An electro-pop banger that goes from sly to full-throttle: he thinks in networks and reads between the lines, and he is not broken.",
       "files": {
-        "app": null,
+        "app": "public/neurotypical-so-typical.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/neurotypical-so-typical.m4a"
         ]
@@ -2189,11 +2189,11 @@
       "tag": null,
       "status": "Published",
       "batch": 10,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "wild",
+      "addedToApp": true,
+      "description": "Raspy southern rock with a violin: she wears the weight of every season and laughs it off, the scars they named were never hers, and the voice inside never wins for long. She is the mustang, wild and free, and she turns his shadows into day.",
       "files": {
-        "app": null,
+        "app": "public/wild-and-free.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/wild-and-free.m4a"
         ]
