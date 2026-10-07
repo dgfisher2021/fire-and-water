@@ -276,11 +276,11 @@
       "tag": null,
       "status": "Published",
       "batch": 2,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "firemix",
+      "addedToApp": true,
+      "description": "Fire and Water meets Not Afraid to Change: you lit the fire inside of me, and I don’t want to sabotage myself. Room to trip and try again, a little smoke and a little spark, enough to make a path through the dark.",
       "files": {
-        "app": null,
+        "app": "public/fire-and-water-mashup.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/fire-and-water.m4a"
         ]
@@ -1068,11 +1068,11 @@
       "tag": null,
       "status": "Published",
       "batch": 5,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "desert",
+      "addedToApp": true,
+      "description": "An empress watches from afar as the prince of a stone kingdom borrows seconds with a blade that holds the sands of time. Persian vocalisations over war drums: rewind every mistake, but soon you learn you can’t change fate.",
       "files": {
-        "app": null,
+        "app": "public/shadows-of-the-desert.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/shadows-of-the-desert.m4a"
         ]
@@ -1416,11 +1416,11 @@
       "tag": null,
       "status": "Published",
       "batch": 7,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "femme",
+      "addedToApp": true,
+      "description": "I Choose Me in a velvet room: ruby lipstick, a poison smile and a dagger up her sleeve. Dark electropop where the shell cracks and something lethal grows: the sin and the sermon, velvet, steel and fearless.",
       "files": {
-        "app": null,
+        "app": "public/i-choose-me-femme-fatale-noir-remix.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-choose-me-femme-fatale-noir-remix.m4a"
         ]
@@ -2288,11 +2288,11 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "dopamine",
+      "addedToApp": true,
+      "description": "Four-on-the-floor EDM for a brain that runs ahead: he cuts in mid-sentence chasing a spark, sees your smile go flat, and fills with dread. He didn’t mean to be mean, he just needed that hit of dopamine.",
       "files": {
-        "app": null,
+        "app": "public/dopamine-didnt-mean-to-be-mean.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/dopamine-didn’t-mean-to-be-mean.m4a"
         ]
@@ -2312,11 +2312,11 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "wolf",
+      "addedToApp": true,
+      "description": "Neo-pagan folk for the quiet one guarding the systems through silent nights, catching the cracks the rest miss in haste. Different wolves, one pack: you are not a lone wolf, you are not alone.",
       "files": {
-        "app": null,
+        "app": "public/the-lone-wolf.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/the-lone-wolf.m4a"
         ]

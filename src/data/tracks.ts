@@ -85,6 +85,11 @@ export const trackIdSchema = z.enum([
   'working',
   'people',
   'friction',
+  'dopamine',
+  'wolf',
+  'desert',
+  'firemix',
+  'femme',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -214,6 +219,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'working',
   'people',
   'friction',
+  'dopamine',
+  'wolf',
+  'desert',
+  'firemix',
+  'femme',
 ]
 
 export const ALBUM = {
@@ -288,6 +298,9 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   bitter: 'forgot',
   working: 'faith',
   people: 'working',
+  dopamine: 'neuro',
+  femme: 'choose',
+  firemix: 'fire',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1536,6 +1549,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#120900',
     timing: timingFor('friction'),
     ...lyricsFor('friction'),
+  }),
+  dopamine: trackSchema.parse({
+    id: 'dopamine',
+    title: 'Dopamine (Didn’t Mean to Be Mean)',
+    dedication: 'By Dustin',
+    written: '2026-05-14',
+    voice: 'Solo voice',
+    description:
+      'Four-on-the-floor EDM for a brain that runs ahead: he cuts in mid-sentence chasing a spark, sees your smile go flat, and fills with dread. He didn’t mean to be mean, he just needed that hit of dopamine.',
+    audioFile: 'dopamine-didnt-mean-to-be-mean.mp3',
+    duration: 256,
+    art: { full: 'assets/dopamine.webp', thumb: 'assets/dopamine-512.webp' },
+    themeColor: '#010d16',
+    timing: timingFor('dopamine'),
+    ...lyricsFor('dopamine'),
+  }),
+  wolf: trackSchema.parse({
+    id: 'wolf',
+    title: 'The Lone Wolf',
+    dedication: 'By Dustin',
+    written: '2026-05-13',
+    voice: 'A woman’s voice',
+    description:
+      'Neo-pagan folk for the quiet one guarding the systems through silent nights, catching the cracks the rest miss in haste. Different wolves, one pack: you are not a lone wolf, you are not alone.',
+    audioFile: 'the-lone-wolf.mp3',
+    duration: 232,
+    art: { full: 'assets/wolf.webp', thumb: 'assets/wolf-512.webp' },
+    themeColor: '#010d16',
+    timing: timingFor('wolf'),
+    ...lyricsFor('wolf'),
+  }),
+  desert: trackSchema.parse({
+    id: 'desert',
+    title: 'Shadows of the Desert',
+    dedication: 'By Dustin',
+    written: '2026-07-18',
+    voice: 'A woman’s voice',
+    description:
+      'An empress watches from afar as the prince of a stone kingdom borrows seconds with a blade that holds the sands of time. Persian vocalisations over war drums: rewind every mistake, but soon you learn you can’t change fate.',
+    audioFile: 'shadows-of-the-desert.mp3',
+    duration: 257,
+    art: { full: 'assets/desert.webp', thumb: 'assets/desert-512.webp' },
+    themeColor: '#130801',
+    timing: timingFor('desert'),
+    ...lyricsFor('desert'),
+  }),
+  firemix: trackSchema.parse({
+    id: 'firemix',
+    title: 'Fire and Water (Mashup)',
+    dedication: 'From Dustin, to Alex',
+    written: '2026-09-15',
+    voice: 'Solo voice',
+    description:
+      'Fire and Water meets Not Afraid to Change: you lit the fire inside of me, and I don’t want to sabotage myself. Room to trip and try again, a little smoke and a little spark, enough to make a path through the dark.',
+    audioFile: 'fire-and-water-mashup.mp3',
+    duration: 263,
+    art: { full: 'assets/firemix.webp', thumb: 'assets/firemix-512.webp' },
+    themeColor: '#130901',
+    timing: timingFor('firemix'),
+    ...lyricsFor('firemix'),
+  }),
+  femme: trackSchema.parse({
+    id: 'femme',
+    title: 'I Choose Me (Femme Fatale Noir Remix)',
+    dedication: 'By Dustin',
+    written: '2026-06-20',
+    voice: 'A woman’s voice',
+    description:
+      'I Choose Me in a velvet room: ruby lipstick, a poison smile and a dagger up her sleeve. Dark electropop where the shell cracks and something lethal grows: the sin and the sermon, velvet, steel and fearless.',
+    audioFile: 'i-choose-me-femme-fatale-noir-remix.mp3',
+    duration: 220,
+    art: { full: 'assets/femme.webp', thumb: 'assets/femme-512.webp' },
+    themeColor: '#160607',
+    timing: timingFor('femme'),
+    ...lyricsFor('femme'),
   }),
 }
 

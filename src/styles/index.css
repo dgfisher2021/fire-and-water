@@ -409,6 +409,26 @@
   --friction-deep: oklch(0.37 0.14 75);
   --friction-glow: oklch(0.66 0.13 75 / 42%);
   --friction-ink: oklch(0.22 0.04 75);
+  --dopamine: oklch(0.78 0.11 240); /* a galaxy wired into a brain */
+  --dopamine-deep: oklch(0.37 0.12 240);
+  --dopamine-glow: oklch(0.66 0.11 240 / 42%);
+  --dopamine-ink: oklch(0.22 0.04 240);
+  --wolf: oklch(0.78 0.09 239); /* blue moon over the cliff */
+  --wolf-deep: oklch(0.37 0.1 239);
+  --wolf-glow: oklch(0.66 0.09 239 / 42%);
+  --wolf-ink: oklch(0.22 0.04 239);
+  --desert: oklch(0.78 0.1 68); /* sand through the hourglass */
+  --desert-deep: oklch(0.37 0.11 68);
+  --desert-glow: oklch(0.66 0.1 68 / 42%);
+  --desert-ink: oklch(0.22 0.04 68);
+  --firemix: oklch(0.78 0.13 71); /* flame against the wave */
+  --firemix-deep: oklch(0.37 0.14 71);
+  --firemix-glow: oklch(0.66 0.13 71 / 42%);
+  --firemix-ink: oklch(0.22 0.04 71);
+  --femme: oklch(0.78 0.13 18); /* ruby lipstick noir */
+  --femme-deep: oklch(0.37 0.14 18);
+  --femme-glow: oklch(0.66 0.13 18 / 42%);
+  --femme-ink: oklch(0.22 0.04 18);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
@@ -981,6 +1001,36 @@
   --track-deep: var(--friction-deep);
   --track-glow: var(--friction-glow);
   --track-ink: var(--friction-ink);
+}
+:root[data-track='dopamine'] {
+  --track-bright: var(--dopamine);
+  --track-deep: var(--dopamine-deep);
+  --track-glow: var(--dopamine-glow);
+  --track-ink: var(--dopamine-ink);
+}
+:root[data-track='wolf'] {
+  --track-bright: var(--wolf);
+  --track-deep: var(--wolf-deep);
+  --track-glow: var(--wolf-glow);
+  --track-ink: var(--wolf-ink);
+}
+:root[data-track='desert'] {
+  --track-bright: var(--desert);
+  --track-deep: var(--desert-deep);
+  --track-glow: var(--desert-glow);
+  --track-ink: var(--desert-ink);
+}
+:root[data-track='firemix'] {
+  --track-bright: var(--firemix);
+  --track-deep: var(--firemix-deep);
+  --track-glow: var(--firemix-glow);
+  --track-ink: var(--firemix-ink);
+}
+:root[data-track='femme'] {
+  --track-bright: var(--femme);
+  --track-deep: var(--femme-deep);
+  --track-glow: var(--femme-glow);
+  --track-ink: var(--femme-ink);
 }
 
 /* Expose the voice tokens as utilities (text-fire, from-track-bright ...). */
