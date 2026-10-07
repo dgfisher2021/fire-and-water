@@ -153,10 +153,13 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
           className='relative flex h-dvh flex-col overflow-hidden'
           style={insets.style}
         >
+          {/* Sized to the large viewport so the URL bar showing or hiding
+              never re-crops the art; no drift, so it never rescales. */}
           <AmbientImageBackdrop
             images={BACKDROPS}
             activeId={theme}
-            className='absolute z-0'
+            drift={false}
+            className='fixed bottom-auto z-0 h-lvh'
           />
           <GrainOverlay opacity={GRAIN} />
           {children}
@@ -198,6 +201,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
               <AmbientImageBackdrop
                 images={BACKDROPS}
                 activeId={theme}
+                drift={false}
                 className='absolute z-0'
               />
               <GrainOverlay opacity={GRAIN} />
