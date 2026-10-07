@@ -184,22 +184,23 @@ export function LyricsReader({
                     // sung line's glass (the list rows' card-at-85% over a
                     // backdrop blur) hugs the whole line, not the pane.
                     className={cn(
-                      'mx-auto -my-0.5 block w-fit max-w-full rounded-lg px-3 py-0.5 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
+                      'mx-auto -my-1 block w-fit max-w-full rounded-lg px-3 py-1 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
                       seekTo &&
                         'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none'
                     )}
                   >
                     {word !== null && lineState(i, j) === 'current' ? (
                       // Inside the washed line the sung word sits on a pill
-                      // of the song's colour in its ink, so it reads on a
-                      // graphite voice as well as an ember one, and pops in
-                      // on the kit's scale preset (keyed per word, so each
-                      // one animates); sung words settle, upcoming ones wait
-                      // at half strength.
+                      // of the song's colour, its text a very dark shade of
+                      // that colour with a faint light edge (on navy; paper
+                      // keeps white on the deep pill), and pops in on the
+                      // kit's scale preset (keyed per word, so each one
+                      // animates); sung words settle, upcoming ones wait at
+                      // four-fifths, readable on any artwork.
                       <ReadAlongText
                         text={line}
                         activeWord={word}
-                        className='[&_[data-state=current]]:[text-shadow:none] [&_[data-state=upcoming]]:text-foreground/50'
+                        className='[&_[data-state=current]]:[text-shadow:none] [&_[data-state=upcoming]]:text-foreground/80'
                         renderToken={(token, state) =>
                           state === 'current' ? (
                             <>
@@ -209,7 +210,7 @@ export function LyricsReader({
                                 per='word'
                                 preset='scale'
                                 duration={0.28}
-                                className='inline-block rounded-md bg-primary px-1.5 text-primary-foreground [text-shadow:none]'
+                                className='inline-block rounded-md bg-primary px-1.5 text-primary-foreground [text-shadow:none] dark:text-[color-mix(in_oklab,var(--track-deep)_70%,black)] dark:[text-shadow:0_1px_0_color-mix(in_oklab,var(--track-bright)_55%,white)]'
                               >
                                 {token.word}
                               </MotionText>

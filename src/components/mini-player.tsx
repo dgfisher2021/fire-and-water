@@ -1,7 +1,8 @@
 import { useNavigate } from '@tanstack/react-router'
-import { ChevronUp, Pause, Play } from 'lucide-react'
+import { ChevronDown, ChevronUp, Pause, Play } from 'lucide-react'
 import { Button, LoaderSpinner, MobileProgressRing } from '@dust-ui/ui'
-import { TRACKS } from '@/data/tracks'
+import { TRACKS, type TrackId } from '@/data/tracks'
+import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { OverflowMarquee } from '@/components/overflow-marquee'
 
@@ -12,32 +13,59 @@ declare module '@tanstack/react-router' {
   }
 }
 
+export type MiniPlayerProps = {
+  /** The song shown; the one loaded by default. */
+  track?: TrackId
+  /**
+   * What a tap on the cover, title or caret does; opens Now Playing
+   * (folded) by default. Now Playing passes its own unfold here.
+   */
+  onOpen?: () => void
+  /** Up opens Now Playing from another screen; down unfolds it in place. */
+  caret?: 'up' | 'down'
+  className?: string
+}
+
 /**
  * The strip above the nav: cover, title, a progress ring around play, and
- * a way back to Now Playing for the song in progress. It is the folded
- * control, so it opens Now Playing folded too, with the words showing.
+ * a caret. Above the nav it opens Now Playing folded, with the words
+ * showing; on Now Playing it is the folded control when the listener
+ * picks it over the waveform bar, and the same taps unfold the card.
  */
-export function MiniPlayer() {
+export function MiniPlayer({
+  track: shown,
+  onOpen,
+  caret = 'up',
+  className,
+}: MiniPlayerProps) {
   const navigate = useNavigate()
-  const track = usePlayer((s) => s.track)
-  const status = usePlayer((s) => s.status)
-  const progress = usePlayer(selectProgress)
+  const loaded = usePlayer((s) => s.track)
+  const track = shown ?? loaded
+  // Status and progress belong to the loaded song; another one rests.
+  const status = usePlayer((s) => (s.track === track ? s.status : 'idle'))
+  const progress = usePlayer((s) => (s.track === track ? selectProgress(s) : 0))
   const play = usePlayer((s) => s.play)
   const pause = usePlayer((s) => s.pause)
   if (!track) return null
   const t = TRACKS[track]
   const playing = status === 'playing'
-  const open = () =>
-    void navigate({
-      to: '/lyrics/$track',
-      params: { track },
-      state: { collapsed: true },
-    })
+  const open =
+    onOpen ??
+    (() =>
+      void navigate({
+        to: '/lyrics/$track',
+        params: { track },
+        state: { collapsed: true },
+      }))
+  const Caret = caret === 'up' ? ChevronUp : ChevronDown
 
   return (
     <div
       data-slot='mini-player'
-      className='flex animate-in items-center gap-3 rounded-lg border border-border bg-card/85 p-2 shadow-[0_12px_32px_-14px_var(--track-glow)] backdrop-blur-md duration-300 fade-in-0 slide-in-from-bottom-2'
+      className={cn(
+        'flex animate-in items-center gap-3 rounded-lg border border-border bg-card/85 p-2 shadow-[0_12px_32px_-14px_var(--track-glow)] backdrop-blur-md duration-300 fade-in-0 slide-in-from-bottom-2',
+        className
+      )}
     >
       <button
         type='button'
@@ -90,11 +118,11 @@ export function MiniPlayer() {
       <Button
         variant='ghost'
         size='icon'
-        aria-label='Open Now Playing'
+        aria-label={caret === 'up' ? 'Open Now Playing' : 'Expand player'}
         onClick={open}
         className='size-8 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
       >
-        <ChevronUp aria-hidden />
+        <Caret aria-hidden />
       </Button>
     </div>
   )

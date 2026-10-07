@@ -1,5 +1,6 @@
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import {
+  ChevronDown,
   ChevronUp,
   Download,
   ListMusic,
@@ -331,25 +332,33 @@ export function NowPlayingCard({
   )
 }
 
-export type NowPlayingBarProps = NowPlayingProps & {
-  /** Unfolds the card: a tap anywhere on the bar but its controls. */
+export type NowPlayingBarProps = Omit<
+  NowPlayingProps,
+  'playing' | 'onPlayPause'
+> & {
+  /** Unfolds the card: a tap anywhere on the bar but the waveform. */
   onExpand?: () => void
+  /** Play for a bar with no card to unfold (Compare, short screens). */
+  playing?: boolean
+  onPlayPause?: () => void
 }
 
 /**
  * The folded Now Playing control, under the same title row: cover, the
- * song's waveform as the scrubber with the time, and play. A tap on the
- * bar (the cover is the keyboard target) unfolds the card.
+ * song's waveform as the scrubber with the time, and a caret. The nav's
+ * center button plays, so where the bar can unfold the card it carries a
+ * caret instead of play: a tap on the cover, the caret or the bar unfolds
+ * it, and the waveform seeks. With nothing to unfold it keeps play.
  */
 export function NowPlayingBar({
   track,
   progress,
   duration,
-  playing,
-  loading,
-  onPlayPause,
   onSeek,
   onExpand,
+  playing = false,
+  loading,
+  onPlayPause,
   className,
 }: NowPlayingBarProps) {
   const t = TRACKS[track]
@@ -366,22 +375,11 @@ export function NowPlayingBar({
         className
       )}
     >
-      <button
-        type='button'
-        aria-label='Expand player'
-        disabled={!onExpand}
-        onClick={(e) => {
-          e.stopPropagation()
-          onExpand?.()
-        }}
-        className='shrink-0 cursor-pointer disabled:cursor-default'
-      >
-        <img
-          src={t.art.thumb}
-          alt=''
-          className='size-10 rounded-sm object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
-        />
-      </button>
+      <img
+        src={t.art.thumb}
+        alt=''
+        className='size-10 shrink-0 rounded-sm object-cover shadow-[0_4px_12px_rgb(0_0_0/0.35)]'
+      />
       <div
         className='min-w-0 flex-1 overflow-hidden'
         onClick={(e) => e.stopPropagation()}
@@ -398,12 +396,29 @@ export function NowPlayingBar({
           <span>{formatTime(duration)}</span>
         </div>
       </div>
-      <PlayToggle
-        size='bar'
-        playing={playing}
-        loading={loading}
-        onClick={onPlayPause}
-      />
+      {onExpand ? (
+        <Button
+          variant='ghost'
+          size='icon'
+          aria-label='Expand player'
+          onClick={(e) => {
+            e.stopPropagation()
+            onExpand()
+          }}
+          className='size-10 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
+        >
+          <ChevronDown aria-hidden />
+        </Button>
+      ) : (
+        onPlayPause && (
+          <PlayToggle
+            size='bar'
+            playing={playing}
+            loading={loading}
+            onClick={onPlayPause}
+          />
+        )
+      )}
     </div>
   )
 }
