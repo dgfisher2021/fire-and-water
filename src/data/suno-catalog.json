@@ -427,11 +427,11 @@
       "tag": null,
       "status": "Published",
       "batch": 3,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "working",
+      "addedToApp": true,
+      "description": "You say I kept you in the dark; from where I stood I never saw that fear. Two people reading different warning signs: you thought I was hiding progress, I thought I was buying time. Our maps did not align, but I have been working in good faith.",
       "files": {
-        "app": null,
+        "app": "public/working-in-good-faith.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-1-of-2-as-of-2026-10-06.zip/working-in-good-faith.m4a"
         ]
@@ -1392,11 +1392,11 @@
       "tag": null,
       "status": "Published",
       "batch": 7,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "people",
+      "addedToApp": true,
+      "description": "Honest about the struggle and branded reckless, fragile, faithless. Never faithless: standing in the fire and stepping out. Not begging to be seen, but choosing the team that believes in him; conventional checklists were never his shape. Explicit, kept as sung.",
       "files": {
-        "app": null,
+        "app": "public/people-over-process.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/people-over-process.m4a"
         ]
@@ -1561,11 +1561,11 @@
       "tag": null,
       "status": "Published",
       "batch": 8,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "friction",
+      "addedToApp": true,
+      "description": "A thank-you to the team that holds his scattered branches: Pierce with the plan, Ethan on the portal, Fed shaping the chaos, Omar keeping everyone in the know. If he moves too fast it is his wiring, not his pride, and they keep turning the friction into fuel.",
       "files": {
-        "app": null,
+        "app": "public/friction-into-fuel.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/friction-into-fuel.m4a"
         ]
@@ -2213,11 +2213,11 @@
       "tag": null,
       "status": "Published",
       "batch": 10,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "feelfree",
+      "addedToApp": true,
+      "description": "Left the town that called his brain a fluke and learned to make himself smaller, until Tiff and Pean stood at the water’s edge calling the name he tried to lose. Big rock-country for an ADHD mind finally breathing deep: the fast talk, the deep feel, the storm inside. I feel free.",
       "files": {
-        "app": null,
+        "app": "public/i-feel-free.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/i-feel-free.m4a"
         ]
@@ -2385,11 +2385,11 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "office",
+      "addedToApp": true,
+      "description": "A perfect peer who walked in smiling: a united front with the execs in the room, a door closed while chasing their own name. Dark alt-pop for being someone’s friend only on the surface. Hurt me, break me, use me, and I keep asking why.",
       "files": {
-        "app": null,
+        "app": "public/office-politics.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/office-politics.m4a"
         ]
