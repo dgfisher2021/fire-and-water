@@ -31,8 +31,10 @@ import { lyricsToText } from '@/lib/lyrics-text'
 import { copyText, download, downloadText, share } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
+import { usePrefs } from '@/store/prefs'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { LyricsReader } from '@/components/lyrics-reader'
+import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
@@ -76,6 +78,7 @@ export function LyricsScreen() {
   // folded or unfolded it by hand for this song, or arrived from the mini
   // player asking for it folded; short viewports never show the card.
   const short = useMediaQuery(SHORT_QUERY)
+  const foldedPlayer = usePrefs((s) => s.foldedPlayer)
   const pane = useRef<HTMLDivElement>(null)
   const [scrolledTrack, setScrolledTrack] = useState<TrackId | null>(null)
   const [manual, setManual] = useState<{
@@ -281,19 +284,28 @@ export function LyricsScreen() {
           )}
         >
           <div className='min-h-0 min-w-0 overflow-clip [overflow-clip-margin:24px]'>
-            <NowPlayingBar
-              track={track}
-              duration={duration}
-              progress={progress}
-              onSeek={(ratio) => {
-                if (!isCurrent) play(track)
-                seek(ratio * duration)
-              }}
-              playing={playing}
-              loading={loading}
-              onPlayPause={() => (playing ? pause() : play(track))}
-              onExpand={short ? undefined : () => fold(false)}
-            />
+            {foldedPlayer === 'mini' ? (
+              <MiniPlayer
+                track={track}
+                caret='down'
+                onOpen={short ? undefined : () => fold(false)}
+                className='animate-none'
+              />
+            ) : (
+              <NowPlayingBar
+                track={track}
+                duration={duration}
+                progress={progress}
+                onSeek={(ratio) => {
+                  if (!isCurrent) play(track)
+                  seek(ratio * duration)
+                }}
+                onExpand={short ? undefined : () => fold(false)}
+                playing={playing}
+                loading={loading}
+                onPlayPause={() => (playing ? pause() : play(track))}
+              />
+            )}
           </div>
         </div>
       </div>
