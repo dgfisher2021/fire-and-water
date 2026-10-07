@@ -1891,11 +1891,11 @@
       "tag": null,
       "status": "Published",
       "batch": 9,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "bittercut",
+      "addedToApp": true,
+      "description": "What’s bitter is sweet, cut longer and more cinematic: the whispered don’t do it, the anguished belts, and the plea to stop the lies and save her from herself, with more room for the storm.",
       "files": {
-        "app": null,
+        "app": "public/whats-bitter-is-sweet-cinematic-cut.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/what’s-bitter-is-sweet-cinematic-evanescent-cut.m4a"
         ]
@@ -2116,11 +2116,11 @@
       "tag": null,
       "status": "Published",
       "batch": 10,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "bending",
+      "addedToApp": true,
+      "description": "Cinematic folk-pop without words: rising violin lines over timpani and taiko, a choir stack and hand drums building to a breakdown in a wide hall.",
       "files": {
-        "app": null,
+        "app": "public/string-bending.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/string-bending.m4a"
         ]
@@ -2336,11 +2336,11 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "operatic",
+      "addedToApp": true,
+      "description": "A long ethereal rise: shimmering pads and airy wordless voices over slowly evolving motifs, one chakra at a time.",
       "files": {
-        "app": null,
+        "app": "public/operatic-ascent.mp3",
         "downloads": [
           "dustins-suno-songs-full-download-part-2-of-2-as-of-2026-10-06.zip/operatic-ascent-ethereal-electronic-fusion.m4a"
         ]
@@ -2409,11 +2409,11 @@
       "tag": null,
       "status": "Published",
       "batch": 11,
-      "appId": null,
-      "addedToApp": false,
-      "description": null,
+      "appId": "wildfolk",
+      "addedToApp": true,
+      "description": "Wild and Free as an uplifting neo-folk anthem: warm drums and atmospheric strings under a woman’s voice. The scars they named were never hers; she is the mustang, wild and free, and she turns his shadows into day.",
       "files": {
-        "app": null,
+        "app": "public/wild-and-free-neo-folk-mix.mp3",
         "downloads": []
       }
     },
@@ -2634,6 +2634,29 @@
       "description": "Before he knew the shape of words she held him close and made him brave: her moonchild, raised on tides and bedtime tales of killer whales. Two water hearts under the same wide moon, and a promise to be right here, the way she was always there.",
       "files": {
         "app": "public/always-there-for-me.mp3",
+        "downloads": []
+      }
+    },
+    {
+      "id": 107,
+      "title": "Dream, Deduce, Design",
+      "date": "2026-10-07",
+      "weekday": "Wednesday",
+      "version": "v6",
+      "type": null,
+      "duration": "5:11",
+      "durationSeconds": 311,
+      "style": "Dark atmospheric ultra-hypnotic trance, ritual cinematic electronic production with pulsing low cello ostinato and tense layered strings. Begin with a shadowed sparse intro, restrained sub pulse and distant string harmonics; steadily add clipped four-on-the-floor kick, dry snare, ticking percussion, and widening synth layers. Build in long patient waves, rising string inversions and filtered synth tension, then open into powerful driving peaks with soaring layered strings and a commanding male vocoder lead. Repeated chorus phrases feel mantra-like and relentless; bridge drops to intimate low pulse before a monumental cinematic ascent into the final section. Wide, deep, dramatic mix, controlled low end, crisp transients, escalating intensity.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "dream",
+      "addedToApp": true,
+      "description": "His name as a creed, three verbs to a letter down DUSTIN FISHER: dream, deduce, design; understand, undertake, update; study, suggest, share. Hypnotic ritual trance over a low cello, climbing all the way.",
+      "files": {
+        "app": "public/dream-deduce-design.mp3",
         "downloads": []
       }
     }
