@@ -59,19 +59,27 @@ export function ArtworkStage({
         <MotionCarouselContent className='size-full rounded-xl shadow-[0_24px_60px_rgb(0_0_0/0.55)]'>
           {TRACK_ORDER.map((id, i) => {
             const hook = hookFor(id)
+            const n = TRACK_ORDER.length
+            const near = (i - index + n) % n <= 1 || (index - i + n) % n <= 1
             // Only the showing slide moves; the rest stay still art, so no
             // hidden clip ever plays.
-            return hook && i === index ? (
-              <HookLoop
-                key={id}
-                hook={hook}
-                poster={TRACKS[id].art.full}
-                className='size-full rounded-xl'
-              />
-            ) : (
+            if (hook && i === index)
+              return (
+                <HookLoop
+                  key={id}
+                  hook={hook}
+                  poster={TRACKS[id].art.full}
+                  className='size-full rounded-xl'
+                />
+              )
+            // Art only on the showing slide and its neighbours (thumbs):
+            // 95 covers decoded at once crash iOS tabs.
+            if (!near)
+              return <div key={id} className='size-full rounded-xl bg-muted' />
+            return (
               <img
                 key={id}
-                src={TRACKS[id].art.full}
+                src={i === index ? TRACKS[id].art.full : TRACKS[id].art.thumb}
                 alt={`${TRACKS[id].title} album artwork`}
                 decoding='async'
                 className='size-full rounded-xl object-cover'

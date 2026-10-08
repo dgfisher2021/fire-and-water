@@ -1,12 +1,10 @@
 import { lazy, Suspense } from 'react'
 import { MistBackdrop } from '@dust-ui/3d'
 import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
-import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { cn } from '@/lib/utils'
 import { usePrefs } from '@/store/prefs'
+import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import { AuroraBackdrop } from '@/components/aurora-backdrop'
-
-const IMAGES = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 
 // three.js, fiber and drei load only when the starfield is chosen.
 const StarsBackdrop = lazy(() => import('@/components/stars-backdrop'))
@@ -79,6 +77,7 @@ export type SongBackdropProps = {
 /** The screen's background, per the Background setting. */
 export function SongBackdrop({ theme, className }: SongBackdropProps) {
   const background = usePrefs((s) => s.background)
+  const images = useBackdropImages(theme)
   // The colour field has nothing to re-crop, so it stays an ordinary layer
   // inside the shell; only the photo takes the large-viewport sizing.
   if (background === 'flow') return <FlowBackdrop />
@@ -94,7 +93,7 @@ export function SongBackdrop({ theme, className }: SongBackdropProps) {
     )
   return (
     <AmbientImageBackdrop
-      images={IMAGES}
+      images={images}
       activeId={theme}
       drift={false}
       className={cn('absolute z-0', className)}
