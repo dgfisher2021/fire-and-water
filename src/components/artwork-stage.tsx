@@ -49,7 +49,12 @@ export function ArtworkStage({
         <div
           aria-hidden
           data-slot='artwork-glow'
-          className='absolute -inset-6 -z-10 rounded-4xl bg-track-glow opacity-70 blur-[56px] transition-colors duration-[1800ms]'
+          className='absolute -inset-6 -z-10 rounded-4xl bg-track-glow blur-[56px] transition-[background-color,opacity,scale] duration-[1800ms,150ms,150ms]'
+          // Breathes with the voice while a song plays (--pulse-vocal).
+          style={{
+            opacity: 'calc(0.6 + var(--pulse-vocal, 0) * 0.4)',
+            scale: 'calc(1 + var(--pulse-vocal, 0) * 0.1)',
+          }}
         />
         <MotionCarouselContent className='size-full rounded-xl shadow-[0_24px_60px_rgb(0_0_0/0.55)]'>
           {TRACK_ORDER.map((id, i) => {

@@ -33,7 +33,7 @@ export function nextAfterEnd(
   return isLastTrack(track) ? null : adjacentTrack(track, 1)
 }
 
-type PlayerState = {
+export type PlayerState = {
   /** Track loaded in the audio element; null when nothing is loaded. */
   track: TrackId | null
   status: PlayerStatus
