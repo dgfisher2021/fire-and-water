@@ -297,11 +297,13 @@ export function NowPlayingCard({
           aria-expanded={storyOpen}
           onClick={() => setStoryOpen((open) => !open)}
           className={cn(
-            'min-h-0 min-w-0 flex-1 cursor-pointer text-left text-[12.5px] leading-normal text-foreground/85 transition-colors [text-shadow:0_1px_2px_var(--background)] hover:text-foreground',
-            !storyOpen && 'line-clamp-3'
+            'min-h-0 min-w-0 flex-1 cursor-pointer text-left text-[12.5px] leading-normal text-foreground/85 transition-colors [text-shadow:0_1px_2px_var(--background)] hover:text-foreground'
           )}
         >
-          {t.description}
+          {/* The clamp sits on a span: WebKit ignores line-clamp on a button. */}
+          <span className={cn(!storyOpen && 'line-clamp-3')}>
+            {t.description}
+          </span>
         </button>
         {onCollapse && (
           <Control

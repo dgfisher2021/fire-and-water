@@ -17,10 +17,10 @@ import {
   ProgressiveBlur,
   useShellInsets,
 } from '@dust-ui/ui'
-import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { useToasts } from '@/store/toasts'
+import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import {
   MINI_PLAYER_GAP,
   MINI_PLAYER_H,
@@ -32,7 +32,6 @@ import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
 import { SongBackdrop } from '@/components/song-backdrop'
 
-const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 // Film grain over the artwork, faint enough to read as paper, not noise.
 const GRAIN = 0.05
 
@@ -166,6 +165,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
     strip: mini ? MINI_PLAYER_H : undefined,
   })
   const [root, setRoot] = useState<HTMLElement | null>(null)
+  const backdrops = useBackdropImages(theme)
   const musicReactive = usePrefs((s) => s.musicReactive)
   usePulseVars(musicReactive ? root : null)
 
@@ -196,7 +196,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
     <ShellRootContext.Provider value={root}>
       <div className='relative flex h-dvh items-center justify-center overflow-hidden'>
         <AmbientImageBackdrop
-          images={BACKDROPS}
+          images={backdrops}
           activeId={theme}
           drift={false}
           className='fixed z-0 scale-110 blur-2xl'

@@ -86,6 +86,28 @@ export function LyricsReader({
     (i) => pane.current?.querySelectorAll<HTMLElement>(STANZA)[i],
     { root: pane, enabled: singing }
   )
+  // The pane resizes as the player folds or unfolds; keep the sung line
+  // centred through it. Scrolls the pane only: scrollIntoView would also
+  // scroll the screen behind it.
+  useEffect(() => {
+    const el = pane.current
+    if (!el || !singing || detached) return
+    let height = el.clientHeight
+    const observer = new ResizeObserver(() => {
+      if (el.clientHeight === height) return
+      height = el.clientHeight
+      const line = el.querySelector<HTMLElement>(
+        '[data-slot="lyrics-line"][data-state="current"]'
+      )
+      if (!line) return
+      const box = el.getBoundingClientRect()
+      const at = line.getBoundingClientRect()
+      el.scrollTop += at.top + at.height / 2 - (box.top + box.height / 2)
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [pane, singing, detached])
+
   // Which side of the pane the sung stanza went past, for the way-back pill.
   const sungStanza = position?.stanza ?? null
   const [songAbove, setSongAbove] = useState(false)

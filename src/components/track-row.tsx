@@ -48,6 +48,8 @@ export function TrackRow({
         <img
           src={t.art.thumb}
           alt=''
+          loading='lazy'
+          decoding='async'
           className='size-11 shrink-0 rounded-sm object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
         />
       }
