@@ -15,6 +15,7 @@ import {
 import { Button, LoaderSpinner } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
+import { hookFor } from '@/data/hooks'
 import catalog from '@/data/suno-catalog.json'
 import { TRACKS, type Track, type TrackId } from '@/data/tracks'
 import { audioLabel, formatTime } from '@/lib/format'
@@ -22,6 +23,7 @@ import { download } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
 import { useToasts } from '@/store/toasts'
+import { HookLoop } from '@/components/hook-video'
 import { Waveform } from '@/components/waveform'
 
 /** The Now Playing glass: a light wash over a soft blur, so the artwork stays legible behind it. */
@@ -221,6 +223,8 @@ export type NowPlayingCardProps = NowPlayingProps & {
   onSkipForward: () => void
   /** Folds the card into the bar; the chevron hides without it. */
   onCollapse?: () => void
+  /** Opens the song's hook full screen; with a hook, the cover loops it. */
+  onWatchHook?: () => void
 }
 
 /**
@@ -241,9 +245,11 @@ export function NowPlayingCard({
   onSkipBack,
   onSkipForward,
   onCollapse,
+  onWatchHook,
   className,
 }: NowPlayingCardProps) {
   const t = TRACKS[track]
+  const hook = hookFor(track)
   const style = STYLE.get(track)
   const playMode = usePlayer((s) => s.playMode)
   const cyclePlayMode = usePlayer((s) => s.cyclePlayMode)
@@ -263,11 +269,28 @@ export function NowPlayingCard({
       className={cn(GLASS, 'flex flex-col gap-3 rounded-lg p-4', className)}
     >
       <div className='flex items-start gap-3'>
-        <img
-          src={t.art.thumb}
-          alt=''
-          className='size-[72px] shrink-0 rounded-md object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-        />
+        {hook && onWatchHook ? (
+          <button
+            type='button'
+            aria-label={`Watch the ${t.title} hook`}
+            onClick={onWatchHook}
+            className='relative size-[72px] shrink-0 cursor-pointer overflow-hidden rounded-md shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          >
+            <HookLoop hook={hook} poster={t.art.thumb} className='size-full' />
+            <span
+              aria-hidden
+              className='absolute right-1 bottom-1 flex size-5 items-center justify-center rounded-sm bg-card/75 text-foreground backdrop-blur-sm'
+            >
+              <Play className='ml-px size-3 fill-current' />
+            </span>
+          </button>
+        ) : (
+          <img
+            src={t.art.thumb}
+            alt=''
+            className='size-[72px] shrink-0 rounded-md object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+          />
+        )}
         {/* The song's meaning, three lines at a time; a tap shows the rest. */}
         <button
           type='button'

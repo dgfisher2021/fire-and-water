@@ -1,6 +1,8 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
+import { Clapperboard } from 'lucide-react'
+import { Button, MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
+import { hookFor } from '@/data/hooks'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { formatTime } from '@/lib/format'
 import { filterTracks } from '@/lib/search'
@@ -14,6 +16,7 @@ import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
+import { HookViewer } from '@/components/hook-video'
 import { PlayButton } from '@/components/play-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
@@ -129,6 +132,8 @@ export function AlbumScreen() {
   // The stage above keeps album order; only the list re-sorts.
   const track = TRACK_ORDER[index]
   const t = TRACKS[track]
+  const hook = hookFor(track)
+  const [watching, setWatching] = useState(false)
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
   const anyPlaying = status === 'playing' || status === 'loading'
 
@@ -229,7 +234,7 @@ export function AlbumScreen() {
               </p>
             </div>
           </div>
-          <div className='mt-4 flex w-full items-center justify-center short:justify-start'>
+          <div className='mt-4 flex w-full items-center justify-center gap-2 short:justify-start'>
             <PlayButton
               playing={isActive && status === 'playing'}
               loading={isActive && status === 'loading'}
@@ -241,6 +246,16 @@ export function AlbumScreen() {
                 }
               }}
             />
+            {hook && (
+              <Button
+                variant='ghost'
+                onClick={() => setWatching(true)}
+                className='h-11 gap-2 rounded-md bg-card/70 px-4 text-[13px] font-medium tracking-[1px] text-foreground backdrop-blur-md hover:bg-card'
+              >
+                <Clapperboard className='size-4' aria-hidden />
+                Watch hook
+              </Button>
+            )}
           </div>
         </ArtworkStage>
 
@@ -263,6 +278,14 @@ export function AlbumScreen() {
           {list}
         </div>
       </div>
+      {hook && watching && (
+        <HookViewer
+          hook={hook}
+          title={t.title}
+          poster={t.art.full}
+          onClose={() => setWatching(false)}
+        />
+      )}
     </Screen>
   )
 }

@@ -38,13 +38,14 @@ export default defineConfig({
         globIgnores: [
           '**/*.m4a',
           '**/*.mp3',
+          '**/*.mp4',
           '**/*-cyrillic*',
           '**/*-vietnamese*',
           '**/*-latin-ext*',
         ],
         navigateFallback: 'index.html',
         runtimeCaching: [
-          { urlPattern: /\.(m4a|mp3)$/, handler: 'NetworkOnly' },
+          { urlPattern: /\.(m4a|mp3|mp4)$/, handler: 'NetworkOnly' },
         ],
       },
     }),
