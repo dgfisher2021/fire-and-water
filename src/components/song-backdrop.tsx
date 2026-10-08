@@ -2,6 +2,7 @@ import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { cn } from '@/lib/utils'
 import { usePrefs } from '@/store/prefs'
+import { AuroraBackdrop } from '@/components/aurora-backdrop'
 
 const IMAGES = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 
@@ -54,6 +55,7 @@ export function SongBackdrop({ theme, className }: SongBackdropProps) {
   // The colour field has nothing to re-crop, so it stays an ordinary layer
   // inside the shell; only the photo takes the large-viewport sizing.
   if (background === 'flow') return <FlowBackdrop />
+  if (background === 'aurora') return <AuroraBackdrop theme={theme} />
   return (
     <AmbientImageBackdrop
       images={IMAGES}
