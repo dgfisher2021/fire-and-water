@@ -5,6 +5,7 @@ import {
   CloudDownload,
   Download,
   ExternalLink,
+  Settings2,
   Share2,
 } from 'lucide-react'
 import {
@@ -12,15 +13,12 @@ import {
   MobileListRow,
   MobilePageHeader,
   QRCode,
-  SegmentedControl,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
 import { download, share } from '@/lib/share'
-import { usePrefs, type FoldedPlayer } from '@/store/prefs'
 import { useToasts } from '@/store/toasts'
-import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
@@ -49,8 +47,6 @@ export function MoreScreen() {
   const framed = useFramed()
   const navigate = useNavigate()
   const [picking, setPicking] = useState<'download' | 'drive' | null>(null)
-  const foldedPlayer = usePrefs((s) => s.foldedPlayer)
-  const setFoldedPlayer = usePrefs((s) => s.setFoldedPlayer)
 
   return (
     <Screen
@@ -60,38 +56,18 @@ export function MoreScreen() {
           title={
             <span className='font-display text-[26px] font-medium'>More</span>
           }
-          subtitle='Appearance, sharing, downloads and the story'
+          subtitle='Settings, sharing, downloads and the story'
           statusBarInset={framed}
         />
       }
     >
       <div className='flex flex-col gap-5 px-4 pt-1'>
-        <MobileListGroup
-          label='Appearance'
-          footer='Light or dark, a theme preset, neutrals, corner radius and density; the active song always colors the accent. The folded player is how Now Playing looks with its card put away: the waveform you can scrub, or the mini player from the Songs tab.'
-        >
+        <MobileListGroup label='Settings'>
           <MobileListRow
-            label='Theme and mode'
-            value='Customize'
-            trailing={<AppearanceButton />}
-          />
-          <MobileListRow
-            label='Folded player'
-            trailing={
-              <div className='w-[188px]'>
-                <SegmentedControl
-                  options={[
-                    { value: 'bar', label: 'Waveform' },
-                    { value: 'mini', label: 'Mini player' },
-                  ]}
-                  value={foldedPlayer}
-                  onChange={(v) => setFoldedPlayer(v as FoldedPlayer)}
-                  // Tall enough for the shell's 44px touch targets, so the
-                  // labels centre in the thumb.
-                  height={44}
-                />
-              </div>
-            }
+            icon={Settings2}
+            label='Settings'
+            value='Theme, background, player'
+            onClick={() => void navigate({ to: '/settings' })}
           />
         </MobileListGroup>
 
