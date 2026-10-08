@@ -9,10 +9,12 @@ import {
   Switch,
 } from '@dust-ui/ui'
 import { ALBUM } from '@/data/tracks'
+import type { VideoAspect } from '@/lib/lyric-video'
 import {
   usePrefs,
   type BackgroundStyle,
   type FoldedPlayer,
+  type VideoLength,
 } from '@/store/prefs'
 import { AppearanceButton } from '@/components/appearance-button'
 import { Screen } from '@/components/screen'
@@ -71,6 +73,10 @@ export function SettingsScreen() {
   const setMusicReactive = usePrefs((s) => s.setMusicReactive)
   const foldedPlayer = usePrefs((s) => s.foldedPlayer)
   const setFoldedPlayer = usePrefs((s) => s.setFoldedPlayer)
+  const videoAspect = usePrefs((s) => s.videoAspect)
+  const setVideoAspect = usePrefs((s) => s.setVideoAspect)
+  const videoLength = usePrefs((s) => s.videoLength)
+  const setVideoLength = usePrefs((s) => s.setVideoLength)
 
   return (
     <Screen
@@ -166,6 +172,45 @@ export function SettingsScreen() {
                   onChange={(v) => setFoldedPlayer(v as FoldedPlayer)}
                   // Tall enough for the shell's 44px touch targets, so the
                   // labels centre in the thumb.
+                  height={44}
+                />
+              </div>
+            }
+          />
+        </MobileListGroup>
+        <MobileListGroup
+          label='Lyric video'
+          footer='Make one from the “…” menu on Now Playing: the art, the title and the sung lines over the song, recorded in your browser and ready to share.'
+        >
+          <MobileListRow
+            label='Shape'
+            trailing={
+              <div className='w-[188px]'>
+                <SegmentedControl
+                  options={[
+                    { value: '9:16', label: '9:16' },
+                    { value: '1:1', label: '1:1' },
+                    { value: '16:9', label: '16:9' },
+                  ]}
+                  value={videoAspect}
+                  onChange={(v) => setVideoAspect(v as VideoAspect)}
+                  height={44}
+                />
+              </div>
+            }
+          />
+          <MobileListRow
+            label='Length'
+            trailing={
+              <div className='w-[188px]'>
+                <SegmentedControl
+                  options={[
+                    { value: '30', label: '30 s' },
+                    { value: '60', label: '60 s' },
+                    { value: 'full', label: 'Song' },
+                  ]}
+                  value={videoLength}
+                  onChange={(v) => setVideoLength(v as VideoLength)}
                   height={44}
                 />
               </div>

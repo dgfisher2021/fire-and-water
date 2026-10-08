@@ -35,6 +35,7 @@ import { selectProgress, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { useMediaQuery } from '@/hooks/use-media-query'
 import { HookViewer } from '@/components/hook-video'
+import { LyricVideoSheet } from '@/components/lyric-video-sheet'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
@@ -75,6 +76,7 @@ export function LyricsScreen() {
   const setCarouselIndex = usePlayer((s) => s.setCarouselIndex)
   const [sheet, setSheet] = useState(false)
   const [watching, setWatching] = useState(false)
+  const [filming, setFilming] = useState(false)
 
   // The card folds to a bar once the words have scrolled up (or the pane
   // follows the song there) and unfolds at the top, unless the reader has
@@ -183,6 +185,9 @@ export function LyricsScreen() {
         }),
     },
     { label: 'Share song', onClick: onShare },
+    ...(t.lyrics.length > 0 && t.timing
+      ? [{ label: 'Make a lyric video', onClick: () => setFilming(true) }]
+      : []),
     {
       label: `Download ${audioLabel(t.audioFile, sizes[t.audioFile as keyof typeof sizes])}`,
       onClick: () => download(t.audioFile),
@@ -374,6 +379,9 @@ export function LyricsScreen() {
 
       {actionSheet}
       {hookViewer}
+      {filming && (
+        <LyricVideoSheet track={t} onClose={() => setFilming(false)} />
+      )}
     </Screen>
   )
 }
