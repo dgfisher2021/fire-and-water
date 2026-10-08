@@ -1,5 +1,6 @@
 import { useNavigate } from '@tanstack/react-router'
 import { Check, Cloudy, Image, Sparkles, Stars, Waves } from 'lucide-react'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import {
   Button,
   MobileListGroup,
@@ -17,8 +18,6 @@ import {
   type VideoLength,
 } from '@/store/prefs'
 import { AppearanceButton } from '@/components/appearance-button'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
 
 /** Every background the app can draw, in the order the list shows them. */
 const BACKGROUNDS: {
@@ -65,7 +64,7 @@ const BACKGROUNDS: {
  * Now Playing looks with its card put away.
  */
 export function SettingsScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
   const background = usePrefs((s) => s.background)
   const setBackground = usePrefs((s) => s.setBackground)
@@ -79,7 +78,7 @@ export function SettingsScreen() {
   const setVideoLength = usePrefs((s) => s.setVideoLength)
 
   return (
-    <Screen
+    <MobileAppScreen
       header={
         <MobilePageHeader
           eyebrow={ALBUM.artist}
@@ -104,6 +103,7 @@ export function SettingsScreen() {
     >
       <div className='flex flex-col gap-5 px-4 pt-1'>
         <MobileListGroup
+          glass
           label='Appearance'
           footer='Light or dark, a theme preset, neutrals, corner radius and density. The song playing always colours the accent.'
         >
@@ -115,6 +115,7 @@ export function SettingsScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Background'
           footer='What fills the screen behind the songs. The artwork is the default; the 3D ones load three.js when chosen and work the phone harder.'
         >
@@ -140,6 +141,7 @@ export function SettingsScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Music'
           footer='While a song plays, the background glow swells with the bass and the art’s glow breathes with the voice. Always off with reduced motion.'
         >
@@ -156,6 +158,7 @@ export function SettingsScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Now Playing'
           footer='How Now Playing looks with its card put away: the waveform you can scrub, or the mini player from the Songs tab.'
         >
@@ -179,6 +182,7 @@ export function SettingsScreen() {
           />
         </MobileListGroup>
         <MobileListGroup
+          glass
           label='Lyric video'
           footer='Make one from the “…” menu on Now Playing: the art, the title and the sung lines over the song, recorded in your browser and ready to share.'
         >
@@ -218,6 +222,6 @@ export function SettingsScreen() {
           />
         </MobileListGroup>
       </div>
-    </Screen>
+    </MobileAppScreen>
   )
 }

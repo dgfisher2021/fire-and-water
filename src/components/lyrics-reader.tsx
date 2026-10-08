@@ -8,13 +8,15 @@ import {
 import { ChevronsDown, ChevronsUp } from 'lucide-react'
 import { MotionInView, MotionText } from '@dust-ui/motion'
 import {
+  activeLyricsPosition,
+  activeLyricsWord,
   Button,
   isLyricsLabel,
+  type LyricsTiming,
   ReadAlongText,
   useFollowScroll,
   useScrollFocus,
 } from '@dust-ui/ui'
-import { activePosition, activeWord, type LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
 
 const STANZA = '[data-slot="lyrics-stanza"]'
@@ -71,9 +73,10 @@ export function LyricsReader({
   const own = useRef<HTMLDivElement>(null)
   const pane = ref ?? own
   const singing = time !== undefined && timing !== undefined
-  const position = singing ? activePosition(timing, time) : null
+  const position = singing ? activeLyricsPosition(timing, time) : null
   // Word by word inside the sung line when the timing has word starts.
-  const word = singing && position ? activeWord(timing, position, time) : null
+  const word =
+    singing && position ? activeLyricsWord(timing, position, time) : null
   const seekTo =
     onSeekLine && timing
       ? (stanza: number, line: number) =>

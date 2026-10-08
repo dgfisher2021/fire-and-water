@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { ArrowUpDown } from 'lucide-react'
+import { useMobileShellRoot } from '@dust-ui/blocks'
 import { Button, SheetAction, type SheetActionAction } from '@dust-ui/ui'
 import { ALBUM_SORTS, type AlbumSort } from '@/lib/sort'
-import { useShellRoot } from '@/components/shell-context'
 
 const SORT_LABELS: Record<AlbumSort, string> = {
   album: 'Album order',
@@ -22,7 +22,7 @@ export type SortButtonProps = {
  * shell root, over the nav.
  */
 export function SortButton({ value, onChange }: SortButtonProps) {
-  const shellRoot = useShellRoot()
+  const shellRoot = useMobileShellRoot()
   const [open, setOpen] = useState(false)
   const actions: SheetActionAction[] = ALBUM_SORTS.map((sort) => ({
     // The current order keeps the primary tone; the rest read as text.

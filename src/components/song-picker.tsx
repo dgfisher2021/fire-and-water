@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react'
+import { useMobileShellRoot } from '@dust-ui/blocks'
 import {
   filterByText,
   MobileListGroup,
@@ -6,7 +7,6 @@ import {
   SheetBottom,
 } from '@dust-ui/ui'
 import { TRACK_ORDER, trackSearchText, type TrackId } from '@/data/tracks'
-import { useShellRoot } from '@/components/shell-context'
 import { TrackRow } from '@/components/track-row'
 
 export type SongPickerProps = {
@@ -36,7 +36,7 @@ export function SongPicker({
   onSelect,
   onClose,
 }: SongPickerProps) {
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const [query, setQuery] = useState('')
   const shown = filterByText([...songs], query, trackSearchText)
   return (
@@ -58,6 +58,7 @@ export function SongPicker({
           placeholder='Search songs'
         />
         <MobileListGroup
+          glass
           role='listbox'
           aria-label={title}
           footer={shown.length === 0 ? `No song matches “${query}”` : undefined}

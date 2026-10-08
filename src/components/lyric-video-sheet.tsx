@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Download, Film, Share2 } from 'lucide-react'
+import { useMobileShellRoot } from '@dust-ui/blocks'
 import {
   Button,
   downloadUrl,
@@ -15,7 +16,6 @@ import {
 } from '@/lib/lyric-video'
 import { usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
-import { useShellRoot } from '@/components/shell-context'
 
 const LENGTHS: Record<string, number> = { '30': 30, '60': 60 }
 
@@ -32,11 +32,11 @@ type Phase =
 
 /**
  * Make a lyric video of the song in the browser: choose where it starts,
- * record (in real time, out loud), then share or downloadUrl the file. The
+ * record (in real time, out loud), then share or download the file. The
  * shape and length come from Settings, Lyric video.
  */
 export function LyricVideoSheet({ track, onClose }: LyricVideoSheetProps) {
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const aspect = usePrefs((s) => s.videoAspect)
   const length = usePrefs((s) => s.videoLength)
   const pause = usePlayer((s) => s.pause)

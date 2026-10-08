@@ -1,7 +1,14 @@
-import { lazy, Suspense } from 'react'
+import {
+  lazy,
+  Suspense,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import { MistBackdrop } from '@dust-ui/3d'
+import { useMobileShellFramed, useMobileShellRoot } from '@dust-ui/blocks'
 import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
-import { cn } from '@/lib/utils'
 import { usePrefs } from '@/store/prefs'
 import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import { AuroraBackdrop } from '@/components/aurora-backdrop'
@@ -71,32 +78,68 @@ function FlowBackdrop() {
 export type SongBackdropProps = {
   /** The song whose art or colour fills the screen. */
   theme: string
-  className?: string
 }
 
-/** The screen's background, per the Background setting. */
-export function SongBackdrop({ theme, className }: SongBackdropProps) {
+/**
+ * Where this copy of the backdrop sits. Framed, MobileAppShell renders it
+ * twice: inside the phone and blurred across the window. Null until the
+ * first layout says which.
+ */
+function useBackdropPlace() {
+  const framed = useMobileShellFramed()
+  const root = useMobileShellRoot()
+  const box = useRef<HTMLDivElement>(null)
+  const [inside, setInside] = useState<boolean | null>(null)
+  useLayoutEffect(() => {
+    if (!root || !box.current) return
+    setInside(root.contains(box.current))
+  }, [root])
+  const place: 'screen' | 'window' | null = !framed
+    ? 'screen'
+    : inside === null
+      ? null
+      : inside
+        ? 'screen'
+        : 'window'
+  return { box, place }
+}
+
+/**
+ * The screen's background, per the Background setting. Behind the frame it
+ * stays the blurred artwork whatever the setting, so a WebGL background
+ * never runs twice.
+ */
+export function SongBackdrop({ theme }: SongBackdropProps) {
   const background = usePrefs((s) => s.background)
   const images = useBackdropImages(theme)
-  // The colour field has nothing to re-crop, so it stays an ordinary layer
-  // inside the shell; only the photo takes the large-viewport sizing.
-  if (background === 'flow') return <FlowBackdrop />
-  if (background === 'aurora') return <AuroraBackdrop theme={theme} />
-  if (background === 'nebula') return <NebulaBackdrop key={theme} />
-  if (background === 'stars')
-    return (
-      <Suspense
-        fallback={<div className='absolute inset-0 z-0 bg-background' />}
-      >
-        <StarsBackdrop theme={theme} />
-      </Suspense>
-    )
-  return (
+  const { box, place } = useBackdropPlace()
+  const artwork = (
     <AmbientImageBackdrop
       images={images}
       activeId={theme}
       drift={false}
-      className={cn('absolute z-0', className)}
+      className='absolute z-0'
     />
+  )
+  let layer: ReactNode = null
+  if (place === 'window') layer = artwork
+  else if (place === 'screen') {
+    if (background === 'flow') layer = <FlowBackdrop />
+    else if (background === 'aurora') layer = <AuroraBackdrop theme={theme} />
+    else if (background === 'nebula') layer = <NebulaBackdrop key={theme} />
+    else if (background === 'stars')
+      layer = (
+        <Suspense
+          fallback={<div className='absolute inset-0 z-0 bg-background' />}
+        >
+          <StarsBackdrop theme={theme} />
+        </Suspense>
+      )
+    else layer = artwork
+  }
+  return (
+    <div ref={box} className='contents'>
+      {layer}
+    </div>
   )
 }

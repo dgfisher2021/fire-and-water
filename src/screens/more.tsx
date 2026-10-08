@@ -8,6 +8,7 @@ import {
   Settings2,
   Share2,
 } from 'lucide-react'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import {
   downloadUrl,
   MobileListGroup,
@@ -20,8 +21,6 @@ import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
 import { share } from '@/lib/share'
 import { toaster } from '@/lib/toaster'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
 import { TagPill } from '@/components/tag-pill'
 
@@ -31,7 +30,7 @@ const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
 const albumUrl = () =>
   new URL(import.meta.env.BASE_URL, window.location.origin).href
 
-/** "M4A · 3.2 MB" as a format pill and a size, for a downloadUrl row. */
+/** "M4A · 3.2 MB" as a format pill and a size, for a download row. */
 function downloadDetail(id: TrackId) {
   const file = TRACKS[id].audioFile
   return (
@@ -45,12 +44,12 @@ function downloadDetail(id: TrackId) {
 }
 
 export function MoreScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
-  const [picking, setPicking] = useState<'downloadUrl' | 'drive' | null>(null)
+  const [picking, setPicking] = useState<'download' | 'drive' | null>(null)
 
   return (
-    <Screen
+    <MobileAppScreen
       header={
         <MobilePageHeader
           eyebrow={ALBUM.artist}
@@ -63,7 +62,7 @@ export function MoreScreen() {
       }
     >
       <div className='flex flex-col gap-5 px-4 pt-1'>
-        <MobileListGroup label='Settings'>
+        <MobileListGroup glass label='Settings'>
           <MobileListRow
             icon={Settings2}
             label='Settings'
@@ -73,6 +72,7 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Share'
           footer='Point a camera at the code to open the album on another phone, or tap the row to send the link.'
         >
@@ -124,14 +124,15 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Songs'
-          footer='Each downloadUrl is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
+          footer='Each download is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
         >
           <MobileListRow
             icon={Download}
             label='Download a song'
             value={`${TRACK_ORDER.length} songs`}
-            onClick={() => setPicking('downloadUrl')}
+            onClick={() => setPicking('download')}
           />
           {DRIVE_TRACKS.length > 0 && (
             <MobileListRow
@@ -143,7 +144,7 @@ export function MoreScreen() {
           )}
         </MobileListGroup>
 
-        <MobileListGroup label='About'>
+        <MobileListGroup glass label='About'>
           {/* The artist's note: who the songs are about, in his own words. */}
           <div className='flex flex-col gap-3 px-3 py-4'>
             <div className='flex items-center gap-3'>
@@ -185,7 +186,7 @@ export function MoreScreen() {
         </MobileListGroup>
       </div>
 
-      {picking === 'downloadUrl' && (
+      {picking === 'download' && (
         <SongPicker
           title='Download a song'
           detail={downloadDetail}
@@ -215,6 +216,6 @@ export function MoreScreen() {
           onClose={() => setPicking(null)}
         />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

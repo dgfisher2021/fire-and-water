@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
 import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
+import {
+  MobileAppScreen,
+  useMobileShellFramed,
+  useMobileShellRoot,
+} from '@dust-ui/blocks'
 import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
 import {
   Button,
@@ -42,8 +47,6 @@ import { LyricVideoSheet } from '@/components/lyric-video-sheet'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
-import { Screen } from '@/components/screen'
-import { useFramed, useShellRoot } from '@/components/shell-context'
 import { TagPill } from '@/components/tag-pill'
 
 // Landscape phones and the like: no room for the card at all.
@@ -52,8 +55,8 @@ const SHORT_QUERY = '(max-height: 560px)'
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
   const navigate = useNavigate()
-  const framed = useFramed()
-  const shellRoot = useShellRoot()
+  const framed = useMobileShellFramed()
+  const shellRoot = useMobileShellRoot()
   const t = TRACKS[track]
 
   const loadedTrack = usePlayer((s) => s.track)
@@ -243,7 +246,7 @@ export function LyricsScreen() {
   return (
     // No page header: one title row sits above the control in either state,
     // so the words get the height a header would take.
-    <Screen scroll={false}>
+    <MobileAppScreen scroll={false}>
       <div className={cn('shrink-0 px-4 pb-1', framed ? 'pt-[52px]' : 'pt-2')}>
         <div lang={t.lang} className='mb-2 flex items-start gap-3 px-1'>
           <div className='min-w-0 flex-1'>
@@ -386,6 +389,6 @@ export function LyricsScreen() {
       {filming && (
         <LyricVideoSheet track={t} onClose={() => setFilming(false)} />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

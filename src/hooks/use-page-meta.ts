@@ -15,9 +15,9 @@ function trackVars(id: TrackId): Record<string, string> {
     '--track-deep': `var(--${id}-deep)`,
     '--track-glow': `var(--${id}-glow)`,
     '--track-ink': `var(--${id}-ink)`,
-    ...mediaAccentVars('var(--track-bright)', {
+    ...(mediaAccentVars('var(--track-bright)', {
       foreground: 'var(--track-foreground)',
-    }),
+    }) as Record<string, string>),
     '--media-accent-deep': 'var(--track-deep)',
     '--media-glow': 'var(--track-glow)',
   }

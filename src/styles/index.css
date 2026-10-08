@@ -581,23 +581,6 @@
   }
 }
 
-/* Scroll panes hide their bars (the Dust UI mobile kit expects this
-   utility; the library ships the components but not the class). */
-@utility no-scrollbar {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-/* Safe-area padding for notched phones (viewport-fit=cover). */
-@utility pt-safe {
-  padding-top: env(safe-area-inset-top);
-}
-@utility pb-safe {
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
 /* Print: lyrics as a clean typeset sheet. */
 @media print {
   html,
@@ -634,14 +617,4 @@
  * overlays them (sheets and toasts sit at 150 and up). */
 [data-slot='nav-bottom'] {
   z-index: 60 !important;
-}
-
-/*
- * Glass, the Now Playing bar's recipe (card at 85% over a backdrop blur),
- * on the kit's list groups: they paint their card with inline styles and
- * have no glass variant yet, so the blur rides on the slot's card element.
- */
-[data-slot='mobile-list-group'] > div:first-child {
-  background: color-mix(in oklab, var(--card) 85%, transparent) !important;
-  backdrop-filter: blur(12px);
 }

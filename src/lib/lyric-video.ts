@@ -1,6 +1,9 @@
-import { isLyricsLabel } from '@dust-ui/ui'
+import {
+  activeLyricsPosition,
+  activeLyricsWord,
+  isLyricsLabel,
+} from '@dust-ui/ui'
 import { type Track } from '@/data/tracks'
-import { activePosition, activeWord } from '@/lib/read-along'
 
 export type VideoAspect = '9:16' | '1:1' | '16:9'
 
@@ -187,7 +190,7 @@ export async function recordLyricVideo({
     )
 
     // Lyrics: the sung line, with the line before and after dimmed.
-    const pos = timing ? activePosition(timing, t) : null
+    const pos = timing ? activeLyricsPosition(timing, t) : null
     const lyricX = aspect === '16:9' ? W * 0.62 : W / 2
     const lyricW = aspect === '16:9' ? W * 0.62 - pad : W - pad * 2
     const lyricY =
@@ -212,7 +215,7 @@ export async function recordLyricVideo({
       if (singable) {
         ctx.font = `600 ${big}px ${display}`
         const rows = wrap(ctx, current, lyricW)
-        const word = timing ? activeWord(timing, pos, t) : null
+        const word = timing ? activeLyricsWord(timing, pos, t) : null
         let index = 0
         rows.forEach((row, r) => {
           const y = lyricY + (r - (rows.length - 1) / 2) * big * 1.18

@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams } from '@tanstack/react-router'
 import { Copy, Download, RotateCcw, Undo2 } from 'lucide-react'
 import { createPortal } from 'react-dom'
+import {
+  MobileAppScreen,
+  useMobileShellFramed,
+  useMobileShellRoot,
+} from '@dust-ui/blocks'
 import { MotionNumber } from '@dust-ui/motion'
 import {
   Button,
@@ -15,8 +20,6 @@ import {
 import { TRACKS } from '@/data/tracks'
 import { toaster } from '@/lib/toaster'
 import { selectProgress, usePlayer } from '@/store/player'
-import { Screen } from '@/components/screen'
-import { useFramed, useShellRoot } from '@/components/shell-context'
 
 type Marks = Map<string, number>
 type Step = { key: string; before: number | undefined }
@@ -62,8 +65,8 @@ function timingFromMarks(
 export function TimeScreen() {
   const { track } = useParams({ from: '/time/$track' })
   const t = TRACKS[track]
-  const framed = useFramed()
-  const shellRoot = useShellRoot()
+  const framed = useMobileShellFramed()
+  const shellRoot = useMobileShellRoot()
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
   const isCurrent = loaded === track
@@ -133,7 +136,7 @@ export function TimeScreen() {
   }, [next])
 
   return (
-    <Screen
+    <MobileAppScreen
       scroll={false}
       header={
         <MobilePageHeader
@@ -269,6 +272,6 @@ export function TimeScreen() {
           />,
           shellRoot
         )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

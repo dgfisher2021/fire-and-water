@@ -1,12 +1,11 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import { MobilePageHeader } from '@dust-ui/ui'
 import { TRACKS, sameLyricShape, shortTitle, type TrackId } from '@/data/tracks'
 import { selectProgress, usePlayer } from '@/store/player'
 import { LyricsSplit, type LyricsColumn } from '@/components/lyrics-split'
 import { NowPlayingBar } from '@/components/now-playing'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
 
 type Side = 'left' | 'right'
@@ -20,7 +19,7 @@ const voiceVars = (id: TrackId) =>
   }) as CSSProperties
 
 export function CompareScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
   const pair = useSearch({ from: '/compare' })
   const [picking, setPicking] = useState<Side | null>(null)
@@ -91,7 +90,7 @@ export function CompareScreen() {
   }
 
   return (
-    <Screen
+    <MobileAppScreen
       scroll={false}
       header={
         <MobilePageHeader
@@ -136,6 +135,6 @@ export function CompareScreen() {
           onClose={() => setPicking(null)}
         />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

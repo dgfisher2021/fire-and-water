@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { ChevronDown, Pause, Play } from 'lucide-react'
+import type { LyricsTiming } from '@dust-ui/ui'
 import { useSyncedScroll } from '@dust-ui/ui'
-import type { LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
 import { LyricsReader } from '@/components/lyrics-reader'
 

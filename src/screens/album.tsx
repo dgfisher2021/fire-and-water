@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Clapperboard, Pause, Play } from 'lucide-react'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import { MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
@@ -31,8 +32,6 @@ import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { HookViewer } from '@/components/hook-video'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
 import { SortButton } from '@/components/sort-button'
 import { TrackRow } from '@/components/track-row'
 
@@ -111,7 +110,7 @@ function Timeline({ songs }: { songs: readonly TrackId[] }) {
             className='absolute top-[7px] -left-5 size-[11px] rounded-full border-2 border-background bg-primary shadow-[0_0_12px_var(--track-glow)]'
           />
           <GroupHeader title={label} songs={ids.length} />
-          <MobileListGroup aria-label={label}>
+          <MobileListGroup glass aria-label={label}>
             {ids.map((id) => (
               <TrackRow key={id} id={id} value={<DayStamp id={id} />} />
             ))}
@@ -123,7 +122,7 @@ function Timeline({ songs }: { songs: readonly TrackId[] }) {
 }
 
 export function AlbumScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
   // The list order is in the URL (/?sort=title); the collection view keeps it clean.
   const { sort } = useSearch({ from: '/' })
@@ -160,14 +159,14 @@ export function AlbumScreen() {
   })
 
   // Arrows turn the covers, unless the caret is in the search field.
-  const turn = (by: number) => {
+  const turn = (by: 1 | -1) => {
     setInteracted(true)
     step(by)
   }
   useHotkeys({ ArrowRight: () => turn(1), ArrowLeft: () => turn(-1) })
 
   const list = noMatch ? (
-    <MobileListGroup label='Songs' footer={noMatch}>
+    <MobileListGroup glass label='Songs' footer={noMatch}>
       {[]}
     </MobileListGroup>
   ) : sort === 'collection' ? (
@@ -179,7 +178,7 @@ export function AlbumScreen() {
             blurb={collection.blurb}
             songs={ids.length}
           />
-          <MobileListGroup aria-label={collection.label}>
+          <MobileListGroup glass aria-label={collection.label}>
             {ids.map((id) => (
               <TrackRow key={id} id={id} />
             ))}
@@ -195,7 +194,11 @@ export function AlbumScreen() {
       </p>
     </>
   ) : (
-    <MobileListGroup label='Songs' footer={SORT_FOOTER[sort] ?? ALBUM.tagline}>
+    <MobileListGroup
+      glass
+      label='Songs'
+      footer={SORT_FOOTER[sort] ?? ALBUM.tagline}
+    >
       {sortTracks(songs, sort).map((id) => (
         <TrackRow key={id} id={id} />
       ))}
@@ -205,7 +208,7 @@ export function AlbumScreen() {
   return (
     // No page header: the theme button alone at the top, then the stage,
     // whose title does the announcing.
-    <Screen>
+    <MobileAppScreen>
       <div
         className={cn('flex justify-end px-4', framed ? 'pt-[48px]' : 'pt-1')}
       >
@@ -288,7 +291,7 @@ export function AlbumScreen() {
               value={query}
               onChange={setQuery}
               placeholder='Search songs, voices, dedications'
-              background='color-mix(in oklab, var(--card) 85%, transparent)'
+              glass
               trailing={<SortButton value={sort} onChange={setSort} />}
             />
           </div>
@@ -303,6 +306,6 @@ export function AlbumScreen() {
           onClose={() => setWatching(false)}
         />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

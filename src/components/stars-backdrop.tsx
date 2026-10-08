@@ -3,8 +3,8 @@ import { PointMaterial, Points } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as random from 'maath/random'
 import * as THREE from 'three'
+import { useMobileShellRoot } from '@dust-ui/blocks'
 import { useMediaQuery } from '@dust-ui/ui'
-import { useShellRoot } from '@/components/shell-context'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
@@ -158,7 +158,7 @@ function Cloud({
  * Ported from Dustin's StarsScene in react-ui-animation-examples.
  */
 export default function StarsBackdrop({ theme }: { theme: string }) {
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const still = useMediaQuery(REDUCED_MOTION)
   const live = useMemo<Live>(() => ({ root, still }), [root, still])
   // The song's voice: bright, deep and glow, re-read when the song changes.
