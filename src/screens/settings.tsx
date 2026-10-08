@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { Check, Image, Waves } from 'lucide-react'
+import { Check, Image, Sparkles, Waves } from 'lucide-react'
 import {
   Button,
   MobileListGroup,
@@ -36,6 +36,12 @@ const BACKGROUNDS: {
     label: 'Flowing colour',
     detail: 'A drifting field and a glow in the song’s colour',
     icon: Waves,
+  },
+  {
+    value: 'aurora',
+    label: 'Aurora curtains',
+    detail: 'Curtains of light in the song’s colours, lit by the bass',
+    icon: Sparkles,
   },
 ]
 
