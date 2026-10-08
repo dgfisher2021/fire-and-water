@@ -1,10 +1,12 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { Clapperboard } from 'lucide-react'
+import { Clapperboard, Pause, Play } from 'lucide-react'
+import { MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
   filterByText,
   formatTime,
+  LoaderSpinner,
   MobileListGroup,
   MobileSearchBar,
   useHotkeys,
@@ -29,11 +31,9 @@ import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { HookViewer } from '@/components/hook-video'
-import { PlayButton } from '@/components/play-button'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SortButton } from '@/components/sort-button'
-import { TitleMorph } from '@/components/title-morph'
 import { TrackRow } from '@/components/track-row'
 
 const AUTOPLAY_MS = 15_000
@@ -147,6 +147,7 @@ export function AlbumScreen() {
   const hook = hookFor(track)
   const [watching, setWatching] = useState(false)
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
+  const stagePlaying = isActive && status === 'playing'
   const anyPlaying = status === 'playing' || status === 'loading'
 
   const step = (direction: 1 | -1) =>
@@ -222,13 +223,13 @@ export function AlbumScreen() {
           className='animate-fade-up'
         >
           <div className='min-h-[92px]'>
-            <TitleMorph
+            <MotionTextMorph
               as='h2'
               maxChars={22}
               className='font-display text-[28px] leading-[1.15] font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)] short:text-[22px]'
             >
               {t.title}
-            </TitleMorph>
+            </MotionTextMorph>
             <div
               key={track}
               className='animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
@@ -242,17 +243,26 @@ export function AlbumScreen() {
             </div>
           </div>
           <div className='mt-4 flex w-full items-center justify-center gap-2 short:justify-start'>
-            <PlayButton
-              playing={isActive && status === 'playing'}
-              loading={isActive && status === 'loading'}
+            <Button
+              variant='media'
               onClick={() => {
-                if (isActive && status === 'playing') pause()
+                if (stagePlaying) pause()
                 else {
                   play(track)
                   void openLyrics()
                 }
               }}
-            />
+              className='h-11 gap-2 rounded-md px-6 text-[13px] font-medium tracking-[1px]'
+            >
+              {isActive && status === 'loading' ? (
+                <LoaderSpinner variant='ring' label='Buffering' />
+              ) : stagePlaying ? (
+                <Pause className='size-4 fill-current' aria-hidden />
+              ) : (
+                <Play className='size-4 fill-current' aria-hidden />
+              )}
+              {stagePlaying ? 'Pause' : 'Play'}
+            </Button>
             {hook && (
               <Button
                 variant='ghost'

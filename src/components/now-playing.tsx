@@ -4,7 +4,6 @@ import {
   ChevronUp,
   Download,
   ListMusic,
-  Pause,
   Play,
   Repeat1,
   Shuffle,
@@ -12,7 +11,7 @@ import {
   SkipForward,
   type LucideIcon,
 } from 'lucide-react'
-import { Button, downloadUrl, formatTime, LoaderSpinner } from '@dust-ui/ui'
+import { Button, downloadUrl, formatTime, MediaPlayButton } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
 import { hookFor } from '@/data/hooks'
@@ -62,50 +61,6 @@ export type NowPlayingProps = {
   onPlayPause: () => void
   onSeek: (ratio: number) => void
   className?: string
-}
-
-/** The filled play toggle in the song's gradient; it breathes while playing. */
-function PlayToggle({
-  playing,
-  loading,
-  onClick,
-  size,
-}: Pick<NowPlayingProps, 'playing' | 'loading'> & {
-  onClick: () => void
-  size: 'card' | 'bar'
-}) {
-  return (
-    <Button
-      variant='ghost'
-      size='icon'
-      aria-label={playing ? 'Pause' : 'Play'}
-      data-playing={playing || undefined}
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick()
-      }}
-      className={cn(
-        'shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] transition-transform duration-200 hover:scale-[1.06] hover:opacity-100 active:scale-95 data-playing:animate-breathe motion-reduce:animate-none',
-        size === 'card' ? 'size-[46px]' : 'size-10'
-      )}
-    >
-      {loading ? (
-        <LoaderSpinner variant='ring' label='Buffering' />
-      ) : playing ? (
-        <Pause
-          className='size-[18px] fill-current'
-          strokeWidth={1.8}
-          aria-hidden
-        />
-      ) : (
-        <Play
-          className='ml-0.5 size-[18px] fill-current'
-          strokeWidth={1.8}
-          aria-hidden
-        />
-      )}
-    </Button>
-  )
 }
 
 /** A quiet round control beside the transport. */
@@ -335,11 +290,14 @@ export function NowPlayingCard({
           }}
         />
         <Control label='Previous' icon={SkipBack} fill onClick={onSkipBack} />
-        <PlayToggle
-          size='card'
+        <MediaPlayButton
+          size='lg'
           playing={playing}
           loading={loading}
-          onClick={onPlayPause}
+          onClick={(e) => {
+            e.stopPropagation()
+            onPlayPause()
+          }}
         />
         <Control label='Next' icon={SkipForward} fill onClick={onSkipForward} />
         <Control
@@ -435,11 +393,13 @@ export function NowPlayingBar({
         </Button>
       ) : (
         onPlayPause && (
-          <PlayToggle
-            size='bar'
+          <MediaPlayButton
             playing={playing}
             loading={loading}
-            onClick={onPlayPause}
+            onClick={(e) => {
+              e.stopPropagation()
+              onPlayPause()
+            }}
           />
         )
       )}

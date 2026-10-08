@@ -1,10 +1,10 @@
 import { useNavigate } from '@tanstack/react-router'
 import { ChevronDown, ChevronUp, Pause, Play } from 'lucide-react'
+import { MotionMarquee } from '@dust-ui/motion'
 import { Button, LoaderSpinner, MobileProgressRing } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
-import { OverflowMarquee } from '@/components/overflow-marquee'
 
 declare module '@tanstack/react-router' {
   interface HistoryState {
@@ -84,9 +84,15 @@ export function MiniPlayer({
         onClick={open}
         className='min-w-0 flex-1 cursor-pointer overflow-hidden text-left'
       >
-        <OverflowMarquee className='font-display text-[16px] leading-tight font-medium text-foreground'>
+        <MotionMarquee
+          overflowOnly
+          speed={24}
+          gap={48}
+          edgeFade={8}
+          className='font-display text-[16px] leading-tight font-medium text-foreground'
+        >
           {t.title}
-        </OverflowMarquee>
+        </MotionMarquee>
         <span className='mt-0.5 block truncate text-[11px] tracking-[1px] text-muted-foreground uppercase'>
           {t.voice}
         </span>

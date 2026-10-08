@@ -5,12 +5,7 @@ import {
   MobileSearchBar,
   SheetBottom,
 } from '@dust-ui/ui'
-import {
-  TRACKS,
-  TRACK_ORDER,
-  trackSearchText,
-  type TrackId,
-} from '@/data/tracks'
+import { TRACK_ORDER, trackSearchText, type TrackId } from '@/data/tracks'
 import { useShellRoot } from '@/components/shell-context'
 import { TrackRow } from '@/components/track-row'
 
