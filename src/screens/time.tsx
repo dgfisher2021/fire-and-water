@@ -5,21 +5,18 @@ import { createPortal } from 'react-dom'
 import { MotionNumber } from '@dust-ui/motion'
 import {
   Button,
+  downloadText,
+  isLyricsLabel,
+  MediaPlayer,
   MobileConfirmDialog,
-  MobileMediaPlayer,
   MobilePageHeader,
+  useHotkeys,
 } from '@dust-ui/ui'
-import { TRACKS, isLyricLabel } from '@/data/tracks'
-import { downloadText } from '@/lib/share'
-import { cn } from '@/lib/utils'
+import { TRACKS } from '@/data/tracks'
+import { toaster } from '@/lib/toaster'
 import { selectProgress, usePlayer } from '@/store/player'
-import { useToasts } from '@/store/toasts'
 import { Screen } from '@/components/screen'
 import { useFramed, useShellRoot } from '@/components/shell-context'
-
-/** The kit's transport bar in the open track's voice. */
-const MEDIA_VARS =
-  '[--media-accent-deep:var(--track-deep)] [--media-accent-foreground:var(--track-foreground)] [--media-accent:var(--track-bright)] [--media-glow:var(--track-glow)]'
 
 type Marks = Map<string, number>
 type Step = { key: string; before: number | undefined }
@@ -40,7 +37,7 @@ function timingFromMarks(
   let prev = 0
   const lines = stanzas.map((stanza, i) => {
     const row = stanza.map((line, j) => {
-      if (isLyricLabel(line)) return NaN
+      if (isLyricsLabel(line)) return NaN
       prev = marks.get(`${i}.${j}`) ?? prev
       return prev
     })
@@ -51,7 +48,7 @@ function timingFromMarks(
     return row.map((v) => Math.round(v * 100) / 100)
   })
   const starts = lines.map((row, i) => {
-    const sung = row.filter((_, j) => !isLyricLabel(stanzas[i][j]))
+    const sung = row.filter((_, j) => !isLyricsLabel(stanzas[i][j]))
     return sung.length ? Math.min(...sung) : (row[0] ?? 0)
   })
   return { stanzas: starts, lines }
@@ -84,7 +81,7 @@ export function TimeScreen() {
   const pane = useRef<HTMLDivElement>(null)
 
   const sung = t.lyrics.flatMap((stanza, i) =>
-    stanza.flatMap((line, j) => (isLyricLabel(line) ? [] : [`${i}.${j}`]))
+    stanza.flatMap((line, j) => (isLyricsLabel(line) ? [] : [`${i}.${j}`]))
   )
   const next = sung.find((key) => !marks.has(key))
 
@@ -115,23 +112,19 @@ export function TimeScreen() {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(json())
-      useToasts.getState().push('Timing copied', 'success')
+      toaster.push('Timing copied', 'success')
     } catch {
-      useToasts.getState().push('Could not copy the timing', 'error')
+      toaster.push('Could not copy the timing', 'error')
     }
   }
 
   // Space marks the next line; the player bar handles play and pause.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement).tagName
-      if (e.key === ' ' && tag !== 'BUTTON' && tag !== 'INPUT' && next) {
-        e.preventDefault()
-        mark(next)
-      }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+  useHotkeys({
+    ' ': (e) => {
+      if (!next) return
+      e.preventDefault()
+      mark(next)
+    },
   })
   useEffect(() => {
     pane.current
@@ -165,8 +158,9 @@ export function TimeScreen() {
       }
     >
       <div className='shrink-0 px-4 pb-2'>
-        <MobileMediaPlayer
+        <MediaPlayer
           variant='bar'
+          glass
           title={t.title}
           duration={duration}
           progress={progress}
@@ -177,10 +171,6 @@ export function TimeScreen() {
           playing={playing}
           loading={isCurrent && status === 'loading'}
           onPlayPause={() => (playing ? pause() : play(track))}
-          className={cn(
-            'rounded-2xl border border-border bg-card/85 px-3 py-2 backdrop-blur-md',
-            MEDIA_VARS
-          )}
         />
       </div>
       <div
@@ -190,7 +180,7 @@ export function TimeScreen() {
         {t.lyrics.map((stanza, i) => (
           <div key={i} className='mb-5'>
             {stanza.map((line, j) =>
-              isLyricLabel(line) ? (
+              isLyricsLabel(line) ? (
                 <div
                   key={j}
                   className='px-3 py-1 font-sans text-[11px] font-medium tracking-[3px] text-primary uppercase'

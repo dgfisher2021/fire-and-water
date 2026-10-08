@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { useMediaQuery } from '@dust-ui/ui'
 import { useShellRoot } from '@/components/shell-context'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'

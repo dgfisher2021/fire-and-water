@@ -13,13 +13,14 @@ import {
   DeviceFrame,
   GrainOverlay,
   MobileToastStack,
+  useMobileToaster,
   NavBottom,
   ProgressiveBlur,
   useShellInsets,
 } from '@dust-ui/ui'
+import { toaster } from '@/lib/toaster'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
-import { useToasts } from '@/store/toasts'
 import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import {
   MINI_PLAYER_GAP,
@@ -123,13 +124,18 @@ function ShellNav({ fixed }: { fixed: boolean }) {
       linkComponent={RouterLink}
       center={{
         icon: playing ? Pause : Play,
+        label: playing ? 'Pause' : 'Play',
+        size: 'lg',
+        active: playing,
         onClick: () => toggle(loaded ?? focus),
         background:
           'linear-gradient(135deg, var(--track-bright), var(--track-deep))',
         color: 'var(--track-foreground)',
-        shadow: 'var(--nav-center-glow)',
+        // A lifted glow in the song's colour and a lit top edge.
+        shadow:
+          '0 10px 26px -6px var(--media-glow), 0 0 22px -2px var(--media-glow), inset 0 1px 0 color-mix(in oklab, var(--track-foreground) 30%, transparent)',
       }}
-      activePill
+      activeIndicator='capsule'
       labels
       fixed={fixed}
     />
@@ -137,8 +143,7 @@ function ShellNav({ fixed }: { fixed: boolean }) {
 }
 
 function ShellToasts() {
-  const toasts = useToasts((s) => s.toasts)
-  const dismiss = useToasts((s) => s.dismiss)
+  const { toasts, dismiss } = useMobileToaster(toaster)
   return (
     <MobileToastStack toasts={toasts} onDismiss={dismiss} bottomOffset={96} />
   )

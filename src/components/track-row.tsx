@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Play } from 'lucide-react'
-import { Button, MobileMediaRow, MobilePlayingBars } from '@dust-ui/ui'
+import { Button, formatTime, MediaPlayingBars, MediaRow } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
 import { usePlayer } from '@/store/player'
 
 export type TrackRowProps = {
@@ -41,7 +40,7 @@ export function TrackRow({
   const playing = status === 'playing' || status === 'loading'
 
   return (
-    <MobileMediaRow
+    <MediaRow
       role={onSelect ? 'option' : undefined}
       aria-selected={onSelect ? selected : undefined}
       leading={
@@ -61,12 +60,10 @@ export function TrackRow({
       subtitle={`${t.dedication} · ${t.voice}`}
       value={value ?? formatTime(t.duration)}
       state={selected ? 'selected' : active ? 'active' : 'idle'}
+      playing={playing}
       trailing={
         onSelect ? (
-          active ? (
-            // The row's own bars cannot know playing from paused; these can.
-            <MobilePlayingBars active={playing} color='var(--track-bright)' />
-          ) : (
+          active ? undefined : (
             trailing
           )
         ) : (
@@ -86,7 +83,7 @@ export function TrackRow({
             className='size-9 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
           >
             {active ? (
-              <MobilePlayingBars active={playing} color='var(--track-bright)' />
+              <MediaPlayingBars active={playing} />
             ) : (
               <Play className='size-4' aria-hidden />
             )}

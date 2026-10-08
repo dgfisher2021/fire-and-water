@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { useMediaQuery } from '@dust-ui/ui'
 
 /** The positioned screen root, for overlays that must pin inside it. */
 export const ShellRootContext = createContext<HTMLElement | null>(null)

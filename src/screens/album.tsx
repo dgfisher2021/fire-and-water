@@ -1,11 +1,23 @@
 import { useEffect, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { Clapperboard } from 'lucide-react'
-import { Button, MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
+import {
+  Button,
+  filterByText,
+  formatTime,
+  MobileListGroup,
+  MobileSearchBar,
+  useHotkeys,
+  useSwipe,
+} from '@dust-ui/ui'
 import { hookFor } from '@/data/hooks'
-import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
-import { filterTracks } from '@/lib/search'
+import {
+  ALBUM,
+  TRACKS,
+  TRACK_ORDER,
+  trackSearchText,
+  type TrackId,
+} from '@/data/tracks'
 import {
   groupTracks,
   groupTracksByMonth,
@@ -127,7 +139,7 @@ export function AlbumScreen() {
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
   const [query, setQuery] = useState('')
-  const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
+  const songs = filterByText([...TRACK_ORDER], query, trackSearchText)
   const noMatch = songs.length === 0 ? `No song matches “${query}”` : undefined
   // The stage above keeps album order; only the list re-sorts.
   const track = TRACK_ORDER[index]
@@ -147,16 +159,11 @@ export function AlbumScreen() {
   })
 
   // Arrows turn the covers, unless the caret is in the search field.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
-      if ((e.target as HTMLElement).tagName === 'INPUT') return
-      setInteracted(true)
-      step(e.key === 'ArrowRight' ? 1 : -1)
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  })
+  const turn = (by: number) => {
+    setInteracted(true)
+    step(by)
+  }
+  useHotkeys({ ArrowRight: () => turn(1), ArrowLeft: () => turn(-1) })
 
   const list = noMatch ? (
     <MobileListGroup label='Songs' footer={noMatch}>

@@ -1209,78 +1209,10 @@
   }
 }
 
-/*
- * Bottom nav: the active tab sits on one rounded capsule that holds the icon
- * and the label together, the icon in the song's tint and the label in the
- * text colour, bold. The kit's activePill draws a 46 by 28 pill behind the
- * icon alone and has no prop for the capsule yet, so the item is restyled
- * through its aria-current hook until NavBottom grows one.
- */
-[data-slot='nav-bottom'] [aria-current='page'] {
-  position: relative;
-  isolation: isolate;
-}
-[data-slot='nav-bottom'] [aria-current='page']::before {
-  content: '';
-  position: absolute;
-  /* Hugs the 46px icon slot and label: about 8px at the sides, 5px above and below. */
-  inset-block: -3px;
-  inset-inline: max(0px, calc(50% - 31px));
-  z-index: -1;
-  /* The theme's own radius: a tile, not an oval. */
-  border-radius: var(--radius, 0.625rem);
-  background: color-mix(in oklab, var(--primary) 16%, transparent);
-}
-[data-slot='nav-bottom'] [aria-current='page'] > span:first-child {
-  background: transparent !important;
-}
-[data-slot='nav-bottom'] [aria-current='page'] > span + span {
-  color: var(--foreground);
-}
-
-/*
- * The center play: a lifted glow in the song's colour and a lit top edge
- * (passed as the center's shadow), swelling slowly while a song plays. The
- * kit marks no playing state, so the Pause icon inside is the hook.
- */
-[data-slot='nav-bottom'] {
-  --nav-center-edge: inset 0 1px 0
-    color-mix(in oklab, var(--track-foreground) 30%, transparent);
-  --nav-center-glow:
-    0 10px 26px -6px var(--track-glow), 0 0 22px -2px var(--track-glow),
-    var(--nav-center-edge);
-}
-/*
- * Larger than the kit's 54px, lifted further, at the theme radius, and the
- * bar above the mini player and the page so the lifted half overlays them
- * (sheets and toasts sit at 150 and up).
- */
+/* The bar above the mini player and the page, so the lifted center
+ * overlays them (sheets and toasts sit at 150 and up). */
 [data-slot='nav-bottom'] {
   z-index: 60 !important;
-}
-[data-slot='nav-bottom'] button[aria-label='Primary action'] {
-  width: 4rem !important;
-  height: 4rem !important;
-  margin-top: -1.75rem !important;
-  border-radius: calc(var(--radius) * 1.4) !important;
-}
-[data-slot='nav-bottom'] button[aria-label='Primary action'] > svg {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-@keyframes nav-center-swell {
-  50% {
-    box-shadow:
-      0 12px 32px -4px var(--track-glow),
-      0 0 36px 2px var(--track-glow),
-      var(--nav-center-edge);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  [data-slot='nav-bottom']
-    button[aria-label='Primary action']:has(.lucide-pause) {
-    animation: nav-center-swell 2.6s ease-in-out infinite;
-  }
 }
 
 /*

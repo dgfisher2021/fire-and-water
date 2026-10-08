@@ -1,5 +1,5 @@
 import type { KeyboardEvent, PointerEvent } from 'react'
-import { formatTime } from '@/lib/format'
+import { formatTime } from '@dust-ui/ui'
 import { cn } from '@/lib/utils'
 
 type WaveformProps = {

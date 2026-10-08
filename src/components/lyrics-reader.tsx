@@ -9,11 +9,11 @@ import { ChevronsDown, ChevronsUp } from 'lucide-react'
 import { MotionInView, MotionText } from '@dust-ui/motion'
 import {
   Button,
+  isLyricsLabel,
   ReadAlongText,
   useFollowScroll,
   useScrollFocus,
 } from '@dust-ui/ui'
-import { isLyricLabel } from '@/data/tracks'
 import { activePosition, activeWord, type LyricsTiming } from '@/lib/read-along'
 import { cn } from '@/lib/utils'
 
@@ -176,7 +176,7 @@ export function LyricsReader({
               )}
             >
               {lines.map((line, j) =>
-                isLyricLabel(line) ? (
+                isLyricsLabel(line) ? (
                   <span
                     key={j}
                     data-slot='lyrics-label'

@@ -15,15 +15,18 @@ importers:
       '@dust-ui/3d':
         specifier: 0.3.0
         version: 0.3.0(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(@types/react@19.3.0)(@types/three@0.184.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0)
-      '@dust-ui/motion':
-        specifier: ^0.5.0
-        version: 0.5.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dust-ui/tokens':
-        specifier: ^0.3.0
-        version: 0.3.0
-      '@dust-ui/ui':
+      '@dust-ui/blocks':
         specifier: ^0.13.0
-        version: 0.13.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        version: 0.13.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/motion':
+        specifier: ^0.8.0
+        version: 0.8.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/tokens':
+        specifier: ^0.5.0
+        version: 0.5.0
+      '@dust-ui/ui':
+        specifier: ^0.18.0
+        version: 0.18.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@fontsource-variable/outfit':
         specifier: ^5.3.0
         version: 5.3.0
@@ -694,6 +697,28 @@ packages:
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
 
+  '@dnd-kit/accessibility@3.1.1':
+    resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
+    peerDependencies:
+      react: 19.2.5
+
+  '@dnd-kit/core@6.3.1':
+    resolution: {integrity: sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==}
+    peerDependencies:
+      react: 19.2.5
+      react-dom: 19.2.5
+
+  '@dnd-kit/sortable@10.0.0':
+    resolution: {integrity: sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.0
+      react: 19.2.5
+
+  '@dnd-kit/utilities@3.2.2':
+    resolution: {integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==}
+    peerDependencies:
+      react: 19.2.5
+
   '@dust-ui/3d@0.3.0':
     resolution: {integrity: sha512-rvRfANfboyJD+r9xlitC9vyEHUL+9DxxszGVq5MwImO1WFzzEXTTL2IPfHtA3aIxog06bgvdbUIs7RPoZ1y0ag==, tarball: https://npm.pkg.github.com/download/@dust-ui/3d/0.3.0/c653783315b055578c6da71928443fe47e266668}
     peerDependencies:
@@ -703,17 +728,36 @@ packages:
       react-dom: 19.2.5
       three: ^0.184.0
 
-  '@dust-ui/motion@0.5.0':
-    resolution: {integrity: sha512-Uz7wKg0No4CS97cajA+FYb+XtcvqOqtKb5H9d1TOoI1BD0U5tZjXDQupHCHN5IUE0VLm3vqto580/O8nZTqlXA==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.5.0/d134cc80164d8d63619728ca507240bdafa3211b}
+  '@dust-ui/blocks@0.13.0':
+    resolution: {integrity: sha512-uqGqcTqOIRkX4csDRFGAlE/4iK7ibobdHIzkQlaSP4rA3Rt0BEfZvtBStJHFHtIG2TCu1N3pxF88nO79GLhV5w==, tarball: https://npm.pkg.github.com/download/@dust-ui/blocks/0.13.0/0aae730632719fae91865fb53835313da42de5d6}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/tokens@0.3.0':
-    resolution: {integrity: sha512-e/14b1lfix6xK0XYt1U+owJ3jb0ZMB0tobNDrugMiB+7+8yaXNqY81w0vccHi6LKSPMHCzQv5PhYF5e+W4qSow==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.3.0/a9534fcb44859100e1e54f63926dea82e51d07e6}
+  '@dust-ui/data@0.4.10':
+    resolution: {integrity: sha512-r4GDZVPLkt9+Vm/YzBfMZGVwZMwdPDKXpkhwCqNKVWZI5OAEoRaXP1GMPcuzGKDtTgXzkfqRqzqzhUaTaoPVmg==, tarball: https://npm.pkg.github.com/download/@dust-ui/data/0.4.10/f8eda8ad48e69b8139e85535fe743e4045cfe1dc}
+    peerDependencies:
+      react: 19.2.5
+      react-dom: 19.2.5
 
-  '@dust-ui/ui@0.13.0':
-    resolution: {integrity: sha512-nsRzqsZhmwMjbVjtqKplh1vZBa3PR2Yj5br7kklB1FB2/HuFOTMesYp5PeLjyMxQ/UORjWqxfPqh4jYk3cbFoQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.13.0/581e129acb731b55aa7563559d05e7e43b2a8507}
+  '@dust-ui/gantt@0.2.0':
+    resolution: {integrity: sha512-b4IfQKVNtrgyc0W0IU8RJNcjW4kWPzdxMU1H0K/GxAjfJnxtlQxLNCsRtNf4BPV//cFGQrxGTzLAuYc3HTsUFQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/gantt/0.2.0/94d2eb7fd952ee33082e066d71d91e98ef6ab8de}
+    peerDependencies:
+      frappe-gantt: '>=1.0.0'
+      react: 19.2.5
+      react-dom: 19.2.5
+
+  '@dust-ui/motion@0.8.0':
+    resolution: {integrity: sha512-H0hJFpQDAxMkhRM7/pB1f7IT4VUrl/XyotMstcrc4vUQSWNEMvz5F7J1uNMMawNCVMw9b7J4SaemzMTA8i4GEQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.8.0/24ff210efdafb5e72275e6b3b6f70760deefac5c}
+    peerDependencies:
+      react: 19.2.5
+      react-dom: 19.2.5
+
+  '@dust-ui/tokens@0.5.0':
+    resolution: {integrity: sha512-JyUH96IosZL1DuqU5D0U2Ft8oX27Bl5dgzl98TtHJeSI6+yObb3x2JQexIIyvGrOzhSwyI0IzPwc+i97/HnOqQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.5.0/6d3be54bb8a8a61c0561925500db29c2cf5c3ce1}
+
+  '@dust-ui/ui@0.18.0':
+    resolution: {integrity: sha512-MFGu8nFmhI+INTCxnlB5NWfn2Mw4ePn1in/sd5x0u+IOyQXk9udMv2Z0Otq2ucMO9b2dmaVJPgDzMh2xhm4wog==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.18.0/a2f11f5d873916c53178a0eed82735c2a35f3473}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
@@ -1549,6 +1593,19 @@ packages:
       react: 19.2.5
       react-dom: 19.2.5
 
+  '@tanstack/react-table@8.21.3':
+    resolution: {integrity: sha512-5nNMTSETP4ykGegmVkhjcS8tTLW6Vl4axfEGQN3v0zdHYbK4UfoqfPChclTrJ4EoK9QynqAu9oUf8VEmrpZ5Ww==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: 19.2.5
+      react-dom: 19.2.5
+
+  '@tanstack/react-virtual@3.14.13':
+    resolution: {integrity: sha512-JbDTAwtzZ99aOeCrAfW5EsE5KSq5RWh6Af2dtFwyLIIk48Ja7vm6n4axu/43T3vfjFnEGJalxJ1wyYjSQD6bSg==}
+    peerDependencies:
+      react: 19.2.5
+      react-dom: 19.2.5
+
   '@tanstack/router-core@1.171.33':
     resolution: {integrity: sha512-TK31LyRZuVwwmWrv3oSCBN7OuM4R1qQZePRTiexFyqQUuCo3ERHZgzArosynwZKtYlEf4qbFCvbW7UUfvGiiZw==}
     engines: {node: '>=20.19'}
@@ -1584,6 +1641,13 @@ packages:
 
   '@tanstack/store@0.11.1':
     resolution: {integrity: sha512-mzTOBhypOuDJAy/D8n2MfUZ1HFkXnmSETviRyhqEC8LUE7/IZQExOTxMANj3KjTofYTkFNpBY67qaVrT41YccA==}
+
+  '@tanstack/table-core@8.21.3':
+    resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
+    engines: {node: '>=12'}
+
+  '@tanstack/virtual-core@3.17.11':
+    resolution: {integrity: sha512-+ILjvtHup6Y2hzQ6YzwMgX1Q+oQpxEGOXCEsCNaPoIP0VxMbizIBTmYTDtkerkIQS8/CbP1BRuyt8V/8BCsy1g==}
 
   '@tanstack/virtual-file-routes@1.162.0':
     resolution: {integrity: sha512-uhOeFyxLcU41HzvrxsGpiWdcMbScY1EDgbZ5K7DVRMYInbLYWAC0EA/kx9wXAoSM8q82bUG2hRl8+EAjE6XAbA==}
@@ -1927,6 +1991,9 @@ packages:
 
   caniuse-lite@1.0.30001813:
     resolution: {integrity: sha512-zfjJo4rM0+fUomGDBW/xcDjhIwz/210DGvip2MAMDZ8KHcRPnOHmEgHPZP0UHlZoxr8fYKVJOqcORhYQcG4FKQ==}
+
+  canvas-confetti@1.9.4:
+    resolution: {integrity: sha512-yxQbJkAVrFXWNbTUjPqjF7G+g6pDotOUHGbkZq2NELZUMDpiJ85rIEazVb8GTaAptNW2miJAXbs1BtioA251Pw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -2285,6 +2352,9 @@ packages:
         optional: true
       react-dom:
         optional: true
+
+  frappe-gantt@1.2.2:
+    resolution: {integrity: sha512-1+uPNRa92LBIeKiZCVhJMiGIifJk5ONaoerXI8eBREXWRZGGoTJR5ATpMpsnAQcyBA6Gnq5wIht4eL+e4eHMBA==}
 
   fs-extra@9.1.0:
     resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
@@ -4766,6 +4836,31 @@ snapshots:
 
   '@dimforge/rapier3d-compat@0.12.0': {}
 
+  '@dnd-kit/accessibility@3.1.1(react@19.2.5)':
+    dependencies:
+      react: 19.2.5
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@19.2.5)
+      '@dnd-kit/utilities': 3.2.2(react@19.2.5)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      tslib: 2.8.1
+
+  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dnd-kit/utilities': 3.2.2(react@19.2.5)
+      react: 19.2.5
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@19.2.5)':
+    dependencies:
+      react: 19.2.5
+      tslib: 2.8.1
+
   '@dust-ui/3d@0.3.0(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(@types/react@19.3.0)(@types/three@0.184.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0)':
     dependencies:
       '@react-three/drei': 10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0))(@types/react@19.3.0)(@types/three@0.184.1)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.184.0)
@@ -4776,8 +4871,96 @@ snapshots:
       tailwind-merge: 3.7.0
       three: 0.184.0
 
-  '@dust-ui/motion@0.5.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dust-ui/blocks@0.13.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
+      '@dust-ui/data': 0.4.10(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/gantt': 0.2.0(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/motion': 0.8.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/ui': 0.18.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      class-variance-authority: 0.7.1
+      lucide-react: 1.48.0(react@19.2.5)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+    transitivePeerDependencies:
+      - '@date-fns/tz'
+      - '@emotion/is-prop-valid'
+      - '@sinclair/typebox'
+      - '@standard-schema/spec'
+      - '@types/react'
+      - '@types/react-dom'
+      - '@typeschema/main'
+      - '@vinejs/vine'
+      - ajv
+      - ajv-errors
+      - ajv-formats
+      - arktype
+      - ata-validator
+      - class-transformer
+      - class-validator
+      - computed-types
+      - effect
+      - fluentvalidation-ts
+      - fp-ts
+      - frappe-gantt
+      - io-ts
+      - joi
+      - nope-validator
+      - superstruct
+      - supports-color
+      - typanion
+      - valibot
+      - vest
+      - yup
+
+  '@dust-ui/data@0.4.10(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
+      '@dnd-kit/utilities': 3.2.2(react@19.2.5)
+      '@dust-ui/ui': 0.18.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@tanstack/react-table': 8.21.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@tanstack/react-virtual': 3.14.13(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      lucide-react: 1.48.0(react@19.2.5)
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+    transitivePeerDependencies:
+      - '@date-fns/tz'
+      - '@sinclair/typebox'
+      - '@standard-schema/spec'
+      - '@types/react'
+      - '@types/react-dom'
+      - '@typeschema/main'
+      - '@vinejs/vine'
+      - ajv
+      - ajv-errors
+      - ajv-formats
+      - arktype
+      - ata-validator
+      - class-transformer
+      - class-validator
+      - computed-types
+      - effect
+      - fluentvalidation-ts
+      - fp-ts
+      - io-ts
+      - joi
+      - nope-validator
+      - superstruct
+      - supports-color
+      - typanion
+      - valibot
+      - vest
+      - yup
+
+  '@dust-ui/gantt@0.2.0(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      frappe-gantt: 1.2.2
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+
+  '@dust-ui/motion@0.8.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      canvas-confetti: 1.9.4
       clsx: 2.1.1
       lucide-react: 1.48.0(react@19.2.5)
       motion: 12.43.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -4787,9 +4970,9 @@ snapshots:
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
 
-  '@dust-ui/tokens@0.3.0': {}
+  '@dust-ui/tokens@0.5.0': {}
 
-  '@dust-ui/ui@0.13.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dust-ui/ui@0.18.0(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       '@base-ui/react': 1.8.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@hookform/resolvers': 5.9.1(ajv@8.20.0)(react-hook-form@7.89.0(@types/react@19.3.0)(react@19.2.5))(zod@4.4.3)
@@ -5452,6 +5635,18 @@ snapshots:
       react-dom: 19.2.5(react@19.2.5)
       use-sync-external-store: 1.7.0(react@19.2.5)
 
+  '@tanstack/react-table@8.21.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@tanstack/table-core': 8.21.3
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+
+  '@tanstack/react-virtual@3.14.13(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+    dependencies:
+      '@tanstack/virtual-core': 3.17.11
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+
   '@tanstack/router-core@1.171.33':
     dependencies:
       '@tanstack/history': 1.162.4
@@ -5510,6 +5705,10 @@ snapshots:
       - supports-color
 
   '@tanstack/store@0.11.1': {}
+
+  '@tanstack/table-core@8.21.3': {}
+
+  '@tanstack/virtual-core@3.17.11': {}
 
   '@tanstack/virtual-file-routes@1.162.0': {}
 
@@ -5882,6 +6081,8 @@ snapshots:
       three: 0.184.0
 
   caniuse-lite@1.0.30001813: {}
+
+  canvas-confetti@1.9.4: {}
 
   ccount@2.0.1: {}
 
@@ -6289,6 +6490,8 @@ snapshots:
     optionalDependencies:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
+
+  frappe-gantt@1.2.2: {}
 
   fs-extra@9.1.0:
     dependencies:

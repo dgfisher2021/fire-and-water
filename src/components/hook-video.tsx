@@ -1,11 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import { createPortal } from 'react-dom'
-import { Button } from '@dust-ui/ui'
+import { Button, useMediaQuery } from '@dust-ui/ui'
 import type { Hook } from '@/data/hooks'
 import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import { useShellRoot } from '@/components/shell-context'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'

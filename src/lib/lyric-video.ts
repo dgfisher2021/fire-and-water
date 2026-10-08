@@ -1,4 +1,5 @@
-import { isLyricLabel, type Track } from '@/data/tracks'
+import { isLyricsLabel } from '@dust-ui/ui'
+import { type Track } from '@/data/tracks'
 import { activePosition, activeWord } from '@/lib/read-along'
 
 export type VideoAspect = '9:16' | '1:1' | '16:9'
@@ -143,7 +144,7 @@ export async function recordLyricVideo({
 
   const stanzas = track.lyrics
   const timing = track.timing
-  const sung = (s: number) => stanzas[s]?.filter((l) => !isLyricLabel(l)) ?? []
+  const sung = (s: number) => stanzas[s]?.filter((l) => !isLyricsLabel(l)) ?? []
   const end = Math.min(from + seconds, track.duration)
   const short = Math.min(W, H)
   const pad = short * 0.08
@@ -195,13 +196,13 @@ export async function recordLyricVideo({
     if (pos) {
       const lines = stanzas[pos.stanza] ?? []
       const current = lines[pos.line] ?? ''
-      const singable = !isLyricLabel(current)
+      const singable = !isLyricsLabel(current)
       const before = lines
         .slice(0, pos.line)
-        .filter((l) => !isLyricLabel(l))
+        .filter((l) => !isLyricsLabel(l))
         .at(-1)
       const after =
-        lines.slice(pos.line + 1).find((l) => !isLyricLabel(l)) ??
+        lines.slice(pos.line + 1).find((l) => !isLyricsLabel(l)) ??
         sung(pos.stanza + 1)[0]
       const big = short * 0.068
       ctx.font = `500 ${big * 0.62}px ${display}`

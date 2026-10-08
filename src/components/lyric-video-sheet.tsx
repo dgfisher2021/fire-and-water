@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { Download, Film, Share2 } from 'lucide-react'
-import { Button, SegmentedControl, SheetBottom } from '@dust-ui/ui'
+import {
+  Button,
+  downloadUrl,
+  formatTime,
+  SegmentedControl,
+  SheetBottom,
+} from '@dust-ui/ui'
 import type { Track } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
 import {
   canRecordVideo,
   recordLyricVideo,
   type LyricVideo,
 } from '@/lib/lyric-video'
-import { download } from '@/lib/share'
 import { usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { useShellRoot } from '@/components/shell-context'
@@ -28,7 +32,7 @@ type Phase =
 
 /**
  * Make a lyric video of the song in the browser: choose where it starts,
- * record (in real time, out loud), then share or download the file. The
+ * record (in real time, out loud), then share or downloadUrl the file. The
  * shape and length come from Settings, Lyric video.
  */
 export function LyricVideoSheet({ track, onClose }: LyricVideoSheetProps) {
@@ -86,7 +90,7 @@ export function LyricVideoSheet({ track, onClose }: LyricVideoSheetProps) {
       await navigator
         .share({ files: [file], title: track.title })
         .catch(() => {})
-    } else download(url, file.name)
+    } else downloadUrl(url, file.name)
   }
 
   return (
@@ -124,7 +128,7 @@ export function LyricVideoSheet({ track, onClose }: LyricVideoSheetProps) {
                 variant='outline'
                 className='flex-1 gap-2'
                 onClick={() =>
-                  download(phase.url, `${name}.${phase.video.extension}`)
+                  downloadUrl(phase.url, `${name}.${phase.video.extension}`)
                 }
               >
                 <Download className='size-4' aria-hidden />

@@ -5,13 +5,19 @@ import { createPortal } from 'react-dom'
 import { MotionTextShimmer } from '@dust-ui/motion'
 import {
   Button,
+  downloadText,
+  downloadUrl,
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
+  lyricsToText,
   SheetAction,
   type SheetActionAction,
+  toLrc,
+  useHotkeys,
+  useMediaQuery,
   useSwipe,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
@@ -27,13 +33,10 @@ import {
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
-import { toLrc } from '@/lib/lrc'
-import { lyricsToText } from '@/lib/lyrics-text'
-import { copyText, download, downloadText, share } from '@/lib/share'
+import { copyText, share } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import { HookViewer } from '@/components/hook-video'
 import { LyricVideoSheet } from '@/components/lyric-video-sheet'
 import { LyricsReader } from '@/components/lyrics-reader'
@@ -145,22 +148,14 @@ export function LyricsScreen() {
   })
 
   // Keyboard: Space toggles, arrows switch track.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement).tagName
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return
-      if (e.key === ' ' && tag !== 'BUTTON' && tag !== 'A') {
-        e.preventDefault()
-        if (playing) pause()
-        else play(track)
-      } else if (e.key === 'ArrowRight' && e.target === document.body) {
-        goTo(adjacentTrack(track, 1))
-      } else if (e.key === 'ArrowLeft' && e.target === document.body) {
-        goTo(adjacentTrack(track, -1))
-      }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+  useHotkeys({
+    ' ': (e) => {
+      e.preventDefault()
+      if (playing) pause()
+      else play(track)
+    },
+    ArrowRight: () => goTo(adjacentTrack(track, 1)),
+    ArrowLeft: () => goTo(adjacentTrack(track, -1)),
   })
 
   const onShare = () =>
@@ -190,15 +185,25 @@ export function LyricsScreen() {
       : []),
     {
       label: `Download ${audioLabel(t.audioFile, sizes[t.audioFile as keyof typeof sizes])}`,
-      onClick: () => download(t.audioFile),
+      onClick: () => downloadUrl(t.audioFile),
     },
   ]
   if (t.lyrics.length > 0)
     actions.push({
       label: 'Copy lyrics',
-      onClick: () => void copyText(lyricsToText(t), 'Lyrics copied'),
+      onClick: () =>
+        void copyText(lyricsToText(t.title, t.lyrics), 'Lyrics copied'),
     })
-  const lrc = toLrc(t)
+  const lrc = t.timing
+    ? toLrc({
+        title: t.title,
+        artist: ALBUM.artist,
+        album: ALBUM.title,
+        duration: t.duration,
+        stanzas: t.lyrics,
+        timing: t.timing,
+      })
+    : null
   if (lrc)
     actions.push({
       label: 'Download lyrics (.lrc)',

@@ -3,7 +3,7 @@ import { PointMaterial, Points } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as random from 'maath/random'
 import * as THREE from 'three'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { useMediaQuery } from '@dust-ui/ui'
 import { useShellRoot } from '@/components/shell-context'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'

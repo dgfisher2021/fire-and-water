@@ -1,7 +1,16 @@
 import { useState, type ReactNode } from 'react'
-import { MobileListGroup, MobileSearchBar, SheetBottom } from '@dust-ui/ui'
-import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { filterTracks } from '@/lib/search'
+import {
+  filterByText,
+  MobileListGroup,
+  MobileSearchBar,
+  SheetBottom,
+} from '@dust-ui/ui'
+import {
+  TRACKS,
+  TRACK_ORDER,
+  trackSearchText,
+  type TrackId,
+} from '@/data/tracks'
 import { useShellRoot } from '@/components/shell-context'
 import { TrackRow } from '@/components/track-row'
 
@@ -34,7 +43,7 @@ export function SongPicker({
 }: SongPickerProps) {
   const root = useShellRoot()
   const [query, setQuery] = useState('')
-  const shown = filterTracks(songs, (id) => TRACKS[id], query)
+  const shown = filterByText([...songs], query, trackSearchText)
   return (
     <SheetBottom
       title={title}

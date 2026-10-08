@@ -12,17 +12,16 @@ import {
   SkipForward,
   type LucideIcon,
 } from 'lucide-react'
-import { Button, LoaderSpinner } from '@dust-ui/ui'
+import { Button, downloadUrl, formatTime, LoaderSpinner } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
 import { hookFor } from '@/data/hooks'
 import catalog from '@/data/suno-catalog.json'
 import { TRACKS, type Track, type TrackId } from '@/data/tracks'
-import { audioLabel, formatTime } from '@/lib/format'
-import { download } from '@/lib/share'
+import { audioLabel } from '@/lib/format'
+import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
-import { useToasts } from '@/store/toasts'
 import { HookLoop } from '@/components/hook-video'
 import { Waveform } from '@/components/waveform'
 
@@ -331,8 +330,8 @@ export function NowPlayingCard({
           label={`Download ${label}`}
           icon={Download}
           onClick={() => {
-            download(t.audioFile)
-            useToasts.getState().push(`Downloading ${t.title}`)
+            downloadUrl(t.audioFile)
+            toaster.push(`Downloading ${t.title}`)
           }}
         />
         <Control label='Previous' icon={SkipBack} fill onClick={onSkipBack} />
@@ -349,7 +348,7 @@ export function NowPlayingCard({
           on={playMode !== 'album'}
           onClick={() => {
             cyclePlayMode()
-            useToasts.getState().push(nextMode.label)
+            toaster.push(nextMode.label)
           }}
         />
       </div>

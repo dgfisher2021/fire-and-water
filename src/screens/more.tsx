@@ -9,6 +9,7 @@ import {
   Share2,
 } from 'lucide-react'
 import {
+  downloadUrl,
   MobileListGroup,
   MobileListRow,
   MobilePageHeader,
@@ -17,8 +18,8 @@ import {
 import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
-import { download, share } from '@/lib/share'
-import { useToasts } from '@/store/toasts'
+import { share } from '@/lib/share'
+import { toaster } from '@/lib/toaster'
 import { Screen } from '@/components/screen'
 import { useFramed } from '@/components/shell-context'
 import { SongPicker } from '@/components/song-picker'
@@ -30,7 +31,7 @@ const DRIVE_TRACKS = TRACK_ORDER.filter((id) => TRACKS[id].driveLink)
 const albumUrl = () =>
   new URL(import.meta.env.BASE_URL, window.location.origin).href
 
-/** "M4A · 3.2 MB" as a format pill and a size, for a download row. */
+/** "M4A · 3.2 MB" as a format pill and a size, for a downloadUrl row. */
 function downloadDetail(id: TrackId) {
   const file = TRACKS[id].audioFile
   return (
@@ -46,7 +47,7 @@ function downloadDetail(id: TrackId) {
 export function MoreScreen() {
   const framed = useFramed()
   const navigate = useNavigate()
-  const [picking, setPicking] = useState<'download' | 'drive' | null>(null)
+  const [picking, setPicking] = useState<'downloadUrl' | 'drive' | null>(null)
 
   return (
     <Screen
@@ -124,13 +125,13 @@ export function MoreScreen() {
 
         <MobileListGroup
           label='Songs'
-          footer='Each download is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
+          footer='Each downloadUrl is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
         >
           <MobileListRow
             icon={Download}
             label='Download a song'
             value={`${TRACK_ORDER.length} songs`}
-            onClick={() => setPicking('download')}
+            onClick={() => setPicking('downloadUrl')}
           />
           {DRIVE_TRACKS.length > 0 && (
             <MobileListRow
@@ -184,7 +185,7 @@ export function MoreScreen() {
         </MobileListGroup>
       </div>
 
-      {picking === 'download' && (
+      {picking === 'downloadUrl' && (
         <SongPicker
           title='Download a song'
           detail={downloadDetail}
@@ -192,8 +193,8 @@ export function MoreScreen() {
             <Download className='size-4 text-muted-foreground' aria-hidden />
           }
           onSelect={(id) => {
-            download(TRACKS[id].audioFile)
-            useToasts.getState().push(`Downloading ${TRACKS[id].title}`)
+            downloadUrl(TRACKS[id].audioFile)
+            toaster.push(`Downloading ${TRACKS[id].title}`)
           }}
           onClose={() => setPicking(null)}
         />
