@@ -15,6 +15,7 @@ import {
   useSwipe,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
+import { hookFor } from '@/data/hooks'
 import {
   ALBUM,
   TRACKS,
@@ -33,6 +34,7 @@ import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { useMediaQuery } from '@/hooks/use-media-query'
+import { HookViewer } from '@/components/hook-video'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
@@ -72,6 +74,7 @@ export function LyricsScreen() {
   const seek = usePlayer((s) => s.seek)
   const setCarouselIndex = usePlayer((s) => s.setCarouselIndex)
   const [sheet, setSheet] = useState(false)
+  const [watching, setWatching] = useState(false)
 
   // The card folds to a bar once the words have scrolled up (or the pane
   // follows the song there) and unfolds at the top, unless the reader has
@@ -166,7 +169,11 @@ export function LyricsScreen() {
     })
 
   const partner = comparePartner(track)
+  const hook = hookFor(track)
   const actions: SheetActionAction[] = [
+    ...(hook
+      ? [{ label: 'Watch the hook', onClick: () => setWatching(true) }]
+      : []),
     {
       label: `Compare with ${TRACKS[partner].title}`,
       onClick: () =>
@@ -213,6 +220,16 @@ export function LyricsScreen() {
           shellRoot
         )
       : null
+
+  const hookViewer =
+    hook && watching ? (
+      <HookViewer
+        hook={hook}
+        title={t.title}
+        poster={t.art.full}
+        onClose={() => setWatching(false)}
+      />
+    ) : null
 
   return (
     // No page header: one title row sits above the control in either state,
@@ -273,6 +290,7 @@ export function LyricsScreen() {
               onSkipBack={() => goTo(adjacentTrack(track, -1))}
               onSkipForward={() => goTo(adjacentTrack(track, 1))}
               onCollapse={() => fold(true)}
+              onWatchHook={hook ? () => setWatching(true) : undefined}
             />
           </div>
         </div>
@@ -355,6 +373,7 @@ export function LyricsScreen() {
       </div>
 
       {actionSheet}
+      {hookViewer}
     </Screen>
   )
 }
