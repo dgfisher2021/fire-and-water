@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 export type FoldedPlayer = 'bar' | 'mini'
 
 /** What fills the screen behind everything. */
-export type BackgroundStyle = 'artwork' | 'flow' | 'aurora'
+export type BackgroundStyle = 'artwork' | 'flow' | 'aurora' | 'nebula' | 'stars'
 
 type Prefs = {
   foldedPlayer: FoldedPlayer

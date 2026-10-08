@@ -1,3 +1,5 @@
+import { lazy, Suspense } from 'react'
+import { MistBackdrop } from '@dust-ui/3d'
 import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { cn } from '@/lib/utils'
@@ -5,6 +7,31 @@ import { usePrefs } from '@/store/prefs'
 import { AuroraBackdrop } from '@/components/aurora-backdrop'
 
 const IMAGES = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
+
+// three.js, fiber and drei load only when the starfield is chosen.
+const StarsBackdrop = lazy(() => import('@/components/stars-backdrop'))
+
+/**
+ * Dust UI's mist: fog planes and drifting dust in three.js (loaded lazily by
+ * the package), tinted the song's colour; remounted per song so the tint
+ * follows. Brighter with the bass.
+ */
+function NebulaBackdrop() {
+  return (
+    <div
+      aria-hidden
+      data-slot='nebula-backdrop'
+      className='pointer-events-none absolute inset-0 isolate z-0 overflow-hidden bg-background'
+    >
+      <div
+        className='absolute inset-0 transition-opacity duration-150'
+        style={{ opacity: 'calc(0.7 + var(--pulse-bass, 0) * 0.3)' }}
+      >
+        <MistBackdrop tint='var(--track-bright)' />
+      </div>
+    </div>
+  )
+}
 
 /**
  * The flowing background: Dust UI's ambient field with its drifting sheen
@@ -56,6 +83,15 @@ export function SongBackdrop({ theme, className }: SongBackdropProps) {
   // inside the shell; only the photo takes the large-viewport sizing.
   if (background === 'flow') return <FlowBackdrop />
   if (background === 'aurora') return <AuroraBackdrop theme={theme} />
+  if (background === 'nebula') return <NebulaBackdrop key={theme} />
+  if (background === 'stars')
+    return (
+      <Suspense
+        fallback={<div className='absolute inset-0 z-0 bg-background' />}
+      >
+        <StarsBackdrop theme={theme} />
+      </Suspense>
+    )
   return (
     <AmbientImageBackdrop
       images={IMAGES}

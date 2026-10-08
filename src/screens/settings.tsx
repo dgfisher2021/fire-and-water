@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { Check, Image, Sparkles, Waves } from 'lucide-react'
+import { Check, Cloudy, Image, Sparkles, Stars, Waves } from 'lucide-react'
 import {
   Button,
   MobileListGroup,
@@ -42,6 +42,18 @@ const BACKGROUNDS: {
     label: 'Aurora curtains',
     detail: 'Curtains of light in the song’s colours, lit by the bass',
     icon: Sparkles,
+  },
+  {
+    value: 'nebula',
+    label: 'Nebula mist',
+    detail: 'Fog and drifting dust in 3D, from Dust UI 3D',
+    icon: Cloudy,
+  },
+  {
+    value: 'stars',
+    label: 'Starfield',
+    detail: 'Stars and gas clouds in 3D, drifting faster with the bass',
+    icon: Stars,
   },
 ]
 
@@ -98,7 +110,7 @@ export function SettingsScreen() {
 
         <MobileListGroup
           label='Background'
-          footer='What fills the screen behind the songs. The artwork is the default.'
+          footer='What fills the screen behind the songs. The artwork is the default; the 3D ones load three.js when chosen and work the phone harder.'
         >
           {BACKGROUNDS.map((b) => (
             <MobileListRow

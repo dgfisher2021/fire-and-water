@@ -29,6 +29,7 @@
    their class names generate. */
 @source '../../node_modules/@dust-ui/ui/dist';
 @source '../../node_modules/@dust-ui/motion/dist';
+@source '../../node_modules/@dust-ui/3d/dist';
 
 @custom-variant dark (&:is(.dark *));
 /* Landscape phones and other short viewports. */
