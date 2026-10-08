@@ -25,6 +25,7 @@ import {
   MINI_PLAYER_H,
   useMiniPlayerVisible,
 } from '@/hooks/use-mini-player'
+import { usePulseVars } from '@/hooks/use-pulse'
 import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
@@ -32,6 +33,25 @@ import { ShellRootContext, useFramed } from '@/components/shell-context'
 const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 // Film grain over the artwork, faint enough to read as paper, not noise.
 const GRAIN = 0.05
+
+/**
+ * A glow in the song's voice over the artwork that swells with the bass
+ * (--pulse-bass from usePulseVars; 0 when paused or under reduced motion).
+ */
+function PulseGlow() {
+  return (
+    <div
+      aria-hidden
+      data-slot='pulse-glow'
+      className='pointer-events-none absolute inset-0 z-0 transition-opacity duration-150 ease-out'
+      style={{
+        background:
+          'radial-gradient(ellipse 85% 65% at 50% 38%, var(--track-glow), transparent 72%)',
+        opacity: 'calc(var(--pulse-bass, 0) * 0.6)',
+      }}
+    />
+  )
+}
 
 /** A soft blur where content runs under the nav and the mini player. */
 function ShellFade() {
@@ -144,6 +164,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
     strip: mini ? MINI_PLAYER_H : undefined,
   })
   const [root, setRoot] = useState<HTMLElement | null>(null)
+  usePulseVars(root)
 
   if (!framed) {
     return (
@@ -162,6 +183,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
             className='fixed bottom-auto z-0 h-lvh'
           />
           <GrainOverlay opacity={GRAIN} />
+          <PulseGlow />
           {children}
           <ShellFade />
           {mini && <ShellMini />}
@@ -205,6 +227,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
                 className='absolute z-0'
               />
               <GrainOverlay opacity={GRAIN} />
+              <PulseGlow />
               {children}
               <ShellFade />
               {mini && <ShellMini />}

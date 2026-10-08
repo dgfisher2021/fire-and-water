@@ -6,3 +6,4 @@ pnpm-lock.yaml
 # Written by scripts/, one stanza or song per line on purpose
 src/data/timing.json
 src/data/audio-envelopes.json
+src/data/pulse/
