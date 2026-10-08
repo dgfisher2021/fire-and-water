@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as MoreRouteImport } from './routes/more'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StoryRouteImport } from './routes/story'
 import { Route as LyricsTrackRouteImport } from './routes/lyrics.$track'
 import { Route as TimeTrackRouteImport } from './routes/time.$track'
@@ -29,6 +30,11 @@ const CompareRoute = CompareRouteImport.update({
 const MoreRoute = MoreRouteImport.update({
   id: '/more',
   path: '/more',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StoryRoute = StoryRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
@@ -75,14 +84,28 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/compare' | '/more' | '/story' | '/lyrics/$track' | '/time/$track'
+    | '/'
+    | '/compare'
+    | '/more'
+    | '/settings'
+    | '/story'
+    | '/lyrics/$track'
+    | '/time/$track'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/compare' | '/more' | '/story' | '/lyrics/$track' | '/time/$track'
+  to:
+    | '/'
+    | '/compare'
+    | '/more'
+    | '/settings'
+    | '/story'
+    | '/lyrics/$track'
+    | '/time/$track'
   id:
     | '__root__'
     | '/'
     | '/compare'
     | '/more'
+    | '/settings'
     | '/story'
     | '/lyrics/$track'
     | '/time/$track'
@@ -92,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CompareRoute: typeof CompareRoute
   MoreRoute: typeof MoreRoute
+  SettingsRoute: typeof SettingsRoute
   StoryRoute: typeof StoryRoute
   LyricsTrackRoute: typeof LyricsTrackRoute
   TimeTrackRoute: typeof TimeTrackRoute
@@ -118,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/more'
       fullPath: '/more'
       preLoaderRoute: typeof MoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/story': {
@@ -148,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompareRoute: CompareRoute,
   MoreRoute: MoreRoute,
+  SettingsRoute: SettingsRoute,
   StoryRoute: StoryRoute,
   LyricsTrackRoute: LyricsTrackRoute,
   TimeTrackRoute: TimeTrackRoute,

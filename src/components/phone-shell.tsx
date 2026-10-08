@@ -19,6 +19,7 @@ import {
 } from '@dust-ui/ui'
 import { TRACKS, TRACK_ORDER } from '@/data/tracks'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
+import { usePrefs } from '@/store/prefs'
 import { useToasts } from '@/store/toasts'
 import {
   MINI_PLAYER_GAP,
@@ -29,6 +30,7 @@ import { usePulseVars } from '@/hooks/use-pulse'
 import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
 import { ShellRootContext, useFramed } from '@/components/shell-context'
+import { SongBackdrop } from '@/components/song-backdrop'
 
 const BACKDROPS = TRACK_ORDER.map((id) => ({ id, src: TRACKS[id].art.full }))
 // Film grain over the artwork, faint enough to read as paper, not noise.
@@ -96,7 +98,7 @@ function ShellNav({ fixed }: { fixed: boolean }) {
       ? 'lyrics'
       : pathname.startsWith('/compare')
         ? 'compare'
-        : pathname.startsWith('/more')
+        : pathname.startsWith('/more') || pathname.startsWith('/settings')
           ? 'more'
           : 'album'
 
@@ -164,7 +166,8 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
     strip: mini ? MINI_PLAYER_H : undefined,
   })
   const [root, setRoot] = useState<HTMLElement | null>(null)
-  usePulseVars(root)
+  const musicReactive = usePrefs((s) => s.musicReactive)
+  usePulseVars(musicReactive ? root : null)
 
   if (!framed) {
     return (
@@ -176,12 +179,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
         >
           {/* Sized to the large viewport so the URL bar showing or hiding
               never re-crops the art; no drift, so it never rescales. */}
-          <AmbientImageBackdrop
-            images={BACKDROPS}
-            activeId={theme}
-            drift={false}
-            className='fixed bottom-auto z-0 h-lvh'
-          />
+          <SongBackdrop theme={theme} className='fixed bottom-auto h-lvh' />
           <GrainOverlay opacity={GRAIN} />
           <PulseGlow />
           {children}
@@ -220,12 +218,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
               className='absolute inset-0 flex flex-col'
               style={insets.style}
             >
-              <AmbientImageBackdrop
-                images={BACKDROPS}
-                activeId={theme}
-                drift={false}
-                className='absolute z-0'
-              />
+              <SongBackdrop theme={theme} />
               <GrainOverlay opacity={GRAIN} />
               <PulseGlow />
               {children}
