@@ -56,7 +56,9 @@ SEPARATOR = re.compile(r"^[\s·•*\-_=~]+$")
 
 
 def typeset(line):
-    """Curly quotes; a line wrapped in *asterisks* becomes a [label]."""
+    """Curly quotes, hyphens for em dashes (one for one, so word timing still
+    counts the same words); a line wrapped in *asterisks* becomes a [label]."""
+    line = line.replace("\u2014", "-")
     line = re.sub(r"(\w)'(\w)", "\\1\u2019\\2", line)  # it's, I'm
     line = re.sub(r"'(\w)", "\u2018\\1", line).replace("'", "\u2019")
     line = re.sub(r'"([^"]*)"', "\u201c\\1\u201d", line)

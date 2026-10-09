@@ -162,7 +162,7 @@ export function LyricsScreen() {
 
   const onShare = () =>
     void share({
-      title: `${t.title} — ${ALBUM.artist}`,
+      title: `${t.title} - ${ALBUM.artist}`,
       text: `Listen to "${t.title}"`,
       url: new URL(`lyrics/${track}`, document.baseURI).href,
     })

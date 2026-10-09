@@ -240,7 +240,7 @@ export function AlbumScreen() {
               <p className='mt-0.5 font-display text-[13px] text-muted-foreground italic'>
                 {t.dedication} · {formatTime(t.duration)}
               </p>
-              <p className='mx-auto mt-2 line-clamp-3 max-w-[300px] text-[12.5px] leading-normal text-foreground/60 short:mx-0 short:max-w-[440px]'>
+              <p className='mx-auto mt-2 max-w-[300px] text-[12.5px] leading-normal text-foreground/60 short:mx-0 short:max-w-[440px]'>
                 {t.description}
               </p>
             </div>
