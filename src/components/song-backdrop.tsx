@@ -9,9 +9,12 @@ import {
 import { MistBackdrop } from '@dust-ui/3d'
 import { useMobileShellFramed, useMobileShellRoot } from '@dust-ui/blocks'
 import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
+import { hookFor } from '@/data/hooks'
+import { TRACKS, type TrackId } from '@/data/tracks'
 import { usePrefs } from '@/store/prefs'
 import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import { AuroraBackdrop } from '@/components/aurora-backdrop'
+import { HookLoop } from '@/components/hook-video'
 
 // three.js, fiber and drei load only when the starfield is chosen.
 const StarsBackdrop = lazy(() => import('@/components/stars-backdrop'))
@@ -121,8 +124,32 @@ export function SongBackdrop({ theme }: SongBackdropProps) {
       className='absolute z-0'
     />
   )
+  const hook = theme in TRACKS ? hookFor(theme as TrackId) : undefined
   let layer: ReactNode = null
   if (place === 'window') layer = artwork
+  else if (place === 'screen' && background === 'artwork' && hook)
+    layer = (
+      <>
+        {artwork}
+        {/* A song with a hook moves: the clip over its cover, under the same
+            vignette the artwork has. */}
+        <div key={theme} className='absolute inset-0 z-0 overflow-hidden'>
+          <HookLoop
+            hook={hook}
+            poster={TRACKS[theme as TrackId].art.full}
+            className='size-full animate-in duration-1000 fade-in-0'
+          />
+          <div
+            aria-hidden
+            className='absolute inset-0'
+            style={{
+              background:
+                'radial-gradient(ellipse 70% 70% at 50% 45%, color-mix(in oklab, var(--background) 15%, transparent) 0%, color-mix(in oklab, var(--background) 50%, transparent) 40%, color-mix(in oklab, var(--background) 85%, transparent) 100%)',
+            }}
+          />
+        </div>
+      </>
+    )
   else if (place === 'screen') {
     if (background === 'flow') layer = <FlowBackdrop />
     else if (background === 'aurora') layer = <AuroraBackdrop theme={theme} />
