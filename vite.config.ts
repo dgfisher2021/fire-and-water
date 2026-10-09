@@ -18,7 +18,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['assets/*.webp', 'assets/*.png', 'robots.txt'],
       manifest: {
-        name: 'Fire & Water — Dustin & Alex',
+        name: 'Fire & Water - Dustin & Alex',
         short_name: 'Fire & Water',
         description:
           'Three original songs exploring the bond between a brother and sister.',

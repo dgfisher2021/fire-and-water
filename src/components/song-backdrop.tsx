@@ -11,6 +11,7 @@ import { useMobileShellFramed, useMobileShellRoot } from '@dust-ui/blocks'
 import { AmbientBackdrop, AmbientImageBackdrop } from '@dust-ui/ui'
 import { hookFor } from '@/data/hooks'
 import { TRACKS, type TrackId } from '@/data/tracks'
+import { usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import { AuroraBackdrop } from '@/components/aurora-backdrop'
@@ -125,14 +126,19 @@ export function SongBackdrop({ theme }: SongBackdropProps) {
     />
   )
   const hook = theme in TRACKS ? hookFor(theme as TrackId) : undefined
+  // The hook moves only while its song plays; paused, the cover stays.
+  const playing = usePlayer(
+    (s) =>
+      s.track === theme && (s.status === 'playing' || s.status === 'loading')
+  )
   let layer: ReactNode = null
   if (place === 'window') layer = artwork
-  else if (place === 'screen' && background === 'artwork' && hook)
+  else if (place === 'screen' && background === 'artwork' && hook && playing)
     layer = (
       <>
         {artwork}
-        {/* A song with a hook moves: the clip over its cover, under the same
-            vignette the artwork has. */}
+        {/* A playing song with a hook moves: the clip over its cover, under
+            the same vignette the artwork has. */}
         <div key={theme} className='absolute inset-0 z-0 overflow-hidden'>
           <HookLoop
             hook={hook}

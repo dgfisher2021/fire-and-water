@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
@@ -28,7 +27,6 @@ import { audioLabel } from '@/lib/format'
 import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
-import { HookLoop } from '@/components/hook-video'
 
 /** The Now Playing glass: a light wash over a soft blur, so the artwork stays legible behind it. */
 const GLASS = 'border border-border bg-card/60 backdrop-blur-[6px]'
@@ -107,6 +105,9 @@ function Control({
   )
 }
 
+const DESCRIPTION =
+  'min-w-0 flex-1 text-left text-[12.5px] leading-normal text-foreground/85 [text-shadow:0_1px_2px_var(--background)]'
+
 export type NowPlayingCardProps = NowPlayingProps & {
   onSkipBack: () => void
   onSkipForward: () => void
@@ -118,8 +119,8 @@ export type NowPlayingCardProps = NowPlayingProps & {
 
 /**
  * The unfolded Now Playing control, under the screen's title row: the
- * cover beside the song's meaning (a tap shows all of it) with the fold
- * chevron at the corner, the Suno style it was made with, a single-line
+ * cover beside the song's meaning in full (a tap on it, or the chevron at
+ * the corner, folds the card), the Suno style it was made with, a single-line
  * scrubber with the times, then Download · previous · play · next and the
  * play mode (album order, repeat, shuffle).
  */
@@ -142,7 +143,6 @@ export function NowPlayingCard({
   const style = STYLE.get(track)
   const playMode = usePlayer((s) => s.playMode)
   const cyclePlayMode = usePlayer((s) => s.cyclePlayMode)
-  const [storyOpen, setStoryOpen] = useState(false)
   const mode = MODES[playMode]
   const nextMode =
     MODES[PLAY_MODES[(PLAY_MODES.indexOf(playMode) + 1) % PLAY_MODES.length]]
@@ -165,7 +165,7 @@ export function NowPlayingCard({
             onClick={onWatchHook}
             className='relative size-[72px] shrink-0 cursor-pointer overflow-hidden rounded-md shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
           >
-            <HookLoop hook={hook} poster={t.art.thumb} className='size-full' />
+            <img src={t.art.thumb} alt='' className='size-full object-cover' />
             <span
               aria-hidden
               className='absolute right-1 bottom-1 flex size-5 items-center justify-center rounded-sm bg-card/75 text-foreground backdrop-blur-sm'
@@ -180,20 +180,22 @@ export function NowPlayingCard({
             className='size-[72px] shrink-0 rounded-md object-cover shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
           />
         )}
-        {/* The song's meaning, three lines at a time; a tap shows the rest. */}
-        <button
-          type='button'
-          aria-expanded={storyOpen}
-          onClick={() => setStoryOpen((open) => !open)}
-          className={cn(
-            'min-h-0 min-w-0 flex-1 cursor-pointer text-left text-[12.5px] leading-normal text-foreground/85 transition-colors [text-shadow:0_1px_2px_var(--background)] hover:text-foreground'
-          )}
-        >
-          {/* The clamp sits on a span: WebKit ignores line-clamp on a button. */}
-          <span className={cn(!storyOpen && 'line-clamp-3')}>
+        {/* The song's meaning in full; a tap folds the card away. */}
+        {onCollapse ? (
+          <button
+            type='button'
+            onClick={onCollapse}
+            className={cn(
+              DESCRIPTION,
+              'cursor-pointer transition-colors hover:text-foreground'
+            )}
+          >
             {t.description}
-          </span>
-        </button>
+            <span className='sr-only'> Fold the player.</span>
+          </button>
+        ) : (
+          <p className={DESCRIPTION}>{t.description}</p>
+        )}
         {onCollapse && (
           <Control
             label='Collapse player'

@@ -251,7 +251,7 @@ export const ALBUM = {
   sunoUrl: 'https://suno.com/@dustin_graham_fisher',
   /** The About note on the More screen, then its closing line. */
   about:
-    'These are the stories of a creative and sensitive boy and his fierce younger sister — the golden child and the black sheep. He concealed his feelings, forced to hide his true self, while she bled her pain in ink on the page. As the years passed, he forged himself into a man by teaching himself magic and reclaiming the voice he was taught to fear. He found renewed inner strength not from above but from beside: friendships thick as blood who embraced the love of his heart and the fire of his soul. An engineer, an artist, a visionary. While the world called him too much, he turned out to be exactly enough.',
+    'These are the stories of a creative and sensitive boy and his fierce younger sister - the golden child and the black sheep. He concealed his feelings, forced to hide his true self, while she bled her pain in ink on the page. As the years passed, he forged himself into a man by teaching himself magic and reclaiming the voice he was taught to fear. He found renewed inner strength not from above but from beside: friendships thick as blood who embraced the love of his heart and the fire of his soul. An engineer, an artist, a visionary. While the world called him too much, he turned out to be exactly enough.',
   legend: 'You can’t tame his flame. This is his legend.',
 } as const
 
@@ -338,7 +338,7 @@ export const TRACKS: Record<TrackId, Track> = {
     written: '2026-03-08',
     voice: 'Dustin’s voice',
     description:
-      'She was fire—bold, roaring, untamed. He was water—patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn’t weakness. Their parents’ guilt was never hers to carry.',
+      'She was fire - bold, roaring, untamed. He was water - patient, adaptive, persistent. She gave him the courage to speak. He showed her that temperance isn’t weakness. Their parents’ guilt was never hers to carry.',
     audioFile: 'fire-and-water.m4a',
     duration: 318,
     art: { full: 'assets/fire.webp', thumb: 'assets/fire-512.webp' },
@@ -388,7 +388,7 @@ export const TRACKS: Record<TrackId, Track> = {
     written: '2026-03-02',
     voice: 'Baritone',
     description:
-      'A boy who only trusted pencil—erasable, safe, fixable—watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies. Sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
+      'A boy who only trusted pencil - erasable, safe, fixable - watches his sister fill journals in permanent ink. Her anger, sadness, and grief poured out fearlessly while he suppressed everything, prayed at night, and bought their lies. Sung low and rewritten around a chorus: the ink in every line, the sketch afraid to shine, and the lock she broke on his mental cage.',
     audioFile: 'pencil-and-pen-baritone.mp3',
     duration: 299,
     art: { full: 'assets/baritone.webp', thumb: 'assets/baritone-512.webp' },
@@ -1037,7 +1037,7 @@ export const TRACKS: Record<TrackId, Track> = {
     written: '2026-06-06',
     voice: 'A woman’s voice',
     description:
-      'Impossible is possible. A pocketful of hard-won maxims—martyrs who prove they’re needed, the one cruel word that lives there bold and lonely, a diamond that was coal under pressure—and a chorus that refuses to let any of it stop you. Stand up, look again, and wear your own crown.',
+      'Impossible is possible. A pocketful of hard-won maxims - martyrs who prove they’re needed, the one cruel word that lives there bold and lonely, a diamond that was coal under pressure - and a chorus that refuses to let any of it stop you. Stand up, look again, and wear your own crown.',
     audioFile: 'plot-twist.mp3',
     duration: 187,
     art: { full: 'assets/plot.webp', thumb: 'assets/plot-512.webp' },
@@ -1067,7 +1067,7 @@ export const TRACKS: Record<TrackId, Track> = {
     written: '2026-07-09',
     voice: 'Baritone',
     description:
-      'Smouldering country-pop: a man who speaks when it counts, weighs every word and reads what the room misses. Go on, mistake his quiet for weak—there’s a fire in the still and a strength in the meek, and he was made to last.',
+      'Smouldering country-pop: a man who speaks when it counts, weighs every word and reads what the room misses. Go on, mistake his quiet for weak - there’s a fire in the still and a strength in the meek, and he was made to last.',
     audioFile: 'quiet-aint-weak.mp3',
     duration: 224,
     art: { full: 'assets/quiet.webp', thumb: 'assets/quiet-512.webp' },
@@ -1797,9 +1797,9 @@ export function writtenDate(t: Track) {
   })
 }
 
-/** "For Alex, from Dustin — March 2, 2026": the dedication with the date, for the action sheet. */
+/** "For Alex, from Dustin - March 2, 2026": the dedication with the date, for the action sheet. */
 export function dedicationLine(t: Track) {
-  return `${t.dedication} — ${writtenDate(t)}`
+  return `${t.dedication} - ${writtenDate(t)}`
 }
 
 /** "Fire & Water", "Not Afraid to Change": the title without its parenthetical, for tight spots. */

@@ -80,7 +80,7 @@ export function MoreScreen() {
             type='button'
             onClick={() =>
               void share({
-                title: `${ALBUM.title} — ${ALBUM.artist}`,
+                title: `${ALBUM.title} - ${ALBUM.artist}`,
                 text: 'Songs exploring the bond between a brother and sister.',
                 url: albumUrl(),
               })

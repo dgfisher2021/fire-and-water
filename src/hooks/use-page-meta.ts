@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { mediaAccentVars } from '@dust-ui/ui'
 import { ALBUM, TRACKS, type TrackId } from '@/data/tracks'
 
-const BASE_TITLE = `${ALBUM.title} — ${ALBUM.artist}`
+const BASE_TITLE = `${ALBUM.title} - ${ALBUM.artist}`
 
 /**
  * The song's voice (--<id>, --<id>-deep, --<id>-glow, --<id>-ink in
@@ -42,7 +42,7 @@ export function usePageMeta(theme: TrackId, playingTitle: string | null) {
 
   useEffect(() => {
     document.title = playingTitle
-      ? `▶ ${playingTitle} — ${ALBUM.artist}`
+      ? `▶ ${playingTitle} - ${ALBUM.artist}`
       : BASE_TITLE
   }, [playingTitle])
 }
