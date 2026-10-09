@@ -2,16 +2,27 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
 import { Ellipsis, ScrollText } from 'lucide-react'
 import { createPortal } from 'react-dom'
-import { MotionTextShimmer } from '@dust-ui/motion'
+import {
+  MobileAppScreen,
+  useMobileShellFramed,
+  useMobileShellRoot,
+} from '@dust-ui/blocks'
+import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
 import {
   Button,
+  downloadText,
+  downloadUrl,
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
+  lyricsToText,
   SheetAction,
   type SheetActionAction,
+  toLrc,
+  useHotkeys,
+  useMediaQuery,
   useSwipe,
 } from '@dust-ui/ui'
 import sizes from '@/data/audio-sizes.json'
@@ -27,22 +38,16 @@ import {
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
-import { toLrc } from '@/lib/lrc'
-import { lyricsToText } from '@/lib/lyrics-text'
-import { copyText, download, downloadText, share } from '@/lib/share'
+import { copyText, share } from '@/lib/share'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
-import { useMediaQuery } from '@/hooks/use-media-query'
 import { HookViewer } from '@/components/hook-video'
 import { LyricVideoSheet } from '@/components/lyric-video-sheet'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
-import { Screen } from '@/components/screen'
-import { useFramed, useShellRoot } from '@/components/shell-context'
 import { TagPill } from '@/components/tag-pill'
-import { TitleMorph } from '@/components/title-morph'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
@@ -50,8 +55,8 @@ const SHORT_QUERY = '(max-height: 560px)'
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
   const navigate = useNavigate()
-  const framed = useFramed()
-  const shellRoot = useShellRoot()
+  const framed = useMobileShellFramed()
+  const shellRoot = useMobileShellRoot()
   const t = TRACKS[track]
 
   const loadedTrack = usePlayer((s) => s.track)
@@ -145,22 +150,14 @@ export function LyricsScreen() {
   })
 
   // Keyboard: Space toggles, arrows switch track.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const tag = (e.target as HTMLElement).tagName
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return
-      if (e.key === ' ' && tag !== 'BUTTON' && tag !== 'A') {
-        e.preventDefault()
-        if (playing) pause()
-        else play(track)
-      } else if (e.key === 'ArrowRight' && e.target === document.body) {
-        goTo(adjacentTrack(track, 1))
-      } else if (e.key === 'ArrowLeft' && e.target === document.body) {
-        goTo(adjacentTrack(track, -1))
-      }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+  useHotkeys({
+    ' ': (e) => {
+      e.preventDefault()
+      if (playing) pause()
+      else play(track)
+    },
+    ArrowRight: () => goTo(adjacentTrack(track, 1)),
+    ArrowLeft: () => goTo(adjacentTrack(track, -1)),
   })
 
   const onShare = () =>
@@ -190,15 +187,25 @@ export function LyricsScreen() {
       : []),
     {
       label: `Download ${audioLabel(t.audioFile, sizes[t.audioFile as keyof typeof sizes])}`,
-      onClick: () => download(t.audioFile),
+      onClick: () => downloadUrl(t.audioFile),
     },
   ]
   if (t.lyrics.length > 0)
     actions.push({
       label: 'Copy lyrics',
-      onClick: () => void copyText(lyricsToText(t), 'Lyrics copied'),
+      onClick: () =>
+        void copyText(lyricsToText(t.title, t.lyrics), 'Lyrics copied'),
     })
-  const lrc = toLrc(t)
+  const lrc = t.timing
+    ? toLrc({
+        title: t.title,
+        artist: ALBUM.artist,
+        album: ALBUM.title,
+        duration: t.duration,
+        stanzas: t.lyrics,
+        timing: t.timing,
+      })
+    : null
   if (lrc)
     actions.push({
       label: 'Download lyrics (.lrc)',
@@ -239,18 +246,18 @@ export function LyricsScreen() {
   return (
     // No page header: one title row sits above the control in either state,
     // so the words get the height a header would take.
-    <Screen scroll={false}>
+    <MobileAppScreen scroll={false}>
       <div className={cn('shrink-0 px-4 pb-1', framed ? 'pt-[52px]' : 'pt-2')}>
         <div lang={t.lang} className='mb-2 flex items-start gap-3 px-1'>
           <div className='min-w-0 flex-1'>
             {/* Morphs as a swipe changes the song, like the stage's title. */}
-            <TitleMorph
+            <MotionTextMorph
               as='h1'
               maxChars={22}
               className='font-display text-[24px] leading-tight font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]'
             >
               {t.title}
-            </TitleMorph>
+            </MotionTextMorph>
             <p className='mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
               <span>Written {writtenDate(t)}</span>
               {t.lyricsSource === 'transcribed' && (
@@ -382,6 +389,6 @@ export function LyricsScreen() {
       {filming && (
         <LyricVideoSheet track={t} onClose={() => setFilming(false)} />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

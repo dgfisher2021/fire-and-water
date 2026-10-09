@@ -1,12 +1,11 @@
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 import { createPortal } from 'react-dom'
-import { Button } from '@dust-ui/ui'
+import { useMobileShellRoot } from '@dust-ui/blocks'
+import { Button, useMediaQuery } from '@dust-ui/ui'
 import type { Hook } from '@/data/hooks'
 import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
-import { useMediaQuery } from '@/hooks/use-media-query'
-import { useShellRoot } from '@/components/shell-context'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 
@@ -51,7 +50,7 @@ export type HookViewerProps = {
  * on its button, Escape, or when the clip ends.
  */
 export function HookViewer({ hook, title, poster, onClose }: HookViewerProps) {
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const pause = usePlayer((s) => s.pause)
   const close = useRef<HTMLButtonElement>(null)
 

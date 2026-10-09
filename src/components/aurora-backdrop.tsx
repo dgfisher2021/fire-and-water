@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useMediaQuery } from '@/hooks/use-media-query'
-import { useShellRoot } from '@/components/shell-context'
+import { useMobileShellRoot } from '@dust-ui/blocks'
+import { useMediaQuery } from '@dust-ui/ui'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 /** Draw at a fraction of the screen's pixels; the curtains are soft anyway. */
@@ -102,7 +102,7 @@ function compile(gl: WebGLRenderingContext, type: number, source: string) {
  */
 export function AuroraBackdrop({ theme }: { theme: string }) {
   const canvas = useRef<HTMLCanvasElement>(null)
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const still = useMediaQuery(REDUCED_MOTION)
 
   useEffect(() => {

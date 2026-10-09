@@ -1777,10 +1777,9 @@ export function isLastTrack(id: TrackId) {
   return TRACK_ORDER.indexOf(id) === TRACK_ORDER.length - 1
 }
 
-/** A line wrapped in [brackets] is a section or voice label, not sung. */
-export function isLyricLabel(line: string) {
-  return line.startsWith('[') && line.endsWith(']')
-}
+/** What a song is searched by: its title, who it is for, and the voice. */
+export const trackSearchText = (id: TrackId) =>
+  `${TRACKS[id].title} ${TRACKS[id].dedication} ${TRACKS[id].voice}`
 
 type Lyrics = ReadonlyArray<ReadonlyArray<string>>
 

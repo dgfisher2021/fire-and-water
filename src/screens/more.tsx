@@ -8,7 +8,9 @@ import {
   Settings2,
   Share2,
 } from 'lucide-react'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import {
+  downloadUrl,
   MobileListGroup,
   MobileListRow,
   MobilePageHeader,
@@ -17,10 +19,8 @@ import {
 import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
-import { download, share } from '@/lib/share'
-import { useToasts } from '@/store/toasts'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
+import { share } from '@/lib/share'
+import { toaster } from '@/lib/toaster'
 import { SongPicker } from '@/components/song-picker'
 import { TagPill } from '@/components/tag-pill'
 
@@ -44,12 +44,12 @@ function downloadDetail(id: TrackId) {
 }
 
 export function MoreScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
   const [picking, setPicking] = useState<'download' | 'drive' | null>(null)
 
   return (
-    <Screen
+    <MobileAppScreen
       header={
         <MobilePageHeader
           eyebrow={ALBUM.artist}
@@ -62,7 +62,7 @@ export function MoreScreen() {
       }
     >
       <div className='flex flex-col gap-5 px-4 pt-1'>
-        <MobileListGroup label='Settings'>
+        <MobileListGroup glass label='Settings'>
           <MobileListRow
             icon={Settings2}
             label='Settings'
@@ -72,6 +72,7 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Share'
           footer='Point a camera at the code to open the album on another phone, or tap the row to send the link.'
         >
@@ -123,6 +124,7 @@ export function MoreScreen() {
         </MobileListGroup>
 
         <MobileListGroup
+          glass
           label='Songs'
           footer='Each download is the recording as it was made. Now Playing’s menu offers the same for the open song, plus its lyrics file.'
         >
@@ -142,7 +144,7 @@ export function MoreScreen() {
           )}
         </MobileListGroup>
 
-        <MobileListGroup label='About'>
+        <MobileListGroup glass label='About'>
           {/* The artist's note: who the songs are about, in his own words. */}
           <div className='flex flex-col gap-3 px-3 py-4'>
             <div className='flex items-center gap-3'>
@@ -192,8 +194,8 @@ export function MoreScreen() {
             <Download className='size-4 text-muted-foreground' aria-hidden />
           }
           onSelect={(id) => {
-            download(TRACKS[id].audioFile)
-            useToasts.getState().push(`Downloading ${TRACKS[id].title}`)
+            downloadUrl(TRACKS[id].audioFile)
+            toaster.push(`Downloading ${TRACKS[id].title}`)
           }}
           onClose={() => setPicking(null)}
         />
@@ -214,6 +216,6 @@ export function MoreScreen() {
           onClose={() => setPicking(null)}
         />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

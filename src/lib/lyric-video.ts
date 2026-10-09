@@ -1,5 +1,9 @@
-import { isLyricLabel, type Track } from '@/data/tracks'
-import { activePosition, activeWord } from '@/lib/read-along'
+import {
+  activeLyricsPosition,
+  activeLyricsWord,
+  isLyricsLabel,
+} from '@dust-ui/ui'
+import { type Track } from '@/data/tracks'
 
 export type VideoAspect = '9:16' | '1:1' | '16:9'
 
@@ -143,7 +147,7 @@ export async function recordLyricVideo({
 
   const stanzas = track.lyrics
   const timing = track.timing
-  const sung = (s: number) => stanzas[s]?.filter((l) => !isLyricLabel(l)) ?? []
+  const sung = (s: number) => stanzas[s]?.filter((l) => !isLyricsLabel(l)) ?? []
   const end = Math.min(from + seconds, track.duration)
   const short = Math.min(W, H)
   const pad = short * 0.08
@@ -186,7 +190,7 @@ export async function recordLyricVideo({
     )
 
     // Lyrics: the sung line, with the line before and after dimmed.
-    const pos = timing ? activePosition(timing, t) : null
+    const pos = timing ? activeLyricsPosition(timing, t) : null
     const lyricX = aspect === '16:9' ? W * 0.62 : W / 2
     const lyricW = aspect === '16:9' ? W * 0.62 - pad : W - pad * 2
     const lyricY =
@@ -195,13 +199,13 @@ export async function recordLyricVideo({
     if (pos) {
       const lines = stanzas[pos.stanza] ?? []
       const current = lines[pos.line] ?? ''
-      const singable = !isLyricLabel(current)
+      const singable = !isLyricsLabel(current)
       const before = lines
         .slice(0, pos.line)
-        .filter((l) => !isLyricLabel(l))
+        .filter((l) => !isLyricsLabel(l))
         .at(-1)
       const after =
-        lines.slice(pos.line + 1).find((l) => !isLyricLabel(l)) ??
+        lines.slice(pos.line + 1).find((l) => !isLyricsLabel(l)) ??
         sung(pos.stanza + 1)[0]
       const big = short * 0.068
       ctx.font = `500 ${big * 0.62}px ${display}`
@@ -211,7 +215,7 @@ export async function recordLyricVideo({
       if (singable) {
         ctx.font = `600 ${big}px ${display}`
         const rows = wrap(ctx, current, lyricW)
-        const word = timing ? activeWord(timing, pos, t) : null
+        const word = timing ? activeLyricsWord(timing, pos, t) : null
         let index = 0
         rows.forEach((row, r) => {
           const y = lyricY + (r - (rows.length - 1) / 2) * big * 1.18

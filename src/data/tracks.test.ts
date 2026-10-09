@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
+import { isLyricsLabel } from '@dust-ui/ui'
 import envelopes from './audio-envelopes.json'
 import sizes from './audio-sizes.json'
-import { TRACKS, TRACK_ORDER, comparePartner, isLyricLabel } from './tracks'
+import { TRACKS, TRACK_ORDER, comparePartner } from './tracks'
 
 // File names only: the files are never imported, just found.
 const audio = Object.keys(import.meta.glob('../../public/*.{m4a,mp3}'))
@@ -75,7 +76,7 @@ describe.each(TRACK_ORDER)('%s', (id) => {
       stanza.forEach((line, j) => {
         const starts = words[i][j]
         if (starts === null) return
-        expect(isLyricLabel(line), `label ${i}.${j} timed by word`).toBe(false)
+        expect(isLyricsLabel(line), `label ${i}.${j} timed by word`).toBe(false)
         expect(starts, `${i}.${j}`).toHaveLength(line.split(/\s+/).length)
         starts.forEach((s, k) => {
           if (k > 0) expect(s).toBeGreaterThanOrEqual(starts[k - 1])
@@ -86,6 +87,6 @@ describe.each(TRACK_ORDER)('%s', (id) => {
 
   it('has at least one sung line per stanza', () => {
     for (const stanza of t.lyrics)
-      expect(stanza.some((line) => !isLyricLabel(line))).toBe(true)
+      expect(stanza.some((line) => !isLyricsLabel(line))).toBe(true)
   })
 })

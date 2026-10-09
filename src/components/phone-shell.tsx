@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useRouterState } from '@tanstack/react-router'
 import {
   Columns2,
@@ -8,19 +8,15 @@ import {
   Play,
   ScrollText,
 } from 'lucide-react'
+import { MobileAppShell, useMobileShellRoot } from '@dust-ui/blocks'
 import {
-  AmbientImageBackdrop,
-  DeviceFrame,
-  GrainOverlay,
   MobileToastStack,
-  NavBottom,
-  ProgressiveBlur,
-  useShellInsets,
+  useMobileToaster,
+  type NavBottomProps,
 } from '@dust-ui/ui'
+import { toaster } from '@/lib/toaster'
 import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
-import { useToasts } from '@/store/toasts'
-import { useBackdropImages } from '@/hooks/use-backdrop-images'
 import {
   MINI_PLAYER_GAP,
   MINI_PLAYER_H,
@@ -29,17 +25,17 @@ import {
 import { usePulseVars } from '@/hooks/use-pulse'
 import { MiniPlayer } from '@/components/mini-player'
 import { RouterLink } from '@/components/router-link'
-import { ShellRootContext, useFramed } from '@/components/shell-context'
 import { SongBackdrop } from '@/components/song-backdrop'
 
-// Film grain over the artwork, faint enough to read as paper, not noise.
-const GRAIN = 0.05
-
 /**
- * A glow in the song's voice over the artwork that swells with the bass
+ * A glow in the song's voice over the backdrop that swells with the bass.
+ * Mounted inside the shell, where the root it writes the pulse onto exists
  * (--pulse-bass from usePulseVars; 0 when paused or under reduced motion).
  */
 function PulseGlow() {
+  const root = useMobileShellRoot()
+  const musicReactive = usePrefs((s) => s.musicReactive)
+  usePulseVars(musicReactive ? root : null)
   return (
     <div
       aria-hidden
@@ -54,32 +50,8 @@ function PulseGlow() {
   )
 }
 
-/** A soft blur where content runs under the nav and the mini player. */
-function ShellFade() {
-  return (
-    <div
-      aria-hidden
-      className='pointer-events-none absolute inset-x-0 bottom-0 z-30'
-      style={{ height: 'calc(var(--shell-bottom) + 12px)' }}
-    >
-      <ProgressiveBlur side='bottom' blur={10} layers={4} />
-    </div>
-  )
-}
-
-/** The mini player, pinned just above the nav inside the positioned root. */
-function ShellMini() {
-  return (
-    <div
-      className='absolute inset-x-0 z-40 px-3'
-      style={{ bottom: `calc(var(--shell-nav) + ${MINI_PLAYER_GAP}px)` }}
-    >
-      <MiniPlayer />
-    </div>
-  )
-}
-
-function ShellNav({ fixed }: { fixed: boolean }) {
+/** The bottom nav: four tabs and the play toggle lifted in the middle. */
+function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const focus = usePlayer(selectFocusTrack)
   const pair = comparePairFor(
@@ -101,133 +73,88 @@ function ShellNav({ fixed }: { fixed: boolean }) {
           ? 'more'
           : 'album'
 
-  return (
-    <NavBottom
-      items={[
-        { key: 'album', icon: Disc3, label: 'Songs', href: '/' },
-        {
-          key: 'lyrics',
-          icon: ScrollText,
-          label: 'Lyrics',
-          href: `/lyrics/${focus}`,
-        },
-        {
-          key: 'compare',
-          icon: Columns2,
-          label: 'Compare',
-          href: `/compare?left=${pair.left}&right=${pair.right}`,
-        },
-        { key: 'more', icon: Ellipsis, label: 'More', href: '/more' },
-      ]}
-      activeKey={active}
-      linkComponent={RouterLink}
-      center={{
-        icon: playing ? Pause : Play,
-        onClick: () => toggle(loaded ?? focus),
-        background:
-          'linear-gradient(135deg, var(--track-bright), var(--track-deep))',
-        color: 'var(--track-foreground)',
-        shadow: 'var(--nav-center-glow)',
-      }}
-      activePill
-      labels
-      fixed={fixed}
-    />
-  )
+  return {
+    items: [
+      { key: 'album', icon: Disc3, label: 'Songs', href: '/' },
+      {
+        key: 'lyrics',
+        icon: ScrollText,
+        label: 'Lyrics',
+        href: `/lyrics/${focus}`,
+      },
+      {
+        key: 'compare',
+        icon: Columns2,
+        label: 'Compare',
+        href: `/compare?left=${pair.left}&right=${pair.right}`,
+      },
+      { key: 'more', icon: Ellipsis, label: 'More', href: '/more' },
+    ],
+    activeKey: active,
+    linkComponent: RouterLink,
+    center: {
+      icon: playing ? Pause : Play,
+      label: playing ? 'Pause' : 'Play',
+      size: 'lg',
+      active: playing,
+      onClick: () => toggle(loaded ?? focus),
+      background:
+        'linear-gradient(135deg, var(--track-bright), var(--track-deep))',
+      color: 'var(--track-foreground)',
+      // A lifted glow in the song's colour and a lit top edge.
+      shadow:
+        '0 10px 26px -6px var(--media-glow), 0 0 22px -2px var(--media-glow), inset 0 1px 0 color-mix(in oklab, var(--track-foreground) 30%, transparent)',
+    },
+    activeIndicator: 'capsule',
+    labels: true,
+  }
 }
 
 function ShellToasts() {
-  const toasts = useToasts((s) => s.toasts)
-  const dismiss = useToasts((s) => s.dismiss)
+  const { toasts, dismiss } = useMobileToaster(toaster)
   return (
     <MobileToastStack toasts={toasts} onDismiss={dismiss} bottomOffset={96} />
   )
 }
 
 export type PhoneShellProps = {
-  /** The active track id; drives the artwork atmosphere. */
+  /** The active track id; drives the backdrop. */
   theme: string
   children: ReactNode
 }
 
 /**
- * The app's chrome. On phones the screen fills the viewport with a fixed
- * NavBottom; from tablet up it sits inside a DeviceFrame floating over a
- * blurred, full-window version of the same artwork. Either way the screen
- * root is positioned so in-frame overlays (SheetAction, toasts) pin to it.
+ * The app's chrome on Dust UI's MobileAppShell: the song's backdrop under
+ * film grain and the pulse glow, the screen, the bottom blur, the mini
+ * player above the nav while a song is loaded, and in-frame toasts.
  */
 export function PhoneShell({ theme, children }: PhoneShellProps) {
-  const framed = useFramed()
   const mini = useMiniPlayerVisible()
-  // --shell-nav and --shell-bottom on the root; screens pad by the latter.
-  const insets = useShellInsets({
-    framed,
-    strip: mini ? MINI_PLAYER_H : undefined,
-  })
-  const [root, setRoot] = useState<HTMLElement | null>(null)
-  const backdrops = useBackdropImages(theme)
-  const musicReactive = usePrefs((s) => s.musicReactive)
-  usePulseVars(musicReactive ? root : null)
-
-  if (!framed) {
-    return (
-      <ShellRootContext.Provider value={root}>
-        <div
-          ref={setRoot}
-          className='relative flex h-dvh flex-col overflow-hidden'
-          style={insets.style}
-        >
-          {/* Sized to the large viewport so the URL bar showing or hiding
-              never re-crops the art; no drift, so it never rescales. */}
-          <SongBackdrop theme={theme} className='fixed bottom-auto h-lvh' />
-          <GrainOverlay opacity={GRAIN} />
-          <PulseGlow />
-          {children}
-          <ShellFade />
-          {mini && <ShellMini />}
-          <ShellNav fixed />
-          <ShellToasts />
-        </div>
-      </ShellRootContext.Provider>
-    )
-  }
-
   return (
-    <ShellRootContext.Provider value={root}>
-      <div className='relative flex h-dvh items-center justify-center overflow-hidden'>
-        <AmbientImageBackdrop
-          images={backdrops}
-          activeId={theme}
-          drift={false}
-          className='fixed z-0 scale-110 blur-2xl'
-        />
-        <div className='relative z-[1]'>
-          <DeviceFrame
-            fitMargin={48}
-            fitMaxHeight='viewport'
-            statusBarOverlay
-            bottomNav={
-              <>
-                <ShellNav fixed={false} />
-                <ShellToasts />
-              </>
-            }
-          >
+    <MobileAppShell
+      nav={useShellNav()}
+      backdrop={<SongBackdrop theme={theme} />}
+      grain
+      fade
+      strip={mini ? MINI_PLAYER_H : undefined}
+      overlay={
+        <>
+          {mini && (
             <div
-              ref={setRoot}
-              className='absolute inset-0 flex flex-col'
-              style={insets.style}
+              className='absolute inset-x-0 z-40 px-3'
+              style={{
+                bottom: `calc(var(--shell-nav) + ${MINI_PLAYER_GAP}px)`,
+              }}
             >
-              <SongBackdrop theme={theme} />
-              <GrainOverlay opacity={GRAIN} />
-              <PulseGlow />
-              {children}
-              <ShellFade />
-              {mini && <ShellMini />}
+              <MiniPlayer />
             </div>
-          </DeviceFrame>
-        </div>
-      </div>
-    </ShellRootContext.Provider>
+          )}
+          <ShellToasts />
+        </>
+      }
+    >
+      <PulseGlow />
+      {children}
+    </MobileAppShell>
   )
 }

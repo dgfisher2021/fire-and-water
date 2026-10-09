@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Print a song's voice from its cover art: the four OKLCH tokens and the
-:root[data-track] block for src/styles/index.css, and the themeColor for
-its entry in src/data/tracks.ts. The hue is the cover's most telling colour
+"""Print a song's voice from its cover art: the four OKLCH tokens for
+src/styles/index.css (usePageMeta maps them onto --track-* by the id), and
+the themeColor for its entry in src/data/tracks.ts. The hue is the cover's most telling colour
 (common, saturated, not black); pass --hue and --chroma to overrule it when
 the cover is grey or the picker lands on the wrong thing.
 
@@ -77,12 +77,5 @@ print(f"  --{tid}: oklch(0.78 {c} {h});")
 print(f"  --{tid}-deep: oklch(0.37 {round(min(0.19, c * 1.1), 2)} {h});")
 print(f"  --{tid}-glow: oklch(0.66 {c} {h} / 42%);")
 print(f"  --{tid}-ink: oklch(0.22 0.04 {h});")
-print()
-print(f":root[data-track='{tid}'] {{")
-print(f"  --track-bright: var(--{tid});")
-print(f"  --track-deep: var(--{tid}-deep);")
-print(f"  --track-glow: var(--{tid}-glow);")
-print(f"  --track-ink: var(--{tid}-ink);")
-print("}")
 print()
 print(f"themeColor: '{oklch_to_hex(0.15, min(0.03, c / 3), h)}'")

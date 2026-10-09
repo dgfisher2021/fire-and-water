@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { ArrowUpDown, Check } from 'lucide-react'
+import { ArrowUpDown } from 'lucide-react'
+import { useMobileShellRoot } from '@dust-ui/blocks'
 import { Button, SheetAction, type SheetActionAction } from '@dust-ui/ui'
 import { ALBUM_SORTS, type AlbumSort } from '@/lib/sort'
-import { useShellRoot } from '@/components/shell-context'
 
 const SORT_LABELS: Record<AlbumSort, string> = {
   album: 'Album order',
@@ -18,23 +18,21 @@ export type SortButtonProps = {
 
 /**
  * A quiet icon button that opens an action sheet of the list orders, the
- * current one in the primary tone with a check; the sheet pins inside the
+ * current one checked in the primary tone; the sheet pins inside the
  * shell root, over the nav.
  */
 export function SortButton({ value, onChange }: SortButtonProps) {
-  const shellRoot = useShellRoot()
+  const shellRoot = useMobileShellRoot()
   const [open, setOpen] = useState(false)
   const actions: SheetActionAction[] = ALBUM_SORTS.map((sort) => ({
+    // The current order keeps the primary tone; the rest read as text.
     label:
       sort === value ? (
-        <span className='inline-flex items-center gap-1.5 font-semibold'>
-          {SORT_LABELS[sort]}
-          <Check className='size-4' aria-hidden />
-          <span className='sr-only'>(current)</span>
-        </span>
+        SORT_LABELS[sort]
       ) : (
         <span className='text-foreground'>{SORT_LABELS[sort]}</span>
       ),
+    checked: sort === value,
     onClick: () => onChange(sort),
   }))
   return (

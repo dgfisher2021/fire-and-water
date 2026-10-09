@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react'
 import { ChevronDown, Pause, Play } from 'lucide-react'
-import type { LyricsTiming } from '@/lib/read-along'
+import type { LyricsTiming } from '@dust-ui/ui'
+import { useSyncedScroll } from '@dust-ui/ui'
 import { cn } from '@/lib/utils'
-import { useSyncedScroll } from '@/hooks/use-synced-scroll'
 import { LyricsReader } from '@/components/lyrics-reader'
 
 export type LyricsColumn = {

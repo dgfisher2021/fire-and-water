@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
+import { useMediaQuery } from '@dust-ui/ui'
 import { TRACKS } from '@/data/tracks'
 import { loadPulse, pulseAt, type Pulse } from '@/lib/pulse'
 import { usePlayer, type PlayerState } from '@/store/player'
-import { useMediaQuery } from '@/hooks/use-media-query'
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
 

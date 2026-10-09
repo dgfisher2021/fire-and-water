@@ -172,7 +172,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 
 1. Drop the audio in `public/` and the cover art in `public/assets/` as `<id>.webp` (longest side 1024) plus `<id>-512.webp` (square thumbnail). Suno embeds the cover in the MP3: `ffmpeg -i song.mp3 -an -c:v copy cover.jpg`, then convert with Pillow or `cwebp -q 80`. Run `python3 scripts/audio-sizes.py` so the Downloads list knows the file size and `python3 scripts/audio-envelope.py` for the waveform the player scrubs by.
 2. Add the id to `trackIdSchema` and `TRACK_ORDER` and a `TRACKS` entry in `src/data/tracks.ts` (title, dedication, the day it was written, voice, description, duration, audio file). If it answers another song, pair them in `PARTNERS` so Compare opens them together. The Album's date-written timeline reads the dates.
-3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink` and a `:root[data-track='<id>']` block. `python3 scripts/voice-from-art.py <id> public/assets/<id>.webp` prints them (and the `themeColor`) from the cover's most telling colour; pass `--hue` and `--chroma` when the cover is grey or the picker lands on the wrong thing.
+3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink`, named by the id (`usePageMeta` maps them onto `--track-*` and the media accent). `python3 scripts/voice-from-art.py <id> public/assets/<id>.webp` prints them (and the `themeColor`) from the cover's most telling colour; pass `--hue` and `--chroma` when the cover is grey or the picker lands on the wrong thing.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.
 
@@ -225,17 +225,17 @@ For a song the aligner cannot hear, or to redo a stretch by ear, open `/time/<id
 
 ## Stack
 
-React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`, `@dust-ui/motion`, `@dust-ui/tokens`; zustand for player state; `vite-plugin-pwa` for the service worker; self-hosted Cormorant Garamond and Outfit.
+React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`, `@dust-ui/blocks` (the app shell), `@dust-ui/motion`, `@dust-ui/tokens`; zustand for player state; `vite-plugin-pwa` for the service worker; self-hosted Cormorant Garamond and Outfit.
 
 ```
 index.html              App shell, meta, pre-paint theme, legacy #hash redirect
 src/routes/             / album (?sort=) · /lyrics/$track now playing · /compare · /more (stubs) · /time/$track tap-to-time
 src/screens/            The four screens, and the tap-to-time tool
-src/components/         Shell, screens' building blocks: artwork stage, lyrics reader and split, Now Playing card and bar, waveform, mini player, track row, song picker, sort button
-src/store/              Player state (one <audio> element) and toasts
+src/components/         Shell (on MobileAppShell), screens' building blocks: artwork stage, lyrics reader and split, Now Playing card and bar, mini player, track row, song picker, sort button
+src/store/              Player state (one <audio> element) and preferences
 src/data/tracks.ts      Song data; src/data/lyrics/*.json the lyric sheets; audio-sizes.json the download sizes; tracks.test.ts checks it all
 src/data/collections.ts The songs by theme, for the Album list's "By collection" order
-src/lib/                search.ts the song filter, sort.ts the Album list orders, read-along.ts the sing-along, lrc.ts the LRC export
+src/lib/                sort.ts the Album list orders, share.ts and toaster.ts, lyric-video.ts the video export; search, LRC, lyrics timing and time labels come from @dust-ui/ui
 src/styles/index.css    Token contract, presets, brand default, per-song voices
 public/                 Audio (*.m4a, *.mp3) and artwork (WebP)
 scripts/                Lyrics import, sing-along timing, audio sizes

@@ -1,11 +1,26 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { Clapperboard } from 'lucide-react'
-import { Button, MobileListGroup, MobileSearchBar, useSwipe } from '@dust-ui/ui'
+import { Clapperboard, Pause, Play } from 'lucide-react'
+import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
+import { MotionTextMorph } from '@dust-ui/motion'
+import {
+  Button,
+  filterByText,
+  formatTime,
+  LoaderSpinner,
+  MobileListGroup,
+  MobileSearchBar,
+  useHotkeys,
+  useSwipe,
+} from '@dust-ui/ui'
 import { hookFor } from '@/data/hooks'
-import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { formatTime } from '@/lib/format'
-import { filterTracks } from '@/lib/search'
+import {
+  ALBUM,
+  TRACKS,
+  TRACK_ORDER,
+  trackSearchText,
+  type TrackId,
+} from '@/data/tracks'
 import {
   groupTracks,
   groupTracksByMonth,
@@ -17,11 +32,7 @@ import { usePlayer } from '@/store/player'
 import { AppearanceButton } from '@/components/appearance-button'
 import { ArtworkStage } from '@/components/artwork-stage'
 import { HookViewer } from '@/components/hook-video'
-import { PlayButton } from '@/components/play-button'
-import { Screen } from '@/components/screen'
-import { useFramed } from '@/components/shell-context'
 import { SortButton } from '@/components/sort-button'
-import { TitleMorph } from '@/components/title-morph'
 import { TrackRow } from '@/components/track-row'
 
 const AUTOPLAY_MS = 15_000
@@ -99,7 +110,7 @@ function Timeline({ songs }: { songs: readonly TrackId[] }) {
             className='absolute top-[7px] -left-5 size-[11px] rounded-full border-2 border-background bg-primary shadow-[0_0_12px_var(--track-glow)]'
           />
           <GroupHeader title={label} songs={ids.length} />
-          <MobileListGroup aria-label={label}>
+          <MobileListGroup glass aria-label={label}>
             {ids.map((id) => (
               <TrackRow key={id} id={id} value={<DayStamp id={id} />} />
             ))}
@@ -111,7 +122,7 @@ function Timeline({ songs }: { songs: readonly TrackId[] }) {
 }
 
 export function AlbumScreen() {
-  const framed = useFramed()
+  const framed = useMobileShellFramed()
   const navigate = useNavigate()
   // The list order is in the URL (/?sort=title); the collection view keeps it clean.
   const { sort } = useSearch({ from: '/' })
@@ -127,7 +138,7 @@ export function AlbumScreen() {
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
   const [query, setQuery] = useState('')
-  const songs = filterTracks(TRACK_ORDER, (id) => TRACKS[id], query)
+  const songs = filterByText([...TRACK_ORDER], query, trackSearchText)
   const noMatch = songs.length === 0 ? `No song matches “${query}”` : undefined
   // The stage above keeps album order; only the list re-sorts.
   const track = TRACK_ORDER[index]
@@ -135,6 +146,7 @@ export function AlbumScreen() {
   const hook = hookFor(track)
   const [watching, setWatching] = useState(false)
   const isActive = loaded === track && status !== 'paused' && status !== 'idle'
+  const stagePlaying = isActive && status === 'playing'
   const anyPlaying = status === 'playing' || status === 'loading'
 
   const step = (direction: 1 | -1) =>
@@ -147,19 +159,14 @@ export function AlbumScreen() {
   })
 
   // Arrows turn the covers, unless the caret is in the search field.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return
-      if ((e.target as HTMLElement).tagName === 'INPUT') return
-      setInteracted(true)
-      step(e.key === 'ArrowRight' ? 1 : -1)
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  })
+  const turn = (by: 1 | -1) => {
+    setInteracted(true)
+    step(by)
+  }
+  useHotkeys({ ArrowRight: () => turn(1), ArrowLeft: () => turn(-1) })
 
   const list = noMatch ? (
-    <MobileListGroup label='Songs' footer={noMatch}>
+    <MobileListGroup glass label='Songs' footer={noMatch}>
       {[]}
     </MobileListGroup>
   ) : sort === 'collection' ? (
@@ -171,7 +178,7 @@ export function AlbumScreen() {
             blurb={collection.blurb}
             songs={ids.length}
           />
-          <MobileListGroup aria-label={collection.label}>
+          <MobileListGroup glass aria-label={collection.label}>
             {ids.map((id) => (
               <TrackRow key={id} id={id} />
             ))}
@@ -187,7 +194,11 @@ export function AlbumScreen() {
       </p>
     </>
   ) : (
-    <MobileListGroup label='Songs' footer={SORT_FOOTER[sort] ?? ALBUM.tagline}>
+    <MobileListGroup
+      glass
+      label='Songs'
+      footer={SORT_FOOTER[sort] ?? ALBUM.tagline}
+    >
       {sortTracks(songs, sort).map((id) => (
         <TrackRow key={id} id={id} />
       ))}
@@ -197,7 +208,7 @@ export function AlbumScreen() {
   return (
     // No page header: the theme button alone at the top, then the stage,
     // whose title does the announcing.
-    <Screen>
+    <MobileAppScreen>
       <div
         className={cn('flex justify-end px-4', framed ? 'pt-[48px]' : 'pt-1')}
       >
@@ -215,13 +226,13 @@ export function AlbumScreen() {
           className='animate-fade-up'
         >
           <div className='min-h-[92px]'>
-            <TitleMorph
+            <MotionTextMorph
               as='h2'
               maxChars={22}
               className='font-display text-[28px] leading-[1.15] font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)] short:text-[22px]'
             >
               {t.title}
-            </TitleMorph>
+            </MotionTextMorph>
             <div
               key={track}
               className='animate-in duration-700 fade-in-0 slide-in-from-bottom-1'
@@ -235,17 +246,26 @@ export function AlbumScreen() {
             </div>
           </div>
           <div className='mt-4 flex w-full items-center justify-center gap-2 short:justify-start'>
-            <PlayButton
-              playing={isActive && status === 'playing'}
-              loading={isActive && status === 'loading'}
+            <Button
+              variant='media'
               onClick={() => {
-                if (isActive && status === 'playing') pause()
+                if (stagePlaying) pause()
                 else {
                   play(track)
                   void openLyrics()
                 }
               }}
-            />
+              className='h-11 gap-2 rounded-md px-6 text-[13px] font-medium tracking-[1px]'
+            >
+              {isActive && status === 'loading' ? (
+                <LoaderSpinner variant='ring' label='Buffering' />
+              ) : stagePlaying ? (
+                <Pause className='size-4 fill-current' aria-hidden />
+              ) : (
+                <Play className='size-4 fill-current' aria-hidden />
+              )}
+              {stagePlaying ? 'Pause' : 'Play'}
+            </Button>
             {hook && (
               <Button
                 variant='ghost'
@@ -271,7 +291,7 @@ export function AlbumScreen() {
               value={query}
               onChange={setQuery}
               placeholder='Search songs, voices, dedications'
-              background='color-mix(in oklab, var(--card) 85%, transparent)'
+              glass
               trailing={<SortButton value={sort} onChange={setSort} />}
             />
           </div>
@@ -286,6 +306,6 @@ export function AlbumScreen() {
           onClose={() => setWatching(false)}
         />
       )}
-    </Screen>
+    </MobileAppScreen>
   )
 }

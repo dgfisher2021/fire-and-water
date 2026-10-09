@@ -1,8 +1,12 @@
 import { useState, type ReactNode } from 'react'
-import { MobileListGroup, MobileSearchBar, SheetBottom } from '@dust-ui/ui'
-import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
-import { filterTracks } from '@/lib/search'
-import { useShellRoot } from '@/components/shell-context'
+import { useMobileShellRoot } from '@dust-ui/blocks'
+import {
+  filterByText,
+  MobileListGroup,
+  MobileSearchBar,
+  SheetBottom,
+} from '@dust-ui/ui'
+import { TRACK_ORDER, trackSearchText, type TrackId } from '@/data/tracks'
 import { TrackRow } from '@/components/track-row'
 
 export type SongPickerProps = {
@@ -32,9 +36,9 @@ export function SongPicker({
   onSelect,
   onClose,
 }: SongPickerProps) {
-  const root = useShellRoot()
+  const root = useMobileShellRoot()
   const [query, setQuery] = useState('')
-  const shown = filterTracks(songs, (id) => TRACKS[id], query)
+  const shown = filterByText([...songs], query, trackSearchText)
   return (
     <SheetBottom
       title={title}
@@ -54,6 +58,7 @@ export function SongPicker({
           placeholder='Search songs'
         />
         <MobileListGroup
+          glass
           role='listbox'
           aria-label={title}
           footer={shown.length === 0 ? `No song matches “${query}”` : undefined}

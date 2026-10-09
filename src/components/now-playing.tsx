@@ -1,10 +1,9 @@
-import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useState } from 'react'
 import {
   ChevronDown,
   ChevronUp,
   Download,
   ListMusic,
-  Pause,
   Play,
   Repeat1,
   Shuffle,
@@ -12,19 +11,24 @@ import {
   SkipForward,
   type LucideIcon,
 } from 'lucide-react'
-import { Button, LoaderSpinner } from '@dust-ui/ui'
+import {
+  Button,
+  downloadUrl,
+  formatTime,
+  MediaPlayButton,
+  MediaScrubber,
+  MediaWaveform,
+} from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
 import sizes from '@/data/audio-sizes.json'
 import { hookFor } from '@/data/hooks'
 import catalog from '@/data/suno-catalog.json'
 import { TRACKS, type Track, type TrackId } from '@/data/tracks'
-import { audioLabel, formatTime } from '@/lib/format'
-import { download } from '@/lib/share'
+import { audioLabel } from '@/lib/format'
+import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
 import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
-import { useToasts } from '@/store/toasts'
 import { HookLoop } from '@/components/hook-video'
-import { Waveform } from '@/components/waveform'
 
 /** The Now Playing glass: a light wash over a soft blur, so the artwork stays legible behind it. */
 const GLASS = 'border border-border bg-card/60 backdrop-blur-[6px]'
@@ -65,50 +69,6 @@ export type NowPlayingProps = {
   className?: string
 }
 
-/** The filled play toggle in the song's gradient; it breathes while playing. */
-function PlayToggle({
-  playing,
-  loading,
-  onClick,
-  size,
-}: Pick<NowPlayingProps, 'playing' | 'loading'> & {
-  onClick: () => void
-  size: 'card' | 'bar'
-}) {
-  return (
-    <Button
-      variant='ghost'
-      size='icon'
-      aria-label={playing ? 'Pause' : 'Play'}
-      data-playing={playing || undefined}
-      onClick={(e) => {
-        e.stopPropagation()
-        onClick()
-      }}
-      className={cn(
-        'shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] transition-transform duration-200 hover:scale-[1.06] hover:opacity-100 active:scale-95 data-playing:animate-breathe motion-reduce:animate-none',
-        size === 'card' ? 'size-[46px]' : 'size-10'
-      )}
-    >
-      {loading ? (
-        <LoaderSpinner variant='ring' label='Buffering' />
-      ) : playing ? (
-        <Pause
-          className='size-[18px] fill-current'
-          strokeWidth={1.8}
-          aria-hidden
-        />
-      ) : (
-        <Play
-          className='ml-0.5 size-[18px] fill-current'
-          strokeWidth={1.8}
-          aria-hidden
-        />
-      )}
-    </Button>
-  )
-}
-
 /** A quiet round control beside the transport. */
 function Control({
   label,
@@ -144,77 +104,6 @@ function Control({
         aria-hidden
       />
     </Button>
-  )
-}
-
-/**
- * A single-line scrubber: tap or drag along the track, arrow keys step
- * five seconds, the thumb grows while dragging.
- */
-function Scrubber({
-  progress,
-  duration,
-  onSeek,
-}: Pick<NowPlayingProps, 'progress' | 'duration' | 'onSeek'>) {
-  const track = useRef<HTMLDivElement>(null)
-  const [scrubbing, setScrubbing] = useState(false)
-  const seekAt = (x: number) => {
-    const r = track.current?.getBoundingClientRect()
-    if (!r || r.width === 0) return
-    onSeek(Math.min(1, Math.max(0, (x - r.left) / r.width)))
-  }
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (duration <= 0) return
-    const step = 5 / duration
-    if (e.key === 'ArrowRight') {
-      e.preventDefault()
-      onSeek(Math.min(1, progress + step))
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault()
-      onSeek(Math.max(0, progress - step))
-    }
-  }
-  const down = (e: PointerEvent<HTMLDivElement>) => {
-    setScrubbing(true)
-    e.currentTarget.setPointerCapture(e.pointerId)
-    seekAt(e.clientX)
-  }
-  return (
-    <div
-      ref={track}
-      role='slider'
-      aria-label='Seek'
-      aria-valuemin={0}
-      aria-valuemax={Math.round(duration)}
-      aria-valuenow={Math.round(progress * duration)}
-      aria-valuetext={formatTime(progress * duration)}
-      tabIndex={0}
-      data-scrubbing={scrubbing || undefined}
-      onKeyDown={onKeyDown}
-      onPointerDown={down}
-      onPointerMove={(e) => scrubbing && seekAt(e.clientX)}
-      onPointerUp={() => setScrubbing(false)}
-      onPointerCancel={() => setScrubbing(false)}
-      className='relative flex h-6 w-full cursor-pointer touch-none items-center outline-none focus-visible:[&>div:first-child]:ring-2 focus-visible:[&>div:first-child]:ring-ring/50'
-    >
-      <div className='h-[5px] w-full overflow-hidden rounded-full bg-foreground/15'>
-        <div
-          className={cn(
-            'h-full rounded-full bg-linear-to-r from-track-deep to-track-bright',
-            !scrubbing && 'transition-[width] duration-150 ease-linear'
-          )}
-          style={{ width: `${progress * 100}%` }}
-        />
-      </div>
-      <div
-        aria-hidden
-        className={cn(
-          'absolute size-3 -translate-x-1/2 rounded-full bg-foreground shadow-[0_1px_6px_rgb(0_0_0/0.5)] transition-transform duration-150',
-          scrubbing && 'scale-125'
-        )}
-        style={{ left: `${progress * 100}%` }}
-      />
-    </div>
   )
 }
 
@@ -319,28 +208,30 @@ export function NowPlayingCard({
           {style}
         </p>
       )}
-      <div>
-        <Scrubber progress={progress} duration={duration} onSeek={onSeek} />
-        <div className='flex justify-between text-[11px] text-muted-foreground tabular-nums'>
-          <span>{formatTime(progress * duration)}</span>
-          <span>-{formatTime(duration - progress * duration)}</span>
-        </div>
-      </div>
+      <MediaScrubber
+        progress={progress}
+        duration={duration}
+        onSeek={onSeek}
+        timeLabels='remaining'
+      />
       <div className='flex items-center justify-center gap-3'>
         <Control
           label={`Download ${label}`}
           icon={Download}
           onClick={() => {
-            download(t.audioFile)
-            useToasts.getState().push(`Downloading ${t.title}`)
+            downloadUrl(t.audioFile)
+            toaster.push(`Downloading ${t.title}`)
           }}
         />
         <Control label='Previous' icon={SkipBack} fill onClick={onSkipBack} />
-        <PlayToggle
-          size='card'
+        <MediaPlayButton
+          size='lg'
           playing={playing}
           loading={loading}
-          onClick={onPlayPause}
+          onClick={(e) => {
+            e.stopPropagation()
+            onPlayPause()
+          }}
         />
         <Control label='Next' icon={SkipForward} fill onClick={onSkipForward} />
         <Control
@@ -349,7 +240,7 @@ export function NowPlayingCard({
           on={playMode !== 'album'}
           onClick={() => {
             cyclePlayMode()
-            useToasts.getState().push(nextMode.label)
+            toaster.push(nextMode.label)
           }}
         />
       </div>
@@ -409,7 +300,7 @@ export function NowPlayingBar({
         className='min-w-0 flex-1 overflow-hidden'
         onClick={(e) => e.stopPropagation()}
       >
-        <Waveform
+        <MediaWaveform
           bins={halveBins(binsFor(t))}
           progress={progress}
           duration={duration}
@@ -436,11 +327,13 @@ export function NowPlayingBar({
         </Button>
       ) : (
         onPlayPause && (
-          <PlayToggle
-            size='bar'
+          <MediaPlayButton
             playing={playing}
             loading={loading}
-            onClick={onPlayPause}
+            onClick={(e) => {
+              e.stopPropagation()
+              onPlayPause()
+            }}
           />
         )
       )}
