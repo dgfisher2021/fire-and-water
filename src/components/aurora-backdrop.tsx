@@ -159,11 +159,16 @@ export function AuroraBackdrop({ theme }: { theme: string }) {
 
     let frame = 0
     const start = performance.now()
+    // The pulse changes ten times a second; ease toward it every frame.
+    let bass = 0
+    let voice = 0
     const draw = () => {
       resize()
+      bass += (level('--pulse-bass') - bass) * 0.2
+      voice += (level('--pulse-vocal') - voice) * 0.2
       gl.uniform1f(uTime, still ? 12 : (performance.now() - start) / 1000)
-      gl.uniform1f(uBass, level('--pulse-bass'))
-      gl.uniform1f(uVoice, level('--pulse-vocal'))
+      gl.uniform1f(uBass, bass)
+      gl.uniform1f(uVoice, voice)
       gl.clearColor(0, 0, 0, 0)
       gl.clear(gl.COLOR_BUFFER_BIT)
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)

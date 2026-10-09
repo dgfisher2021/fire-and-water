@@ -260,6 +260,10 @@ pnpm lint
 pnpm test       # data checks: files, sheets, timing, sizes
 ```
 
+### Debugging on a phone
+
+Phones have no devtools, so open the site with `?debug` (for example `https://dgfisher2021.github.io/fire-and-water/?debug`). It stays on for that browser until `?nodebug`. A console (Eruda, from the jsDelivr CDN) appears as a floating button with the console, network and elements panels, and the app logs errors, page hides and a heartbeat every three seconds (song, playback time, frames per second) to `localStorage` under `fw-debug-log`. After a freeze or a reload, open Eruda's Resources panel and read that key: the last beats show what was playing and whether the frame rate collapsed first.
+
 ### Dust UI agent tooling
 
 `.mcp.json` ships the shadcn MCP server and `components.json` declares the `@dust-ui` (import) and `@dust-ui-source` (fork) registries, so an AI agent opened in this folder can browse and install Dust UI components. Approve the server once with `/mcp`.

@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { registerSW } from 'virtual:pwa-register'
 import { AppearanceProvider } from '@dust-ui/ui'
+import { startDebug } from '@/lib/debug'
+import { usePlayer } from '@/store/player'
 import { routeTree } from './routeTree.gen'
 import './styles/index.css'
 
 registerSW({ immediate: true })
+startDebug(() => {
+  const s = usePlayer.getState()
+  return `${s.track ?? '-'} ${s.status} t=${s.currentTime.toFixed(1)}`
+})
 
 const router = createRouter({
   routeTree,
