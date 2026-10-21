@@ -20,6 +20,8 @@ import {
 import { cn } from '@/lib/utils'
 
 const STANZA = '[data-slot="lyrics-stanza"]'
+// Every line of the sheet in order, labels included, as the timing counts.
+const LINE = '[data-slot="lyrics-line"], [data-slot="lyrics-label"]'
 
 export type LyricsReaderProps = {
   stanzas: ReadonlyArray<ReadonlyArray<string>>
@@ -51,7 +53,7 @@ export type LyricsReaderProps = {
  * A vertical lyrics pane: stanzas in the display face, each rising into view
  * as it is scrolled to. Without playback it reads by scroll (the stanza
  * crossing the middle brightens); with `time` and `timing` it reads along
- * with the song, line by line, and keeps the sung stanza centred until the
+ * with the song, line by line, and keeps the sung line centred until the
  * reader scrolls away. Bracketed lines render as small section or voice
  * labels. The edges are cut clean: a mask or a blur strip would make the
  * pane a backdrop root and the sung line's glass would have nothing behind
@@ -83,10 +85,19 @@ export function LyricsReader({
           onSeekLine(timing.lines[stanza]?.[line] ?? timing.stanzas[stanza])
       : undefined
 
+  // The pane follows the sung line, not its stanza: a verse often runs
+  // taller than the pane, and centring it once would leave its first lines
+  // past the top edge and its last past the bottom.
+  let lineIndex: number | null = null
+  if (position) {
+    lineIndex = position.line
+    for (let i = 0; i < position.stanza; i++) lineIndex += stanzas[i].length
+  }
+
   useScrollFocus(pane, STANZA, contentKey, { enabled: !singing })
   const { detached, resume } = useFollowScroll(
-    position?.stanza ?? null,
-    (i) => pane.current?.querySelectorAll<HTMLElement>(STANZA)[i],
+    lineIndex,
+    (i) => pane.current?.querySelectorAll<HTMLElement>(LINE)[i],
     { root: pane, enabled: singing }
   )
   // The pane resizes as the player folds or unfolds; keep the sung line
@@ -111,22 +122,21 @@ export function LyricsReader({
     return () => observer.disconnect()
   }, [pane, singing, detached])
 
-  // Which side of the pane the sung stanza went past, for the way-back pill.
-  const sungStanza = position?.stanza ?? null
+  // Which side of the pane the sung line went past, for the way-back pill.
   const [songAbove, setSongAbove] = useState(false)
   useEffect(() => {
     const el = pane.current
-    if (!el || sungStanza === null) return
+    if (!el || lineIndex === null) return
     const onScroll = () => {
-      const stanza = el.querySelectorAll<HTMLElement>(STANZA)[sungStanza]
-      if (!stanza) return
+      const line = el.querySelectorAll<HTMLElement>(LINE)[lineIndex]
+      if (!line) return
       setSongAbove(
-        stanza.getBoundingClientRect().bottom < el.getBoundingClientRect().top
+        line.getBoundingClientRect().bottom < el.getBoundingClientRect().top
       )
     }
     el.addEventListener('scroll', onScroll, { passive: true })
     return () => el.removeEventListener('scroll', onScroll)
-  }, [pane, sungStanza])
+  }, [pane, lineIndex])
 
   const lineState = (stanza: number, line: number) => {
     if (!position) return undefined
