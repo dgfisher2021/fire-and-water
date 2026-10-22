@@ -104,7 +104,8 @@ def main():
         print(f"== {z.name}")
         with zipfile.ZipFile(z) as zf:
             for name in zf.namelist():
-                if not name.lower().endswith("(lyrics).txt"):
+                # "<slug> (lyrics).txt", or "<slug> (lyrics) - usesuno.com.txt" from the per-song zips
+                if not name.lower().endswith(".txt") or "(lyrics)" not in name.lower():
                     continue
                 sheet_slug = slug(name[: name.lower().rindex("(lyrics)")])
                 song_id = match_song(sheet_slug, songs)

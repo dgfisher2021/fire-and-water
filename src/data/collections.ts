@@ -168,4 +168,9 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   lament: 'silicon',
   showup: 'silicon',
   downbeat: 'silicon',
+  trance: 'rising',
+  dreamtwo: 'rising',
+  sayno: 'enough',
+  telemetry: 'enough',
+  stardust: 'ashes',
 }

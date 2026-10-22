@@ -443,6 +443,26 @@
   --sleepless-deep: oklch(0.37 0.14 315);
   --sleepless-glow: oklch(0.66 0.13 315 / 42%);
   --sleepless-ink: oklch(0.22 0.04 315);
+  --trance: oklch(0.78 0.06 73); /* amber haze over the climb */
+  --trance-deep: oklch(0.37 0.07 73);
+  --trance-glow: oklch(0.66 0.06 73 / 42%);
+  --trance-ink: oklch(0.22 0.04 73);
+  --dreamtwo: oklch(0.78 0.07 227); /* steel blue of the harpsichord room */
+  --dreamtwo-deep: oklch(0.37 0.08 227);
+  --dreamtwo-glow: oklch(0.66 0.07 227 / 42%);
+  --dreamtwo-ink: oklch(0.22 0.04 227);
+  --sayno: oklch(0.78 0.16 7); /* a red held at the door */
+  --sayno-deep: oklch(0.37 0.18 7);
+  --sayno-glow: oklch(0.66 0.16 7 / 42%);
+  --sayno-ink: oklch(0.22 0.04 7);
+  --telemetry: oklch(0.78 0.16 340); /* magenta trace on a dark panel */
+  --telemetry-deep: oklch(0.37 0.18 340);
+  --telemetry-glow: oklch(0.66 0.16 340 / 42%);
+  --telemetry-ink: oklch(0.22 0.04 340);
+  --stardust: oklch(0.78 0.06 265); /* dusk violet, embers to stars */
+  --stardust-deep: oklch(0.37 0.07 265);
+  --stardust-glow: oklch(0.66 0.06 265 / 42%);
+  --stardust-ink: oklch(0.22 0.04 265);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
