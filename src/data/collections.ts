@@ -25,6 +25,14 @@ export const COLLECTIONS = [
       'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, and a pup still waiting on its name.',
   },
   {
+    key: 'plain',
+    label: 'Say it plain',
+    blurb:
+      'Love under strain: an apology made early, a no that has to stand the first time, a man translating between two people he loves, and the promises that left the room cold.',
+    // The one fight from both sides, and the one standing between, first.
+    opening: ['team', 'sayno', 'breathe'],
+  },
+  {
     key: 'rising',
     label: 'Hope and rising',
     blurb:
@@ -40,7 +48,7 @@ export const COLLECTIONS = [
     key: 'enough',
     label: 'More than enough',
     blurb:
-      'Called too much by people who saw the wave and missed the swimmer: the answer, from a shrug to a rise.',
+      'Called too much, too fast and too loud by people who saw the wave and missed the swimmer: the answer, from a shrug to a rise.',
   },
   {
     key: 'ashes',
@@ -58,7 +66,7 @@ export const COLLECTIONS = [
     key: 'silicon',
     label: 'Carbon and silicon',
     blurb:
-      'A mind that thinks in networks, and the machine it taught to sing back.',
+      'The machine he taught to sing back: hymns from the training run, a cypher from both sides of the chat, and the nights spent coding.',
   },
 ] as const satisfies readonly {
   key: string
@@ -91,8 +99,8 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   whales: 'kin',
   yours: 'kin',
   always: 'kin',
-  breathe: 'kin',
-  team: 'kin',
+  breathe: 'plain',
+  team: 'plain',
   mustang: 'kin',
   wild: 'kin',
   feelfree: 'kin',
@@ -121,9 +129,9 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   county: 'critic',
   name: 'critic',
   dont: 'critic',
-  forgot: 'critic',
-  bitter: 'critic',
-  bittercut: 'critic',
+  forgot: 'plain',
+  bitter: 'plain',
+  bittercut: 'plain',
   toomuch: 'enough',
   better: 'enough',
   faith: 'enough',
@@ -157,7 +165,7 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   seer: 'norse',
   valkyrie: 'norse',
   mashup: 'norse',
-  systems: 'silicon',
+  systems: 'enough',
   node: 'silicon',
   binary: 'silicon',
   prompt: 'silicon',
@@ -170,7 +178,7 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   downbeat: 'silicon',
   trance: 'rising',
   dreamtwo: 'rising',
-  sayno: 'enough',
+  sayno: 'plain',
   telemetry: 'enough',
   stardust: 'ashes',
 }
