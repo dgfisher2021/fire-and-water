@@ -114,8 +114,10 @@ export function AuroraBackdrop({ theme }: { theme: string }) {
     if (!el || !gl || gl.isContextLost()) return
 
     const program = gl.createProgram()!
-    gl.attachShader(program, compile(gl, gl.VERTEX_SHADER, VERTEX))
-    gl.attachShader(program, compile(gl, gl.FRAGMENT_SHADER, FRAGMENT))
+    const vertex = compile(gl, gl.VERTEX_SHADER, VERTEX)
+    const fragment = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT)
+    gl.attachShader(program, vertex)
+    gl.attachShader(program, fragment)
     gl.linkProgram(program)
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return
     gl.useProgram(program)
@@ -183,6 +185,12 @@ export function AuroraBackdrop({ theme }: { theme: string }) {
     return () => {
       cancelAnimationFrame(frame)
       document.removeEventListener('visibilitychange', onVisibility)
+      // The next song compiles its own; free this one's GL objects now
+      // rather than when the garbage collector gets to them.
+      gl.deleteBuffer(quad)
+      gl.deleteProgram(program)
+      gl.deleteShader(vertex)
+      gl.deleteShader(fragment)
     }
     // theme: the song changed, so its colours did.
   }, [root, still, theme])

@@ -159,7 +159,9 @@ export function SongBackdrop({ theme }: SongBackdropProps) {
   else if (place === 'screen') {
     if (background === 'flow') layer = <FlowBackdrop />
     else if (background === 'aurora') layer = <AuroraBackdrop theme={theme} />
-    else if (background === 'nebula') layer = <NebulaBackdrop key={theme} />
+    // The mist keeps one renderer for the session: the kit watches the
+    // root's attributes and re-tints itself as the song's vars change.
+    else if (background === 'nebula') layer = <NebulaBackdrop />
     else if (background === 'stars')
       layer = (
         <Suspense

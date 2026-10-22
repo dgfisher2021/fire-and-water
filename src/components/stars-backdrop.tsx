@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { PointMaterial, Points } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as random from 'maath/random'
@@ -135,6 +135,9 @@ function Cloud({
 }) {
   const ref = useRef<THREE.Mesh>(null!)
   const texture = useMemo(() => nebulaTexture(seed, tint), [seed, tint])
+  // A new song brings a new texture; free the old one's canvas and GPU copy
+  // (replacing a material's map does not dispose it).
+  useEffect(() => () => texture.dispose(), [texture])
   useFrame((_state, delta) => {
     if (!live.still) ref.current.rotation.z += delta * spin
   })
