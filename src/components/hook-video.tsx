@@ -22,8 +22,21 @@ export type HookLoopProps = {
  */
 export function HookLoop({ hook, poster, className }: HookLoopProps) {
   const still = useMediaQuery(REDUCED_MOTION)
+  const video = useRef<HTMLVideoElement>(null)
+  // WebKit keeps a detached video's decoder and buffers until its source is
+  // dropped, so a clip that leaves (pause, song end) releases them here.
+  useEffect(() => {
+    const el = video.current
+    return () => {
+      if (!el) return
+      el.pause()
+      el.removeAttribute('src')
+      el.load()
+    }
+  }, [])
   return (
     <video
+      ref={video}
       src={still ? undefined : hook.src}
       poster={poster}
       autoPlay={!still}

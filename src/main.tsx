@@ -5,13 +5,17 @@ import { registerSW } from 'virtual:pwa-register'
 import { AppearanceProvider } from '@dust-ui/ui'
 import { startDebug } from '@/lib/debug'
 import { usePlayer } from '@/store/player'
+import { usePrefs } from '@/store/prefs'
 import { routeTree } from './routeTree.gen'
 import './styles/index.css'
 
 registerSW({ immediate: true })
+// The song and playhead, then what else was on screen when the log line was
+// written: the background, the route, and how many videos were mounted.
 startDebug(() => {
   const s = usePlayer.getState()
-  return `${s.track ?? '-'} ${s.status} t=${s.currentTime.toFixed(1)}`
+  const p = usePrefs.getState()
+  return `${s.track ?? '-'} ${s.status} t=${s.currentTime.toFixed(1)} bg=${p.background} at=${location.pathname} video=${document.querySelectorAll('video').length}`
 })
 
 const router = createRouter({
