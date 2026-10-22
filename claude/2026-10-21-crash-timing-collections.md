@@ -48,6 +48,16 @@ fewer glass layers while a clip moves, which is a look decision. Row thumbs
 are 512 px for a 44 px row (lazy-loaded, so only scrolled rows decode); a
 160 px set would cut a scrolled list's decoded memory by about 85 percent.
 
+Measured (Chrome, iPhone 14 frame, six hand-offs from Devil in My Head,
+each background): the JS heap holds flat before and after (about 12 MB on
+the live build, 67 MB in dev), DOM nodes and listeners rise and fall with
+each song's sheet, and no video or image element outlives its song. Nebula's
+WebGL context count went 1 to 7 on the live site and holds at 2 on the fixed
+build. Aurora's count rises in both only because the probe tallies
+`getContext` calls on the same canvas. What the fixes release (video
+decoders, GPU textures, framebuffers) sits outside the JS heap, so Chrome
+cannot show it; the phone can.
+
 What would pin it down: open the app on the phone with `?debug` once, play
 through until it dies, reopen and read `fw-debug-log` from Eruda or
 `localStorage`. The last `beat` line says the song, background, route and
