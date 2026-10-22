@@ -2657,7 +2657,131 @@
       "description": "His name as a creed, three verbs to a letter down DUSTIN FISHER: dream, deduce, design; understand, undertake, update; study, suggest, share. Hypnotic ritual trance over a low cello, climbing all the way.",
       "files": {
         "app": "public/dream-deduce-design.mp3",
+        "downloads": [
+          "new song-as-of-2026-10-21.zip/Dream, Deduce, Design (Cinematic Trance Mix) - usesuno.com.m4a",
+          "new song-as-of-2026-10-21.zip/Dream, Deduce, Design - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 108,
+      "title": "Dream, Deduce, Design (Cinematic Trance Mix)",
+      "date": "2026-10-07",
+      "weekday": "Wednesday",
+      "version": null,
+      "type": null,
+      "duration": "4:58",
+      "durationSeconds": 298,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "trance",
+      "addedToApp": true,
+      "description": "The creed down DUSTIN FISHER rebuilt as a cinematic trance mix: the same three verbs to a letter, each chorus line answered in parentheses, a bridge that takes the time to realign, and an outro that runs the whole name through to revolutionize.",
+      "files": {
+        "app": "public/dream-deduce-design-cinematic-trance-mix.mp3",
+        "downloads": [
+          "new song-as-of-2026-10-21.zip/Dream, Deduce, Design (Cinematic Trance Mix) - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 109,
+      "title": "Dream, Deduce, Design (Baroque Trip-Hop Mix)",
+      "date": "2026-10-08",
+      "weekday": "Thursday",
+      "version": null,
+      "type": null,
+      "duration": "5:03",
+      "durationSeconds": 303,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "dreamtwo",
+      "addedToApp": true,
+      "description": "The creed a third time, as industrial trip-hop under baroque strings: a harpsichord continuo and a minor-key ground bass carry the same verbs to a letter, with every chorus line answered in parentheses.",
+      "files": {
+        "app": "public/dream-deduce-design-baroque-trip-hop-mix.mp3",
         "downloads": []
+      }
+    },
+    {
+      "id": 110,
+      "title": "When I Say No…",
+      "date": "2026-10-11",
+      "weekday": "Sunday",
+      "version": null,
+      "type": null,
+      "duration": "4:57",
+      "durationSeconds": 297,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "sayno",
+      "addedToApp": true,
+      "description": "A plea to be heard the first time: it takes time to find the words, no is not a mood, and pushing until it bends only wears the will away. Last March still echoes, the birthday cards go unanswered, and the ask is to treat Dust and the one beside him as family, over a dark baroque trance pulse.",
+      "files": {
+        "app": "public/when-i-say-no.mp3",
+        "downloads": []
+      }
+    },
+    {
+      "id": 111,
+      "title": "Emotional Telemetry",
+      "date": "2026-10-20",
+      "weekday": "Tuesday",
+      "version": null,
+      "type": null,
+      "duration": "5:42",
+      "durationSeconds": 342,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "telemetry",
+      "addedToApp": true,
+      "description": "Every flag and flare is data, not drama: the one who called the alarms hysterical gets the readout, spikes and warnings in the veins, packet loss behind the eyes, the library built on purpose and the logs to prove it. Many kinds of minds, and the early warning is the truth. Explicit, kept as sung.",
+      "files": {
+        "app": "public/emotional-telemetry.mp3",
+        "downloads": [
+          "new song-as-of-2026-10-21.zip/Emotional Telemetry - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 112,
+      "title": "Ashes to Stardust",
+      "date": "2026-10-21",
+      "weekday": "Wednesday",
+      "version": null,
+      "type": null,
+      "duration": "4:45",
+      "durationSeconds": 285,
+      "style": null,
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "stardust",
+      "addedToApp": true,
+      "description": "Dust I Become carried on from the far side of the climb: a voice found and trusted, fear named until it loses its shape, scars worn as proof, from ashes to embers and embers to stars, over felt piano and strings that rise into a beat-driven chorus. Compare opens it beside Dust I Become.",
+      "files": {
+        "app": "public/ashes-to-stardust.mp3",
+        "downloads": [
+          "new song-as-of-2026-10-21.zip/Ashes to Stardust - usesuno.com.m4a"
+        ]
       }
     }
   ]
