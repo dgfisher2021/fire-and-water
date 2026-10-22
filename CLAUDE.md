@@ -121,7 +121,9 @@ overflowOnly`, `MotionTextMorph maxChars`, `SheetAction` `checked`,
   `MediaLyricsSplit` style the sung line with a glow only, no glass pill or
   halo, fade the pane with a mask, which stops the glass frosting, have no
   per-stanza fade-up, and do not re-centre the sung line when the pane
-  resizes as the player folds; those are the upstream asks),
+  resizes as the player folds, and follow the sung stanza rather than the
+  line, so a verse taller than the pane runs past its edges; those are the
+  upstream asks),
   `NowPlayingCard` and `NowPlayingBar` (the kit's `MediaPlayer` has no slot
   for a description or the waveform, so the unfolded control is composed
   here: `MediaScrubber` in the card, `MediaWaveform` as the bar's slider,
