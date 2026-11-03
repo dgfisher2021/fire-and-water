@@ -6,13 +6,6 @@ import { TRACKS, type TrackId } from '@/data/tracks'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 
-declare module '@tanstack/react-router' {
-  interface HistoryState {
-    /** Now Playing opens with its control already folded to the bar. */
-    collapsed?: boolean
-  }
-}
-
 export type MiniPlayerProps = {
   /** The song shown; the one loaded by default. */
   track?: TrackId
@@ -50,13 +43,7 @@ export function MiniPlayer({
   const t = TRACKS[track]
   const playing = status === 'playing'
   const open =
-    onOpen ??
-    (() =>
-      void navigate({
-        to: '/lyrics/$track',
-        params: { track },
-        state: { collapsed: true },
-      }))
+    onOpen ?? (() => void navigate({ to: '/lyrics/$track', params: { track } }))
   const Caret = caret === 'up' ? ChevronUp : ChevronDown
 
   return (

@@ -178,7 +178,7 @@ export function MoreScreen() {
           <MobileListRow
             icon={BookOpen}
             label='The story so far'
-            value='By date written'
+            value='Newest first'
             onClick={() =>
               void navigate({ to: '/', search: { sort: 'written' } })
             }
