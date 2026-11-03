@@ -160,9 +160,9 @@ export function LyricsReader({
         data-slot='lyrics-pane'
         className={cn(
           'no-scrollbar h-full min-h-0 overflow-y-auto overscroll-contain',
-          size === 'default'
-            ? 'px-5 pt-[26vh] pb-[45vh] md:px-[14%]'
-            : 'px-3.5 pt-4 pb-16 md:px-6',
+          // Slim gutters so long lines use the width; no viewport breakpoints,
+          // which fire inside the 393px frame on a desktop window.
+          size === 'default' ? 'px-2 pt-[26vh] pb-[45vh]' : 'px-1.5 pt-4 pb-16',
           paneClassName
         )}
       >
@@ -179,13 +179,13 @@ export function LyricsReader({
               // Semibold with a halo in the background tone, so every line
               // reads over the artwork before it is sung.
               className={cn(
-                'text-center font-display font-semibold text-foreground/65 transition-colors duration-500 [text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background)]',
+                'mx-auto max-w-2xl text-center font-display font-semibold text-foreground/65 transition-colors duration-500 [text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background)]',
                 singing
                   ? 'data-active:text-foreground/85'
                   : 'data-active:text-foreground',
                 size === 'default'
-                  ? 'mb-8 text-[22px] leading-[1.7] md:text-[26px]'
-                  : 'mb-6 text-[17px] leading-[1.65] md:text-xl'
+                  ? 'mb-8 text-[22px] leading-[1.7]'
+                  : 'mb-6 text-[17px] leading-[1.65]'
               )}
             >
               {lines.map((line, j) =>
@@ -219,7 +219,8 @@ export function LyricsReader({
                     // sung line's glass (the list rows' card-at-85% over a
                     // backdrop blur) hugs the whole line, not the pane.
                     className={cn(
-                      'mx-auto -my-1 block w-fit max-w-full rounded-lg px-3 py-1 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
+                      'mx-auto -my-1 block w-fit max-w-full rounded-lg py-1 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
+                      size === 'default' ? 'px-3' : 'px-2',
                       seekTo &&
                         'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none'
                     )}

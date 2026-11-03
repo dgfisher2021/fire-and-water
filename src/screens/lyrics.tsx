@@ -375,7 +375,7 @@ export function LyricsScreen() {
               if (!isCurrent) play(track)
               seek(seconds)
             }}
-            paneClassName='px-4 pt-6 pb-[40vh]'
+            paneClassName='pt-6 pb-[40vh]'
           />
         ) : (
           <Empty className='h-full pb-24'>
