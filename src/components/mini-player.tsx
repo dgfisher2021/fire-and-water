@@ -97,7 +97,9 @@ export function MiniPlayer({
           size='icon'
           aria-label={playing ? 'Pause' : 'Play'}
           onClick={() => (playing ? pause() : play(track))}
-          className='size-9 shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] hover:opacity-90'
+          // min-h-0: the touch-screen 44px minimum would stretch the circle
+          // into an oval; the ring around it carries the target.
+          className='size-9 min-h-0 shrink-0 rounded-full bg-linear-to-br from-track-bright to-track-deep text-track-foreground shadow-[0_6px_18px_-6px_var(--track-glow)] hover:opacity-90'
         >
           {status === 'loading' ? (
             <LoaderSpinner variant='ring' label='Buffering' />
