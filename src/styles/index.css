@@ -42,7 +42,9 @@
     'Outfit Variable', 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
 
-  --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* backwards, not both: a fill that outlives the animation keeps the
+     element a backdrop root, so glass inside it stops frosting. */
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 
   @keyframes fade-up {
     from {
