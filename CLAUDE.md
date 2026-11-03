@@ -17,6 +17,7 @@ pnpm format     # prettier on src/
 
 A phone app for Dustin's songs, built on the Dust UI mobile kit. Four
 tabs behind a `NavBottom` (Songs, Albums, the center play/pause action,
+which on Now Playing acts on the song on screen,
 Lyrics, More), with a `MiniPlayer` above the bar once a song plays: Songs
 (artwork stage + a newest-first timeline of `MobileListGroup` rows, or
 album order, A to Z, by album), Albums (`MotionAccordion type='single'` of
