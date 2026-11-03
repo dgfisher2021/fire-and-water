@@ -19,6 +19,7 @@ import {
 import sizes from '@/data/audio-sizes.json'
 import { ALBUM, TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 import { audioFormat, formatBytes } from '@/lib/format'
+import { mediaUrl } from '@/lib/media'
 import { share } from '@/lib/share'
 import { toaster } from '@/lib/toaster'
 import { SongPicker } from '@/components/song-picker'
@@ -178,7 +179,7 @@ export function MoreScreen() {
           <MobileListRow
             icon={BookOpen}
             label='The story so far'
-            value='By date written'
+            value='Newest first'
             onClick={() =>
               void navigate({ to: '/', search: { sort: 'written' } })
             }
@@ -194,7 +195,7 @@ export function MoreScreen() {
             <Download className='size-4 text-muted-foreground' aria-hidden />
           }
           onSelect={(id) => {
-            downloadUrl(TRACKS[id].audioFile)
+            downloadUrl(mediaUrl(TRACKS[id].audioFile), TRACKS[id].audioFile)
             toaster.push(`Downloading ${TRACKS[id].title}`)
           }}
           onClose={() => setPicking(null)}

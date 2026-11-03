@@ -6,8 +6,8 @@ import {
 } from '@/data/collections'
 import { TRACKS, TRACK_ORDER, type TrackId } from '@/data/tracks'
 
-/** How the Album list can be ordered; `album` is the default and stays out of the URL. */
-export const ALBUM_SORTS = ['album', 'title', 'written', 'collection'] as const
+/** How the Songs list can be ordered; `written` is the default and stays out of the URL. */
+export const ALBUM_SORTS = ['written', 'album', 'title', 'collection'] as const
 export type AlbumSort = (typeof ALBUM_SORTS)[number]
 
 type Compare = (a: TrackId, b: TrackId) => number
@@ -24,9 +24,9 @@ const byAlbum: Compare = (a, b) =>
   TRACK_ORDER.indexOf(a) - TRACK_ORDER.indexOf(b)
 const byTitle: Compare = (a, b) =>
   compareTitles(TRACKS[a].title, TRACKS[b].title) || byAlbum(a, b)
-// ISO dates compare as strings; same day falls back to album order.
+// Newest first: ISO dates compare as strings; same day falls back to album order.
 const byWritten: Compare = (a, b) =>
-  TRACKS[a].written.localeCompare(TRACKS[b].written) || byAlbum(a, b)
+  TRACKS[b].written.localeCompare(TRACKS[a].written) || byAlbum(a, b)
 const byCollection: Compare = (a, b) =>
   COLLECTION_RANK[COLLECTION_OF[a]] - COLLECTION_RANK[COLLECTION_OF[b]] ||
   byAlbum(a, b)
@@ -60,7 +60,7 @@ const monthLabel = (key: string) =>
     year: 'numeric',
   })
 
-/** The ids by the month they were written, oldest first, oldest first within. */
+/** The ids by the month they were written, newest first, newest first within. */
 export function groupTracksByMonth(ids: readonly TrackId[]): MonthGroup[] {
   const months = new Map<string, TrackId[]>()
   for (const id of sortTracks(ids, 'written')) {

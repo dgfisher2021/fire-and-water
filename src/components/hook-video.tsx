@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { useMobileShellRoot } from '@dust-ui/blocks'
 import { Button, useMediaQuery } from '@dust-ui/ui'
 import type { Hook } from '@/data/hooks'
+import { mediaUrl } from '@/lib/media'
 import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
 
@@ -37,7 +38,7 @@ export function HookLoop({ hook, poster, className }: HookLoopProps) {
   return (
     <video
       ref={video}
-      src={still ? undefined : hook.src}
+      src={still ? undefined : mediaUrl(hook.src)}
       poster={poster}
       autoPlay={!still}
       muted
@@ -87,7 +88,7 @@ export function HookViewer({ hook, title, poster, onClose }: HookViewerProps) {
       className='absolute inset-0 z-[160] flex animate-in items-center justify-center bg-background duration-200 fade-in-0 motion-reduce:animate-none'
     >
       <video
-        src={hook.src}
+        src={mediaUrl(hook.src)}
         poster={poster}
         autoPlay
         controls

@@ -1,7 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams, useRouterState } from '@tanstack/react-router'
-import { Ellipsis, ScrollText } from 'lucide-react'
-import { createPortal } from 'react-dom'
+import { useNavigate, useParams, useSearch } from '@tanstack/react-router'
+import {
+  Columns2,
+  Copy,
+  Download,
+  Ellipsis,
+  ScrollText,
+  Share2,
+  X,
+} from 'lucide-react'
 import {
   MobileAppScreen,
   useMobileShellFramed,
@@ -9,7 +16,6 @@ import {
 } from '@dust-ui/blocks'
 import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
 import {
-  Button,
   downloadText,
   downloadUrl,
   Empty,
@@ -17,7 +23,8 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-  lyricsToText,
+  MobileMessageActions,
+  type MobileMessageAction,
   SheetAction,
   type SheetActionAction,
   toLrc,
@@ -34,26 +41,37 @@ import {
   adjacentTrack,
   comparePartner,
   dedicationLine,
+  shortTitle,
   writtenDate,
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
+import { mediaUrl } from '@/lib/media'
 import { copyText, share } from '@/lib/share'
+import { songText } from '@/lib/song-text'
+import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
 import { selectProgress, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import { HookViewer } from '@/components/hook-video'
 import { LyricVideoSheet } from '@/components/lyric-video-sheet'
+import { LyricsCompare, type CompareSide } from '@/components/lyrics-compare'
 import { LyricsReader } from '@/components/lyrics-reader'
 import { MiniPlayer } from '@/components/mini-player'
 import { NowPlayingBar, NowPlayingCard } from '@/components/now-playing'
+import { SongPicker } from '@/components/song-picker'
 import { TagPill } from '@/components/tag-pill'
 
 // Landscape phones and the like: no room for the card at all.
 const SHORT_QUERY = '(max-height: 560px)'
 
+/** The second song when a side-by-side opens with `next` on the left: kept unless it is now the same song. */
+const partnerFor = (next: TrackId, current?: TrackId) =>
+  current && current !== next ? current : comparePartner(next)
+
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
+  const { with: other } = useSearch({ from: '/lyrics/$track' })
   const navigate = useNavigate()
   const framed = useMobileShellFramed()
   const shellRoot = useMobileShellRoot()
@@ -82,52 +100,46 @@ export function LyricsScreen() {
   const [sheet, setSheet] = useState(false)
   const [watching, setWatching] = useState(false)
   const [filming, setFilming] = useState(false)
+  const [picking, setPicking] = useState<CompareSide | null>(null)
 
-  // The card folds to a bar once the words have scrolled up (or the pane
-  // follows the song there) and unfolds at the top, unless the reader has
-  // folded or unfolded it by hand for this song, or arrived from the mini
-  // player asking for it folded; short viewports never show the card.
+  // The control opens folded to the bar so the words get the screen; the
+  // reader unfolds it by hand for this song. Short viewports never show the card.
   const short = useMediaQuery(SHORT_QUERY)
   const foldedPlayer = usePrefs((s) => s.foldedPlayer)
-  const pane = useRef<HTMLDivElement>(null)
-  const [scrolledTrack, setScrolledTrack] = useState<TrackId | null>(null)
-  const [manual, setManual] = useState<{
-    track: TrackId
-    collapsed: boolean
-  } | null>(null)
-  const arrivedFolded = useRouterState({
-    select: (s) => s.location.state.collapsed === true,
-  })
-  const collapsed =
-    short ||
-    (manual?.track === track
-      ? manual.collapsed
-      : arrivedFolded || scrolledTrack === track)
-  const fold = (next: boolean) => setManual({ track, collapsed: next })
-  useEffect(() => {
-    const el = pane.current
-    if (!el) return
-    const onScroll = () => setScrolledTrack(el.scrollTop > 48 ? track : null)
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [track])
+  const [unfolded, setUnfolded] = useState<TrackId | null>(null)
+  const collapsed = short || unfolded !== track
+  const fold = (next: boolean) => setUnfolded(next ? null : track)
 
   // The album slide (and so the theme) follows the open track.
   useEffect(() => {
     setCarouselIndex(TRACK_ORDER.indexOf(track))
   }, [track, setCarouselIndex])
 
+  // Changing the song keeps a side-by-side open, with the same second song
+  // unless that is the one now on the left.
+  const open = (next: TrackId, replace = true) =>
+    void navigate({
+      to: '/lyrics/$track',
+      params: { track: next },
+      search: (s) => (s.with ? { with: partnerFor(next, s.with) } : {}),
+      replace,
+    })
+
   const goTo = (next: TrackId) => {
     // Keep the music going across a swipe, like flipping a record over.
     const s = usePlayer.getState()
     if (s.track && (s.status === 'playing' || s.status === 'loading'))
       s.play(next)
+    open(next)
+  }
+
+  const setOther = (next: TrackId | undefined) =>
     void navigate({
       to: '/lyrics/$track',
-      params: { track: next },
+      params: { track },
+      search: next ? { with: next } : {},
       replace: true,
     })
-  }
 
   // Lock-screen prev/next or album play-through moved on: follow it.
   const requested = usePlayer((s) => s.requested)
@@ -139,6 +151,8 @@ export function LyricsScreen() {
       void navigate({
         to: '/lyrics/$track',
         params: { track: requested.track },
+        search: (s) =>
+          s.with ? { with: partnerFor(requested.track, s.with) } : {},
         replace: true,
       })
   }, [requested, track, navigate])
@@ -160,42 +174,51 @@ export function LyricsScreen() {
     ArrowLeft: () => goTo(adjacentTrack(track, -1)),
   })
 
-  const onShare = () =>
-    void share({
-      title: `${t.title} - ${ALBUM.artist}`,
-      text: `Listen to "${t.title}"`,
-      url: new URL(`lyrics/${track}`, document.baseURI).href,
-    })
+  const download = audioLabel(
+    t.audioFile,
+    sizes[t.audioFile as keyof typeof sizes]
+  )
+  const partner = partnerFor(track, other)
 
-  const partner = comparePartner(track)
-  const hook = hookFor(track)
-  const actions: SheetActionAction[] = [
-    ...(hook
-      ? [{ label: 'Watch the hook', onClick: () => setWatching(true) }]
-      : []),
+  // The everyday actions as icons beside the date; the rest under "…".
+  const quick: MobileMessageAction[] = [
     {
-      label: `Compare with ${TRACKS[partner].title}`,
+      icon: Copy,
+      label: 'Copy the song: title, date, story, style and lyrics',
+      onClick: () => void copyText(songText(track), 'Song copied'),
+    },
+    {
+      icon: Download,
+      label: `Download ${download}`,
+      onClick: () => {
+        downloadUrl(mediaUrl(t.audioFile), t.audioFile)
+        toaster.push(`Downloading ${t.title}`)
+      },
+    },
+    other
+      ? {
+          icon: X,
+          label: 'Close side by side',
+          onClick: () => setOther(undefined),
+        }
+      : {
+          icon: Columns2,
+          label: `Side by side with ${TRACKS[partner].title}`,
+          onClick: () => setOther(partner),
+        },
+    {
+      icon: Share2,
+      label: 'Share song',
       onClick: () =>
-        void navigate({
-          to: '/compare',
-          search: { left: track, right: partner },
+        void share({
+          title: `${t.title} - ${ALBUM.artist}`,
+          text: `Listen to "${t.title}"`,
+          url: new URL(`lyrics/${track}`, document.baseURI).href,
         }),
     },
-    { label: 'Share song', onClick: onShare },
-    ...(t.lyrics.length > 0 && t.timing
-      ? [{ label: 'Make a lyric video', onClick: () => setFilming(true) }]
-      : []),
-    {
-      label: `Download ${audioLabel(t.audioFile, sizes[t.audioFile as keyof typeof sizes])}`,
-      onClick: () => downloadUrl(t.audioFile),
-    },
   ]
-  if (t.lyrics.length > 0)
-    actions.push({
-      label: 'Copy lyrics',
-      onClick: () =>
-        void copyText(lyricsToText(t.title, t.lyrics), 'Lyrics copied'),
-    })
+
+  const hook = hookFor(track)
   const lrc = t.timing
     ? toLrc({
         title: t.title,
@@ -206,59 +229,54 @@ export function LyricsScreen() {
         timing: t.timing,
       })
     : null
-  if (lrc)
-    actions.push({
-      label: 'Download lyrics (.lrc)',
-      onClick: () => downloadText(`${track}.lrc`, lrc),
+  const driveLink = t.driveLink
+  const more: SheetActionAction[] = [
+    ...(hook
+      ? [{ label: 'Watch the hook', onClick: () => setWatching(true) }]
+      : []),
+    ...(t.lyrics.length > 0 && t.timing
+      ? [{ label: 'Make a lyric video', onClick: () => setFilming(true) }]
+      : []),
+    ...(lrc
+      ? [
+          {
+            label: 'Download lyrics (.lrc)',
+            onClick: () => downloadText(`${track}.lrc`, lrc),
+          },
+        ]
+      : []),
+    ...(driveLink
+      ? [
+          {
+            label: 'Open in Google Drive',
+            onClick: () => window.open(driveLink, '_blank', 'noopener'),
+          },
+        ]
+      : []),
+  ]
+  if (more.length > 0)
+    quick.push({
+      icon: Ellipsis,
+      label: 'More actions',
+      onClick: () => setSheet(true),
     })
-  if (t.driveLink) {
-    const link = t.driveLink
-    actions.push({
-      label: 'Open in Google Drive',
-      onClick: () => window.open(link, '_blank', 'noopener'),
-    })
-  }
-
-  // The action sheet pins inside the shell root (over the nav), so it
-  // portals out of the screen's own stacking context.
-  const actionSheet =
-    sheet && shellRoot
-      ? createPortal(
-          <SheetAction
-            title={`${t.title} · ${dedicationLine(t)}`}
-            actions={actions}
-            onClose={() => setSheet(false)}
-          />,
-          shellRoot
-        )
-      : null
-
-  const hookViewer =
-    hook && watching ? (
-      <HookViewer
-        hook={hook}
-        title={t.title}
-        poster={t.art.full}
-        onClose={() => setWatching(false)}
-      />
-    ) : null
 
   return (
     // No page header: one title row sits above the control in either state,
     // so the words get the height a header would take.
     <MobileAppScreen scroll={false}>
       <div className={cn('shrink-0 px-4 pb-1', framed ? 'pt-[52px]' : 'pt-2')}>
-        <div lang={t.lang} className='mb-2 flex items-start gap-3 px-1'>
-          <div className='min-w-0 flex-1'>
-            {/* Morphs as a swipe changes the song, like the stage's title. */}
-            <MotionTextMorph
-              as='h1'
-              maxChars={22}
-              className='font-display text-[24px] leading-tight font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]'
-            >
-              {t.title}
-            </MotionTextMorph>
-            <p className='mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
+        <div lang={t.lang} className='mb-2 px-1'>
+          {/* Morphs as a swipe changes the song, like the stage's title. */}
+          <MotionTextMorph
+            as='h1'
+            maxChars={22}
+            className='font-display text-[24px] leading-tight font-semibold text-primary transition-colors duration-700 [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]'
+          >
+            {t.title}
+          </MotionTextMorph>
+          <div className='mt-1 flex items-center gap-2'>
+            <p className='flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
               <span>Written {writtenDate(t)}</span>
               {t.lyricsSource === 'transcribed' && (
                 <TagPill
@@ -269,16 +287,13 @@ export function LyricsScreen() {
                 </TagPill>
               )}
             </p>
+            {/* The kit's icon toolbar, sized up from its chat scale to thumb targets on glass. */}
+            <MobileMessageActions
+              label={`${t.title} actions`}
+              actions={quick}
+              className='-mr-1 shrink-0 gap-0 rounded-md bg-card/60 p-0.5 backdrop-blur-[6px] [&>button]:size-9 [&>button>svg]:size-[17px]'
+            />
           </div>
-          <Button
-            variant='ghost'
-            size='icon'
-            aria-label='More actions'
-            onClick={() => setSheet(true)}
-            className='-mr-1 shrink-0 rounded-md bg-card/60 text-muted-foreground backdrop-blur-[6px] hover:text-foreground'
-          >
-            <Ellipsis aria-hidden />
-          </Button>
         </div>
         <div
           inert={collapsed}
@@ -346,10 +361,11 @@ export function LyricsScreen() {
         className='relative min-h-0 flex-1'
         style={{ marginBottom: 'var(--shell-bottom)' }}
       >
-        {t.lyrics.length > 0 ? (
+        {other ? (
+          <LyricsCompare left={track} right={other} onPick={setPicking} />
+        ) : t.lyrics.length > 0 ? (
           <LyricsReader
             key={track}
-            ref={pane}
             stanzas={t.lyrics}
             lang={t.lang}
             contentKey={track}
@@ -384,8 +400,34 @@ export function LyricsScreen() {
         )}
       </div>
 
-      {actionSheet}
-      {hookViewer}
+      {sheet && (
+        <SheetAction
+          title={`${shortTitle(track)} · ${dedicationLine(t)}`}
+          actions={more}
+          onClose={() => setSheet(false)}
+          container={shellRoot}
+        />
+      )}
+      {picking && other && (
+        <SongPicker
+          title={picking === 'left' ? 'Left column' : 'Right column'}
+          value={picking === 'left' ? track : other}
+          onSelect={(id) =>
+            picking === 'left'
+              ? open(id)
+              : setOther(id === track ? comparePartner(track) : id)
+          }
+          onClose={() => setPicking(null)}
+        />
+      )}
+      {hook && watching && (
+        <HookViewer
+          hook={hook}
+          title={t.title}
+          poster={t.art.full}
+          onClose={() => setWatching(false)}
+        />
+      )}
       {filming && (
         <LyricVideoSheet track={t} onClose={() => setFilming(false)} />
       )}

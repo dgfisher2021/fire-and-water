@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AlbumsRouteImport } from './routes/albums'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as MoreRouteImport } from './routes/more'
 import { Route as SettingsRouteImport } from './routes/settings'
@@ -20,6 +21,11 @@ import { Route as TimeTrackRouteImport } from './routes/time.$track'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlbumsRoute = AlbumsRouteImport.update({
+  id: '/albums',
+  path: '/albums',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -55,6 +61,7 @@ const TimeTrackRoute = TimeTrackRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
   '/settings': typeof SettingsRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
   '/settings': typeof SettingsRoute
@@ -74,6 +82,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
   '/settings': typeof SettingsRoute
@@ -85,6 +94,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/albums'
     | '/compare'
     | '/more'
     | '/settings'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/albums'
     | '/compare'
     | '/more'
     | '/settings'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/albums'
     | '/compare'
     | '/more'
     | '/settings'
@@ -113,6 +125,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlbumsRoute: typeof AlbumsRoute
   CompareRoute: typeof CompareRoute
   MoreRoute: typeof MoreRoute
   SettingsRoute: typeof SettingsRoute
@@ -128,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/albums': {
+      id: '/albums'
+      path: '/albums'
+      fullPath: '/albums'
+      preLoaderRoute: typeof AlbumsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -177,6 +197,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlbumsRoute: AlbumsRoute,
   CompareRoute: CompareRoute,
   MoreRoute: MoreRoute,
   SettingsRoute: SettingsRoute,

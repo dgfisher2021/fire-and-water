@@ -1,0 +1,37 @@
+{
+	admin off
+	auto_https off
+}
+
+# Railway terminates TLS and injects PORT.
+:{$PORT:8080} {
+	root * /srv
+
+	# Text only: songs, video and artwork are already compressed, and an
+	# encoded body would lose the byte ranges that seeking asks for.
+	encode zstd gzip {
+		match {
+			header Content-Type text/*
+			header Content-Type application/javascript*
+			header Content-Type application/json*
+			header Content-Type application/manifest+json*
+			header Content-Type application/xml*
+			header Content-Type image/svg+xml*
+		}
+	}
+
+	# Vite's hashed output never changes under its name. Everything else
+	# revalidates: index.html, sw.js, the manifest, and the songs and
+	# artwork from public/ (public/assets lands beside the hashed files and
+	# a song can be replaced under the same filename).
+	@hashed path_regexp ^/assets/[^/]+-[A-Za-z0-9_-]{8}\.(js|css|woff2?)$
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	header ?Cache-Control "no-cache"
+
+	# Not every MIME table knows the manifest's type.
+	header /manifest.webmanifest Content-Type application/manifest+json
+
+	# Client routes fall back to the app shell.
+	try_files {path} /index.html
+	file_server
+}

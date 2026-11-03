@@ -598,11 +598,6 @@
   body {
     @apply bg-background font-sans text-foreground antialiased;
   }
-  /* Brand fonts win over the tokens' html[data-font] mapping (same
-     specificity, later in the cascade). */
-  html[data-font] {
-    font-family: var(--font-sans);
-  }
   button {
     touch-action: manipulation;
   }

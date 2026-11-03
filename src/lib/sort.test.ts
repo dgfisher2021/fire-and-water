@@ -48,16 +48,19 @@ describe('sortTracks', () => {
     expect(ids.indexOf('plotlight')).toBe(ids.indexOf('plot') + 1)
   })
 
-  it('sorts by the day written, oldest first, album order on a tie', () => {
+  it('sorts by the day written, newest first, album order on a tie', () => {
     const ids = sortTracks(shuffled, 'written')
     for (let i = 1; i < ids.length; i++) {
       const a = TRACKS[ids[i - 1]]
       const b = TRACKS[ids[i]]
-      expect(a.written <= b.written).toBe(true)
+      expect(a.written >= b.written).toBe(true)
       if (a.written === b.written)
         expect(albumIndex(a.id)).toBeLessThan(albumIndex(b.id))
     }
-    expect(ids[0]).toBe('baritone')
+    const newest = TRACK_ORDER.map((id) => TRACKS[id].written)
+      .sort()
+      .at(-1)
+    expect(TRACKS[ids[0]].written).toBe(newest)
   })
 
   it('groups by collection, album order within', () => {
@@ -116,13 +119,13 @@ describe('groupTracks', () => {
 })
 
 describe('groupTracksByMonth', () => {
-  it('buckets the songs by the month written, oldest first, oldest first within', () => {
+  it('buckets the songs by the month written, newest first, newest first within', () => {
     const groups = groupTracksByMonth(shuffled)
     expect(groups.flatMap((g) => g.ids)).toEqual(
       sortTracks(shuffled, 'written')
     )
     const keys = groups.map((g) => g.key)
-    expect(keys).toEqual([...keys].sort())
+    expect(keys).toEqual([...keys].sort().reverse())
     expect(new Set(keys).size).toBe(keys.length)
     for (const g of groups) {
       expect(g.ids.length).toBeGreaterThan(0)

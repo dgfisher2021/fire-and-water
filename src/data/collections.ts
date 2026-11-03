@@ -1,3 +1,4 @@
+import type { IllustrationName } from '@dust-ui/ui'
 import type { TrackId } from './tracks'
 
 /**
@@ -10,6 +11,7 @@ import type { TrackId } from './tracks'
 export const COLLECTIONS = [
   {
     key: 'siblings',
+    illustration: 'burn-sheet',
     label: 'Brother and sister',
     blurb:
       'The story at the heart of the album: a boy who trusted pencil, a sister who wrote in ink, the elements they taught each other, and the story he was scared to tell.',
@@ -20,12 +22,14 @@ export const COLLECTIONS = [
   },
   {
     key: 'kin',
+    illustration: 'calendar-birthday',
     label: 'You made me more',
     blurb:
       'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, a pup still waiting on its name, and the old dog who stayed twelve years.',
   },
   {
     key: 'plain',
+    illustration: 'certificate',
     label: 'Say it plain',
     blurb:
       'Love under strain: an apology made early, a no that has to stand the first time, a man translating between two people he loves, and the promises that left the room cold.',
@@ -34,42 +38,50 @@ export const COLLECTIONS = [
   },
   {
     key: 'rising',
+    illustration: 'calendar',
     label: 'Hope and rising',
     blurb:
       'Hope as a choice made every morning and every night, and the flame that answers the longest night.',
   },
   {
     key: 'critic',
+    illustration: 'hard-hat',
     label: 'The devil in my head',
     blurb:
       'The inner voice that keeps score, moves the goalposts and calls him too much, named and turned into fuel.',
   },
   {
     key: 'enough',
+    illustration: 'dashboard-chart',
     label: 'More than enough',
     blurb:
       'Called too much, too fast and too loud by people who saw the wave and missed the swimmer: the answer, from a shrug to a rise.',
   },
   {
     key: 'ashes',
+    illustration: 'progress-report',
     label: 'Ashes to stardust',
     blurb:
       'Myth and ritual: the raven between worlds, the elements, the golden child’s legend, and the dark made beautiful.',
   },
   {
     key: 'norse',
+    illustration: 'time-shield',
     label: 'The Valkyrie and the Seer',
     blurb:
       'Norse ritual in neo-folk: a guardian in the dark, a seer who opens the eye with bone, breath and stone, and Hel answering from the cold.',
   },
   {
     key: 'silicon',
+    illustration: 'cog',
     label: 'Carbon and silicon',
     blurb:
       'The machine he taught to sing back: hymns from the training run, a cypher from both sides of the chat, a duet on working side by side, and the nights spent coding.',
   },
 ] as const satisfies readonly {
   key: string
+  /** The kit's two-tone spot art on the Albums tab, in the album's colour. */
+  illustration: IllustrationName
   label: string
   blurb: string
   opening?: readonly TrackId[]

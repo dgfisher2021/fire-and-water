@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { useRouterState } from '@tanstack/react-router'
 import {
-  Columns2,
   Disc3,
   Ellipsis,
+  ListMusic,
   Pause,
   Play,
   ScrollText,
@@ -15,7 +15,7 @@ import {
   type NavBottomProps,
 } from '@dust-ui/ui'
 import { toaster } from '@/lib/toaster'
-import { comparePairFor, selectFocusTrack, usePlayer } from '@/store/player'
+import { selectFocusTrack, usePlayer } from '@/store/player'
 import { usePrefs } from '@/store/prefs'
 import {
   MINI_PLAYER_GAP,
@@ -50,14 +50,10 @@ function PulseGlow() {
   )
 }
 
-/** The bottom nav: four tabs and the play toggle lifted in the middle. */
+/** The bottom nav: Songs and Albums, the play toggle lifted in the middle, then Lyrics and More. */
 function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const focus = usePlayer(selectFocusTrack)
-  const pair = comparePairFor(
-    focus,
-    usePlayer((s) => s.comparePair)
-  )
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
   const toggle = usePlayer((s) => s.toggle)
@@ -67,26 +63,21 @@ function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const active =
     pathname.startsWith('/lyrics') || pathname.startsWith('/time')
       ? 'lyrics'
-      : pathname.startsWith('/compare')
-        ? 'compare'
+      : pathname.startsWith('/albums')
+        ? 'albums'
         : pathname.startsWith('/more') || pathname.startsWith('/settings')
           ? 'more'
-          : 'album'
+          : 'songs'
 
   return {
     items: [
-      { key: 'album', icon: Disc3, label: 'Songs', href: '/' },
+      { key: 'songs', icon: ListMusic, label: 'Songs', href: '/' },
+      { key: 'albums', icon: Disc3, label: 'Albums', href: '/albums' },
       {
         key: 'lyrics',
         icon: ScrollText,
         label: 'Lyrics',
         href: `/lyrics/${focus}`,
-      },
-      {
-        key: 'compare',
-        icon: Columns2,
-        label: 'Compare',
-        href: `/compare?left=${pair.left}&right=${pair.right}`,
       },
       { key: 'more', icon: Ellipsis, label: 'More', href: '/more' },
     ],
