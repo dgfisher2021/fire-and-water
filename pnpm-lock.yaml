@@ -18,6 +18,9 @@ importers:
       '@dust-ui/blocks':
         specifier: ^0.21.0
         version: 0.21.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
+      '@dust-ui/charts':
+        specifier: 0.13.1
+        version: 0.13.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
       '@dust-ui/motion':
         specifier: ^0.13.0
         version: 0.13.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)

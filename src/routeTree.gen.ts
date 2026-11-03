@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlbumsRouteImport } from './routes/albums'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as MoreRouteImport } from './routes/more'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StoryRouteImport } from './routes/story'
 import { Route as LyricsTrackRouteImport } from './routes/lyrics.$track'
@@ -36,6 +37,11 @@ const CompareRoute = CompareRouteImport.update({
 const MoreRoute = MoreRouteImport.update({
   id: '/more',
   path: '/more',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/albums': typeof AlbumsRoute
   '/compare': typeof CompareRoute
   '/more': typeof MoreRoute
+  '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
   '/lyrics/$track': typeof LyricsTrackRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/albums'
     | '/compare'
     | '/more'
+    | '/profile'
     | '/settings'
     | '/story'
     | '/lyrics/$track'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/albums'
     | '/compare'
     | '/more'
+    | '/profile'
     | '/settings'
     | '/story'
     | '/lyrics/$track'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/albums'
     | '/compare'
     | '/more'
+    | '/profile'
     | '/settings'
     | '/story'
     | '/lyrics/$track'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AlbumsRoute: typeof AlbumsRoute
   CompareRoute: typeof CompareRoute
   MoreRoute: typeof MoreRoute
+  ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
   StoryRoute: typeof StoryRoute
   LyricsTrackRoute: typeof LyricsTrackRoute
@@ -162,6 +175,13 @@ declare module '@tanstack/react-router' {
       path: '/more'
       fullPath: '/more'
       preLoaderRoute: typeof MoreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AlbumsRoute: AlbumsRoute,
   CompareRoute: CompareRoute,
   MoreRoute: MoreRoute,
+  ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
   StoryRoute: StoryRoute,
   LyricsTrackRoute: LyricsTrackRoute,
