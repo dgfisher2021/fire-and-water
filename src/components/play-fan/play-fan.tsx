@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import { useNavigate, useRouterState } from '@tanstack/react-router'
 import { SkipBack, SkipForward } from 'lucide-react'
 import { createPortal } from 'react-dom'
@@ -9,9 +9,10 @@ import { PLAY_MODE_TOGGLES, togglePlayMode } from '@/lib/play-mode'
 import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
 import { usePlayer } from '@/store/player'
-import { usePrefs } from '@/store/prefs'
+import { usePrefs, type PlayFanStyle } from '@/store/prefs'
 import { useMiniPlayerVisible } from '@/hooks/use-mini-player'
 import { useNavTarget } from '@/hooks/use-nav-target'
+import { FanDeck } from './fan-deck'
 import { FanDial } from './fan-dial'
 import { FanOrbit } from './fan-orbit'
 import { dialHit, type Point } from './geometry'
@@ -20,6 +21,12 @@ import { CENTER_SELECTOR, useFanGesture } from './use-fan-gesture'
 
 /** The play button's center in the shell root's px, and the frame's scale. */
 type Geo = { c: Point; scale: number }
+
+const LOOKS: Record<PlayFanStyle, ComponentType<FanViewProps>> = {
+  orbit: FanOrbit,
+  dial: FanDial,
+  deck: FanDeck,
+}
 
 function measure(root: HTMLElement): Geo | null {
   const button = document.querySelector(CENTER_SELECTOR)
@@ -140,6 +147,7 @@ export function PlayFan() {
       pressed: playMode === 'repeat',
     },
   ]
+  const Look = LOOKS[look]
   const track = TRACKS[target]
   const view: FanViewProps = {
     open: fan.open,
@@ -179,7 +187,7 @@ export function PlayFan() {
         aria-hidden={!fan.open}
         className='pointer-events-none absolute inset-0 z-[65]'
       >
-        {look === 'orbit' ? <FanOrbit {...view} /> : <FanDial {...view} />}
+        <Look {...view} />
       </div>
       {hint && (
         <svg
