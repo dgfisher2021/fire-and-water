@@ -140,17 +140,32 @@ async function check() {
   console.log(`media.json matches ${Object.keys(want).length} files`)
 }
 
+/** HEAD a file at the CDN until it answers at its size; the edge can shed a burst. */
+async function isLive(file, version) {
+  let last = ''
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (attempt) await new Promise((r) => setTimeout(r, 1000 * attempt))
+    const res = await fetch(`${BASE}${file}?v=${version}`, { method: 'HEAD' })
+    const size = Number(res.headers.get('content-length'))
+    if (res.ok && size === statSync(join(PUBLIC, file)).size) return null
+    last = `${file} (${res.status}, ${size} bytes)`
+  }
+  return last
+}
+
 async function verify() {
   const versions = readManifest()
+  const entries = Object.entries(versions)
   const missing = []
-  await Promise.all(
-    Object.entries(versions).map(async ([file, version]) => {
-      const res = await fetch(`${BASE}${file}?v=${version}`, { method: 'HEAD' })
-      const size = Number(res.headers.get('content-length'))
-      if (!res.ok || size !== statSync(join(PUBLIC, file)).size)
-        missing.push(`${file} (${res.status}, ${size} bytes)`)
-    })
-  )
+  let next = 0
+  const worker = async () => {
+    while (next < entries.length) {
+      const [file, version] = entries[next++]
+      const problem = await isLive(file, version)
+      if (problem) missing.push(problem)
+    }
+  }
+  await Promise.all(Array.from({ length: 8 }, worker))
   if (missing.length) {
     console.error(
       `${missing.length} file(s) not live at ${BASE}: ${missing.join(', ')}`
