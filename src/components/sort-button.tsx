@@ -5,10 +5,10 @@ import { Button, SheetAction, type SheetActionAction } from '@dust-ui/ui'
 import { ALBUM_SORTS, type AlbumSort } from '@/lib/sort'
 
 const SORT_LABELS: Record<AlbumSort, string> = {
+  written: 'Newest first',
   album: 'Album order',
   title: 'A to Z',
-  written: 'Date written',
-  collection: 'By collection',
+  collection: 'By album',
 }
 
 export type SortButtonProps = {

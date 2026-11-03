@@ -40,7 +40,7 @@ const AUTOPLAY_MS = 15_000
 /** The one-list footer when the order is not the album's own (which shows the tagline). */
 const SORT_FOOTER: Partial<Record<AlbumSort, string>> = {
   title: 'A to Z by title',
-  written: 'Oldest first, by the day each song was written',
+  written: 'Newest first, by the day each song was written',
 }
 
 const count = (n: number) => `${n} ${n === 1 ? 'song' : 'songs'}`
@@ -124,7 +124,7 @@ function Timeline({ songs }: { songs: readonly TrackId[] }) {
 export function AlbumScreen() {
   const framed = useMobileShellFramed()
   const navigate = useNavigate()
-  // The list order is in the URL (/?sort=title); the collection view keeps it clean.
+  // The list order is in the URL (/?sort=title); the timeline keeps it clean.
   const { sort } = useSearch({ from: '/' })
   const setSort = (next: AlbumSort) =>
     void navigate({ to: '/', search: { sort: next }, replace: true })

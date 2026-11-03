@@ -1,8 +1,6 @@
 import {
   ChevronDown,
   ChevronUp,
-  Download,
-  ListMusic,
   Play,
   Repeat1,
   Shuffle,
@@ -12,39 +10,42 @@ import {
 } from 'lucide-react'
 import {
   Button,
-  downloadUrl,
   formatTime,
   MediaPlayButton,
   MediaScrubber,
   MediaWaveform,
 } from '@dust-ui/ui'
 import envelopes from '@/data/audio-envelopes.json'
-import sizes from '@/data/audio-sizes.json'
 import { hookFor } from '@/data/hooks'
-import catalog from '@/data/suno-catalog.json'
+import { sunoStyle } from '@/data/suno-style'
 import { TRACKS, type Track, type TrackId } from '@/data/tracks'
-import { audioLabel } from '@/lib/format'
 import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
-import { PLAY_MODES, usePlayer, type PlayMode } from '@/store/player'
+import { usePlayer, type PlayMode } from '@/store/player'
 
 /** The Now Playing glass: a light wash over a soft blur, so the artwork stays legible behind it. */
 const GLASS = 'border border-border bg-card/60 backdrop-blur-[6px]'
 
-const MODES: Record<PlayMode, { icon: LucideIcon; label: string }> = {
-  album: { icon: ListMusic, label: 'Album order' },
-  repeat: { icon: Repeat1, label: 'Repeat this song' },
-  shuffle: { icon: Shuffle, label: 'Shuffle' },
+/** The two play-mode toggles flanking the transport; off is album order. */
+const TOGGLES: Record<
+  Exclude<PlayMode, 'album'>,
+  { icon: LucideIcon; label: string; on: string; off: string }
+> = {
+  shuffle: {
+    icon: Shuffle,
+    label: 'Shuffle',
+    on: 'Shuffle on',
+    off: 'Shuffle off',
+  },
+  repeat: {
+    icon: Repeat1,
+    label: 'Repeat this song',
+    on: 'Repeating this song',
+    off: 'Repeat off',
+  },
 }
 
 const binsFor = (t: Track) => envelopes[t.audioFile as keyof typeof envelopes]
-
-/** The Suno style prompt each album song was made with, from the catalogue. */
-const STYLE = new Map(
-  catalog.songs
-    .filter((s) => s.appId && s.style)
-    .map((s) => [s.appId as TrackId, s.style as string])
-)
 
 /** Every other bin at the louder of each pair: half as many, thicker bars for the slim strip. */
 function halveBins(bins: number[]) {
@@ -72,14 +73,14 @@ function Control({
   label,
   onClick,
   icon: Icon,
-  on = false,
+  on,
   fill = false,
   className,
 }: {
   label: string
   onClick: () => void
   icon: LucideIcon
-  /** Lit in the song's accent (a play mode that is on). */
+  /** A toggle: lit in the song's accent when on, and pressed for assistive tech. */
   on?: boolean
   fill?: boolean
   className?: string
@@ -89,6 +90,7 @@ function Control({
       variant='ghost'
       size='icon'
       aria-label={label}
+      aria-pressed={on}
       onClick={onClick}
       className={cn(
         'size-10 shrink-0 rounded-full transition-opacity hover:opacity-70',
@@ -117,12 +119,29 @@ export type NowPlayingCardProps = NowPlayingProps & {
   onWatchHook?: () => void
 }
 
+/** Shuffle or repeat: on switches to that mode, off back to album order. */
+function ModeToggle({ mode }: { mode: keyof typeof TOGGLES }) {
+  const on = usePlayer((s) => s.playMode === mode)
+  const setPlayMode = usePlayer((s) => s.setPlayMode)
+  const toggle = TOGGLES[mode]
+  return (
+    <Control
+      label={toggle.label}
+      icon={toggle.icon}
+      on={on}
+      onClick={() => {
+        setPlayMode(on ? 'album' : mode)
+        toaster.push(on ? toggle.off : toggle.on)
+      }}
+    />
+  )
+}
+
 /**
  * The unfolded Now Playing control, under the screen's title row: the
  * cover beside the song's meaning in full (a tap on it, or the chevron at
  * the corner, folds the card), the Suno style it was made with, a single-line
- * scrubber with the times, then Download · previous · play · next and the
- * play mode (album order, repeat, shuffle).
+ * scrubber with the times, then shuffle · previous · play · next · repeat.
  */
 export function NowPlayingCard({
   track,
@@ -140,16 +159,7 @@ export function NowPlayingCard({
 }: NowPlayingCardProps) {
   const t = TRACKS[track]
   const hook = hookFor(track)
-  const style = STYLE.get(track)
-  const playMode = usePlayer((s) => s.playMode)
-  const cyclePlayMode = usePlayer((s) => s.cyclePlayMode)
-  const mode = MODES[playMode]
-  const nextMode =
-    MODES[PLAY_MODES[(PLAY_MODES.indexOf(playMode) + 1) % PLAY_MODES.length]]
-  const label = audioLabel(
-    t.audioFile,
-    sizes[t.audioFile as keyof typeof sizes]
-  )
+  const style = sunoStyle(track)
 
   return (
     <section
@@ -217,14 +227,7 @@ export function NowPlayingCard({
         timeLabels='remaining'
       />
       <div className='flex items-center justify-center gap-3'>
-        <Control
-          label={`Download ${label}`}
-          icon={Download}
-          onClick={() => {
-            downloadUrl(t.audioFile)
-            toaster.push(`Downloading ${t.title}`)
-          }}
-        />
+        <ModeToggle mode='shuffle' />
         <Control label='Previous' icon={SkipBack} fill onClick={onSkipBack} />
         <MediaPlayButton
           size='lg'
@@ -236,15 +239,7 @@ export function NowPlayingCard({
           }}
         />
         <Control label='Next' icon={SkipForward} fill onClick={onSkipForward} />
-        <Control
-          label={`Play mode: ${mode.label}. Switch to ${nextMode.label.toLowerCase()}`}
-          icon={mode.icon}
-          on={playMode !== 'album'}
-          onClick={() => {
-            cyclePlayMode()
-            toaster.push(nextMode.label)
-          }}
-        />
+        <ModeToggle mode='repeat' />
       </div>
     </section>
   )

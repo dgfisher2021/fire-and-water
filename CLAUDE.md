@@ -16,14 +16,17 @@ pnpm format     # prettier on src/
 ## What this is
 
 A phone app for Dustin's songs, built on the Dust UI mobile kit. Four
-screens behind a `NavBottom` whose center action plays and pauses, with a
-`MiniPlayer` above the bar once a song plays: Album (artwork stage +
-`MobileListGroup` tracklist under collection headers, or a timeline by the
-day written), Now Playing (`NowPlayingCard` above a sing-along lyrics
-pane), Compare (any two songs in synced columns, picked
-through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
-rows for appearance, downloads, Drive links, sharing, and the About note
-from `ALBUM.about` with the Suno link). React 19 +
+tabs behind a `NavBottom` (Songs, Albums, the center play/pause action,
+Lyrics, More), with a `MiniPlayer` above the bar once a song plays: Songs
+(artwork stage + a newest-first timeline of `MobileListGroup` rows, or
+album order, A to Z, by album), Albums (`MotionAccordion type='single'` of
+glass cards, `IllustrationIcon` per album in its lead song's voice),
+Lyrics, i.e. Now Playing (the player folded to `NowPlayingBar` by default
+above a sing-along pane, a `MobileMessageActions` icon row for copy,
+download, side by side, share and "…"; side by side is two songs in synced
+columns, pair in the URL as `?with=`) and More (`MobileListGroup` rows for
+appearance, downloads, Drive links, sharing, and the About note from
+`ALBUM.about` with the Suno link). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 `@dust-ui/ui` 0.31, `@dust-ui/blocks` 0.21, `@dust-ui/motion` 0.13,
 `@dust-ui/tokens` 0.11 and `@dust-ui/3d` 0.8 from GitHub Packages (blocks
@@ -46,36 +49,38 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
   The `short:` variant (max-height 560px) lays the album stage sideways and
   hides the Now Playing card.
 - `src/screens/lyrics.tsx` keeps the Now Playing card and bar both mounted
-  and folds one into the other on the pane's scroll position (grid-rows
-  transition, `inert` on the hidden one). The screen has no
-  `MobilePageHeader`: a title row (`MotionTextMorph` title, written date,
-  the "…" menu) sits above the control in both states, the card holds the
-  description and the Suno style from the catalogue beside the cover, and
-  the bar unfolds on a tap (the frame's status-bar inset is padding on the
-  wrapper). Neither the Songs screen has a header: its stage title does the
-  announcing and the theme button sits alone at the top. A row tap on
-  Songs lands here with the card unfolded.
+  and starts folded to the bar; a tap unfolds the card for that song
+  (grid-rows transition, `inert` on the hidden one). The screen has no
+  `MobilePageHeader`: a title row (`MotionTextMorph` title, then the
+  written date beside the kit's `MobileMessageActions` toolbar, sized up
+  from 22px to 36px targets) sits above the control in both states. Copy
+  writes `songText` (`lib/song-text.ts`: title, date, description, Suno
+  style, lyrics); "…" is a `SheetAction` with `container` for the rarer
+  actions. `?with=<id>` swaps the reader for `LyricsCompare` (two
+  `LyricsReader`s in `LyricsSplit`); `/compare?left&right` redirects there.
+  The card holds the description and the Suno style (`data/suno-style.ts`)
+  beside the cover, then shuffle · prev · play · next · repeat (the frame's
+  status-bar inset is padding on the wrapper). Neither the Songs screen has
+  a header: its stage title does the announcing and the theme button sits
+  alone at the top.
 - Glass (the `glass` prop on `MobileListGroup`, `MobileSearchBar` and
   `MediaPlayer`, or `bg-card/85 backdrop-blur-md` on the app panels) needs
   no backdrop root between it and the artwork: a `mask-image`, an `opacity`
   below 1, a filter, or a filled opacity animation on any ancestor leaves
   it nothing to frost.
-- `src/routes/` `/` album (`?sort=album|title|written`, zod-validated like
-  Compare's pair; the default collection view is stripped so the URL stays
-  clean; `?sort=written` is the timeline More's "The story so far" opens,
-  and `/story` redirects there for old links), `/lyrics/$track` now
-  playing, `/compare`, `/more`, and `/time/$track`, the tap-to-time tool
+- `src/routes/` `/` songs (`?sort=album|title|collection`, zod-validated;
+  the default `written` timeline is stripped so the URL stays clean; More's
+  "The story so far" and the old `/story` land there), `/albums`,
+  `/lyrics/$track` now playing (`?with=` side by side), `/compare` (a
+  redirect), `/more`, `/settings` and `/time/$track`, the tap-to-time tool
   (no tab). The URL owns what is open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
   element (`src/lib/audio.ts`) by `useAudioEngine`. A finished song hands
   off by `playMode` (`nextAfterEnd`: album order, repeat, shuffle; the
-  card's last control cycles it); that and lock-screen prev/next go through
-  `requestTrack`, which the lyrics screen follows. Subscribe with
-  selectors: `currentTime` updates every frame.
-  It also remembers the last Compare pair: the Compare tab reopens it while
-  it still holds the focus track (`comparePairFor`), and `RouterLink` turns a
-  query string in a nav href into the Link's `search`. Selectors must return
-  stable values, never a fresh object.
+  card's shuffle and repeat toggles set it, off is album order); that and
+  lock-screen prev/next go through `requestTrack`, which the lyrics screen
+  follows. Subscribe with selectors: `currentTime` updates every frame.
+  Selectors must return stable values, never a fresh object.
 - `src/lib/toaster.ts` one `createMobileToaster` for the in-frame
   `MobileToastStack` (`toaster.push` from anywhere). `src/store/prefs.ts`
   stays zustand: the kit's `useLocalStorage` does not sync two hooks in one
@@ -108,10 +113,11 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
   with `--force` replaces a few; re-run `scripts/timing/align.py` for those
   ids after, the timing follows the sheet) and `scripts/audio-convert.py`
   turns their M4A into MP3 or WAV with ffmpeg.
-  `src/data/collections.ts` groups the songs by theme (`COLLECTIONS` in
-  display order, `COLLECTION_OF` typed over every `TrackId` so a new song
-  must be placed); `src/lib/sort.ts` orders the Album list (`sortTracks`,
-  `groupTracks`, `groupTracksByMonth` for the timeline) and the
+  `src/data/collections.ts` groups the songs by theme into the albums
+  (`COLLECTIONS` in display order, each with its `IllustrationName`;
+  `COLLECTION_OF` typed over every `TrackId` so a new song must be placed);
+  `src/lib/sort.ts` orders the Songs list (`sortTracks`, `groupTracks` for
+  the albums, `groupTracksByMonth` for the timeline, newest first) and the
   `SortButton` offers the orders in a `SheetAction`.
 - `src/components/` app compositions on the published packages: no forks.
   The kit supplies the shell, `MediaRow`, `MediaPlayer` (the `/time` bar),
@@ -131,10 +137,9 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `NowPlayingCard` and `NowPlayingBar` (the kit's `MediaPlayer` has no slot
   for a description or the waveform, so the unfolded control is composed
   here: `MediaScrubber` in the card, `MediaWaveform` as the bar's slider,
-  Download and the play mode flanking the transport, and a chevron on each
-  that folds or unfolds by hand; `lyrics.tsx` keeps that choice per song;
-  the mini player asks for the folded state through router
-  `HistoryState.collapsed`), `MiniPlayer` (kept instead of
+  shuffle and repeat flanking the transport, and a chevron on each that
+  folds or unfolds by hand; `lyrics.tsx` keeps that choice per song),
+  `MiniPlayer` (kept instead of
   `MediaNowPlayingBar` for the progress ring around play),
   `TrackRow` (song data on `MediaRow`, with a play control that opens Now
   Playing), `SongPicker` (`MobileListPicker` items have no trailing glyph

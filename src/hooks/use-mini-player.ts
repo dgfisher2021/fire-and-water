@@ -11,9 +11,6 @@ export function useMiniPlayerVisible() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const loaded = usePlayer((s) => s.track !== null)
   return (
-    loaded &&
-    !pathname.startsWith('/lyrics') &&
-    !pathname.startsWith('/compare') &&
-    !pathname.startsWith('/time')
+    loaded && !pathname.startsWith('/lyrics') && !pathname.startsWith('/time')
   )
 }
