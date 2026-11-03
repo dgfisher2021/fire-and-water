@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useRouterState } from '@tanstack/react-router'
+import { useMatch, useRouterState } from '@tanstack/react-router'
 import {
   Disc3,
   Ellipsis,
@@ -57,7 +57,17 @@ function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const loaded = usePlayer((s) => s.track)
   const status = usePlayer((s) => s.status)
   const toggle = usePlayer((s) => s.toggle)
-  const playing = status === 'playing' || status === 'loading'
+  // On Now Playing the button belongs to the song on screen: it pauses that
+  // song while it plays, else plays it (switching from any other). Elsewhere
+  // it drives whatever is loaded, else the song on the stage.
+  const openTrack = useMatch({
+    from: '/lyrics/$track',
+    shouldThrow: false,
+    select: (m) => m.params.track,
+  })
+  const target = openTrack ?? loaded ?? focus
+  const playing =
+    loaded === target && (status === 'playing' || status === 'loading')
 
   // The tap-to-time tool lives with the lyrics; Settings and the profile with More.
   const active =
@@ -88,7 +98,7 @@ function useShellNav(): Omit<NavBottomProps, 'fixed'> {
       label: playing ? 'Pause' : 'Play',
       size: 'lg',
       active: playing,
-      onClick: () => toggle(loaded ?? focus),
+      onClick: () => toggle(target),
       background:
         'linear-gradient(135deg, var(--track-bright), var(--track-deep))',
       color: 'var(--track-foreground)',
