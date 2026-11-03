@@ -1,6 +1,7 @@
-import { KpiTracker, MobileWeekBars } from '@dust-ui/charts'
+import { ChartArea, KpiTracker } from '@dust-ui/charts'
 import { INSIGHTS } from '@/data/creator-insights'
 import { InsightPanel } from './insight-panel'
+import { wash } from './style-var'
 
 const { rhythm } = INSIGHTS
 const BUSIEST_MONTH = Math.max(...rhythm.months.map((m) => m.songs))
@@ -11,10 +12,11 @@ const short = (iso: string, opts: Intl.DateTimeFormatOptions) =>
   day(iso).toLocaleDateString('en-US', opts)
 
 /** A week's axis label: the month's name on its first week, blank otherwise. */
-const weekLabel = (start: string, i: number) => {
+const weekTick = (start: string | number) => {
+  const i = rhythm.weeks.findIndex((w) => w.start === start)
   const prev = rhythm.weeks[i - 1]
-  return !prev || day(prev.start).getMonth() !== day(start).getMonth()
-    ? short(start, { month: 'short' })
+  return !prev || day(prev.start).getMonth() !== day(String(start)).getMonth()
+    ? short(String(start), { month: 'short' })
     : ''
 }
 
@@ -32,9 +34,9 @@ const STATS = [
 ]
 
 /**
- * Output by week and by month: streak figures, the kit's week bars for the
- * latest 16 weeks (its labels are 7px, so the month axis is drawn here on
- * the same grid) and a tracker strip for the last 12 months.
+ * Output by week and by month: streak figures, the kit's gradient area for
+ * the latest 16 weeks in the ramp's fire, and a tracker strip for the last
+ * 12 months, busier months in a deeper wash of the same ember.
  */
 export function PublishingRhythm() {
   return (
@@ -46,14 +48,20 @@ export function PublishingRhythm() {
     >
       <dl className='grid grid-cols-2 gap-x-4 gap-y-3'>
         {STATS.map(({ value, label }) => (
-          <div key={label} className='border-l-2 border-primary/50 pl-3'>
-            <dt className='sr-only'>{label}</dt>
-            <dd className='font-mono text-[22px] leading-none font-semibold text-foreground tabular-nums'>
-              {value}
-            </dd>
-            <dd className='mt-1 text-[11px] leading-tight tracking-wide text-muted-foreground uppercase'>
-              {label}
-            </dd>
+          <div key={label} className='flex gap-3'>
+            <span
+              aria-hidden
+              className='w-0.5 shrink-0 rounded-full bg-linear-to-b from-chart-1 to-chart-1/0'
+            />
+            <div>
+              <dt className='sr-only'>{label}</dt>
+              <dd className='font-mono text-[22px] leading-none font-semibold text-foreground tabular-nums'>
+                {value}
+              </dd>
+              <dd className='mt-1 text-[11px] leading-tight tracking-wide text-muted-foreground uppercase'>
+                {label}
+              </dd>
+            </div>
           </div>
         ))}
       </dl>
@@ -68,24 +76,24 @@ export function PublishingRhythm() {
             songs
           </span>
         </div>
-        <MobileWeekBars
-          data={rhythm.weeks.map((w) => ({ label: '', value: w.songs }))}
-          barHeight={84}
-          showValues={false}
-          description={`Songs per week, the latest ${rhythm.weeks.length} weeks`}
-        />
-        <div
-          aria-hidden
-          className='-mt-1 grid gap-1.5 text-[11px] text-muted-foreground'
-          style={{
-            gridTemplateColumns: `repeat(${rhythm.weeks.length}, 1fr)`,
-          }}
-        >
-          {rhythm.weeks.map((w, i) => (
-            <span key={w.start} className='overflow-visible whitespace-nowrap'>
-              {weekLabel(w.start, i)}
-            </span>
-          ))}
+        {/* Pulled left over the kit's fixed y-axis gutter. */}
+        <div className='-ml-9 w-[calc(100%+2.25rem)]'>
+          <ChartArea
+            data={rhythm.weeks}
+            xKey='start'
+            xLabel='Week of'
+            series={[{ key: 'songs', label: 'Songs', color: 'var(--chart-1)' }]}
+            variant='gradient'
+            height={150}
+            legend={false}
+            yDomain={[0, 8]}
+            yTickFormatter={(n) => String(Math.round(n))}
+            xTickFormatter={weekTick}
+            tooltipLabelFormatter={(start) =>
+              `Week of ${short(String(start), { month: 'short', day: 'numeric' })}`
+            }
+            description={`Songs per week, the latest ${rhythm.weeks.length} weeks`}
+          />
         </div>
         <p className='text-[12px] text-muted-foreground'>
           Busiest: {PEAK.songs} songs in the week of{' '}
@@ -107,6 +115,7 @@ export function PublishingRhythm() {
           aria-label={`Songs per month: ${rhythm.months.map((m) => `${short(`${m.month}-01`, { month: 'short', year: 'numeric' })} ${m.songs}`).join(', ')}`}
           blockHeight='h-7'
           gap={4}
+          className='tracker-sheen'
           blocks={rhythm.months.map((m) => {
             const name = short(`${m.month}-01`, {
               month: 'long',
@@ -115,10 +124,13 @@ export function PublishingRhythm() {
             return {
               tone: m.songs > 0 ? 'success' : 'idle',
               tooltip: `${name}: ${m.songs} ${m.songs === 1 ? 'song' : 'songs'}`,
-              // Busier months in a deeper wash of the accent.
+              // Busier months in a deeper wash of the ramp's fire.
               color:
                 m.songs > 0
-                  ? `color-mix(in oklab, var(--primary) ${Math.round(30 + (m.songs / BUSIEST_MONTH) * 70)}%, transparent)`
+                  ? wash(
+                      'var(--chart-1)',
+                      Math.round(28 + (m.songs / BUSIEST_MONTH) * 62)
+                    )
                   : undefined,
             }
           })}

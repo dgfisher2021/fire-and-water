@@ -35,6 +35,7 @@ export function ProfileScreen() {
 
   return (
     <MobileAppScreen
+      className='style-ramp'
       header={
         <MobilePageHeader
           eyebrow={`${INSIGHTS.handle} on Suno`}
@@ -66,7 +67,7 @@ export function ProfileScreen() {
             <img
               src='assets/icon-192.png'
               alt=''
-              className='size-18 shrink-0 rounded-lg shadow-[0_6px_20px_-4px_var(--track-glow)]'
+              className='size-18 shrink-0 rounded-lg shadow-[-6px_6px_22px_-8px_var(--chart-1),6px_6px_22px_-8px_var(--chart-10)]'
             />
             <div className='min-w-0'>
               <p className='font-display text-[28px] leading-none font-medium text-foreground'>
@@ -76,7 +77,7 @@ export function ProfileScreen() {
                 Written and performed by Dustin
               </p>
               <div className='mt-2 flex flex-wrap gap-1.5'>
-                <Pill>{INSIGHTS.diversity.band}</Pill>
+                <Pill color='var(--chart-6)'>{INSIGHTS.diversity.band}</Pill>
                 <Pill color={styleVar(LEAD.style)}>
                   Mostly {LEAD.style.toLowerCase()}
                 </Pill>

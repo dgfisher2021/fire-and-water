@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { KpiProgressBar } from '@dust-ui/charts'
 import { SegmentedControl } from '@dust-ui/ui'
@@ -42,7 +42,8 @@ export function TopStyles({
               type='button'
               onClick={() => onStyle(style)}
               aria-label={`${style}: ${n} songs, ${percent} percent. Show this album’s ${style} songs`}
-              className='flex w-full cursor-pointer items-center gap-3 rounded-md px-2 py-2 text-left transition-colors hover:bg-accent/40'
+              style={{ '--meter': styleVar(style) } as CSSProperties}
+              className='flex w-full cursor-pointer items-center gap-3 rounded-md px-2 py-2 text-left meter-glow transition-colors hover:bg-accent/40'
             >
               <span className='w-6 shrink-0 font-mono text-[12px] text-muted-foreground tabular-nums'>
                 {String(i + 1).padStart(2, '0')}
@@ -61,7 +62,7 @@ export function TopStyles({
                     {percent}%
                   </span>
                 }
-                color={styleVar(style)}
+                color='var(--meter)'
                 sizeClass='h-2'
                 className='min-w-0 flex-1'
               />

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { ChevronRight } from 'lucide-react'
 import { formatTime } from '@dust-ui/ui'
 import { INSIGHTS, type StyleName } from '@/data/creator-insights'
@@ -57,7 +58,7 @@ export function StyleDurations({
             <span />
             <span className='relative'>
               <span
-                className='absolute inset-y-0 border-l border-dashed border-muted-foreground/60'
+                className='absolute inset-y-0 border-l border-dashed border-muted-foreground/40'
                 style={{ left: at(OVERALL) }}
               />
             </span>
@@ -69,10 +70,11 @@ export function StyleDurations({
               type='button'
               onClick={() => onStyle(d.style)}
               aria-label={`${d.style}, ${d.songs} songs: ${formatTime(d.range[0])} to ${d.pastEdge ? 'over 7:00' : formatTime(d.range[1])}, middle half ${formatTime(d.middle[0])} to ${formatTime(d.middle[1])}, average ${formatTime(d.average)}`}
+              style={{ '--orb': styleVar(d.style) } as CSSProperties}
               className='group relative grid w-full cursor-pointer grid-cols-[88px_1fr_40px] items-center gap-x-2 rounded-md py-1.5 text-left'
             >
               <span className='min-w-0'>
-                <span className='block truncate text-[14px] leading-tight font-medium text-foreground group-hover:text-primary'>
+                <span className='block truncate text-[14px] leading-tight font-medium text-foreground group-hover:text-(--orb)'>
                   {d.style}
                 </span>
                 <span className='block text-[11px] text-muted-foreground tabular-nums'>
@@ -94,7 +96,7 @@ export function StyleDurations({
                   style={{
                     left: at(d.range[0]),
                     width: `calc(${at(d.range[1])} - ${at(d.range[0])})`,
-                    background: styleWash(d.style, 55),
+                    background: `linear-gradient(90deg, transparent, ${styleWash(d.style, 45)} 18%, ${styleWash(d.style, 45)} 82%, transparent)`,
                   }}
                 />
                 {/* Middle half */}
@@ -103,12 +105,12 @@ export function StyleDurations({
                   style={{
                     left: at(d.middle[0]),
                     width: `calc(${at(d.middle[1])} - ${at(d.middle[0])})`,
-                    background: styleVar(d.style),
+                    background: styleWash(d.style, 32),
                   }}
                 />
                 {/* Average */}
                 <span
-                  className='absolute top-1/2 size-3 -translate-1/2 rounded-full border-2 border-background bg-foreground'
+                  className='absolute top-1/2 size-3 -translate-1/2 rounded-full glow-dot'
                   style={{ left: at(d.average) }}
                 />
               </span>
