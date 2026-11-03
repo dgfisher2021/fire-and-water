@@ -191,11 +191,19 @@ installed `node_modules/@dust-ui/ui/dist/<name>.d.ts`.
 
 ## Deploy
 
-GitHub Pages from `main` via `.github/workflows/deploy.yml`
-(`VITE_BASE_PATH=/fire-and-water/`, `404.html` copy for SPA deep links);
-the repo's Pages source is "GitHub Actions". Installing `@dust-ui/*` needs
-the repo secret `DUST_UI_READ_TOKEN` (classic PAT, `read:packages`): the
-packages belong to the `dust-ui` org and this repo does not, so the
+`main` deploys to Railway behind Cloudflare at https://music.dgfisher.com,
+the way dust-ui ships ui.dgfisher.com. `.github/workflows/ci.yml`
+classifies the diff (drafts and prose-only diffs run nothing more), then
+lints, tests and builds at base `/`; on `main`, while the repo variable
+`DEPLOY_ENABLED` is `true`, it copies `dist/` to `deploy/railway/site/` and
+`railway up`s that folder (Caddy: SPA fallback, hashed `/assets/`
+immutable, everything else `no-cache`, text-only compression, byte ranges
+for the songs) to the service `web` with the secret `RAILWAY_TOKEN`, a
+project token. The service has no repo connected. The upload carries every
+song (about 760 MB gzipped); a "File too large" means the media must move
+out of it. The README has the one-time setup. Installing `@dust-ui/*`
+needs the repo secret `DUST_UI_READ_TOKEN` (classic PAT, `read:packages`):
+the packages belong to the `dust-ui` org and this repo does not, so the
 workflow token cannot be granted access to them.
 
 ## Docs

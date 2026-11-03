@@ -6,7 +6,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  // GitHub Pages serves from /fire-and-water/; CI sets VITE_BASE_PATH.
+  // music.dgfisher.com serves from the root; VITE_BASE_PATH builds for a subpath.
   base: process.env.VITE_BASE_PATH ?? '/',
   // 4600 extends the dust-ui 4xxx port block (docs 4100 ... real-estate 4500).
   server: { port: 4600 },
