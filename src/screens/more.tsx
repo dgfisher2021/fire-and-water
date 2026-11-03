@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import {
   BookOpen,
+  ChartNoAxesColumnIncreasing,
   CloudDownload,
   Download,
   ExternalLink,
@@ -171,10 +172,10 @@ export function MoreScreen() {
             </p>
           </div>
           <MobileListRow
-            icon={ExternalLink}
+            icon={ChartNoAxesColumnIncreasing}
             label={`${ALBUM.handle} on Suno`}
-            value='suno.com'
-            onClick={() => window.open(ALBUM.sunoUrl, '_blank', 'noopener')}
+            value='Creator profile'
+            onClick={() => void navigate({ to: '/profile' })}
           />
           <MobileListRow
             icon={BookOpen}

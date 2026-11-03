@@ -31,6 +31,7 @@
 @source '../../node_modules/@dust-ui/motion/dist';
 @source '../../node_modules/@dust-ui/blocks/dist';
 @source '../../node_modules/@dust-ui/3d/dist';
+@source '../../node_modules/@dust-ui/charts/dist';
 
 @custom-variant dark (&:is(.dark *));
 /* Landscape phones and other short viewports. */
@@ -54,6 +55,15 @@
     }
   }
   /* The "now playing" bars: each bar bounces between a third and full height. */
+
+  /* The profile's style bubbles drift a few pixels, out of step. */
+  --animate-drift: drift 7s ease-in-out infinite;
+
+  @keyframes drift {
+    50% {
+      transform: translateY(-4px);
+    }
+  }
 }
 
 /*
@@ -490,6 +500,49 @@
   --track-deep: var(--water-deep);
   --track-glow: var(--water-glow);
   --track-ink: var(--water-ink);
+}
+
+/*
+ * The Suno styles on the creator profile. Each borrows the voice of a song
+ * that fits it (EDM the EDM mix, Acoustic the guitar version), deep on
+ * paper and bright on navy, so a style keeps its hue in both modes and
+ * under every preset.
+ */
+:root {
+  --style-cinematic: var(--beautiful-deep);
+  --style-electronic: var(--augmented-deep);
+  --style-trance: var(--showup-deep);
+  --style-folk: var(--mustang-deep);
+  --style-pop: var(--hearts-deep);
+  --style-orchestral: var(--legend-deep);
+  --style-classical: var(--elements-deep);
+  --style-acoustic: var(--guitar-deep);
+  --style-rap: var(--waves-deep);
+  --style-rock: var(--toomuch-deep);
+  --style-edm: var(--edm-deep);
+  --style-ambient: var(--whales-deep);
+  --style-alternative-pop: var(--boss-deep);
+  --style-country: var(--desert-deep);
+  --style-dream-pop: var(--dream-deep);
+  --style-dubstep: var(--downbeat-deep);
+}
+.dark {
+  --style-cinematic: var(--beautiful);
+  --style-electronic: var(--augmented);
+  --style-trance: var(--showup);
+  --style-folk: var(--mustang);
+  --style-pop: var(--hearts);
+  --style-orchestral: var(--legend);
+  --style-classical: var(--elements);
+  --style-acoustic: var(--guitar);
+  --style-rap: var(--waves);
+  --style-rock: var(--toomuch);
+  --style-edm: var(--edm);
+  --style-ambient: var(--whales);
+  --style-alternative-pop: var(--boss);
+  --style-country: var(--desert);
+  --style-dream-pop: var(--dream);
+  --style-dubstep: var(--downbeat);
 }
 
 /*
