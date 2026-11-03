@@ -6,11 +6,12 @@ import {
   CloudDownload,
   Download,
   ExternalLink,
-  Settings2,
+  Settings,
   Share2,
 } from 'lucide-react'
 import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import {
+  Button,
   downloadUrl,
   MobileListGroup,
   MobileListRow,
@@ -58,18 +59,64 @@ export function MoreScreen() {
           title={
             <span className='font-display text-[26px] font-medium'>More</span>
           }
-          subtitle='Settings, sharing, downloads and the story'
+          subtitle='The story, the creator, sharing and downloads'
           statusBarInset={framed}
+          trailing={
+            <Button
+              variant='ghost'
+              size='icon'
+              aria-label='Settings'
+              onClick={() => void navigate({ to: '/settings' })}
+              className='rounded-full bg-card/60 text-muted-foreground backdrop-blur-[6px] hover:text-foreground'
+            >
+              <Settings aria-hidden />
+            </Button>
+          }
         />
       }
     >
       <div className='flex flex-col gap-5 px-4 pt-1'>
-        <MobileListGroup glass label='Settings'>
+        <MobileListGroup glass label='About'>
+          {/* The artist's note: who the songs are about, in his own words. */}
+          <div className='flex flex-col gap-3 px-3 py-4'>
+            <div className='flex items-center gap-3'>
+              <img
+                src='assets/icon-192.png'
+                alt=''
+                className='size-14 shrink-0 rounded-md shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
+              />
+              <div className='min-w-0'>
+                <div className='font-display text-[20px] leading-tight font-medium text-foreground'>
+                  {ALBUM.handle}
+                </div>
+                <div className='mt-0.5 text-[12px] text-muted-foreground'>
+                  Written and performed by Dustin · 2026
+                </div>
+              </div>
+            </div>
+            <p className='text-[13px] leading-relaxed text-foreground/80'>
+              {ALBUM.about}
+            </p>
+            <p className='font-display text-[16px] leading-snug text-primary italic'>
+              {ALBUM.legend}
+            </p>
+          </div>
           <MobileListRow
-            icon={Settings2}
-            label='Settings'
-            value='Theme, background, player'
-            onClick={() => void navigate({ to: '/settings' })}
+            icon={BookOpen}
+            label='The story so far'
+            value='Newest first'
+            onClick={() =>
+              void navigate({ to: '/', search: { sort: 'written' } })
+            }
+          />
+        </MobileListGroup>
+
+        <MobileListGroup glass label='Profile'>
+          <MobileListRow
+            icon={ChartNoAxesColumnIncreasing}
+            label='Creator profile'
+            value={`${ALBUM.handle} on Suno`}
+            onClick={() => void navigate({ to: '/profile' })}
           />
         </MobileListGroup>
 
@@ -144,47 +191,6 @@ export function MoreScreen() {
               onClick={() => setPicking('drive')}
             />
           )}
-        </MobileListGroup>
-
-        <MobileListGroup glass label='About'>
-          {/* The artist's note: who the songs are about, in his own words. */}
-          <div className='flex flex-col gap-3 px-3 py-4'>
-            <div className='flex items-center gap-3'>
-              <img
-                src='assets/icon-192.png'
-                alt=''
-                className='size-14 shrink-0 rounded-md shadow-[0_4px_14px_rgb(0_0_0/0.35)]'
-              />
-              <div className='min-w-0'>
-                <div className='font-display text-[20px] leading-tight font-medium text-foreground'>
-                  {ALBUM.handle}
-                </div>
-                <div className='mt-0.5 text-[12px] text-muted-foreground'>
-                  Written and performed by Dustin · 2026
-                </div>
-              </div>
-            </div>
-            <p className='text-[13px] leading-relaxed text-foreground/80'>
-              {ALBUM.about}
-            </p>
-            <p className='font-display text-[16px] leading-snug text-primary italic'>
-              {ALBUM.legend}
-            </p>
-          </div>
-          <MobileListRow
-            icon={ChartNoAxesColumnIncreasing}
-            label={`${ALBUM.handle} on Suno`}
-            value='Creator profile'
-            onClick={() => void navigate({ to: '/profile' })}
-          />
-          <MobileListRow
-            icon={BookOpen}
-            label='The story so far'
-            value='Newest first'
-            onClick={() =>
-              void navigate({ to: '/', search: { sort: 'written' } })
-            }
-          />
         </MobileListGroup>
       </div>
 
