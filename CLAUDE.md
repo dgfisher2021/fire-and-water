@@ -26,12 +26,12 @@ above a sing-along pane, a `MobileMessageActions` icon row for copy,
 download, side by side, share and "…"; side by side is two songs in synced
 columns, pair in the URL as `?with=`) and More (`MobileListGroup` rows for
 appearance, downloads, Drive links, sharing, and the About note from
-`ALBUM.about` with the Suno link). React 19 +
+`ALBUM.about`, whose artist row opens the creator profile). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
 `@dust-ui/ui` 0.31, `@dust-ui/blocks` 0.21, `@dust-ui/motion` 0.13,
-`@dust-ui/tokens` 0.11 and `@dust-ui/3d` 0.8 from GitHub Packages (blocks
-and 3d pin an exact ui, blocks an exact motion: bump them together or two
-copies install). Each package's compiled
+`@dust-ui/tokens` 0.11, `@dust-ui/3d` 0.8 and `@dust-ui/charts` 0.13.1 from
+GitHub Packages (blocks and 3d pin an exact ui, blocks an exact motion and
+charts: bump them together or two copies install). Each package's compiled
 `dist` is an `@source` in `index.css`; a package missing there renders its
 classes unstyled (the shell's backdrop went to zero height without blocks).
 
@@ -72,8 +72,8 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
   the default `written` timeline is stripped so the URL stays clean; More's
   "The story so far" and the old `/story` land there), `/albums`,
   `/lyrics/$track` now playing (`?with=` side by side), `/compare` (a
-  redirect), `/more`, `/settings` and `/time/$track`, the tap-to-time tool
-  (no tab). The URL owns what is open; the store owns playback.
+  redirect), `/more`, `/settings`, `/profile` and `/time/$track`, the
+  tap-to-time tool (no tab; Settings and the profile keep More lit). The URL owns what is open; the store owns playback.
 - `src/store/player.ts` zustand player state bound to the one `<audio>`
   element (`src/lib/audio.ts`) by `useAudioEngine`. A finished song hands
   off by `playMode` (`nextAfterEnd`: album order, repeat, shuffle; the
@@ -150,13 +150,28 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   short phones). `SwipeRow` keeps its action strip mounted behind a closed
   row, which shows through this app's translucent `--card`, so the
   tracklist has no swipe actions.
+- `src/screens/profile.tsx` the creator profile: a `MobilePageHeader`, a
+  card with the Suno link, then one glass panel per insight from
+  `src/components/insights/` (`InsightPanel` wraps the kit's
+  `SectionHeader`): `KpiCard` + `MotionNumber`, `KpiProgressBar` +
+  `SegmentedControl`, `Timeline`, `MobileWeekBars` + `KpiTracker`,
+  `ChartGauge` + `MobileProgressRing`, `ChartNetwork` (its node order seeds
+  the layout; the order there keeps labels clear). The style bubbles and the
+  duration range bars are hand-made (no packed-bubble chart in the kit; its
+  boxplot is vertical and marks a median, the export an average). Figures
+  come only from `src/data/creator-insights.ts`, transcribed from Suno's
+  export image (`asOf`, a refresh note at the top, a consistency test). A
+  tapped style opens `StyleSongsSheet`: the album songs whose Suno style
+  names it (`songsInStyle` in `data/suno-style.ts`).
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
   the voice tokens (`--fire`, `--water`, one set per song, named by the
   id) and the accent on `:root[data-track]`, which out-ranks every theme.
   `usePageMeta` sets the open song's `--track-*` (from its voice) and the
   kit's `--media-*` accent (`mediaAccentVars`, deep and glow from the
-  voice) inline on `<html>`, so there is no CSS block per song.
+  voice) inline on `<html>`, so there is no CSS block per song. The
+  profile's `--style-*` tokens each borrow a song's voice (deep in light,
+  bright in dark).
 
 ## Dust UI rules (house rules, non-negotiable)
 

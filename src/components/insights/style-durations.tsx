@@ -7,7 +7,9 @@ import { styleVar, styleWash } from './style-var'
 // The axis starts at 2:30: no style's range dips below 3:00.
 const FROM = 150
 const TO = 420
+// Gridlines every minute, labels every other one so 7:00+ has room.
 const TICKS = [180, 240, 300, 360, 420]
+const LABELS = [180, 300, 420]
 const at = (seconds: number) => `${((seconds - FROM) / (TO - FROM)) * 100}%`
 const OVERALL = INSIGHTS.totals.averageSeconds
 
@@ -33,7 +35,7 @@ export function StyleDurations({
         <div className='grid grid-cols-[88px_1fr_40px] items-end gap-x-2 pb-1 text-[10.5px] text-muted-foreground tabular-nums'>
           <span>Style</span>
           <span className='relative h-4'>
-            {TICKS.map((t) => (
+            {LABELS.map((t) => (
               <span
                 key={t}
                 className={`absolute bottom-0 font-mono ${t === TO ? '-translate-x-full' : '-translate-x-1/2'}`}
