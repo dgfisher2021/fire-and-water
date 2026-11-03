@@ -902,3 +902,19 @@
 [data-slot='nav-bottom'] {
   z-index: 60 !important;
 }
+
+/* The play fan: the lifted button holds and swipes without the browser's
+ * own long-press, and the tabs step back while the fan is open. */
+[data-slot='nav-bottom-center'] {
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+[data-slot='nav-bottom'] > :not(div) {
+  transition:
+    color 0.2s ease,
+    opacity 0.3s ease !important;
+}
+html[data-fan-open] [data-slot='nav-bottom'] > :not(div) {
+  opacity: 0.35;
+}
