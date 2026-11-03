@@ -20,7 +20,8 @@ tabs behind a `NavBottom` (Songs, Albums, the center play/pause action,
 Lyrics, More), with a `MiniPlayer` above the bar once a song plays: Songs
 (artwork stage + a newest-first timeline of `MobileListGroup` rows, or
 album order, A to Z, by album), Albums (`MotionAccordion type='single'` of
-glass cards, `IllustrationIcon` per album in its lead song's voice),
+light glass cards with a song's cover per album; an open album's blurb and
+songs sit below its card, not inside it),
 Lyrics, i.e. Now Playing (the player folded to `NowPlayingBar` by default
 above a sing-along pane, a `MobileMessageActions` icon row for copy,
 download, side by side, share and "…"; side by side is two songs in synced
@@ -114,7 +115,7 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
   ids after, the timing follows the sheet) and `scripts/audio-convert.py`
   turns their M4A into MP3 or WAV with ffmpeg.
   `src/data/collections.ts` groups the songs by theme into the albums
-  (`COLLECTIONS` in display order, each with its `IllustrationName`;
+  (`COLLECTIONS` in display order, each with the `cover` song that stands for it;
   `COLLECTION_OF` typed over every `TrackId` so a new song must be placed);
   `src/lib/sort.ts` orders the Songs list (`sortTracks`, `groupTracks` for
   the albums, `groupTracksByMonth` for the timeline, newest first) and the

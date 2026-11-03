@@ -318,7 +318,7 @@ export function NowPlayingBar({
             e.stopPropagation()
             onExpand()
           }}
-          className='size-10 shrink-0 rounded-md text-muted-foreground hover:text-foreground'
+          className='-mr-2 size-8 shrink-0 rounded-full text-muted-foreground hover:text-foreground'
         >
           <ChevronDown aria-hidden />
         </Button>
