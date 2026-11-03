@@ -45,7 +45,7 @@ export default defineConfig({
         ],
         navigateFallback: 'index.html',
         runtimeCaching: [
-          { urlPattern: /\.(m4a|mp3|mp4)$/, handler: 'NetworkOnly' },
+          { urlPattern: /\.(m4a|mp3|mp4)(\?|$)/, handler: 'NetworkOnly' },
         ],
       },
     }),

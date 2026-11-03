@@ -117,17 +117,36 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # Songs and hook videos are served from R2 by content hash; a song
+      # added or replaced without `pnpm media:sync` fails here.
+      - name: Media manifest is current
+        run: node scripts/media-sync.mjs --check
+
       - name: Lint
         run: pnpm lint
 
       - name: Test
         run: pnpm test
 
-      # The custom domain serves from the root.
+      # The custom domain serves from the root; songs load from MEDIA_BASE
+      # (https://media.dgfisher.com/) once that repo variable is set.
       - name: Build
         env:
           VITE_BASE_PATH: /
+          VITE_MEDIA_BASE: ${{ vars.MEDIA_BASE }}
         run: pnpm build
+
+      # Deploying with the CDN: every song must already answer there, and
+      # then the songs stay out of the Railway upload.
+      - name: Songs are live on the media CDN
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true' && vars.MEDIA_BASE != ''
+        env:
+          MEDIA_BASE: ${{ vars.MEDIA_BASE }}
+        run: node scripts/media-sync.mjs --verify
+
+      - name: Leave the songs to the CDN
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true' && vars.MEDIA_BASE != ''
+        run: find dist -type f \( -name '*.m4a' -o -name '*.mp3' -o -name '*.mp4' \) -delete
 
       # Only when deploy will ship it. The songs are already compressed.
       - name: Upload site

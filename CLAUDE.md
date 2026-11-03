@@ -208,9 +208,15 @@ lints, tests and builds at base `/`; on `main`, while the repo variable
 `railway up`s that folder (Caddy: SPA fallback, hashed `/assets/`
 immutable, everything else `no-cache`, text-only compression, byte ranges
 for the songs) to the service `web` with the secret `RAILWAY_TOKEN`, a
-project token. The service has no repo connected. The upload carries every
-song (about 760 MB gzipped); a "File too large" means the media must move
-out of it. The README has the one-time setup. Installing `@dust-ui/*`
+project token. The service has no repo connected. The songs and hook
+videos are not in that upload: they live in the R2 bucket
+`fire-and-water-media` at https://media.dgfisher.com, versioned by content
+hash in `src/data/media.json` (`pnpm media:sync` uploads what changed;
+`mediaUrl()` in `src/lib/media.ts` adds `?v=` when `VITE_MEDIA_BASE` is
+set, else serves `public/`). CI checks the manifest, and on `main` with the
+`MEDIA_BASE` variable verifies every file answers there, then drops the
+media from `dist/`. A new or replaced song needs `pnpm media:sync` before
+merge. The README has the one-time setup. Installing `@dust-ui/*`
 needs the repo secret `DUST_UI_READ_TOKEN` (classic PAT, `read:packages`):
 the packages belong to the `dust-ui` org and this repo does not, so the
 workflow token cannot be granted access to them.

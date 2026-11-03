@@ -184,6 +184,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 3. Give it a voice in `src/styles/index.css`: `--<id>`, `--<id>-deep`, `--<id>-glow`, `--<id>-ink`, named by the id (`usePageMeta` maps them onto `--track-*` and the media accent). `python3 scripts/voice-from-art.py <id> public/assets/<id>.webp` prints them (and the `themeColor`) from the cover's most telling colour; pass `--hue` and `--chroma` when the cover is grey or the picker lands on the wrong thing.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.
+6. `pnpm media:sync` to put the new (or replaced) audio on the media CDN and record its version in `src/data/media.json`; commit that file. CI fails until it is done.
 
 ## Lyrics
 
@@ -291,7 +292,13 @@ The site is served from Railway behind Cloudflare at **https://music.dgfisher.co
 
 The deploy copies `dist/` to `deploy/railway/site/` and uploads that folder with its `Dockerfile` and `Caddyfile` to the Railway service `web`, which builds a Caddy image around it. Caddy falls back to `index.html` for client routes, marks the hashed `/assets/*.js|css|woff2` immutable, sends everything else (`index.html`, `sw.js`, the manifest, the songs and the artwork) as `no-cache` so a replaced song is picked up under the same filename, compresses text only and answers byte-range requests, which seeking needs. The service has no GitHub repo connected: Railway's own build could not install `@dust-ui/*`.
 
-Every deploy uploads the whole tree, songs included: about 730 MB, 760 MB gzipped. Railway does not document a size limit for `railway up`, and its staff have quoted far smaller ones, so if the deploy fails with "File too large" the songs need to move out of the upload (to Cloudflare R2, for example) rather than the workflow being retried.
+### Songs on the media CDN
+
+The songs and hook videos (about 700 MB) are not part of the Railway upload. They live in the Cloudflare R2 bucket `fire-and-water-media`, served at **https://media.dgfisher.com** through Cloudflare's cache, with no egress fees and byte ranges for seeking. `src/data/media.json` holds a short content hash per file; with `VITE_MEDIA_BASE` set, `mediaUrl()` (`src/lib/media.ts`) loads `https://media.dgfisher.com/<file>?v=<hash>`, so a replaced song gets a fresh URL while everything else caches for a year. Without it (development), songs load from `public/` as before.
+
+- `pnpm media:sync` hashes `public/**/*.{m4a,mp3,mp4}`, rewrites `media.json` and uploads only new or changed files with `wrangler r2 object put` (your `wrangler login`), six at a time; songs carry a download filename, hooks only play. The bucket keeps its own copy of `media.json`, so a rerun resumes. Set `WRANGLER` to a local `wrangler.js` to skip npx's registry check per file.
+- CI runs `media-sync --check` on every code run, so a song added or replaced without a sync fails, and `media.test.ts` checks every song and hook has a version. On `main`, with the repo variable `MEDIA_BASE` set, it builds against the CDN, runs `media-sync --verify` (every file must answer at the CDN at its size) and drops the media from the upload, which is then the app alone.
+- The bucket's CORS rule is `deploy/r2/cors.json` (`wrangler r2 bucket cors set fire-and-water-media --file deploy/r2/cors.json`): it lets the app's origins read the songs into Web Audio for the lyric video.
 
 Installing `@dust-ui/*` from GitHub Packages needs the repo secret `DUST_UI_READ_TOKEN`, a classic personal access token with `read:packages`. The packages are owned by the `dust-ui` organization and this repository is not, so the workflow's own token cannot be granted access to them. Create the token at github.com/settings/tokens, then `gh secret set DUST_UI_READ_TOKEN --repo dgfisher2021/fire-and-water`.
 
@@ -302,5 +309,6 @@ Installing `@dust-ui/*` from GitHub Packages needs the repo secret `DUST_UI_READ
 3. **Switch the deploy on.** `gh variable set DEPLOY_ENABLED --body true --repo dgfisher2021/fire-and-water`, then merge to `main` or run `gh workflow run ci.yml --ref main --repo dgfisher2021/fire-and-water`. The run's summary shows the upload size.
 4. **Custom domain.** In the `web` service, Settings → Networking → Custom Domain, add `music.dgfisher.com` with target port 8080 (Caddy listens on Railway's `PORT`, 8080 when it is unset). Railway shows a `CNAME` target (`….up.railway.app`) and a `TXT` verification record; both are required.
 5. **Cloudflare DNS** (zone `dgfisher.com`). Add the `CNAME` `music` → the Railway target, **Proxied**, and the `TXT` record exactly as Railway shows it. SSL/TLS mode must be **Full**: Railway's docs say Full (strict) does not work behind the proxy, because Railway may answer with its `*.up.railway.app` certificate. The mode covers the whole zone, `ui.dgfisher.com` included, so check it rather than flip it. Railway's "Cloudflare proxy detected" note and a pending certificate are expected.
-6. **Check** https://music.dgfisher.com/, a deep link such as `/lyrics/fire`, and seeking inside a song.
-7. **Retire GitHub Pages.** `gh api -X DELETE repos/dgfisher2021/fire-and-water/pages`, then delete the `github-pages` environment under Settings → Environments. The old address stops working; nothing redirects from it.
+6. **Media domain.** The bucket `fire-and-water-media` exists with its CORS rule and the songs uploaded. Connect its domain (this creates the DNS record): `npx wrangler r2 bucket domain add fire-and-water-media --domain media.dgfisher.com --zone-id d46bd17d41263e7fb16c3bdc1b76ac83 --min-tls 1.2`. Then `gh variable set MEDIA_BASE --body https://media.dgfisher.com/ --repo dgfisher2021/fire-and-water`.
+7. **Check** https://music.dgfisher.com/, a deep link such as `/lyrics/fire`, seeking inside a song, a Download, and that the songs load from media.dgfisher.com.
+8. **Retire GitHub Pages.** `gh api -X DELETE repos/dgfisher2021/fire-and-water/pages`, then delete the `github-pages` environment under Settings → Environments. The old address stops working; nothing redirects from it.
