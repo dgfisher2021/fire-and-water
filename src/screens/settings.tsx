@@ -15,6 +15,7 @@ import {
   usePrefs,
   type BackgroundStyle,
   type FoldedPlayer,
+  type PlayFanStyle,
   type VideoLength,
 } from '@/store/prefs'
 import { AppearanceButton } from '@/components/appearance-button'
@@ -72,6 +73,8 @@ export function SettingsScreen() {
   const setMusicReactive = usePrefs((s) => s.setMusicReactive)
   const foldedPlayer = usePrefs((s) => s.foldedPlayer)
   const setFoldedPlayer = usePrefs((s) => s.setFoldedPlayer)
+  const playFan = usePrefs((s) => s.playFan)
+  const setPlayFan = usePrefs((s) => s.setPlayFan)
   const videoAspect = usePrefs((s) => s.videoAspect)
   const setVideoAspect = usePrefs((s) => s.setVideoAspect)
   const videoLength = usePrefs((s) => s.videoLength)
@@ -175,6 +178,29 @@ export function SettingsScreen() {
                   onChange={(v) => setFoldedPlayer(v as FoldedPlayer)}
                   // Tall enough for the shell's 44px touch targets, so the
                   // labels centre in the thumb.
+                  height={44}
+                />
+              </div>
+            }
+          />
+        </MobileListGroup>
+        <MobileListGroup
+          glass
+          label='Play button'
+          footer='Hold the play button, or swipe up from it, for shuffle, back, next and repeat. Slide onto one and let go.'
+        >
+          <MobileListRow
+            label='Fan'
+            trailing={
+              <div className='w-[204px]'>
+                <SegmentedControl
+                  options={[
+                    { value: 'orbit', label: 'Orbit' },
+                    { value: 'dial', label: 'Dial' },
+                    { value: 'deck', label: 'Deck' },
+                  ]}
+                  value={playFan}
+                  onChange={(v) => setPlayFan(v as PlayFanStyle)}
                   height={44}
                 />
               </div>

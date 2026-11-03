@@ -2,8 +2,6 @@ import {
   ChevronDown,
   ChevronUp,
   Play,
-  Repeat1,
-  Shuffle,
   SkipBack,
   SkipForward,
   type LucideIcon,
@@ -19,31 +17,13 @@ import envelopes from '@/data/audio-envelopes.json'
 import { hookFor } from '@/data/hooks'
 import { sunoStyle } from '@/data/suno-style'
 import { TRACKS, type Track, type TrackId } from '@/data/tracks'
+import { PLAY_MODE_TOGGLES, togglePlayMode } from '@/lib/play-mode'
 import { toaster } from '@/lib/toaster'
 import { cn } from '@/lib/utils'
-import { usePlayer, type PlayMode } from '@/store/player'
+import { usePlayer } from '@/store/player'
 
 /** The Now Playing glass: a light wash over a soft blur, so the artwork stays legible behind it. */
 const GLASS = 'border border-border bg-card/60 backdrop-blur-[6px]'
-
-/** The two play-mode toggles flanking the transport; off is album order. */
-const TOGGLES: Record<
-  Exclude<PlayMode, 'album'>,
-  { icon: LucideIcon; label: string; on: string; off: string }
-> = {
-  shuffle: {
-    icon: Shuffle,
-    label: 'Shuffle',
-    on: 'Shuffle on',
-    off: 'Shuffle off',
-  },
-  repeat: {
-    icon: Repeat1,
-    label: 'Repeat this song',
-    on: 'Repeating this song',
-    off: 'Repeat off',
-  },
-}
 
 const binsFor = (t: Track) => envelopes[t.audioFile as keyof typeof envelopes]
 
@@ -120,18 +100,19 @@ export type NowPlayingCardProps = NowPlayingProps & {
 }
 
 /** Shuffle or repeat: on switches to that mode, off back to album order. */
-function ModeToggle({ mode }: { mode: keyof typeof TOGGLES }) {
-  const on = usePlayer((s) => s.playMode === mode)
+function ModeToggle({ mode }: { mode: keyof typeof PLAY_MODE_TOGGLES }) {
+  const playMode = usePlayer((s) => s.playMode)
   const setPlayMode = usePlayer((s) => s.setPlayMode)
-  const toggle = TOGGLES[mode]
+  const toggle = PLAY_MODE_TOGGLES[mode]
   return (
     <Control
       label={toggle.label}
       icon={toggle.icon}
-      on={on}
+      on={playMode === mode}
       onClick={() => {
-        setPlayMode(on ? 'album' : mode)
-        toaster.push(on ? toggle.off : toggle.on)
+        const r = togglePlayMode(playMode, mode)
+        setPlayMode(r.mode)
+        toaster.push(r.message)
       }}
     />
   )

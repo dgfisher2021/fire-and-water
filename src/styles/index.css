@@ -904,3 +904,26 @@
 [data-slot='nav-bottom'] {
   z-index: 60 !important;
 }
+
+/* The play fan: the lifted button holds and swipes without the browser's
+ * own long-press, and the tabs step back while the fan is open. */
+[data-slot='nav-bottom-center'] {
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition: box-shadow 0.3s ease;
+}
+/* While the fan is open the button wears a soft ring (the kit's shadow is inline). */
+html[data-fan-open] [data-slot='nav-bottom-center'] {
+  box-shadow:
+    var(--nav-center-shadow),
+    0 0 0 7px color-mix(in oklab, var(--foreground) 8%, transparent) !important;
+}
+[data-slot='nav-bottom'] > :not(div) {
+  transition:
+    color 0.2s ease,
+    opacity 0.3s ease !important;
+}
+html[data-fan-open] [data-slot='nav-bottom'] > :not(div) {
+  opacity: 0.35;
+}

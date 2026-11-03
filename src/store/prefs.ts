@@ -11,7 +11,15 @@ export type BackgroundStyle = 'artwork' | 'flow' | 'aurora' | 'nebula' | 'stars'
 /** How long a lyric video runs: 30 or 60 seconds, or the whole song. */
 export type VideoLength = '30' | '60' | 'full'
 
+/** The look of the fan the play button opens. */
+export type PlayFanStyle = 'orbit' | 'dial' | 'deck'
+
 type Prefs = {
+  playFan: PlayFanStyle
+  setPlayFan: (style: PlayFanStyle) => void
+  /** The fan has been opened once, so its hint above the button is done. */
+  fanHintSeen: boolean
+  setFanHintSeen: () => void
   foldedPlayer: FoldedPlayer
   videoAspect: VideoAspect
   videoLength: VideoLength
@@ -29,6 +37,10 @@ type Prefs = {
 export const usePrefs = create<Prefs>()(
   persist(
     (set) => ({
+      playFan: 'dial',
+      setPlayFan: (playFan) => set({ playFan }),
+      fanHintSeen: false,
+      setFanHintSeen: () => set({ fanHintSeen: true }),
       foldedPlayer: 'bar',
       videoAspect: '9:16',
       videoLength: '30',
@@ -44,12 +56,16 @@ export const usePrefs = create<Prefs>()(
       name: 'fw-prefs',
       storage: createJSONStorage(() => localStorage),
       partialize: ({
+        playFan,
+        fanHintSeen,
         foldedPlayer,
         background,
         musicReactive,
         videoAspect,
         videoLength,
       }) => ({
+        playFan,
+        fanHintSeen,
         foldedPlayer,
         background,
         musicReactive,

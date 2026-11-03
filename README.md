@@ -182,6 +182,25 @@ Each song has its own accent color that tints the whole app while it is showing.
 - Sing-along: while a song plays, the sung line lights up in the song's glow, earlier lines settle back, and the pane keeps the sung line centred (a long verse would otherwise run past the pane's edges); scroll away and a "Back to the song" pill on the edge the song went past, its arrow pointing that way, brings you back. Where the aligner heard the line, its words light one by one: the sung line carries a wash of the song's colour, the sung word turns that colour with a small pop, sung words settle, upcoming ones wait at half strength. Tap any line to jump the song to it. Songs without timings read by scroll instead.
 - Lyrics to go: Now Playing's action sheet copies the words as plain text (title, then the stanzas) and downloads a timed `.lrc` (word tags included) for any song with timings, so the words play along in other players.
 - Ambient backdrop: full-bleed artwork, cover-fit and still, that crossfades behind everything, under a faint film grain
+- Play fan: a tap on the bottom bar's play button still plays and pauses.
+  - **Hold it, or swipe up from it:** a fan of shuffle, back, next and
+    repeat springs out over its top. Slide onto one and let go to use it,
+    or let go on nothing and the fan stays open for taps. Tap outside,
+    press Escape, or change screens to fold it.
+  - **Three looks, chosen in Settings, Play button:**
+    - **Dial** (the default): a glass half-ring with the song's progress
+      along its rim, which scrubs.
+    - **Orbit:** glass orbs on an arc under a title and time pill.
+    - **Deck:** five glass cards fanned like a hand, the cover in the
+      middle, which opens Now Playing.
+  - **Keyboard:** ArrowUp on the button opens it and the arrows walk the
+    controls. A right-click opens it too.
+  - **Hint:** three dots above the button until you first open the fan.
+  - **Code:** `components/play-fan/`. The gesture is a pure state machine
+    (`gesture.ts`) with the geometry beside it, both tested. It listens
+    for the kit's `nav-bottom-center` button and does not fork the nav.
+    The gesture and geometry are kit-ready; the three looks still place
+    controls by id and need a pass before they move into Dust UI.
 - Album play-through by default; the card's last control switches to repeat this song or shuffle. Lock-screen and hardware media controls (Media Session API)
 - Keyboard: arrows switch songs, Space plays/pauses
 - Shareable deep links — `/lyrics/dust` opens straight to a song (old `#water` links still work); native share sheet on phones, copy-link elsewhere

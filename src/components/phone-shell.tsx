@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useMatch, useRouterState } from '@tanstack/react-router'
+import { useRouterState } from '@tanstack/react-router'
 import {
   Disc3,
   Ellipsis,
@@ -22,8 +22,10 @@ import {
   MINI_PLAYER_H,
   useMiniPlayerVisible,
 } from '@/hooks/use-mini-player'
+import { useNavTarget } from '@/hooks/use-nav-target'
 import { usePulseVars } from '@/hooks/use-pulse'
 import { MiniPlayer } from '@/components/mini-player'
+import { PlayFan } from '@/components/play-fan'
 import { RouterLink } from '@/components/router-link'
 import { SongBackdrop } from '@/components/song-backdrop'
 
@@ -54,20 +56,9 @@ function PulseGlow() {
 function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const focus = usePlayer(selectFocusTrack)
-  const loaded = usePlayer((s) => s.track)
-  const status = usePlayer((s) => s.status)
   const toggle = usePlayer((s) => s.toggle)
-  // On Now Playing the button belongs to the song on screen: it pauses that
-  // song while it plays, else plays it (switching from any other). Elsewhere
-  // it drives whatever is loaded, else the song on the stage.
-  const openTrack = useMatch({
-    from: '/lyrics/$track',
-    shouldThrow: false,
-    select: (m) => m.params.track,
-  })
-  const target = openTrack ?? loaded ?? focus
-  const playing =
-    loaded === target && (status === 'playing' || status === 'loading')
+  // Pauses the target while it plays, else plays it (switching from any other).
+  const { target, playing } = useNavTarget()
 
   // The tap-to-time tool lives with the lyrics; Settings and the profile with More.
   const active =
@@ -155,6 +146,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
       }
     >
       <PulseGlow />
+      <PlayFan />
       {children}
     </MobileAppShell>
   )

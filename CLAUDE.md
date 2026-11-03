@@ -17,7 +17,9 @@ pnpm format     # prettier on src/
 
 A phone app for Dustin's songs, built on the Dust UI mobile kit. Four
 tabs behind a `NavBottom` (Songs, Albums, the center play/pause action,
-which on Now Playing acts on the song on screen,
+which on Now Playing acts on the song on screen and, held or swiped up,
+opens the play fan (`components/play-fan/`: Orbit, Dial or Deck, from
+Settings),
 Lyrics, More), with a `MiniPlayer` above the bar once a song plays: Songs
 (artwork stage + a newest-first timeline of `MobileListGroup` rows, or
 album order, A to Z, by album), Albums (`MotionAccordion type='single'` of
@@ -143,6 +145,13 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   folds or unfolds by hand; `lyrics.tsx` keeps that choice per song),
   `MiniPlayer` (kept instead of
   `MediaNowPlayingBar` for the progress ring around play),
+  `PlayFan` (the kit has no fan on an arc, and `NavBottomCenter` takes only
+  `onClick`, with no hold props or aria pass-through: `use-fan-gesture.ts`
+  listens on the document for `[data-slot="nav-bottom-center"]`, eats the
+  click after a hold and sets `aria-haspopup`/`aria-expanded` on it; the
+  scrim sits at z-50 and the fan at z-65 around the nav's forced z-60; the
+  Dial's band frosts through a `mask-image` on the glass itself, since
+  `clip-path` alone frosts its whole box in Chrome),
   `TrackRow` (song data on `MediaRow`, with a play control that opens Now
   Playing), `SongPicker` (`MobileListPicker` items have no trailing glyph
   and need a `value`, and More's download and Drive pickers show a download
