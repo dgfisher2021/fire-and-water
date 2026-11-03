@@ -19,9 +19,8 @@ export type TrackRowProps = {
 
 /**
  * One song in a list: cover, title, dedication and voice, a detail, and the
- * playing bars while it plays. Without a mode the tap opens Now Playing with
- * the song's card unfolded; the control at the edge plays it there too and
- * pauses it in place.
+ * playing bars while it plays. Without a mode the tap opens Now Playing; the
+ * control at the edge plays it there too and pauses it in place.
  */
 export function TrackRow({
   id,
