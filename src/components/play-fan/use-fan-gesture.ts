@@ -147,14 +147,49 @@ export function useFanGesture(opts: FanGestureOptions) {
     }
   }, [view.open])
 
+  // Keyboard: ArrowUp on the button opens and focuses the first control;
+  // the arrows walk the controls; Escape folds and hands focus back.
+  const focusOnOpen = useRef(false)
   useEffect(() => {
-    if (!view.open) return
+    const controls = () => [
+      ...document.querySelectorAll<HTMLElement>(`[${CONTROL}]`),
+    ]
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') dispatch({ type: 'close' })
+      const at = e.target instanceof Element ? e.target : null
+      if (e.key === 'ArrowUp' && centerOf(at)) {
+        e.preventDefault()
+        focusOnOpen.current = true
+        if (state.current.open) controls()[0]?.focus()
+        else dispatch({ type: 'open' })
+        return
+      }
+      if (!state.current.open) return
+      if (e.key === 'Escape') {
+        const inside = at?.closest(`[${CONTROL}], [role="slider"]`)
+        dispatch({ type: 'close' })
+        if (inside)
+          document.querySelector<HTMLElement>(CENTER_SELECTOR)?.focus()
+        return
+      }
+      const control = at?.closest<HTMLElement>(`[${CONTROL}]`)
+      if (!control || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return
+      e.preventDefault()
+      const all = controls()
+      const step = e.key === 'ArrowRight' ? 1 : -1
+      all[(all.indexOf(control) + step + all.length) % all.length]?.focus()
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [view.open, dispatch])
+  }, [dispatch])
+
+  useEffect(() => {
+    if (!view.open || !focusOnOpen.current) return
+    focusOnOpen.current = false
+    const frame = requestAnimationFrame(() =>
+      document.querySelector<HTMLElement>(`[${CONTROL}]`)?.focus()
+    )
+    return () => cancelAnimationFrame(frame)
+  }, [view.open])
 
   const openFan = useCallback(() => {
     dispatch({ type: 'open' })

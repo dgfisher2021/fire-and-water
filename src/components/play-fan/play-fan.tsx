@@ -28,6 +28,13 @@ const LOOKS: Record<PlayFanStyle, ComponentType<FanViewProps>> = {
   deck: FanDeck,
 }
 
+/** How far each look reaches above the button's center, title included. */
+const REACH: Record<PlayFanStyle, number> = { orbit: 180, dial: 192, deck: 156 }
+
+/** Short screens scale the fan about the button so it fits above it. */
+const fitFor = (look: PlayFanStyle, c: Point) =>
+  Math.min(1, (c.y - 8) / REACH[look])
+
 function measure(root: HTMLElement): Geo | null {
   const button = document.querySelector(CENTER_SELECTOR)
   if (!button) return null
@@ -100,9 +107,10 @@ export function PlayFan() {
       look === 'dial' && root && geo
         ? (x, y) => {
             const r = root.getBoundingClientRect()
+            const k = geo.scale * fitFor(look, geo.c)
             return dialHit(geo.c, {
-              x: (x - r.left) / geo.scale,
-              y: (y - r.top) / geo.scale,
+              x: geo.c.x + (x - r.left - geo.c.x * geo.scale) / k,
+              y: geo.c.y + (y - r.top - geo.c.y * geo.scale) / k,
             })
           }
         : undefined,
@@ -186,6 +194,10 @@ export function PlayFan() {
         aria-label='Playback controls'
         aria-hidden={!fan.open}
         className='pointer-events-none absolute inset-0 z-[65]'
+        style={{
+          scale: fitFor(look, geo.c),
+          transformOrigin: `${geo.c.x}px ${geo.c.y}px`,
+        }}
       >
         <Look {...view} />
       </div>

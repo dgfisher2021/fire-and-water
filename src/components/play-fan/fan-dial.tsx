@@ -97,6 +97,12 @@ export function FanDial({
           aria-valuenow={Math.round(now.elapsed)}
           aria-valuetext={formatTime(now.elapsed)}
           tabIndex={open ? 0 : -1}
+          onKeyDown={(e) => {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+            e.preventDefault()
+            const to = now.elapsed + (e.key === 'ArrowRight' ? 5 : -5)
+            onSeek(Math.min(1, Math.max(0, to / now.duration)))
+          }}
           className={cn(
             'absolute inset-0 touch-none bg-card/85 backdrop-blur-md',
             shown ? 'visible' : 'invisible',
@@ -162,7 +168,7 @@ export function FanDial({
             cy={thumb.y}
             r={scrubbing || dragging ? 8 : 5.5}
             className={cn(
-              'fill-foreground drop-shadow-[0_0_6px_var(--media-glow)] transition-opacity',
+              'fill-foreground drop-shadow-[0_0_6px_var(--media-glow)] transition-opacity motion-reduce:transition-none',
               settled ? 'opacity-100' : 'opacity-0'
             )}
           />
@@ -171,7 +177,7 @@ export function FanDial({
 
       <p
         className={cn(
-          'absolute inset-x-0 truncate px-6 text-center font-display text-[19px] font-semibold text-foreground transition-opacity [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)]',
+          'absolute inset-x-0 truncate px-6 text-center font-display text-[19px] font-semibold text-foreground transition-opacity [text-shadow:0_1px_2px_var(--background),0_2px_14px_var(--background)] motion-reduce:transition-none',
           settled ? 'opacity-100 delay-150' : 'opacity-0'
         )}
         style={{ top: c.y - DIAL.outer - 34 }}
@@ -180,7 +186,7 @@ export function FanDial({
       </p>
       <p
         className={cn(
-          'absolute w-20 -translate-x-1/2 -translate-y-1/2 text-center tabular-nums transition-opacity',
+          'absolute w-20 -translate-x-1/2 -translate-y-1/2 text-center tabular-nums transition-opacity motion-reduce:transition-none',
           settled ? 'opacity-100 delay-150' : 'opacity-0'
         )}
         style={{ left: apex.x, top: apex.y }}
