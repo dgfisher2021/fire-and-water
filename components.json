@@ -19,8 +19,18 @@
     "hooks": "@/hooks"
   },
   "registries": {
-    "@dust-ui": "https://dgfisher2021.github.io/dust-ui/r/{name}.json",
-    "@dust-ui-source": "https://dgfisher2021.github.io/dust-ui/r/source/{name}.json",
+    "@dust-ui": {
+      "url": "https://raw.githubusercontent.com/dgfisher2021/dust-ui/registry/r/{name}.json",
+      "headers": {
+        "Authorization": "token ${DUST_UI_REGISTRY_TOKEN}"
+      }
+    },
+    "@dust-ui-source": {
+      "url": "https://raw.githubusercontent.com/dgfisher2021/dust-ui/registry/r/source/{name}.json",
+      "headers": {
+        "Authorization": "token ${DUST_UI_REGISTRY_TOKEN}"
+      }
+    },
     "@kibo-ui": "https://www.kibo-ui.com/r/{name}.json",
     "@magicui": "https://magicui.design/r/{name}.json",
     "@originui": "https://originui.com/r/{name}.json",
