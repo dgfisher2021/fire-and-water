@@ -4,7 +4,9 @@ Suno ships `<slug>.mp3` (or .m4a) next to `<slug> (lyrics).txt`. Each sheet
 is matched to a song by its audio file name in tracks.ts (accents, a
 " [uuid]" tail and suffixes such as "-version" or "-extended-hope" are
 tolerated), split into stanzas at blank lines, and written as the plain
-stanza form the app loads. Empty sheets (a few bytes) are reported, not
+stanza form the app loads. A song's regex pairs in corrections.json apply
+to each line (a voice cue written in parentheses made a [label], say), so a
+re-import keeps the fix. Empty sheets (a few bytes) are reported, not
 written. An existing sheet that differs is left alone unless --force is
 given, so a transcribed or hand-edited sheet survives; --only limits the
 run to the songs named, so one zip can fix a few sheets without touching
@@ -25,9 +27,10 @@ import zipfile
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "scripts/timing"))
-from songs import LYRICS_DIR, load_songs  # noqa: E402
+from songs import LYRICS_DIR, is_label, load_songs  # noqa: E402
 
 DEFAULTS = [ROOT / "downloads", pathlib.Path("/mnt/c/Users/dustinf/Downloads/suno songs")]
+CORRECTIONS = HERE / "corrections.json"  # { "<id>": [[pattern, replacement], ...] }
 
 
 def slug(text):
@@ -53,6 +56,8 @@ def match_song(sheet_slug, songs):
 
 
 SEPARATOR = re.compile(r"^[\s·•*\-_=~]+$")
+# A section label that opens a stanza even with no blank line before it.
+SECTION = re.compile(r"^\[(intro|verse|pre-chorus|chorus|post-chorus|bridge|hook|refrain|final|breakdown|quiet breakdown|outro)\b", re.I)
 
 
 def typeset(line):
@@ -71,22 +76,36 @@ def typeset(line):
     return line
 
 
-def parse_sheet(text):
-    """Stanzas at blank lines; separator lines dropped; a paragraph that is
-    only labels joins the stanza after it, or is dropped when nothing is sung
-    after it (an outro cue)."""
+def correct(line, rules):
+    """The song's regex pairs from corrections.json, case-insensitive."""
+    for pattern, replacement in rules:
+        line = re.sub(pattern, replacement, line, flags=re.IGNORECASE)
+    return line
+
+
+def parse_sheet(text, rules=()):
+    """Stanzas at blank lines, and at a section label that follows a sung
+    line (sheets written without blank lines); separator lines dropped; a
+    paragraph that is only labels joins the stanza after it, or is dropped
+    when nothing is sung after it (an outro cue)."""
     text = text.replace("\r\n", "\n").lstrip("\ufeff").strip()
     if len(text) < 20:
         return None
     stanzas, pending = [], []
     for block in re.split(r"\n\s*\n", text):
-        lines = [typeset(ln.strip()) for ln in block.split("\n") if ln.strip() and not SEPARATOR.match(ln)]
+        lines = [correct(typeset(ln.strip()), rules) for ln in block.split("\n") if ln.strip() and not SEPARATOR.match(ln)]
         if not lines:
             continue
-        if all(ln.startswith("[") and ln.endswith("]") for ln in lines):
+        if all(is_label(ln) for ln in lines):
             pending += lines
             continue
-        stanzas.append(pending + lines)
+        part = []
+        for ln in lines:
+            if SECTION.match(ln) and any(not is_label(p) for p in part):
+                stanzas.append(pending + part)
+                pending, part = [], []
+            part.append(ln)
+        stanzas.append(pending + part)
         pending = []
     return stanzas
 
@@ -100,6 +119,7 @@ def main():
     for t in targets:
         zips += sorted(t.glob("*.zip")) if t.is_dir() else [t]
     songs = load_songs()
+    corrections = json.loads(CORRECTIONS.read_text(encoding="utf-8")) if CORRECTIONS.exists() else {}
     for z in zips:
         print(f"== {z.name}")
         with zipfile.ZipFile(z) as zf:
@@ -114,7 +134,7 @@ def main():
                 if not song_id:
                     print(f"   ? {name}: no song with a matching audio file")
                     continue
-                stanzas = parse_sheet(zf.read(name).decode("utf-8", "replace"))
+                stanzas = parse_sheet(zf.read(name).decode("utf-8", "replace"), corrections.get(song_id, []))
                 if stanzas is None:
                     print(f"   - {song_id}: empty sheet in the zip")
                     continue

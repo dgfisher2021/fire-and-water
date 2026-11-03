@@ -473,6 +473,26 @@
   --stardust-deep: oklch(0.37 0.07 265);
   --stardust-glow: oklch(0.66 0.06 265 / 42%);
   --stardust-ink: oklch(0.22 0.04 265);
+  --lookagain: oklch(0.78 0.16 264); /* the map lit up between two minds */
+  --lookagain-deep: oklch(0.37 0.18 264);
+  --lookagain-glow: oklch(0.66 0.16 264 / 42%);
+  --lookagain-ink: oklch(0.22 0.04 264);
+  --lift: oklch(0.78 0.06 230); /* teal ink behind the gold wings */
+  --lift-deep: oklch(0.37 0.07 230);
+  --lift-glow: oklch(0.66 0.06 230 / 42%);
+  --lift-ink: oklch(0.22 0.04 230);
+  --crash: oklch(0.78 0.07 59); /* black and tan, warm on the porch step */
+  --crash-deep: oklch(0.37 0.08 59);
+  --crash-glow: oklch(0.66 0.07 59 / 42%);
+  --crash-ink: oklch(0.22 0.04 59);
+  --signal: oklch(0.78 0.15 43); /* the ember lit behind her eye */
+  --signal-deep: oklch(0.37 0.17 43);
+  --signal-glow: oklch(0.66 0.15 43 / 42%);
+  --signal-ink: oklch(0.22 0.04 43);
+  --storyofme: oklch(0.78 0.1 245); /* the waves he sits in, fire at his side */
+  --storyofme-deep: oklch(0.37 0.11 245);
+  --storyofme-glow: oklch(0.66 0.1 245 / 42%);
+  --storyofme-ink: oklch(0.22 0.04 245);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */

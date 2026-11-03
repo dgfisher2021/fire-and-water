@@ -14,7 +14,7 @@ export const COLLECTIONS = [
     illustration: 'burn-sheet',
     label: 'Brother and sister',
     blurb:
-      'The story at the heart of the album: a boy who trusted pencil, a sister who wrote in ink, and the elements they taught each other.',
+      'The story at the heart of the album: a boy who trusted pencil, a sister who wrote in ink, the elements they taught each other, and the story he was scared to tell.',
     // The baritone Pencil and Pen opens the group and the three originals
     // close it; what grew out of them sits between.
     opening: ['baritone'],
@@ -25,7 +25,7 @@ export const COLLECTIONS = [
     illustration: 'calendar-birthday',
     label: 'You made me more',
     blurb:
-      'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, and a pup still waiting on its name.',
+      'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, a pup still waiting on its name, and the old dog who stayed twelve years.',
   },
   {
     key: 'plain',
@@ -76,7 +76,7 @@ export const COLLECTIONS = [
     illustration: 'cog',
     label: 'Carbon and silicon',
     blurb:
-      'The machine he taught to sing back: hymns from the training run, a cypher from both sides of the chat, and the nights spent coding.',
+      'The machine he taught to sing back: hymns from the training run, a cypher from both sides of the chat, a duet on working side by side, and the nights spent coding.',
   },
 ] as const satisfies readonly {
   key: string
@@ -193,4 +193,9 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   sayno: 'plain',
   telemetry: 'enough',
   stardust: 'ashes',
+  lookagain: 'silicon',
+  lift: 'ashes',
+  crash: 'kin',
+  signal: 'enough',
+  storyofme: 'siblings',
 }

@@ -2739,11 +2739,11 @@
       "title": "Emotional Telemetry",
       "date": "2026-10-20",
       "weekday": "Tuesday",
-      "version": null,
-      "type": null,
-      "duration": "5:42",
-      "durationSeconds": 342,
-      "style": null,
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:53",
+      "durationSeconds": 353,
+      "style": "cinematic emotional ultra hypnotic trance minimal neoclassical",
       "styleTruncated": false,
       "tag": null,
       "status": "Published",
@@ -2755,7 +2755,8 @@
       "files": {
         "app": "public/emotional-telemetry.mp3",
         "downloads": [
-          "new song-as-of-2026-10-21.zip/Emotional Telemetry - usesuno.com.m4a"
+          "new song-as-of-2026-10-21.zip/Emotional Telemetry - usesuno.com.m4a",
+          "missing songs-as-of-2026-11-02.zip/Emotional Telemetry - usesuno.com.m4a"
         ]
       }
     },
@@ -2781,6 +2782,131 @@
         "app": "public/ashes-to-stardust.mp3",
         "downloads": [
           "new song-as-of-2026-10-21.zip/Ashes to Stardust - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 113,
+      "title": "Look Again, Look Again",
+      "date": "2026-10-23",
+      "weekday": "Friday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:03",
+      "durationSeconds": 303,
+      "style": "Dark psychedelic minimal gospel fused with hypnotic EDM, driven by a steady four-on-the-floor pulse, deep rounded kick, industrial sub-bass, shadowy synth pads, and fine-grained ticking percussion. Human lead stays warm, urgent, and context-rich; processed male vocoder replies as a fast parallel agent that can overreach into shallow conclusions without clear goals, boundaries, and plans. Call-and-response duet remains intimate in the verses, broadens with subtle choir-like swells and piano anchors in the chorus, and strips back in the bridge before a layered final lift. Polished warm mix, restrained dynamics, precise repetition, and spacious stereo depth emphasizing trust, correction, and collaborative problem-solving., rich",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "lookagain",
+      "addedToApp": true,
+      "description": "A duet for working with an agent: the human carries the map, the stakes and the why, while the vocoder moves fast in parallel and settles too soon without clear goals and boundaries. Dark minimal gospel over a hypnotic four-on-the-floor: look again, past the first thing that looks true. Truth is layered, and trust is too.",
+      "files": {
+        "app": "public/look-again-look-again.mp3",
+        "downloads": [
+          "missing songs-as-of-2026-11-02.zip/Look Again, Look Again - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 114,
+      "title": "Lift Me Higher",
+      "date": "2026-10-23",
+      "weekday": "Friday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:08",
+      "durationSeconds": 308,
+      "style": "Minimal melodic EDM with a restrained, driving beat and far less rap emphasis. Preserve the hypnotic 122 BPM pulse, but shift the arrangement toward airy toplines, sustained diva-like vocal hooks, and spacious call-and-response phrasing. Keep the neoclassical string figures, cathedral reverb, deep analog kick, warm sub, tape echo, and long dub delays, but make the verses more melodic and intimate with fewer spoken sections and a cleaner, more minimal drop., rap, minimal",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "lift",
+      "addedToApp": true,
+      "description": "Midnight in marble light: a clockwork heart beneath the stone, the moon writing sigils in the rain, violins bowing over a frozen sea. Neoclassical strings and cathedral reverb over a minimal hypnotic pulse; lift me higher, through the fire, through the choir, through the wire. We are brief, but we are bright.",
+      "files": {
+        "app": "public/lift-me-higher.mp3",
+        "downloads": [
+          "missing songs-as-of-2026-11-02.zip/Lift Me Higher - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 115,
+      "title": "Crashed Into My Life 🐾",
+      "date": "2026-10-26",
+      "weekday": "Monday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "4:50",
+      "durationSeconds": 290,
+      "style": "Hypnotic minimal EDM, steady four-on-the-floor pulse with a restrained deep kick and rounded sub-bass, sparse repeating pluck motif, fine-grained ticking percussion, gentle bowed-string tones and warm piano notes retained as the emotional core. Keep the original melody and section structure closely. Verses intimate and spacious over a reduced groove; choruses widen subtly with slow string swells and small harmonic lifts, never a large drop; bridge strips back to pulse and a few piano tones, then gradually rebuilds; outro resolves softly with the groove thinning away. Intimate expressive lead vocal, polished warm mix, restrained dynamics, precise repetition and spacious stereo depth.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "crash",
+      "addedToApp": true,
+      "description": "Twelve years of a black-and-tan whirlwind with huge ears and a wild grin: there for every version of him, across state lines to the house by the lake, keeping watch on the porch step. The runs are shorter now and the mornings ache, but he still lifts his head at the door. While you’re here, I’ll be here too.",
+      "files": {
+        "app": "public/crashed-into-my-life.mp3",
+        "downloads": [
+          "missing songs-as-of-2026-11-02.zip/Crashed Into My Life 🐾 - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 116,
+      "title": "Signal to Sovereignty",
+      "date": "2026-10-31",
+      "weekday": "Saturday",
+      "version": "v6",
+      "type": null,
+      "duration": "5:15",
+      "durationSeconds": 315,
+      "style": "Cinematic dark villain ballad, polished spacious mix with deep, firm low end and subtle ritualistic glitch; female lead in the user's own recorded voice, close and controlled at first, intimate and dangerous in the piano-led bridge, rising to layered chant vocals; minor-key felt piano, restrained low strings tightening through the verses, sparse electronic throb and weighty percussion; slow 6/8 pulse, broad final chorus escalating from contained anger to open defiance.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "signal",
+      "addedToApp": true,
+      "description": "A dark villain ballad for the end of a reign: you drew the line and called it law and kept me small, and now the words I swallowed come back with fire in my throat. No borrowed crown, no lowered gaze. A second voice answers with Emotional Telemetry, its chorus and its outro, over felt piano and a slow 6/8 pulse.",
+      "files": {
+        "app": "public/signal-to-sovereignty.mp3",
+        "downloads": [
+          "missing songs-as-of-2026-11-02.zip/Signal to Sovereignty - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 117,
+      "title": "The Story of Me",
+      "date": "2026-11-02",
+      "weekday": "Monday",
+      "version": "v6",
+      "type": "Full Song",
+      "duration": "7:23",
+      "durationSeconds": 443,
+      "style": "minimalist, operatic, dubstep",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "storyofme",
+      "addedToApp": true,
+      "description": "The story he was scared to tell: the smile worn while everything fell, the things left unsaid for years, and pages some will be angry to read, with no history rewritten to keep anyone comfortable. His sister and his chosen family made room for him to breathe, God carried him through, and the strength was his all along. I became who I am because I kept going.",
+      "files": {
+        "app": "public/the-story-of-me.mp3",
+        "downloads": [
+          "missing songs-as-of-2026-11-02.zip/The Story of Me - usesuno.com.m4a"
         ]
       }
     }
