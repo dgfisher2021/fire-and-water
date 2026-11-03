@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useParams } from '@tanstack/react-router'
 import { Copy, Download, RotateCcw, Undo2 } from 'lucide-react'
-import { createPortal } from 'react-dom'
 import {
   MobileAppScreen,
   useMobileShellFramed,
@@ -260,18 +259,16 @@ export function TimeScreen() {
           <Download aria-hidden />
         </Button>
       </div>
-      {confirmReset &&
-        shellRoot &&
-        createPortal(
-          <MobileConfirmDialog
-            title='Clear all marks?'
-            message={`The ${marks.size} ${marks.size === 1 ? 'line' : 'lines'} you have timed on this song will be forgotten.`}
-            confirmLabel='Clear'
-            onConfirm={reset}
-            onCancel={() => setConfirmReset(false)}
-          />,
-          shellRoot
-        )}
+      {confirmReset && (
+        <MobileConfirmDialog
+          title='Clear all marks?'
+          message={`The ${marks.size} ${marks.size === 1 ? 'line' : 'lines'} you have timed on this song will be forgotten.`}
+          confirmLabel='Clear'
+          onConfirm={reset}
+          onCancel={() => setConfirmReset(false)}
+          container={shellRoot}
+        />
+      )}
     </MobileAppScreen>
   )
 }

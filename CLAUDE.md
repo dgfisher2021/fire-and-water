@@ -25,8 +25,10 @@ through a `SheetBottom`, pair in the URL search) and More (`MobileListGroup`
 rows for appearance, downloads, Drive links, sharing, and the About note
 from `ALBUM.about` with the Suno link). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
-`@dust-ui/ui` 0.18, `@dust-ui/blocks` 0.13, `@dust-ui/motion` 0.8 and
-`@dust-ui/tokens` 0.5 from GitHub Packages. Each package's compiled
+`@dust-ui/ui` 0.31, `@dust-ui/blocks` 0.21, `@dust-ui/motion` 0.13,
+`@dust-ui/tokens` 0.11 and `@dust-ui/3d` 0.8 from GitHub Packages (blocks
+and 3d pin an exact ui, blocks an exact motion: bump them together or two
+copies install). Each package's compiled
 `dist` is an `@source` in `index.css`; a package missing there renders its
 classes unstyled (the shell's backdrop went to zero height without blocks).
 
@@ -114,7 +116,9 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
 - `src/components/` app compositions on the published packages: no forks.
   The kit supplies the shell, `MediaRow`, `MediaPlayer` (the `/time` bar),
   `MediaPlayButton`, `MediaScrubber`, `MediaWaveform`, `MotionMarquee
-overflowOnly`, `MotionTextMorph maxChars`, `SheetAction` `checked`,
+overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
+  morphs, only fades: its wrap check measures the new `sr-only` copy; an
+  upstream fix), `SheetAction` `checked`,
   `useHotkeys`, `useMediaSession`, `filterByText`, `shareLink`,
   `downloadUrl`/`downloadText` and `formatTime`. What is still app-level and
   why: `LyricsReader` and `LyricsSplit` (the kit's `MediaLyricsReader` and
