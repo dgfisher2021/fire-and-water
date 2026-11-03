@@ -13,6 +13,7 @@ import { usePrefs } from '@/store/prefs'
 import { useMiniPlayerVisible } from '@/hooks/use-mini-player'
 import { useNavTarget } from '@/hooks/use-nav-target'
 import { FanDial } from './fan-dial'
+import { FanOrbit } from './fan-orbit'
 import { dialHit, type Point } from './geometry'
 import type { FanAction, FanActionId, FanViewProps } from './types'
 import { CENTER_SELECTOR, useFanGesture } from './use-fan-gesture'
@@ -42,6 +43,7 @@ function measure(root: HTMLElement): Geo | null {
  */
 export function PlayFan() {
   const root = useMobileShellRoot()
+  const look = usePrefs((s) => s.playFan)
   const hintSeen = usePrefs((s) => s.fanHintSeen)
   const miniVisible = useMiniPlayerVisible()
   const { target } = useNavTarget()
@@ -88,7 +90,7 @@ export function PlayFan() {
 
   const fan = useFanGesture({
     rimHit:
-      root && geo
+      look === 'dial' && root && geo
         ? (x, y) => {
             const r = root.getBoundingClientRect()
             return dialHit(geo.c, {
@@ -177,7 +179,7 @@ export function PlayFan() {
         aria-hidden={!fan.open}
         className='pointer-events-none absolute inset-0 z-[65]'
       >
-        <FanDial {...view} />
+        {look === 'orbit' ? <FanOrbit {...view} /> : <FanDial {...view} />}
       </div>
       {hint && (
         <svg
