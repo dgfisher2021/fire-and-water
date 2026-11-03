@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { KpiProgressBar } from '@dust-ui/charts'
 import {
   Timeline,
@@ -22,7 +23,10 @@ const monthLabel = (month: string) =>
     year: 'numeric',
   })
 
-/** The leading style per month on the kit's timeline rail, each month's count in its dot. */
+/**
+ * The leading style per month on the kit's timeline rail, each month's
+ * count in a glowing bead of its style.
+ */
 export function StyleEvolution() {
   return (
     <InsightPanel
@@ -33,11 +37,17 @@ export function StyleEvolution() {
     >
       <Timeline>
         {MONTHS.map(({ month, style, songs }) => (
-          <TimelineItem key={month} className='pb-3.5'>
-            <TimelineDot
-              style={{ background: styleVar(style) }}
-              className='border-0 text-[12px] font-semibold text-background tabular-nums'
-            >
+          <TimelineItem
+            key={month}
+            style={
+              {
+                '--orb': styleVar(style),
+                '--meter': styleVar(style),
+              } as CSSProperties
+            }
+            className='pb-3.5 meter-glow'
+          >
+            <TimelineDot className='border-0 bg-transparent text-[12px] font-semibold text-background tabular-nums glow-dot'>
               {songs}
             </TimelineDot>
             <TimelineConnector />
@@ -56,7 +66,7 @@ export function StyleEvolution() {
               <KpiProgressBar
                 value={songs / BUSIEST}
                 ariaLabel={`${monthLabel(month)}: ${songs} ${songs === 1 ? 'song' : 'songs'}, led by ${style}`}
-                color={styleVar(style)}
+                color='var(--meter)'
                 sizeClass='h-1.5'
               />
             </TimelineContent>

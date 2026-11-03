@@ -503,46 +503,241 @@
 }
 
 /*
- * The Suno styles on the creator profile. Each borrows the voice of a song
- * that fits it (EDM the EDM mix, Acoustic the guitar version), deep on
- * paper and bright on navy, so a style keeps its hue in both modes and
- * under every preset.
+ * The creator profile's palette: one ramp from the album's fire to its
+ * water (ember, rose, violet, ocean), the deep voices on paper and the
+ * bright ones on navy. Suno's styles sit along it by rank, Cinematic at
+ * the fire end, spaced wider at the top so the most used stay apart. The
+ * playing song never tints it.
  */
 :root {
-  --style-cinematic: var(--beautiful-deep);
-  --style-electronic: var(--augmented-deep);
-  --style-trance: var(--showup-deep);
-  --style-folk: var(--mustang-deep);
-  --style-pop: var(--hearts-deep);
-  --style-orchestral: var(--legend-deep);
-  --style-classical: var(--elements-deep);
-  --style-acoustic: var(--guitar-deep);
-  --style-rap: var(--waves-deep);
-  --style-rock: var(--toomuch-deep);
-  --style-edm: var(--edm-deep);
-  --style-ambient: var(--whales-deep);
-  --style-alternative-pop: var(--boss-deep);
-  --style-country: var(--desert-deep);
-  --style-dream-pop: var(--dream-deep);
-  --style-dubstep: var(--downbeat-deep);
+  --ramp-fire: var(--fire-deep);
+  --ramp-water: var(--water-deep);
+  --style-cinematic: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 100%,
+    var(--ramp-water)
+  );
+  --style-electronic: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 87%,
+    var(--ramp-water)
+  );
+  --style-trance: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 78%,
+    var(--ramp-water)
+  );
+  --style-folk: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 70%,
+    var(--ramp-water)
+  );
+  --style-pop: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 63%,
+    var(--ramp-water)
+  );
+  --style-orchestral: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 56%,
+    var(--ramp-water)
+  );
+  --style-classical: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 50%,
+    var(--ramp-water)
+  );
+  --style-acoustic: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 44%,
+    var(--ramp-water)
+  );
+  --style-rap: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 38%,
+    var(--ramp-water)
+  );
+  --style-rock: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 32%,
+    var(--ramp-water)
+  );
+  --style-edm: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 26%,
+    var(--ramp-water)
+  );
+  --style-ambient: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 21%,
+    var(--ramp-water)
+  );
+  --style-alternative-pop: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 15%,
+    var(--ramp-water)
+  );
+  --style-country: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 10%,
+    var(--ramp-water)
+  );
+  --style-dream-pop: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 5%,
+    var(--ramp-water)
+  );
+  --style-dubstep: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 0%,
+    var(--ramp-water)
+  );
+  /* Light on glass: the highlight mixed into a mark, the sheen on its top. */
+  --glass-light: oklch(1 0 0);
+  --glass-sheen: oklch(1 0 0 / 55%);
+  /* How far a translucent wash is lifted toward light (none on paper; on
+     navy it keeps amber from going brown), and how much colour an orb's
+     heart holds. */
+  --glass-lift: 0%;
+  --orb-heart: 42%;
 }
 .dark {
-  --style-cinematic: var(--beautiful);
-  --style-electronic: var(--augmented);
-  --style-trance: var(--showup);
-  --style-folk: var(--mustang);
-  --style-pop: var(--hearts);
-  --style-orchestral: var(--legend);
-  --style-classical: var(--elements);
-  --style-acoustic: var(--guitar);
-  --style-rap: var(--waves);
-  --style-rock: var(--toomuch);
-  --style-edm: var(--edm);
-  --style-ambient: var(--whales);
-  --style-alternative-pop: var(--boss);
-  --style-country: var(--desert);
-  --style-dream-pop: var(--dream);
-  --style-dubstep: var(--downbeat);
+  --ramp-fire: var(--fire);
+  --ramp-water: var(--water);
+  --glass-sheen: oklch(1 0 0 / 24%);
+  --glass-lift: 18%;
+  --orb-heart: 56%;
+}
+
+/*
+ * The profile screen's root: the kit's ordinal chart colours evenly along
+ * the same ramp, and the accent pinned to its fire end.
+ */
+.style-ramp {
+  --chart-1: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 100%,
+    var(--ramp-water)
+  );
+  --chart-2: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 89%,
+    var(--ramp-water)
+  );
+  --chart-3: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 78%,
+    var(--ramp-water)
+  );
+  --chart-4: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 67%,
+    var(--ramp-water)
+  );
+  --chart-5: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 56%,
+    var(--ramp-water)
+  );
+  --chart-6: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 44%,
+    var(--ramp-water)
+  );
+  --chart-7: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 33%,
+    var(--ramp-water)
+  );
+  --chart-8: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 22%,
+    var(--ramp-water)
+  );
+  --chart-9: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 11%,
+    var(--ramp-water)
+  );
+  --chart-10: color-mix(
+    in oklch decreasing hue,
+    var(--ramp-fire) 0%,
+    var(--ramp-water)
+  );
+  --primary: var(--chart-1);
+  --primary-foreground: var(--track-foreground);
+  --ring: var(--chart-1);
+}
+.dark .style-ramp {
+  --primary-foreground: var(--fire-ink);
+}
+
+/*
+ * A glass orb in --orb: a wash, lifted toward light at the heart, that fades
+ * to clear at the rim, with a soft glow and a lit top. No border.
+ */
+@utility glass-orb {
+  background:
+    radial-gradient(
+      ellipse 50% 32% at 50% 16%,
+      var(--glass-sheen),
+      transparent
+    ),
+    radial-gradient(
+      circle at 50% 45%,
+      color-mix(
+        in oklab,
+        color-mix(in oklab, var(--orb), var(--glass-light) var(--glass-lift))
+          var(--orb-heart),
+        transparent
+      ),
+      color-mix(in oklab, var(--orb) 20%, transparent) 70%,
+      color-mix(in oklab, var(--orb) 6%, transparent)
+    );
+  box-shadow:
+    0 0 26px -8px color-mix(in oklab, var(--orb) 70%, transparent),
+    inset 0 -10px 18px -12px color-mix(in oklab, var(--orb) 60%, transparent);
+}
+
+/* A small solid bead in --orb, lit from above, with a soft glow and no rim. */
+@utility glow-dot {
+  background: radial-gradient(
+    circle at 50% 28%,
+    color-mix(in oklab, var(--orb), var(--glass-light) 35%),
+    var(--orb) 72%
+  );
+  box-shadow: 0 0 12px 1px color-mix(in oklab, var(--orb) 55%, transparent);
+}
+
+/*
+ * The kit's KpiProgressBar in --meter: the fill rises from a lit tint into
+ * the colour and glows. The kit sets the fill inline, hence !important.
+ */
+@utility meter-glow {
+  & [role='progressbar'] > div {
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--meter), var(--glass-light) 40%),
+      var(--meter)
+    ) !important;
+    box-shadow: 0 0 10px -2px color-mix(in oklab, var(--meter) 65%, transparent);
+  }
+}
+
+/* The kit's Sankey ribbons draw at 40%, which turns the fire end brown on navy. */
+.dark .style-ramp .recharts-sankey-link {
+  stroke-opacity: 0.62;
+}
+
+/* The kit's KpiTracker blocks as glass chips: a sheen across each top. */
+@utility tracker-sheen {
+  & > div {
+    background-image: linear-gradient(
+      to bottom,
+      var(--glass-sheen),
+      transparent 65%
+    );
+  }
 }
 
 /*

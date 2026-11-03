@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 import { INSIGHTS, type StyleName } from '@/data/creator-insights'
 import { InsightPanel } from './insight-panel'
-import { styleVar, styleWash } from './style-var'
+import { styleVar } from './style-var'
 
 const STARS = INSIGHTS.constellation
 const MAX = Math.sqrt(STARS[0].songs)
@@ -13,9 +13,10 @@ const diameter = (songs: number) =>
   Math.round(74 + ((Math.sqrt(songs) - MIN) / (MAX - MIN)) * 42)
 
 /**
- * Every drawn style as a bubble sized by its songs, in its own colour, each
- * drifting a few pixels out of step (still under reduced motion). Hand-made:
- * the kit's ChartBubble plots x/y data, and this is a packed field.
+ * Every drawn style as a glass orb sized by its songs, in its place on the
+ * ramp, each drifting a few pixels out of step (still under reduced
+ * motion). Hand-made: the kit's ChartBubble plots x/y data, and this is a
+ * packed field.
  */
 export function StyleConstellation({
   onStyle,
@@ -46,19 +47,18 @@ export function StyleConstellation({
                   {
                     width: size,
                     height: size,
-                    '--star': styleVar(style),
-                    background: `radial-gradient(circle at 32% 28%, ${styleWash(style, 34)}, ${styleWash(style, 12)} 72%)`,
+                    '--orb': styleVar(style),
                     animationDelay: `${-(i * 0.9)}s`,
                   } as CSSProperties
                 }
-                className='flex cursor-pointer flex-col items-center justify-center rounded-full border border-(--star) px-1.5 text-center shadow-[0_0_22px_-8px_var(--star)] hover:border-2 motion-safe:animate-drift'
+                className='flex cursor-pointer flex-col items-center justify-center rounded-full px-1.5 text-center glass-orb motion-safe:animate-drift'
               >
                 <span
                   className={`leading-tight font-semibold text-balance text-foreground ${size > 84 ? 'text-[14px]' : 'text-[10.5px] tracking-tight'}`}
                 >
                   {style}
                 </span>
-                <span className='mt-0.5 text-[11px] text-muted-foreground tabular-nums'>
+                <span className='mt-0.5 text-[11px] text-foreground/75 tabular-nums'>
                   {songs}
                 </span>
               </button>
@@ -66,7 +66,7 @@ export function StyleConstellation({
           )
         })}
         <li className='mt-3'>
-          <span className='flex size-18 flex-col items-center justify-center rounded-full border border-dashed border-border text-center text-[11px] leading-tight text-muted-foreground'>
+          <span className='flex size-18 flex-col items-center justify-center rounded-full bg-muted text-center text-[11px] leading-tight text-muted-foreground'>
             <span className='text-[13px] font-semibold text-foreground'>
               +{UNDRAWN}
             </span>

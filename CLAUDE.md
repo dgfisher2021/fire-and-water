@@ -155,15 +155,17 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   card with the Suno link, then one glass panel per insight from
   `src/components/insights/` (`InsightPanel` wraps the kit's
   `SectionHeader`): `KpiCard` + `MotionNumber`, `KpiProgressBar` +
-  `SegmentedControl`, `Timeline`, `MobileWeekBars` + `KpiTracker`,
-  `ChartGauge` + `MobileProgressRing`, `ChartNetwork` (its node order seeds
-  the layout; the order there keeps labels clear). The style bubbles and the
-  duration range bars are hand-made (no packed-bubble chart in the kit; its
-  boxplot is vertical and marks a median, the export an average). Figures
-  come only from `src/data/creator-insights.ts`, transcribed from Suno's
-  export image (`asOf`, a refresh note at the top, a consistency test). A
-  tapped style opens `StyleSongsSheet`: the album songs whose Suno style
-  names it (`songsInStyle` in `data/suno-style.ts`).
+  `SegmentedControl`, `Timeline`, `ChartArea` + `KpiTracker`,
+  `ChartRadialBar` + `MobileProgressRing`, `ChartSankey` (Cinematic fanned
+  to its counted pairs), the charts on `variant='gradient'`. The style
+  orbs and the duration range bars are hand-made (no packed-bubble chart
+  in the kit; its boxplot is vertical and marks a median, the export an
+  average). The recharts-based charts make the profile chunk about 138 kB
+  gzipped; it stays lazy. Figures come only from
+  `src/data/creator-insights.ts`, transcribed from Suno's export image
+  (`asOf`, a refresh note at the top, a consistency test). A tapped style
+  opens `StyleSongsSheet`: the album songs whose Suno style names it
+  (`songsInStyle` in `data/suno-style.ts`).
 - `src/styles/index.css` the token contract, the three presets, the brand
   default (light paper / dark navy, scoped `:root:not([data-theme])`),
   the voice tokens (`--fire`, `--water`, one set per song, named by the
@@ -171,8 +173,14 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `usePageMeta` sets the open song's `--track-*` (from its voice) and the
   kit's `--media-*` accent (`mediaAccentVars`, deep and glow from the
   voice) inline on `<html>`, so there is no CSS block per song. The
-  profile's `--style-*` tokens each borrow a song's voice (deep in light,
-  bright in dark).
+  profile has its own palette, never the playing song's: one fire-to-water
+  ramp (`--ramp-fire`/`--ramp-water`, the deep voices in light and the
+  bright ones in dark, mixed `in oklch decreasing hue` for ember, rose,
+  violet, ocean), the `--style-*` tokens placed on it by rank, and
+  `.style-ramp` on the screen root setting the kit's `--chart-1..10` along
+  it with `--primary` pinned to the fire end. The `glass-orb`, `glow-dot`,
+  `meter-glow` and `tracker-sheen` utilities give its marks the glass
+  treatment (no borders or outlines).
 
 ## Dust UI rules (house rules, non-negotiable)
 
