@@ -103,6 +103,11 @@ export const trackIdSchema = z.enum([
   'sayno',
   'telemetry',
   'stardust',
+  'lookagain',
+  'lift',
+  'crash',
+  'signal',
+  'storyofme',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -250,6 +255,11 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'sayno',
   'telemetry',
   'stardust',
+  'lookagain',
+  'lift',
+  'crash',
+  'signal',
+  'storyofme',
 ]
 
 export const ALBUM = {
@@ -338,6 +348,12 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   bittercut: 'bitter',
   prince: 'desert',
   desert: 'prince',
+  telemetry: 'signal',
+  signal: 'telemetry',
+  crash: 'yours',
+  yours: 'crash',
+  lookagain: 'loop',
+  storyofme: 'baritone',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1837,7 +1853,7 @@ export const TRACKS: Record<TrackId, Track> = {
     description:
       'Every flag and flare is data, not drama: the one who called the alarms hysterical gets the readout, spikes and warnings in the veins, packet loss behind the eyes, the library built on purpose and the logs to prove it. Many kinds of minds, and the early warning is the truth. Explicit, kept as sung.',
     audioFile: 'emotional-telemetry.mp3',
-    duration: 342,
+    duration: 353,
     art: { full: 'assets/telemetry.webp', thumb: 'assets/telemetry-512.webp' },
     themeColor: '#13060f',
     timing: timingFor('telemetry'),
@@ -1857,6 +1873,81 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#070b14',
     timing: timingFor('stardust'),
     ...lyricsFor('stardust'),
+  }),
+  lookagain: trackSchema.parse({
+    id: 'lookagain',
+    title: 'Look Again, Look Again',
+    dedication: 'By Dustin',
+    written: '2026-10-23',
+    voice: 'A woman’s voice and a male vocoder',
+    description:
+      'A duet for working with an agent: the human carries the map, the stakes and the why, while the vocoder moves fast in parallel and settles too soon without clear goals and boundaries. Dark minimal gospel over a hypnotic four-on-the-floor: look again, past the first thing that looks true. Truth is layered, and trust is too.',
+    audioFile: 'look-again-look-again.mp3',
+    duration: 303,
+    art: { full: 'assets/lookagain.webp', thumb: 'assets/lookagain-512.webp' },
+    themeColor: '#050b18',
+    timing: timingFor('lookagain'),
+    ...lyricsFor('lookagain'),
+  }),
+  lift: trackSchema.parse({
+    id: 'lift',
+    title: 'Lift Me Higher',
+    dedication: 'By Dustin',
+    written: '2026-10-23',
+    voice: 'A soaring, diva-like voice',
+    description:
+      'Midnight in marble light: a clockwork heart beneath the stone, the moon writing sigils in the rain, violins bowing over a frozen sea. Neoclassical strings and cathedral reverb over a minimal hypnotic pulse; lift me higher, through the fire, through the choir, through the wire. We are brief, but we are bright.',
+    audioFile: 'lift-me-higher.mp3',
+    duration: 308,
+    art: { full: 'assets/lift.webp', thumb: 'assets/lift-512.webp' },
+    themeColor: '#030d12',
+    timing: timingFor('lift'),
+    ...lyricsFor('lift'),
+  }),
+  crash: trackSchema.parse({
+    id: 'crash',
+    title: 'Crashed Into My Life 🐾',
+    dedication: 'For Crash, from Dustin',
+    written: '2026-10-26',
+    voice: 'An intimate solo voice',
+    description:
+      'Twelve years of a black-and-tan whirlwind with huge ears and a wild grin: there for every version of him, across state lines to the house by the lake, keeping watch on the porch step. The runs are shorter now and the mornings ache, but he still lifts his head at the door. While you’re here, I’ll be here too.',
+    audioFile: 'crashed-into-my-life.mp3',
+    duration: 290,
+    art: { full: 'assets/crash.webp', thumb: 'assets/crash-512.webp' },
+    themeColor: '#120903',
+    timing: timingFor('crash'),
+    ...lyricsFor('crash'),
+  }),
+  signal: trackSchema.parse({
+    id: 'signal',
+    title: 'Signal to Sovereignty',
+    dedication: 'By Dustin',
+    written: '2026-10-31',
+    voice: 'Two voices, rising to a layered chant',
+    description:
+      'A dark villain ballad for the end of a reign: you drew the line and called it law and kept me small, and now the words I swallowed come back with fire in my throat. No borrowed crown, no lowered gaze. A second voice answers with Emotional Telemetry, its chorus and its outro, over felt piano and a slow 6/8 pulse.',
+    audioFile: 'signal-to-sovereignty.mp3',
+    duration: 315,
+    art: { full: 'assets/signal.webp', thumb: 'assets/signal-512.webp' },
+    themeColor: '#150703',
+    timing: timingFor('signal'),
+    ...lyricsFor('signal'),
+  }),
+  storyofme: trackSchema.parse({
+    id: 'storyofme',
+    title: 'The Story of Me',
+    dedication: 'By Dustin',
+    written: '2026-11-02',
+    voice: 'A solo voice over operatic dubstep',
+    description:
+      'The story he was scared to tell: the smile worn while everything fell, the things left unsaid for years, and pages some will be angry to read, with no history rewritten to keep anyone comfortable. His sister and his chosen family made room for him to breathe, God carried him through, and the strength was his all along. I became who I am because I kept going.',
+    audioFile: 'the-story-of-me.mp3',
+    duration: 443,
+    art: { full: 'assets/storyofme.webp', thumb: 'assets/storyofme-512.webp' },
+    themeColor: '#020c17',
+    timing: timingFor('storyofme'),
+    ...lyricsFor('storyofme'),
   }),
 }
 

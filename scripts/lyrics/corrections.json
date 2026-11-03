@@ -5,5 +5,8 @@
     ["\\bYom per me\\b", "iompair mé"],
     ["\\bYom me\\b", "iompair mé"],
     ["\\bPer me Oh\\b", "iompair mé, ó"]
+  ],
+  "lookagain": [
+    ["^\\(((?:human|agent|together|traditional)\\b[^)]*)\\)$", "[\\1]"]
   ]
 }

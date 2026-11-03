@@ -130,7 +130,8 @@ def zip_index(dirs):
                 for name in zf.namelist():
                     p = pathlib.PurePosixPath(name)
                     if p.suffix.lower() in AUDIO:
-                        stem = re.sub(r"\s*\[[0-9a-f-]{36}\]$", "", p.stem)  # the per-song zips add a uuid
+                        # The per-song zips add a uuid, the per-song exports " - usesuno.com".
+                        stem = re.sub(r"\s*(\[[0-9a-f-]{36}\]|- usesuno\.com)$", "", p.stem)
                         index.setdefault(slug(stem), []).append(f"{z.name}/{name}")
     return index
 

@@ -18,6 +18,7 @@ const FAMILIES: TrackId[][] = [
   ['memories', 'edm', 'shanty'],
   ['raven', 'carry'],
   ['espoir', 'anglais'],
+  ['telemetry', 'signal'],
 ]
 
 describe('the collections', () => {
