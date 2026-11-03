@@ -4,6 +4,7 @@ import {
   isLyricsLabel,
 } from '@dust-ui/ui'
 import { type Track } from '@/data/tracks'
+import { mediaUrl } from '@/lib/media'
 
 export type VideoAspect = '9:16' | '1:1' | '16:9'
 
@@ -125,8 +126,10 @@ export async function recordLyricVideo({
   const body = css('--font-sans') || 'sans-serif'
 
   // The song plays through its own element, so the app's player is untouched.
+  // Anonymous CORS, so a song from the media CDN can feed Web Audio.
   const audio = new Audio()
-  audio.src = new URL(track.audioFile, document.baseURI).href
+  audio.crossOrigin = 'anonymous'
+  audio.src = new URL(mediaUrl(track.audioFile), document.baseURI).href
   audio.preload = 'auto'
   const actx = new AudioContext()
   const source = actx.createMediaElementSource(audio)

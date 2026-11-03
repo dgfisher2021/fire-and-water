@@ -7,6 +7,7 @@ import {
   type TrackId,
 } from '@/data/tracks'
 import { getAudio } from '@/lib/audio'
+import { mediaUrl } from '@/lib/media'
 
 export type PlayerStatus = 'idle' | 'loading' | 'playing' | 'paused'
 
@@ -76,7 +77,7 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   play: (track) => {
     const audio = getAudio()
     if (get().track !== track) {
-      audio.src = TRACKS[track].audioFile
+      audio.src = mediaUrl(TRACKS[track].audioFile)
       set({
         track,
         currentTime: 0,

@@ -1,0 +1,203 @@
+name: CI
+
+# Checks every ready PR into main and deploys main to Railway behind
+# Cloudflare (https://music.dgfisher.com), the way dust-ui ships
+# ui.dgfisher.com.
+#   draft PR       -> nothing, until it is marked ready.
+#   PR into main   -> classify; a code diff installs, lints, tests and builds.
+#   push to main   -> the same checks on the merged tree, then `railway up`
+#                     of deploy/railway (Caddy serving dist/) while the
+#                     DEPLOY_ENABLED repo variable is 'true'.
+#   prose-only diff (claude/, .claude/, docs/, markdown) -> classify only.
+#   workflow_dispatch -> a full run; deploys only from main.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Superseded PR pushes cancel; main runs always finish, so a fast second
+  # merge never drops the first one's checks or deploy.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  changes:
+    name: Classify diff
+    # Every job chains from this one, so a draft PR skips the whole run.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+    steps:
+      # History and trees only: the diff needs file names, not the audio.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout: .github
+      - id: classify
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          # Prose is claude/, .claude/, docs/ and markdown; anything else
+          # is built or shipped.
+          is_code() {
+            case "$1" in
+              claude/*|.claude/*|docs/*) return 1 ;;
+              *.md) return 1 ;;
+              *) return 0 ;;
+            esac
+          }
+          case "$EVENT" in
+            pull_request)
+              files=$(git diff --name-only "$(git merge-base "origin/$BASE_REF" HEAD)" HEAD) ;;
+            push)
+              # A new or force-pushed main has no usable `before`: run it all.
+              if git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+                files=$(git diff --name-only "$BEFORE" HEAD)
+              else
+                files=.github/workflows/ci.yml
+              fi ;;
+            *)
+              files=.github/workflows/ci.yml ;;
+          esac
+          echo "changed files:"; echo "$files"
+          code=false
+          while IFS= read -r f; do
+            [ -n "$f" ] || continue
+            if is_code "$f"; then code=true; fi
+          done <<< "$files"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "classification: code=$code"
+
+  build:
+    name: Lint, test and build
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # The pnpm version comes from package.json's packageManager field.
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # @dust-ui/* installs from GitHub Packages, owned by the dust-ui
+      # organization. The committed .npmrc carries the scope->registry
+      # mapping; the runner supplies auth here, exactly like a developer's
+      # user-level ~/.npmrc. Needs the repo secret DUST_UI_READ_TOKEN (a
+      # classic PAT with read:packages): this repo sits outside the org, so
+      # the workflow token cannot be granted access to the packages. The
+      # fallback only matters if the repo is ever moved into the org.
+      # Whitespace is stripped because a pasted secret can carry a stray
+      # newline, which would put the token on its own line in .npmrc.
+      - name: Authenticate to GitHub Packages
+        env:
+          DUST_UI_READ_TOKEN: ${{ secrets.DUST_UI_READ_TOKEN || github.token }}
+        run: |
+          TOKEN="$(printf '%s' "${DUST_UI_READ_TOKEN}" | tr -d '[:space:]')"
+          echo "//npm.pkg.github.com/:_authToken=${TOKEN}" >> ~/.npmrc
+          echo "token: ${#TOKEN} characters, prefix ${TOKEN:0:4}"
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      # Songs and hook videos are served from R2 by content hash; a song
+      # added or replaced without `pnpm media:sync` fails here.
+      - name: Media manifest is current
+        run: node scripts/media-sync.mjs --check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      # The custom domain serves from the root; songs load from MEDIA_BASE
+      # (https://media.dgfisher.com/) once that repo variable is set.
+      - name: Build
+        env:
+          VITE_BASE_PATH: /
+          VITE_MEDIA_BASE: ${{ vars.MEDIA_BASE }}
+        run: pnpm build
+
+      # Deploying with the CDN: every song must already answer there, and
+      # then the songs stay out of the Railway upload.
+      - name: Songs are live on the media CDN
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true' && vars.MEDIA_BASE != ''
+        env:
+          MEDIA_BASE: ${{ vars.MEDIA_BASE }}
+        run: node scripts/media-sync.mjs --verify
+
+      - name: Leave the songs to the CDN
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true' && vars.MEDIA_BASE != ''
+        run: find dist -type f \( -name '*.m4a' -o -name '*.mp3' -o -name '*.mp4' \) -delete
+
+      # Only when deploy will ship it. The songs are already compressed.
+      - name: Upload site
+        if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: dist
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to Railway
+    needs: build
+    # Set the repo variable DEPLOY_ENABLED=true to deploy.
+    if: github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: railway
+      cancel-in-progress: true
+    environment:
+      name: railway
+      url: https://music.dgfisher.com
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: deploy/railway
+
+      - name: Download site
+        uses: actions/download-artifact@v8
+        with:
+          name: site
+          path: deploy/railway/site
+
+      - name: Upload size
+        run: echo "railway up uploads $(du -sh deploy/railway/site | cut -f1) of site" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # RAILWAY_TOKEN is a project token (Railway project → Settings →
+      # Tokens), scoped to production. The service has no repo connected:
+      # Railway builds only the Caddy image around the uploaded tree.
+      - name: Deploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: >-
+          npx -y @railway/cli@5.63.1 up deploy/railway
+          --path-as-root --no-gitignore --ci
+          --service web
+          --message "${{ github.sha }}"
