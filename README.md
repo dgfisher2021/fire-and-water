@@ -198,8 +198,9 @@ Each song has its own accent color that tints the whole app while it is showing.
   - **Hint:** three dots above the button until you first open the fan.
   - **Code:** `components/play-fan/`. The gesture is a pure state machine
     (`gesture.ts`) with the geometry beside it, both tested. It listens
-    for the kit's `nav-bottom-center` button and does not fork the nav,
-    so it can move into Dust UI as is.
+    for the kit's `nav-bottom-center` button and does not fork the nav.
+    The gesture and geometry are kit-ready; the three looks still place
+    controls by id and need a pass before they move into Dust UI.
 - Album play-through by default; the card's last control switches to repeat this song or shuffle. Lock-screen and hardware media controls (Media Session API)
 - Keyboard: arrows switch songs, Space plays/pauses
 - Shareable deep links — `/lyrics/dust` opens straight to a song (old `#water` links still work); native share sheet on phones, copy-link elsewhere

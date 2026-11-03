@@ -9,6 +9,9 @@ import type { FanViewProps } from './types'
 const REACH = DIAL.from - 90
 const BOX = { w: DIAL.outer * 2, h: DIAL.outer + 40 }
 const L = { x: DIAL.outer, y: DIAL.outer }
+/** The rim's hit area reaches the scrub zone's outer edge, past the glass. */
+const HIT = { w: DIAL.zone.max * 2, h: DIAL.zone.max + 48 }
+const H = { x: DIAL.zone.max, y: DIAL.zone.max }
 
 const HOT =
   'data-hot:scale-115! data-hot:bg-linear-to-br data-hot:from-track-bright data-hot:to-track-deep data-hot:text-track-foreground data-hot:shadow-[0_0_24px_-2px_var(--media-glow)]'
@@ -17,7 +20,7 @@ const HOT =
 function hitOf(el: HTMLElement, e: PointerEvent) {
   const r = el.getBoundingClientRect()
   const k = el.offsetWidth ? r.width / el.offsetWidth : 1
-  return dialHit(L, { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k })
+  return dialHit(H, { x: (e.clientX - r.left) / k, y: (e.clientY - r.top) / k })
 }
 
 /**
@@ -90,45 +93,20 @@ export function FanDial({
         }}
       >
         <div
-          role='slider'
-          aria-label='Seek'
-          aria-valuemin={0}
-          aria-valuemax={Math.round(now.duration)}
-          aria-valuenow={Math.round(now.elapsed)}
-          aria-valuetext={formatTime(now.elapsed)}
-          tabIndex={open ? 0 : -1}
-          onKeyDown={(e) => {
-            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
-            e.preventDefault()
-            const to = now.elapsed + (e.key === 'ArrowRight' ? 5 : -5)
-            onSeek(Math.min(1, Math.max(0, to / now.duration)))
-          }}
+          data-slot='fan-dial-band'
+          aria-hidden
           className={cn(
-            'absolute inset-0 touch-none bg-card/85 backdrop-blur-md',
-            shown ? 'visible' : 'invisible',
-            open && 'pointer-events-auto'
+            'absolute inset-0 bg-card/85 backdrop-blur-md',
+            shown ? 'visible' : 'invisible'
           )}
-          // Mask shapes the frost (clip-path alone frosts the whole box in
-          // Chrome); clip-path shapes the hit area.
+          // The mask shapes the frost; clip-path alone frosts the whole box
+          // in Chrome.
           style={{
-            clipPath: `path('${band}')`,
             maskImage: mask,
             WebkitMaskImage: mask,
             maskSize: '100% 100%',
             WebkitMaskSize: '100% 100%',
           }}
-          onPointerDown={(e) => {
-            const hit = hitOf(e.currentTarget, e)
-            if (!hit.inZone) return
-            e.currentTarget.setPointerCapture(e.pointerId)
-            setDragging(true)
-            onSeek(hit.fraction)
-          }}
-          onPointerMove={(e) => {
-            if (dragging) onSeek(hitOf(e.currentTarget, e).fraction)
-          }}
-          onPointerUp={() => setDragging(false)}
-          onPointerCancel={() => setDragging(false)}
         />
         <svg
           aria-hidden
@@ -174,6 +152,47 @@ export function FanDial({
           />
         </svg>
       </div>
+
+      <div
+        role='slider'
+        data-fan-rim=''
+        aria-label='Seek'
+        aria-valuemin={0}
+        aria-valuemax={Math.round(now.duration)}
+        aria-valuenow={Math.round(now.elapsed)}
+        aria-valuetext={formatTime(now.elapsed)}
+        tabIndex={open ? 0 : -1}
+        onKeyDown={(e) => {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return
+          e.preventDefault()
+          const to = now.elapsed + (e.key === 'ArrowRight' ? 5 : -5)
+          onSeek(Math.min(1, Math.max(0, to / now.duration)))
+        }}
+        className={cn(
+          'absolute touch-none',
+          shown ? 'visible' : 'invisible',
+          open && 'pointer-events-auto'
+        )}
+        style={{
+          left: c.x - DIAL.zone.max,
+          top: c.y - DIAL.zone.max,
+          width: HIT.w,
+          height: HIT.h,
+          clipPath: `path('${bandPath(H, DIAL.zone.max, DIAL.inner, a, b)}')`,
+        }}
+        onPointerDown={(e) => {
+          const hit = hitOf(e.currentTarget, e)
+          if (!hit.inZone) return
+          e.currentTarget.setPointerCapture(e.pointerId)
+          setDragging(true)
+          onSeek(hit.fraction)
+        }}
+        onPointerMove={(e) => {
+          if (dragging) onSeek(hitOf(e.currentTarget, e).fraction)
+        }}
+        onPointerUp={() => setDragging(false)}
+        onPointerCancel={() => setDragging(false)}
+      />
 
       <p
         className={cn(

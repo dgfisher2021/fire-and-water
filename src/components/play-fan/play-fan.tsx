@@ -16,6 +16,7 @@ import { FanDeck } from './fan-deck'
 import { FanDial } from './fan-dial'
 import { FanOrbit } from './fan-orbit'
 import { dialHit, type Point } from './geometry'
+import { fanElapsed } from './now'
 import type { FanAction, FanActionId, FanViewProps } from './types'
 import { CENTER_SELECTOR, useFanGesture } from './use-fan-gesture'
 
@@ -133,9 +134,7 @@ export function PlayFan() {
     return () => document.documentElement.removeAttribute('data-fan-open')
   }, [fan.open])
 
-  const elapsed = usePlayer((s) =>
-    fan.open && s.track === target ? s.currentTime : 0
-  )
+  const elapsed = usePlayer((s) => fanElapsed(s, target))
 
   if (!root || !geo) return null
 
@@ -192,7 +191,7 @@ export function PlayFan() {
       <div
         role='toolbar'
         aria-label='Playback controls'
-        aria-hidden={!fan.open}
+        inert={!fan.open}
         className='pointer-events-none absolute inset-0 z-[65]'
         style={{
           scale: fitFor(look, geo.c),

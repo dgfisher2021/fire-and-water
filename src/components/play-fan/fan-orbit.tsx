@@ -1,6 +1,7 @@
 import { formatTime } from '@dust-ui/ui'
 import { cn } from '@/lib/utils'
 import { arcPath, ORBIT, polar } from './geometry'
+import { FAN_GLASS } from './glass'
 import type { FanViewProps } from './types'
 
 const SPRING = 'ease-[cubic-bezier(.34,1.56,.64,1)]'
@@ -46,7 +47,8 @@ export function FanOrbit({
 
       <div
         className={cn(
-          'absolute flex max-w-[calc(100%-2rem)] -translate-x-1/2 items-baseline gap-2.5 rounded-full bg-card/85 px-4 pt-2 pb-2.5 shadow-lg backdrop-blur-md transition-[opacity,translate,scale] motion-reduce:transition-none',
+          'absolute flex max-w-[calc(100%-2rem)] -translate-x-1/2 items-baseline gap-2.5 rounded-full px-4 pt-2 pb-2.5 transition-[opacity,translate,scale] motion-reduce:transition-none',
+          FAN_GLASS,
           open
             ? `translate-y-0 scale-100 opacity-100 delay-100 duration-500 ${SPRING}`
             : 'translate-y-7 scale-[.7] opacity-0 duration-200'
@@ -83,10 +85,11 @@ export function FanOrbit({
             tabIndex={open ? 0 : -1}
             onClick={() => onAction(act.id)}
             className={cn(
-              'absolute grid size-13 place-items-center rounded-full bg-card/85 text-foreground shadow-lg backdrop-blur-md transition-[translate,scale,opacity,background-color,box-shadow,color] hover:text-primary motion-reduce:transition-none',
+              'absolute grid size-13 place-items-center rounded-full text-foreground transition-[translate,scale,opacity,background-color,box-shadow,color] hover:text-primary motion-reduce:transition-none',
               open
                 ? `pointer-events-auto duration-500 ${SPRING}`
                 : 'scale-25 opacity-0 duration-200 ease-in',
+              FAN_GLASS,
               act.pressed && 'text-primary',
               HOT
             )}

@@ -11,6 +11,7 @@ import {
 /** The kit's lifted nav button; the fan grows out of it. */
 export const CENTER_SELECTOR = '[data-slot="nav-bottom-center"]'
 const CONTROL = 'data-fan-control'
+const RIM = 'data-fan-rim'
 
 export type FanGestureOptions = {
   /** The dial's rim under a client point; looks without a rim leave it out. */
@@ -24,6 +25,27 @@ export type FanGestureOptions = {
 }
 
 type View = Pick<FanState, 'open' | 'hot' | 'scrubbing'>
+
+/**
+ * Eats the one click a held press leaves behind. Armed on that press's
+ * release, disarmed by the next press, so a real tap is never swallowed.
+ */
+export function createClickGate(windowMs = 400) {
+  let until = 0
+  return {
+    arm: (now: number) => {
+      until = now + windowMs
+    },
+    reset: () => {
+      until = 0
+    },
+    take: (now: number) => {
+      const eat = now <= until
+      until = 0
+      return eat
+    },
+  }
+}
 
 const centerOf = (t: EventTarget | null) =>
   t instanceof Element ? t.closest(CENTER_SELECTOR) : null
@@ -62,7 +84,12 @@ export function useFanGesture(opts: FanGestureOptions) {
     for (const fx of r.effects) {
       if (fx.type === 'open' || fx.type === 'hot') buzz()
       if (fx.type === 'open') o.onOpenChange?.(true)
-      if (fx.type === 'close') o.onOpenChange?.(false)
+      if (fx.type === 'close') {
+        o.onOpenChange?.(false)
+        // However it folds, focus on a control goes back to the button.
+        if (document.activeElement?.closest(`[${CONTROL}], [${RIM}]`))
+          document.querySelector<HTMLElement>(CENTER_SELECTOR)?.focus()
+      }
       if (fx.type === 'fire') o.onFire(fx.id)
       if (fx.type === 'seek') o.onSeek(fx.fraction)
     }
@@ -72,11 +99,12 @@ export function useFanGesture(opts: FanGestureOptions) {
   useEffect(() => {
     let pointer: number | null = null
     let timer = 0
-    let swallowUntil = 0
+    const gate = createClickGate()
 
     const onDown = (e: PointerEvent) => {
       const button = centerOf(e.target)
       if (!button || e.button !== 0) return
+      gate.reset()
       pointer = e.pointerId
       button.setPointerCapture(e.pointerId)
       dispatch({ type: 'down', y: e.clientY })
@@ -104,13 +132,12 @@ export function useFanGesture(opts: FanGestureOptions) {
       window.clearTimeout(timer)
       const fx = dispatch({ type })
       if (type === 'up' && !fx.some((f) => f.type === 'toggle'))
-        swallowUntil = performance.now() + 400
+        gate.arm(performance.now())
     }
     const onUp = end('up')
     const onCancel = end('cancel')
     const onClick = (e: MouseEvent) => {
-      if (performance.now() > swallowUntil || !centerOf(e.target)) return
-      swallowUntil = 0
+      if (!centerOf(e.target) || !gate.take(performance.now())) return
       e.stopPropagation()
       e.preventDefault()
     }
@@ -165,10 +192,7 @@ export function useFanGesture(opts: FanGestureOptions) {
       }
       if (!state.current.open) return
       if (e.key === 'Escape') {
-        const inside = at?.closest(`[${CONTROL}], [role="slider"]`)
         dispatch({ type: 'close' })
-        if (inside)
-          document.querySelector<HTMLElement>(CENTER_SELECTOR)?.focus()
         return
       }
       const control = at?.closest<HTMLElement>(`[${CONTROL}]`)
@@ -191,11 +215,8 @@ export function useFanGesture(opts: FanGestureOptions) {
     return () => cancelAnimationFrame(frame)
   }, [view.open])
 
-  const openFan = useCallback(() => {
-    dispatch({ type: 'open' })
-  }, [dispatch])
   const closeFan = useCallback(() => {
     dispatch({ type: 'close' })
   }, [dispatch])
-  return { ...view, openFan, closeFan }
+  return { ...view, closeFan }
 }
