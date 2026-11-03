@@ -205,12 +205,16 @@ wide, so the phone layout is verified through the 393px `DeviceFrame`
 
 `.mcp.json` ships the shadcn MCP server and `components.json` declares the
 `@dust-ui` and `@dust-ui-source` registries. Approve the server once with
-`/mcp`. The registries point at dust-ui's GitHub Pages
-(`https://dgfisher2021.github.io/dust-ui/r/...`). Should Pages go down
-again, serve dust-ui's compiled registry locally (`python3 -m http.server
-4180 --bind 127.0.0.1 --directory <dust-ui>/apps/docs/public`) and point
-both URLs at `http://127.0.0.1:4180/r/...`; the server reads
-`components.json` once at start, so restart the session after a swap. The
+`/mcp`. The registries are dust-ui's token-gated catalogue on its private
+repo's `registry` branch
+(`https://raw.githubusercontent.com/dgfisher2021/dust-ui/registry/r/...`,
+`source/` for the fork door), sent with `Authorization: token
+${DUST_UI_REGISTRY_TOKEN}` from the git-ignored `.env.local` (a token with
+read access to dust-ui). dust-ui's GitHub Pages is gone. Offline, serve
+dust-ui's compiled registry locally (`python3 -m http.server 4180 --bind
+127.0.0.1 --directory <dust-ui>/apps/docs/public`) and point both URLs at
+`http://127.0.0.1:4180/r/...`; the server reads `components.json` once at
+start, so restart the session after a swap. The
 `@dust-ui` door's descriptions are boilerplate: the real ones are the
 `description` prop of dust-ui's docs routes and the props are in the
 installed `node_modules/@dust-ui/ui/dist/<name>.d.ts`.

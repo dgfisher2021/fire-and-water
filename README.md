@@ -287,7 +287,7 @@ Phones have no devtools, so open the site with `?debug` (for example `https://mu
 
 ### Dust UI agent tooling
 
-`.mcp.json` ships the shadcn MCP server and `components.json` declares the `@dust-ui` (import) and `@dust-ui-source` (fork) registries, so an AI agent opened in this folder can browse and install Dust UI components. Approve the server once with `/mcp`.
+`.mcp.json` ships the shadcn MCP server and `components.json` declares the `@dust-ui` (import) and `@dust-ui-source` (fork) registries, so an AI agent opened in this folder can browse and install Dust UI components. The registries are read from dust-ui's `registry` branch (`https://raw.githubusercontent.com/dgfisher2021/dust-ui/registry/r/{name}.json`), which needs `DUST_UI_REGISTRY_TOKEN` (a GitHub token with read access to dust-ui) in a git-ignored `.env.local`. Approve the server once with `/mcp`.
 
 ## Deploying
 
