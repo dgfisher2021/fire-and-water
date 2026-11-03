@@ -46,6 +46,7 @@ import {
   type TrackId,
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
+import { mediaUrl } from '@/lib/media'
 import { copyText, share } from '@/lib/share'
 import { songText } from '@/lib/song-text'
 import { toaster } from '@/lib/toaster'
@@ -190,7 +191,7 @@ export function LyricsScreen() {
       icon: Download,
       label: `Download ${download}`,
       onClick: () => {
-        downloadUrl(t.audioFile)
+        downloadUrl(mediaUrl(t.audioFile), t.audioFile)
         toaster.push(`Downloading ${t.title}`)
       },
     },

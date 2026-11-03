@@ -1,0 +1,22 @@
+{
+  "rules": [
+    {
+      "allowed": {
+        "origins": [
+          "https://music.dgfisher.com",
+          "http://localhost:4600",
+          "http://127.0.0.1:4600"
+        ],
+        "methods": ["GET", "HEAD"],
+        "headers": ["range"]
+      },
+      "exposeHeaders": [
+        "Accept-Ranges",
+        "Content-Length",
+        "Content-Range",
+        "ETag"
+      ],
+      "maxAgeSeconds": 86400
+    }
+  ]
+}
