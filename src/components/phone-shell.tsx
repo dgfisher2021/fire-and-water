@@ -59,13 +59,13 @@ function useShellNav(): Omit<NavBottomProps, 'fixed'> {
   const toggle = usePlayer((s) => s.toggle)
   const playing = status === 'playing' || status === 'loading'
 
-  // The tap-to-time tool lives with the lyrics.
+  // The tap-to-time tool lives with the lyrics; Settings and the profile with More.
   const active =
     pathname.startsWith('/lyrics') || pathname.startsWith('/time')
       ? 'lyrics'
       : pathname.startsWith('/albums')
         ? 'albums'
-        : pathname.startsWith('/more') || pathname.startsWith('/settings')
+        : ['/more', '/settings', '/profile'].some((p) => pathname.startsWith(p))
           ? 'more'
           : 'songs'
 
