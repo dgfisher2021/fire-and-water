@@ -494,6 +494,18 @@
   --storyofme-deep: oklch(0.37 0.11 245);
   --storyofme-glow: oklch(0.66 0.1 245 / 42%);
   --storyofme-ink: oklch(0.22 0.04 245);
+  --drift: oklch(0.78 0.11 252); /* starlight where the tether let go */
+  --drift-deep: oklch(0.37 0.12 252);
+  --drift-glow: oklch(0.66 0.11 252 / 42%);
+  --drift-ink: oklch(0.22 0.04 252);
+  --kiki: oklch(0.78 0.15 335); /* pink neon on a wet street */
+  --kiki-deep: oklch(0.37 0.17 335);
+  --kiki-glow: oklch(0.66 0.15 335 / 42%);
+  --kiki-ink: oklch(0.22 0.04 335);
+  --analyst: oklch(0.78 0.14 281); /* the violet in the screens around him */
+  --analyst-deep: oklch(0.37 0.16 281);
+  --analyst-glow: oklch(0.66 0.14 281 / 42%);
+  --analyst-ink: oklch(0.22 0.04 281);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */
