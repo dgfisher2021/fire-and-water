@@ -8,5 +8,11 @@
   ],
   "lookagain": [
     ["^\\(((?:human|agent|together|traditional)\\b[^)]*)\\)$", "[\\1]"]
+  ],
+  "drift": [
+    [
+      "^\\(((?:slow heartbeat|breathing inside the helmet|heartbeat slowing))\\)$",
+      "[\\1]"
+    ]
   ]
 }

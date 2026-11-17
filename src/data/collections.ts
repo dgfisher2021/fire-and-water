@@ -24,7 +24,7 @@ export const COLLECTIONS = [
     cover: 'constellations',
     label: 'You Made Me More',
     blurb:
-      'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, a pup still waiting on its name, and the old dog who stayed twelve years.',
+      'For the people who shaped him: a best friend the world calls too much, the friends who became family, a mum’s tales from the shore, a pup still waiting on its name, the old dog who stayed twelve years, and a princess who saves the day.',
   },
   {
     key: 'plain',
@@ -61,7 +61,7 @@ export const COLLECTIONS = [
     cover: 'stardust',
     label: 'Ashes to Stardust',
     blurb:
-      'Myth and ritual: the raven between worlds, the elements, the golden child’s legend, and the dark made beautiful.',
+      'Myth and ritual: the raven between worlds, the elements, the golden child’s legend, a last breath among the stars, and the dark made beautiful.',
   },
   {
     key: 'norse',
@@ -197,4 +197,7 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   crash: 'kin',
   signal: 'enough',
   storyofme: 'siblings',
+  drift: 'ashes',
+  kiki: 'kin',
+  analyst: 'enough',
 }

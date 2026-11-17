@@ -108,6 +108,9 @@ export const trackIdSchema = z.enum([
   'crash',
   'signal',
   'storyofme',
+  'drift',
+  'kiki',
+  'analyst',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -260,6 +263,9 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'crash',
   'signal',
   'storyofme',
+  'drift',
+  'kiki',
+  'analyst',
 ]
 
 export const ALBUM = {
@@ -354,6 +360,7 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   yours: 'crash',
   lookagain: 'loop',
   storyofme: 'baritone',
+  analyst: 'working',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -1948,6 +1955,51 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#020c17',
     timing: timingFor('storyofme'),
     ...lyricsFor('storyofme'),
+  }),
+  drift: trackSchema.parse({
+    id: 'drift',
+    title: 'Drifting into Space',
+    dedication: 'By Dustin',
+    written: '2026-11-11',
+    voice: 'A close, breathy voice over a heartbeat',
+    description:
+      'The tether lets go: orange sparks falling slow from the hull, a red light blinking, the numbers at the wrist flickering out. Ultra-dark minimal trance over a sub-bass heartbeat that slows as the air runs down. Everyone he loves is a light down below; if the signal gets through, tell them I’m alright. Still reaching for you.',
+    audioFile: 'drifting-into-space.mp3',
+    duration: 364,
+    art: { full: 'assets/drift.webp', thumb: 'assets/drift-512.webp' },
+    themeColor: '#040c15',
+    timing: timingFor('drift'),
+    ...lyricsFor('drift'),
+  }),
+  kiki: trackSchema.parse({
+    id: 'kiki',
+    title: 'Save the Day (Princess Kiki)',
+    dedication: 'For Kiki, from Dustin',
+    written: '2026-08-06',
+    voice: 'A sultry, sassy voice with a little rap',
+    description:
+      'Confident and cunning, street smarts in her pocket and grit in her grin: she spots a lie before it flies and makes her own crown. Dark electro-pop with a K-pop snap. Tinker Bell ain’t the hero, just a dark little fae in the neon glow. Bow down, make way: Princess Kiki, she’ll save the day.',
+    audioFile: 'save-the-day-princess-kiki.mp3',
+    duration: 177,
+    art: { full: 'assets/kiki.webp', thumb: 'assets/kiki-512.webp' },
+    themeColor: '#11080e',
+    timing: timingFor('kiki'),
+    ...lyricsFor('kiki'),
+  }),
+  analyst: trackSchema.parse({
+    id: 'analyst',
+    title: 'The Analyst’s Apology',
+    dedication: 'By Dustin',
+    written: '2026-11-11',
+    voice: 'A solo voice, dark alt-pop',
+    description:
+      'He knows the names behind the numbers and held the line through broken handoffs, and he is sorry for the times he let you down. But he won’t wear the weight of every gap as if the whole design were his to save. Loyal still, which is why the anger cuts so deep: I’ll answer for my part, not every fault around me. I’m still here, and I’m learning where to draw the line.',
+    audioFile: 'the-analysts-apology.mp3',
+    duration: 229,
+    art: { full: 'assets/analyst.webp', thumb: 'assets/analyst-512.webp' },
+    themeColor: '#0a0818',
+    timing: timingFor('analyst'),
+    ...lyricsFor('analyst'),
   }),
 }
 
