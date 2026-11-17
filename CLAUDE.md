@@ -32,8 +32,8 @@ columns, pair in the URL as `?with=`) and More (`MobileListGroup` rows for
 appearance, downloads, Drive links, sharing, and the About note from
 `ALBUM.about`, whose artist row opens the creator profile). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
-`@dust-ui/ui` 0.31, `@dust-ui/blocks` 0.21, `@dust-ui/motion` 0.13,
-`@dust-ui/tokens` 0.11, `@dust-ui/3d` 0.8 and `@dust-ui/charts` 0.13.1 from
+`@dust-ui/ui` 0.35, `@dust-ui/blocks` 0.25, `@dust-ui/motion` 0.16,
+`@dust-ui/tokens` 0.13, `@dust-ui/3d` 0.12 and `@dust-ui/charts` 0.15.0 from
 GitHub Packages (blocks and 3d pin an exact ui, blocks an exact motion and
 charts: bump them together or two copies install). Each package's compiled
 `dist` is an `@source` in `index.css`; a package missing there renders its

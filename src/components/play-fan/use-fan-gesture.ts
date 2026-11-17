@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { debugLog } from '@/lib/debug'
 import {
   FAN_IDLE,
   HOLD_MS,
@@ -56,7 +57,8 @@ const buzz = () => {
 
 /**
  * Press, hold, slide and release on the nav's play button, fed to
- * `reduceFan`. A tap's click goes through to the button untouched; any
+ * `reduceFan`. A mouse tap's click goes through to the button untouched; a
+ * finger's press is taken at touchstart and its tap clicked on release. Any
  * press that became a hold, a slide or a scrub eats the click after it.
  */
 export function useFanGesture(opts: FanGestureOptions) {
@@ -99,17 +101,51 @@ export function useFanGesture(opts: FanGestureOptions) {
   useEffect(() => {
     let pointer: number | null = null
     let timer = 0
+    // A finger's press is taken from the browser, so its tap is ours to click.
+    let owned = false
+    let tap: HTMLElement | null = null
     const gate = createClickGate()
+
+    // Taking the touch keeps iOS from starting its own long press (text
+    // selection, callout, tap highlight), which cancels the press mid-hold.
+    const onTouchStart = (e: TouchEvent) => {
+      if (!centerOf(e.target)) return
+      if (e.cancelable) e.preventDefault()
+      owned = true
+      debugLog('fan', 'touchstart taken')
+    }
+    // The click a taken touch no longer gets, inside the touch's own gesture.
+    const onTouchEnd = () => {
+      const button = tap
+      tap = null
+      owned = false
+      if (!button) return
+      button.click()
+      // Should the browser click as well, that one is eaten.
+      gate.arm(performance.now())
+    }
 
     const onDown = (e: PointerEvent) => {
       const button = centerOf(e.target)
       if (!button || e.button !== 0) return
       gate.reset()
+      tap = null
+      if (e.pointerType !== 'touch') owned = false
       pointer = e.pointerId
-      button.setPointerCapture(e.pointerId)
       dispatch({ type: 'down', y: e.clientY })
       window.clearTimeout(timer)
-      timer = window.setTimeout(() => dispatch({ type: 'hold' }), HOLD_MS)
+      timer = window.setTimeout(() => {
+        debugLog('fan', 'hold')
+        dispatch({ type: 'hold' })
+      }, HOLD_MS)
+      debugLog('fan', `down ${e.pointerType}`)
+      // Document listeners follow the press either way; capture only keeps
+      // a mouse that leaves the window.
+      try {
+        button.setPointerCapture(e.pointerId)
+      } catch {
+        // No capture for this pointer: the press still runs.
+      }
     }
     const onMove = (e: PointerEvent) => {
       if (e.pointerId !== pointer) return
@@ -131,8 +167,11 @@ export function useFanGesture(opts: FanGestureOptions) {
       pointer = null
       window.clearTimeout(timer)
       const fx = dispatch({ type })
-      if (type === 'up' && !fx.some((f) => f.type === 'toggle'))
-        gate.arm(performance.now())
+      const toggled = fx.some((f) => f.type === 'toggle')
+      debugLog('fan', `${type}${toggled ? ' tap' : ''}`)
+      if (type !== 'up') return
+      if (!toggled) gate.arm(performance.now())
+      else if (owned) tap = document.querySelector<HTMLElement>(CENTER_SELECTOR)
     }
     const onUp = end('up')
     const onCancel = end('cancel')
@@ -148,6 +187,10 @@ export function useFanGesture(opts: FanGestureOptions) {
     }
 
     const opts = { capture: true }
+    const active = { capture: true, passive: false }
+    document.addEventListener('touchstart', onTouchStart, active)
+    document.addEventListener('touchend', onTouchEnd, opts)
+    document.addEventListener('touchcancel', onTouchEnd, opts)
     document.addEventListener('pointerdown', onDown, opts)
     document.addEventListener('pointermove', onMove, opts)
     document.addEventListener('pointerup', onUp, opts)
@@ -156,6 +199,9 @@ export function useFanGesture(opts: FanGestureOptions) {
     document.addEventListener('contextmenu', onContextMenu, opts)
     return () => {
       window.clearTimeout(timer)
+      document.removeEventListener('touchstart', onTouchStart, active)
+      document.removeEventListener('touchend', onTouchEnd, opts)
+      document.removeEventListener('touchcancel', onTouchEnd, opts)
       document.removeEventListener('pointerdown', onDown, opts)
       document.removeEventListener('pointermove', onMove, opts)
       document.removeEventListener('pointerup', onUp, opts)
