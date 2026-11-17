@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import '@dust-ui/tokens/styles.css';
-@import '@dust-ui/ui/theme-transition.css'; /* circle wipe on light/dark */
+@import '@dust-ui/tokens/styles.css'; /* tokens and the light/dark circle wipe */
 @import '@dust-ui/ui/mobile.css'; /* keyframes for the Dust UI mobile kit */
 /* Theme presets, gated by <html data-theme> set by AppearanceProvider. */
 @import '@dust-ui/tokens/themes/clean-slate.css';
@@ -909,9 +908,13 @@
  * own long-press, and the tabs step back while the fan is open. */
 [data-slot='nav-bottom-center'] {
   touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.3s ease;
+}
+/* iOS selects the nearest text on a long press, so the whole bar opts out. */
+[data-slot='nav-bottom'] {
   -webkit-touch-callout: none;
   user-select: none;
-  transition: box-shadow 0.3s ease;
 }
 /* While the fan is open the button wears a soft ring (the kit's shadow is inline). */
 html[data-fan-open] [data-slot='nav-bottom-center'] {

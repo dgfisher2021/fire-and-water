@@ -1,13 +1,12 @@
 import { useState, type CSSProperties } from 'react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { Clapperboard, Pause, Play } from 'lucide-react'
+import { Clapperboard, ScrollText } from 'lucide-react'
 import { MobileAppScreen, useMobileShellFramed } from '@dust-ui/blocks'
 import { MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
   filterByText,
   formatTime,
-  LoaderSpinner,
   MobileListGroup,
   MobileSearchBar,
   useHotkeys,
@@ -131,9 +130,6 @@ export function AlbumScreen() {
   const index = usePlayer((s) => s.carouselIndex)
   const setIndex = usePlayer((s) => s.setCarouselIndex)
   const status = usePlayer((s) => s.status)
-  const loaded = usePlayer((s) => s.track)
-  const play = usePlayer((s) => s.play)
-  const pause = usePlayer((s) => s.pause)
   // The covers turn on their own until the first touch or key; after that
   // the reader is in charge.
   const [interacted, setInteracted] = useState(false)
@@ -145,8 +141,6 @@ export function AlbumScreen() {
   const t = TRACKS[track]
   const hook = hookFor(track)
   const [watching, setWatching] = useState(false)
-  const isActive = loaded === track && status !== 'paused' && status !== 'idle'
-  const stagePlaying = isActive && status === 'playing'
   const anyPlaying = status === 'playing' || status === 'loading'
 
   const step = (direction: 1 | -1) =>
@@ -249,23 +243,11 @@ export function AlbumScreen() {
           <div className='mt-4 flex w-full items-center justify-center gap-2 short:justify-start'>
             <Button
               variant='media'
-              onClick={() => {
-                if (stagePlaying) pause()
-                else {
-                  play(track)
-                  void openLyrics()
-                }
-              }}
+              onClick={() => void openLyrics()}
               className='h-11 gap-2 rounded-md px-6 text-[13px] font-medium tracking-[1px]'
             >
-              {isActive && status === 'loading' ? (
-                <LoaderSpinner variant='ring' label='Buffering' />
-              ) : stagePlaying ? (
-                <Pause className='size-4 fill-current' aria-hidden />
-              ) : (
-                <Play className='size-4 fill-current' aria-hidden />
-              )}
-              {stagePlaying ? 'Pause' : 'Play'}
+              <ScrollText className='size-4' aria-hidden />
+              Read lyrics
             </Button>
             {hook && (
               <Button

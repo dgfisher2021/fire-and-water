@@ -40,9 +40,17 @@ function enabled() {
   }
 }
 
+let on = false
+
+/** A line in the on-device log; nothing unless `?debug` is on. */
+export function debugLog(kind: string, detail: string) {
+  if (on) log(kind, detail)
+}
+
 /** Starts the debug tools when the flag is on; `now` reads the player. */
 export function startDebug(now: () => string) {
   if (!enabled()) return
+  on = true
   log('load', `${location.pathname}${location.search} ${navigator.userAgent}`)
   addEventListener('error', (e) =>
     log('error', `${e.message} @ ${e.filename}:${e.lineno}`)

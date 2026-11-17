@@ -195,6 +195,10 @@ Each song has its own accent color that tints the whole app while it is showing.
       middle, which opens Now Playing.
   - **Keyboard:** ArrowUp on the button opens it and the arrows walk the
     controls. A right-click opens it too.
+  - **Touch:** the button takes a finger's press at `touchstart`, so a
+    phone never starts its own long press (text selection, callout) in
+    place of the fan, and clicks the tap itself on release. `?debug` logs
+    each press (`fan` lines in `fw-debug-log`).
   - **Hint:** three dots above the button until you first open the fan.
   - **Code:** `components/play-fan/`. The gesture is a pure state machine
     (`gesture.ts`) with the geometry beside it, both tested. It listens
