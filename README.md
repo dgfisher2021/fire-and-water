@@ -273,6 +273,18 @@ The default pass never drops a window, which matters for vocals buried under the
 
 For a song the aligner cannot hear, or to redo a stretch by ear, open `/time/<id>` in the app: play the song and tap **Mark** (or Space) as each line starts, tap any line to mark it again, then copy or download the result and paste it in as that song's `timing.json` entry (line times only; the words light whole).
 
+## Kinetic lyrics
+
+`public/kinetic/lift-me-higher/` is a full-length kinetic typography video of Lift Me Higher: one self-contained page (no build step, not part of the app or its service worker) at `/kinetic/lift-me-higher/` on the dev server and the live site. Every word lands on its sung time from `timing.json`; each line builds as a flush-left stack (light Anybody content words, Cormorant Garamond italic small words on the cap line or baseline, one heavy hero word per line that sweeps its width from 50 to 150 in the section's colour, kicking with the song's bass pulse), then slides up and off as the next line lands. The title builds on the intro's first sounds, comes back in the drop after the first chorus, and the credit rises under the last line.
+
+Open it and click to play with sound (Space pauses, arrows seek 5 s, `?t=<seconds>` starts there). For rendering, `?render` stops the playback loop and exposes `window.seek(t)`, which draws any frame from `t` alone, so a frame-by-frame capture is exact; `?check` runs the layout checks (overlaps, the 120 px margin, hero sizes, every word visible from its own frame, accents only on heroes, the final frame holding) into `window.report`. The song data is inlined by a script, so re-run it after re-timing the song:
+
+```sh
+python3 scripts/kinetic-data.py lift public/kinetic/lift-me-higher/index.html
+```
+
+Lines the aligner did not hear (the bridge and final chorus) borrow the phrasing of the same line where it was heard, or spread through the line; retiming them on `/time/lift` sharpens the video too. The brief it was built from is in `claude/2026-11-24-kinetic-lift-me-higher.md`.
+
 ## Stack
 
 React 19 + TypeScript + Vite 8 + TanStack Router + Tailwind v4 on `@dust-ui/ui`, `@dust-ui/blocks` (the app shell), `@dust-ui/motion`, `@dust-ui/tokens`, `@dust-ui/charts` (the profile's tiles, gauge, network and bars); zustand for player state; `vite-plugin-pwa` for the service worker; self-hosted Cormorant Garamond and Outfit.

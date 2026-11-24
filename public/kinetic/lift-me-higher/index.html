@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lift Me Higher · kinetic lyrics</title>
+    <link rel="icon" href="../../assets/icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,100..900&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=block"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+      }
+      #stage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: 0 0;
+        background: #030d12;
+      }
+      .layer,
+      .line,
+      .w {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      .layer {
+        width: 1920px;
+        height: 1080px;
+      }
+      .w {
+        white-space: nowrap;
+        line-height: 1;
+        will-change: transform;
+      }
+      .c {
+        font-family: 'Anybody', sans-serif;
+        text-transform: uppercase;
+      }
+      .s {
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-weight: 500;
+      }
+      .tracked {
+        letter-spacing: 0.12em;
+      }
+      #fade {
+        background: #000;
+        pointer-events: none;
+      }
+      #start {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: flex-end;
+        justify-content: center;
+        border: 0;
+        padding: 0 0 8vh;
+        background: linear-gradient(
+          to top,
+          rgb(0 0 0 / 0.75),
+          rgb(0 0 0 / 0.2) 45%
+        );
+        text-align: center;
+        color: #eeeae0;
+        cursor: pointer;
+        font:
+          italic 500 28px 'Cormorant Garamond',
+          serif;
+      }
+      #start span {
+        display: block;
+        margin-top: 10px;
+        font:
+          600 12px 'Anybody',
+          sans-serif;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        opacity: 0.7;
+      }
+      #report {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="ghosts" class="layer"></div>
+      <div id="lines" class="layer"></div>
+      <div id="header" class="layer"></div>
+      <div id="fade" class="layer"></div>
+    </div>
+    <button id="start" type="button">
+      <div>
+        Lift Me Higher<span>Play with sound · space pauses · arrows seek</span>
+      </div>
+    </button>
+    <pre id="report"></pre>
+    <!-- prettier-ignore -->
+    <script id="song" type="application/json">{"id":"lift","title":"Lift Me Higher","artist":"Dustin & Alex","album":"Ashes to Stardust","duration":308.2,"audio":"https://media.dgfisher.com/lift-me-higher.mp3?v=c555510fb3","sheet":[["[Verse 1]","In marble light, the midnight breathes","A silver thread through hallowed eaves","The pillars hum, the shadows lean","Like dreams in gold, half-seen, unseen"],["A clockwork heart beneath the stone","Keeps time in low electric tones","The moon writes sigils in the rain","And pulls the tide through every vein"],["[Pre-Chorus]","Hush now, the night is turning","Slow like a candle, burning","Hold me where the echoes rise","Beneath these vaulted, lucid skies"],["[Chorus]","Lift me higher, through the fire","Through the choir, through the wire","Let the pulse become a prayer","Let the air remember air"],["In the thunder, in the glow","We move like ghosts in row by row","Heart to heart and breath to breath","Dancing softly next to death"],["[Verse 2]","I hear the violins of night","A neoclassical silver light","They bow above the frozen sea","And carve a path for memory"],["The beat descends like temple rain","A measured, dark, mechanical refrain","Yet in the fracture, in the seam","A voice appears, a lucid beam"],["[Pre-Chorus]","Hush now, the lantern’s bending","No beginning without ending","Sing through the pillars, old and true","I am the room and I am you"],["[Chorus]","Lift me higher, through the fire","Through the choir, through the wire","Let the pulse become a prayer","Let the air remember air"],["In the thunder, in the glow","We move like ghosts in row by row","Heart to heart and breath to breath","Dancing softly next to death"],["[Bridge]","Oh, sacred machine, keep turning","While the constellations are burning","String and shadow, dust and light","We are brief but we are bright"],["[Final Chorus]","Lift me higher, through the fire","Through the choir, through the wire","Let the pulse become a prayer","Let the air remember air"],["In the thunder, in the glow","We move like ghosts in row by row","Heart to heart and breath to breath","Dancing softly next to death"],["[Outro]","And when the last delay fades slow","The marble sings, the sub still low","I leave my name in haloed sound","A trembling star beneath the ground"]],"timing":{"stanzas":[29.96,51.96,68.62,82.96,98.48,130.44,138.22,146.22,159.86,175.32,192.78,222.36,249.46,269.84],"lines":[[29.96,29.96,37.0,44.04,48.2],[51.96,55.76,59.76,63.76],[68.62,68.62,70.98,72.92,75.32],[82.96,82.96,86.84,90.72,94.14],[98.48,101.96,105.84,109.7],[130.44,130.44,132.7,134.52,136.62],[138.22,140.22,142.18,144.28],[146.22,146.22,147.76,149.68,152.86],[159.86,159.86,164.22,167.46,171.56],[175.32,178.52,182.64,186.46],[192.78,192.78,200.01,208.14,215.59],[222.36,222.36,229.59,237.49,244.04],[249.46,255.56,259.98,263.82],[269.84,269.84,275.92,281.08,289.08]],"words":[[null,[29.96,30.26,30.76,31.26,33.66,33.96],null,[44.04,45.14,46.04,46.94,47.18,47.5],[48.2,48.62,49.19,49.76,50.43,51.1]],[[51.96,52.86,53.53,54.2,54.72,55.22],[55.76,56.28,56.94,57.34,57.88,58.84],[59.76,60.54,60.88,61.36,62.16,62.78,63.04],[63.76,64.44,64.84,65.18,65.62,66.16,66.76]],[null,[68.62,69.56,70.14,70.22,70.46,70.66],[70.98,71.34,71.84,72.08,72.42],[72.92,73.32,73.52,73.8,74.06,74.34],[75.32,76.26,76.72,78.58,79.78]],[null,[82.96,83.9,84.24,84.76,85.94,86.24],[86.84,87.9,88.12,88.42,88.72,89.02],[90.72,91.68,91.92,92.34,93.16,93.74],[94.14,95.56,95.92,96.42,97.32]],[[98.48,99.46,99.64,100.86,101.38,101.58],[101.96,102.38,102.84,103.34,104.0,104.4,104.84,105.26],[105.84,106.92,107.36,107.84,108.28,108.58,108.96],[109.7,110.86,121.54,122.18,122.44]],[null,[130.44,131.08,131.36,131.54,132.24,132.38],[132.7,133.25,133.8,134.18],[134.52,134.92,135.16,135.58,135.86,136.06],[136.62,136.84,137.16,137.32,137.54,137.76]],[[138.22,138.74,139.0,139.5,139.7,140.04],[140.22,140.52,140.68,140.96,141.48],[142.18,142.58,142.9,143.04,143.44,143.84,144.02],[144.28,144.5,144.74,145.18,145.58,145.98]],[null,[146.22,146.44,147.0,147.05,147.46],[147.76,148.16,148.54,149.28],[149.68,150.12,150.56,150.78,151.58,152.02,152.36],[152.86,153.42,154.9,155.46,156.2,156.64,157.08,157.64]],[null,[159.86,160.66,161.06,162.22,162.74,162.96],[164.22,164.68,164.9,165.56,166.64,166.84],[167.46,168.52,168.72,169.12,170.0,170.54],[171.56,172.4,172.72,173.22,173.52]],[[175.32,175.81,176.3,177.9,178.2,178.5],[178.52,178.82,179.66,180.14,180.78,181.24,181.68,182.08],[182.64,183.68,184.22,184.68,185.1,185.38,185.76],[186.46,187.56,190.16,191.26,191.62]],[null,null,null,null,null],[null,null,null,null,null],[null,[255.56,255.98,256.5,256.98,257.62,257.96,258.46,258.9],[259.98,260.48,260.98,261.48,261.88,262.22,262.56],[263.82,264.32,265.44,268.04,268.42]],[null,[269.84,270.34,270.54,270.76,271.3,271.84,272.22],[275.92,276.92,277.92,278.8,279.15,279.5,280.02],[281.08,283.72,283.98,284.34,285.04,285.7,287.14],[289.08,290.98,291.4,292.8,294.84,295.8]]]},"pulse":{"fps":10,"bass":"00000000000554332221488777654333444387766765433322211111000000000000000454332228ba98765577789aba99deeddccba9bcbaaaabbaaabccb9987666543322211111100000000000ikklmmllmmllkjiiggfhiihhhgfgfeddcca9998jjhffddfeddddcbba98999aaaa987766666666rutssssrtsrrpomlkiihhgffeddcbbcbaaa9987a9876544332211111100000000a98765432221yyxwvzywvuzyvuuywvuwywvuyywvuyywvuzxwvvzxwvxywvuyxvutzywvuzywuuzxwuwxvutwxvutzywvvzywvvyxvuwxvttyxvutyywuuzywuuyxvuxxwutyywutzywuuzxvuuywvtwxvutyxvutyywuuyxvuuywvuwwvutxxvttzywvuyxvuuywvuvxvutxxvutxxvutzywuuxwvuwxvutxwvtsyxvutyxvuuxwutvxvutyxwutxxvutzxwuuxwutvwvtswwutsxwvttxwuttxwutuxvutxwutsxxvttywvttxvutvxvuuyywvuzyxvvzywvvzxwuwzxwuyywvtzywuuyxvuuyxvuwywvuxxvtszywuuyxvutywutvxvtswvuuuspppnkhfda9875mmlllkhgfdca8765433aeedcb988876544322211111000788654432221332213557dffffffghhgfeeddddddcdfeeeedcbaa9aaaa9cdeeeeddca8877544322211111000vzyxwxyxwvzyxwvzzxwwzyxwwzyxwxyxwvzzxwvzywvvzyxvvyxvvxxwvuyxwvuzywvvzywvvyxwvwxwvuyywvvzyxwwyxwvvywvuxxwvuyyxvvzywvvyxwvvyxvuxxvutyxwvuyxwuuyxwuvxwvuxywvuyyxvvyywvvzyxvvyxwvxxwvuyxwvuzyxvvzxwvvyxvuwwvutyxwvuyxwuuyxvuuywvuxxvutyxwvuzywusqomkjihgffedcbggfedcba9987654432221111110000000000000000000654332211111tzyxvvyxvuuuttswvuttwutsswutstwuttuutsrwvuutwuuttwutttwuttuuttswvuttxvvuuxvutuwvutvvuttwvuutxvuttvutstvutsuutsrwvutswvuttwvuuuvuutuuttspnmlkjihhhgggffeefewxwutxwvvuxwwvuxwvuuxwvuvvutsxwvuuxwvutxwvuuwvutvvuttwvuutxwvuuwvutuwvuuvwvttxwwvuxwvuuxwvvuwvuuvwvutwvvutxwvutxvvutwvuuvvuttxxwvvyxwwvyxwwvxwwvxxwvvxxwwvyxwvvyxwvvxwwvvxwvuxwvvuxwvvuyxwvvxwvvvwwvvwwvvuyxwvvxwwvvxwwvvwwvvxxwvvxwwvvywtolifecba98787665433221111110000000011110000000000000001111111111111111100xzyxwwyxwvyywvvyyxwvzxwvvyxwvxxwvvyywvvyyxvvyxxvvyxwwwxwvvyyxwvzyxwwyxwwvyxwwxywvvxxwvvzyxwwzyxwwyxwwwxwvvyxwwvyxwwvyxxwwyxwwwxwwwxxwwwyyxxwyxxwwyxwwwxxwwyyxwvyyxwwzyxwwyxwwwxwvvxxwvvyyxwwzyxwwyxwwwyxwwyyxwwzyxwwzyxxwyxxwwxwwwyyxwwzywspmkigedbaaa9888a99887665555554444477666665555444433332221111543323223666hpomlkihgedca877667bdcba987766556655544qqonljigfdcbba988776654433333222221112xzzzzzzzzzzyuqnkhfeddccbcbbbbbbabba998ozzzzzzzzzzytqnligfeedcbbaaaa999abbaaabzzzyzyyyzywtrqponmllkjihgeefffdddddcdduzzyzzyxzzyuqoligfdcbba9876aaaaa99bbbbbzzzyzzzzzzxusrqponnnnmmllllkkkkkjjjjiihhfedba8765433222211111100000000000000goonmmllmmmlkjkljjjjqonnnqnnnoqoopqqonpwwuttyxwvuzxwvvzxwvvywwvxxwvvzyxwwzyxwwzxxwwywwwxxwvvyxwwwzyxwwzxxwwyxwwxxwwwtqnmkjihggffffeeedddcccbbbbbb976543322wzyxwwyxwwyxwwvzyxwvzyxwwzxxwwxwwvyxxwwyxwvvzyxwvzxwwwxwvvyxwvvyxwwvzyxwwzxxwwxwwvyxxwvyyxwvzyxwwyxxwwxxwwyxxwwyxwwvzxwvvyxwvwxwwvyxxwwzyyxwzyxwwzyxxxyxxwyyxxwzyxxwzyyxwyxxwwxxwwxxwwwzyyxxzyyxxzyyxxyxxwyxxwwzyxxwzyyxwzyxxxyxxwyyxxwzywusqomkjhgfffeeeekjjiihhggffedcbaa98876655433222111110000000006654333288a8qzyxwwxwwvvwwvvxxxwwyxxxwzyyyxxxwwwyxxwxxxwwyxxwwyyxwwxxwwwxwwwxxxwwyyxxwyxxxwwwwvvwwwvxwwwvzzyxxzzzyyzzyyyzzyyzzyyyzzywurpnmkjihgfeedcbbbbbbcdcccbefffggfxvspnlkjjjjjjjjkjjjnqqqpppppppppoooooopqqpppooonnmmllkjjihgffeeddccbccddcccccosssrrqqppoonnmmmmllrssssrrrqqqqppppppopssrrqppoonmmlkkjjiihhgggffeeeddccbbaaaa9qqqponnmmllkkkjjjjjnooooonmmllkkjjiihhhssrrrqqqppoooonnnmmmllkjjiihgffeddcba986543","vocal":"00000000000000988767654a9988geca998889baa87655443486654433222166656ba99fffihgfedb9998aa97766deccdgfeeeefkjiijjjklkjjihhgfejiiihgfffeeddddcbaaecba9cabbbfdcab987766654565435444dcbbfffhmmlkjiihgfhhhggffggjjlmmopqtstvutttssrttvuuvuutssrrqpqrononmlnopqrrrrutsrrtssvvusrqpoooonnmmlkkkkjhnljgnkigfebb9866546prssnkhgeojgehgdcalhecbifca9ifca9jgdbedbbgmifdblhecaojgdbliecjifinnjgpmmkifdnkklkkhefpnjgdnjgdbnjgdbnjgedmigfkifdnrnjgfnkgecojgdbpkhekjfdcmjgmnnkimknkigfqomovsnmormigfkgdb9onnmoojhekifppokgecnjfdbliffenjgnqnjgdnjgffmifcaokgdbmigdllhgnrmisyxutsonjgecpkgeiihhfmifdblhekoqokihlijmtqppooljjhmifcbmifdcmihfgfeddmjhhlonljimjgglroljqokkkrpoonqnligqljhepmljlkhlrurqpmokillnjgdbpljgomigfojhlnpnmnppmkiisnkigllljluuqljtsnjnkhedlifcaonlhltsnjpurommjhgedb976aaa999876543669765433322intvxxxwspoouyzzxvtsrrttrnmnprqrrrrolkjjjjloporqxxwvvvvtsrqqqtutrqproljomkzzzwusqsomllliijtpkyzyvutrtomljrnlkrpkqtwsqqqvqmllvqnlkvqppzvsqoxrnmkvqnnlsnnzyysqpvrnvyytqvswvxyyxwvtrtqomurosptokqswsrqosonopsponurponwrppowsqpourqonwqqxxupwzytrqruqonnurqwwvsrrxuqqqwsqrswqnutvqnlkvrstwtryxzusssyvusqvrpxyzxxvusoqvzvqnmkjiwzvromkxxwwvutqonkjonpnkjihggzzzvtrqomlkjihhggffefeedcbeddca87544qojgwsqppvqpnlrqvvvsrxxwrrwwvsssutrrqsrqqptrqtttootssonnnqnnnmqoonspnnmtokmltrpnlrpomktqonpnlwwvrszzyvvvwvttsutssswtrrquqorqronmmqnnmltqoonnprrtssuuutstvvvvuvvrtwvtrqpsrqqpsolvutqponsqooqoomlvrqvutpoonttsrqxvspzwrqptolnmuuttrtrpnqrqpoonlmlrnijirnktrronmqqoonrqpnmtpmrqrmitrrponmrnmlvtonnuqmllxrpqpvqommwtrqusnmmvpllktrqqpvronltpomtrromupmllvpmtwvromltpnmuroonxtrqsyurruvsrpptomlvrprtyvttssoljjknmqqqqpnjmmmllnononnlkjiknnmmonmkjjihhhhihhggggklllnstssrrryxxxtrnnllzzzxvvuvttsxusuuytqzzzwwwvwsrrrwtsrzvtzzzwuyyzvtsrvrqqqvtwxzwtttxtqqqwssuswrwyyxtrqurqwyzvtxvywzzzzxxvuwtsrxtsxuwsowwxuttstqvvyxtxxxusvvzvuvwzvtwwxuttsxsvxzvswzzutuuxtsrsyttzzzxxwzwswyzvuzzysqzzzutstxvwzzwuzzzvtzzzxxyxxttzzzxwvzwtuyzvspnljizxsnkihtrqqonkifdcapoolhgedbcpptpligedba99bbffeeffhhgffgggfeedfefnljhsromromlolkljhgpmlkjspnnmjhronmljiljigftpnmkjhrpmjlkiihffdprrqqtsrqpppponnonmvsqqsqoxvtrqoononnmrrqprqppvussrqrvutswutsvtrssrruwvxxxwwwwwyyyzywusrppnnonkivsqusrqvsxvplknnlhecosusnjhffehwywsnpuyupossssplxwuqnzzzzuuwvvtqmlnnomifda97nnljvtokwuwwvvuwwuplomihmomwwwxwtqmjgedfddwzzwsqmjfwxvtqomjihxxwvtsszzyxxwwvsvwxzzzyzzzyzzzzyxyyzxwyyxwvyxxvvvwwvxxxxvvvxvtuuvsrvvvsuuwvttttsrttusrvuvsruuussruutssrussrvtsttwtsutxuuuuuttsstrrsrrrtttsstttsssuuutttvvvvvvwwyxvrmijmlzzyywutuoppywuutvrnuuusrrqtqqqqusvuwtpvvxutuuxtqvvywvttustuxvtsstqoqquqorrtoovwvppptrmsswrpustqrsttqqrtupopxvtttxspppvsrqptpprrsprrvtrssxtrssuqqvuuttssupquyurutvqnwvvrqwwwsswvvttsxurssvrrxxxrpruvqppssqvwwtqzzzutxwxutssuqrwwwvvuwtrvvyuqnkigfvuplhfdqpomkheca875nnmkhgiifeuuvromjifda9876544322211111187654332gfcatplkjtolkiupnmsqmmmusrqotqooptommntomqvsonntokkmtokkksommmtponusponvqnrqtomnnuponmuoonutxvvzvpppzuqppztrtsysqqyvsssyvrrqnjgeddcbagfeddghgmmljjjigeezyvtrxyzxvtsqponnnnonmuwvuzywtpmkjkmnnmiffjpooqpnljgec987654432222111111000kihkjihggfecgklppswyzzzzxuromljgecaa9876547665433987544322211134444436778a9acdddcb9865433a988ca8ddcdca87544359988bcba8hhfeb986546544332221143322211111000000000000000000000"}}</script>
+    <script>
+      ;(async () => {
+        'use strict'
+        const SONG = JSON.parse(document.getElementById('song').textContent)
+        const params = new URLSearchParams(location.search)
+        const RENDER = params.has('render')
+
+        /* Palette: the ink-navy ground of the cover, marble type, and the
+           cover's teal, the voice's moon blue, the wing gold and copper. */
+        const GROUND = '#030d12'
+        const TYPE = '#eeeae0'
+        const SMALL_TYPE = 'rgb(238 234 224 / 0.82)'
+        const ACCENTS = {
+          teal: '#4fc0ae',
+          moon: '#91bfd7',
+          gold: '#e6bc63',
+          copper: '#e0895a',
+        }
+        const SECTION_ACCENT = {
+          Intro: 'gold',
+          Verse: 'teal',
+          'Pre-Chorus': 'moon',
+          Chorus: 'gold',
+          Interlude: 'gold',
+          Bridge: 'copper',
+          'Final Chorus': 'gold',
+          Outro: 'moon',
+        }
+
+        /* Frame and type */
+        const W = 1920
+        const H = 1080
+        const SAFE = 120
+        const X0 = 200
+        const CY = H / 2
+        const ROW_MAX = W - SAFE - X0
+        const STACK_MAX = 690
+        const STACK_MAX_CREDIT = 790
+        const HERO_MAX_W = 1500
+        const HERO_MAX_CAP = 300
+        const HERO_MIN_CAP = 190
+        const CONTENT = { size: 140, min: 112, wdth: 100, wght: 300 }
+        const SMALL_SIZE = 80
+        const GAP = 40
+        const HERO_GAP = 52
+        const CREDIT_GAP = 72
+        const CREDIT_H = 92
+        const INNER = 20
+
+        /* Motion */
+        const LAND = 0.18
+        const SWEEP = 0.3
+        const PUSH = 0.2
+        const SLIDE = 0.25
+        const SMALL_IN = 0.24
+        const RISE = 0.5
+
+        /* Cues from the song's pulse: the title lands on the first sound, the
+           first bass, the bass entry and the first big hit; the drop after
+           chorus one (115.3 s, about 122 BPM) gets the title back on its
+           third bar; the outro credit comes as the beat thins out. */
+        const BEAT = 60 / 122
+        const TITLE = { lift: 1.1, me: 7.0, higher: 15.5, credit: 23.2 }
+        const DROP = 115.3
+        const OUTRO = 298.0
+        const END = SONG.duration
+
+        const SMALL_WORDS = new Set(
+          'a an the in of to and through me my we i am are is but yet oh for by like where these when while without now every next no with beneath above at on as still they let you'.split(
+            ' '
+          )
+        )
+        /* Small words that close the phrase before them ("hush now"). */
+        const BACK = new Set(['me', 'now', 'is', 'am'])
+
+        /* One hero per line: the word to sing loudest. */
+        const HEROES = {
+          'In marble light, the midnight breathes': 'midnight',
+          'A silver thread through hallowed eaves': 'silver',
+          'The pillars hum, the shadows lean': 'pillars',
+          'Like dreams in gold, half-seen, unseen': 'gold',
+          'A clockwork heart beneath the stone': 'clockwork',
+          'Keeps time in low electric tones': 'electric',
+          'The moon writes sigils in the rain': 'sigils',
+          'And pulls the tide through every vein': 'tide',
+          'Hush now, the night is turning': 'hush',
+          'Slow like a candle, burning': 'candle',
+          'Hold me where the echoes rise': 'echoes',
+          'Beneath these vaulted, lucid skies': 'skies',
+          'Lift me higher, through the fire': 'higher',
+          'Through the choir, through the wire': 'wire',
+          'Let the pulse become a prayer': 'prayer',
+          'Let the air remember air': 'remember',
+          'In the thunder, in the glow': 'thunder',
+          'We move like ghosts in row by row': 'ghosts',
+          'Heart to heart and breath to breath': 'heart',
+          'Dancing softly next to death': 'death',
+          'I hear the violins of night': 'violins',
+          'A neoclassical silver light': 'light',
+          'They bow above the frozen sea': 'frozen',
+          'And carve a path for memory': 'memory',
+          'The beat descends like temple rain': 'temple',
+          'A measured, dark, mechanical refrain': 'mechanical',
+          'Yet in the fracture, in the seam': 'fracture',
+          'A voice appears, a lucid beam': 'voice',
+          'Hush now, the lantern’s bending': 'hush',
+          'No beginning without ending': 'ending',
+          'Sing through the pillars, old and true': 'sing',
+          'I am the room and I am you': 'you',
+          'Oh, sacred machine, keep turning': 'machine',
+          'While the constellations are burning': 'constellations',
+          'String and shadow, dust and light': 'dust',
+          'We are brief but we are bright': 'bright',
+          'And when the last delay fades slow': 'delay',
+          'The marble sings, the sub still low': 'marble',
+          'I leave my name in haloed sound': 'haloed',
+          'A trembling star beneath the ground': 'star',
+        }
+
+        /* ---------- helpers ---------- */
+
+        const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v)
+        function bezier(x1, y1, x2, y2) {
+          const cx = 3 * x1
+          const bx = 3 * (x2 - x1) - cx
+          const ax = 1 - cx - bx
+          const cy = 3 * y1
+          const by = 3 * (y2 - y1) - cy
+          const ay = 1 - cy - by
+          const sx = (u) => ((ax * u + bx) * u + cx) * u
+          const sy = (u) => ((ay * u + by) * u + cy) * u
+          return (x) => {
+            if (x <= 0) return 0
+            if (x >= 1) return 1
+            let lo = 0
+            let hi = 1
+            let u = x
+            for (let i = 0; i < 40; i++) {
+              const v = sx(u)
+              if (Math.abs(v - x) < 1e-6) break
+              if (v < x) lo = u
+              else hi = u
+              u = (lo + hi) / 2
+            }
+            return sy(u)
+          }
+        }
+        const easeLand = bezier(0.2, 0.9, 0.1, 1)
+        const easePush = bezier(0.65, 0, 0.35, 1)
+        const easeSlide = bezier(0.7, 0, 0.84, 0)
+
+        function mix(a, b, amount) {
+          const ch = (hex, i) => parseInt(hex.slice(1 + i * 2, 3 + i * 2), 16)
+          const c = [0, 1, 2].map((i) =>
+            Math.round(ch(a, i) * (1 - amount) + ch(b, i) * amount)
+          )
+          return `rgb(${c[0]}, ${c[1]}, ${c[2]})`
+        }
+        const vars = (wdth, wght) =>
+          `'wdth' ${wdth.toFixed(1)}, 'wght' ${Math.round(wght)}`
+        const clean = (word) =>
+          word.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
+        const keyOf = (word) => clean(word).toLowerCase().replace(/’/g, "'")
+
+        /* Writes a style only when it changes; what is drawn depends on t alone. */
+        const written = new WeakMap()
+        function put(el, prop, value) {
+          let seen = written.get(el)
+          if (!seen) written.set(el, (seen = {}))
+          if (seen[prop] !== value) {
+            seen[prop] = value
+            el.style[prop] = value
+          }
+        }
+
+        /* ---------- the bass pulse, for the hero's kick ---------- */
+
+        const DIGITS = '0123456789abcdefghijklmnopqrstuvwxyz'
+        const FPS = SONG.pulse.fps
+        const BASS = [...SONG.pulse.bass].map((ch) => DIGITS.indexOf(ch) / 35)
+        function bassAt(t) {
+          const x = t * FPS
+          const i = Math.floor(x)
+          const a = BASS[i] ?? 0
+          const b = BASS[i + 1] ?? a
+          return a + (b - a) * (x - i)
+        }
+        /* How far the bass stands above its last half second: a kick. */
+        function kick(t) {
+          const now = bassAt(t)
+          let low = now
+          for (
+            let i = Math.ceil((t - 0.5) * FPS);
+            i <= Math.floor(t * FPS);
+            i++
+          )
+            low = Math.min(low, BASS[i] ?? low)
+          const k = clamp01((now - low) / 0.15)
+          return k * k
+        }
+
+        /* ---------- fonts and metrics ---------- */
+
+        await Promise.all([
+          document.fonts.load("300 100px 'Anybody'", 'AZ'),
+          document.fonts.load("900 100px 'Anybody'", 'AZ'),
+          document.fonts.load("italic 500 100px 'Cormorant Garamond'", 'az’'),
+          document.fonts.load("italic 400 100px 'Cormorant Garamond'", 'az’'),
+        ])
+        await document.fonts.ready
+
+        const stage = document.getElementById('stage')
+        const probe = document.createElement('span')
+        probe.style.visibility = 'hidden'
+        stage.append(probe)
+        const widths = new Map()
+        function widthPerPx(text, cls, variation) {
+          const key = `${cls}|${variation}|${text}`
+          if (!widths.has(key)) {
+            probe.className = `w ${cls}`
+            probe.style.fontSize = '1000px'
+            probe.style.fontVariationSettings = variation
+            probe.textContent = text
+            widths.set(key, probe.offsetWidth / 1000)
+          }
+          return widths.get(key)
+        }
+        function baselineRatio(cls, variation) {
+          const box = document.createElement('span')
+          box.className = `w ${cls}`
+          box.style.fontSize = '1000px'
+          box.style.fontVariationSettings = variation
+          box.textContent = 'H'
+          const mark = document.createElement('span')
+          mark.style.cssText =
+            'display:inline-block;width:0;height:0;vertical-align:baseline'
+          box.append(mark)
+          stage.append(box)
+          const ratio = mark.offsetTop / 1000
+          box.remove()
+          return ratio
+        }
+        const ctx = document.createElement('canvas').getContext('2d')
+        ctx.font = "900 1000px 'Anybody'"
+        const CAP = ctx.measureText('H').actualBoundingBoxAscent / 1000
+        ctx.font = "italic 500 1000px 'Cormorant Garamond'"
+        const ASC_S = ctx.measureText('dhklbf').actualBoundingBoxAscent / 1000
+        const DESC_S = ctx.measureText('gpyjq').actualBoundingBoxDescent / 1000
+        const BASE_C = baselineRatio('c', vars(100, 400))
+        const BASE_S = baselineRatio('s', 'normal')
+        const CONTENT_VARS = vars(CONTENT.wdth, CONTENT.wght)
+
+        /* ---------- lines and word times ---------- */
+
+        function lyricLines() {
+          const { sheet, timing } = SONG
+          const lines = []
+          let section = 'Intro'
+          sheet.forEach((stanza, s) => {
+            stanza.forEach((text, i) => {
+              const label = text.match(/^\[(.+)\]$/)
+              if (label) {
+                section = label[1]
+                return
+              }
+              const words = text.split(/\s+/).filter(Boolean)
+              const heard = timing.words?.[s]?.[i]
+              lines.push({
+                text,
+                words,
+                section,
+                stanza: s,
+                start: timing.lines[s][i],
+                heard: heard && heard.length === words.length ? heard : null,
+              })
+            })
+          })
+          lines.forEach(
+            (line, k) => (line.next = lines[k + 1]?.start ?? line.start + 8)
+          )
+          const pace = {}
+          for (const s of new Set(lines.map((l) => l.stanza))) {
+            const gaps = lines
+              .filter((l) => l.stanza === s)
+              .map((l) => l.next - l.start)
+              .sort((a, b) => a - b)
+            pace[s] = gaps[Math.floor(gaps.length / 2)]
+          }
+          /* Unheard lines borrow the phrasing of the same line where the
+             aligner heard it, scaled to their stanza's pace; failing that,
+             the words spread through the line by length. */
+          for (const line of lines) {
+            const norm = (s) => s.toLowerCase().replace(/[^a-z’ ]/g, '')
+            let times = line.heard?.slice()
+            if (!times) {
+              const source = lines.find(
+                (o) => o.heard && norm(o.text) === norm(line.text)
+              )
+              if (source) {
+                const ratio = Math.min(
+                  1.8,
+                  Math.max(0.8, pace[line.stanza] / pace[source.stanza])
+                )
+                times = source.heard.map(
+                  (w) => line.start + (w - source.heard[0]) * ratio
+                )
+              } else {
+                const room = line.next - line.start
+                const span = Math.min(
+                  room * 0.7,
+                  Math.max(1.2, line.words.length * 0.75)
+                )
+                const weights = line.words.map((w) => clean(w).length + 2)
+                const total =
+                  weights.slice(0, -1).reduce((a, b) => a + b, 0) || 1
+                let acc = 0
+                times = weights.map((wt) => {
+                  const t = line.start + (acc / total) * span
+                  acc += wt
+                  return t
+                })
+              }
+            }
+            const limit = line.next - 0.2
+            times = times.map((t) => Math.min(t, limit))
+            for (let j = 1; j < times.length; j++)
+              times[j] = Math.max(times[j], times[j - 1] + 0.06)
+            line.times = times
+          }
+          return lines
+        }
+
+        function tokensOf(words, times, hero) {
+          let heroUsed = false
+          return words.map((word, j) => {
+            const key = keyOf(word)
+            let kind = SMALL_WORDS.has(key) ? 'small' : 'content'
+            if (!heroUsed && key === hero) {
+              kind = 'hero'
+              heroUsed = true
+            }
+            const bare = clean(word)
+            const text =
+              kind === 'small'
+                ? bare === 'I'
+                  ? 'I'
+                  : bare.toLowerCase()
+                : bare.toUpperCase()
+            return { text, kind, key, t: times[j] }
+          })
+        }
+
+        function groupsOf(tokens) {
+          const groups = []
+          let pending = []
+          for (const tok of tokens) {
+            if (tok.kind === 'small') {
+              pending.push(tok)
+              continue
+            }
+            if (groups.length) {
+              let i = 0
+              while (i < pending.length && BACK.has(pending[i].key)) i++
+              groups.at(-1).trail.push(...pending.slice(0, i))
+              pending = pending.slice(i)
+            }
+            groups.push({ lead: pending, word: tok, trail: [] })
+            pending = []
+          }
+          if (pending.length) groups.at(-1).trail.push(...pending)
+          return groups
+        }
+
+        /* ---------- layout: a flush-left stack from x 200 ---------- */
+
+        const smallW = (tok) => widthPerPx(tok.text, 's', 'normal') * SMALL_SIZE
+        const sideW = (list) =>
+          list.reduce((sum, tok) => sum + smallW(tok) + INNER, 0)
+
+        function heroFit(tok, budget, cap) {
+          let wdth = 150
+          let size = 0
+          for (;;) {
+            const per = widthPerPx(tok.text, 'c', vars(wdth, 900))
+            size = Math.min(budget / per, cap / CAP)
+            if (size * CAP >= Math.min(HERO_MIN_CAP, cap) || wdth <= 80) break
+            wdth -= 5
+          }
+          return {
+            size,
+            wdth,
+            w: widthPerPx(tok.text, 'c', vars(wdth, 900)) * size,
+          }
+        }
+
+        function arrange(line, cs, heroCap, spec) {
+          const rows = spec.map((ids) => {
+            const groups = ids.map((i) => line.groups[i])
+            const hero = groups.some((g) => g.word.kind === 'hero')
+            const cap = hero ? 0 : cs * CAP
+            let x = X0
+            const placed = []
+            let rowCap = cap
+            for (const g of groups) {
+              if (x > X0) x += 0.3 * cs
+              for (const tok of g.lead) {
+                placed.push({
+                  tok,
+                  x,
+                  size: SMALL_SIZE,
+                  w: smallW(tok),
+                  at: 'cap',
+                })
+                x += smallW(tok) + INNER
+              }
+              const word = g.word
+              if (word.kind === 'hero') {
+                const budget = Math.min(
+                  HERO_MAX_W,
+                  ROW_MAX - sideW(g.lead) - sideW(g.trail) - INNER * 0.3 - 2
+                )
+                const fit = heroFit(word, budget, heroCap)
+                placed.push({
+                  tok: word,
+                  x,
+                  size: fit.size,
+                  w: fit.w,
+                  wdth: fit.wdth,
+                  at: 'word',
+                })
+                rowCap = fit.size * CAP
+                x += fit.w + INNER * 1.3
+              } else {
+                const w = widthPerPx(word.text, 'c', CONTENT_VARS) * cs
+                placed.push({ tok: word, x, size: cs, w, at: 'word' })
+                x += w + INNER
+              }
+              for (const tok of g.trail) {
+                placed.push({
+                  tok,
+                  x,
+                  size: SMALL_SIZE,
+                  w: smallW(tok),
+                  at: 'base',
+                })
+                x += smallW(tok) + INNER
+              }
+            }
+            const right = Math.max(...placed.map((p) => p.x + p.w))
+            return {
+              hero,
+              cap: rowCap,
+              h: rowCap,
+              placed,
+              width: right - X0,
+              t: Math.min(...placed.map((p) => p.tok.t)),
+            }
+          })
+          return rows
+        }
+
+        function stackHeight(rows) {
+          let y = 0
+          rows.forEach((row, k) => {
+            if (k) y += row.gapAbove
+            row.top = y
+            y += row.h
+          })
+          return y
+        }
+
+        function layout(line) {
+          line.groups = groupsOf(line.tokens)
+          let spec = line.groups.map((_, i) => [i])
+          let cs = CONTENT.size
+          let heroCap = HERO_MAX_CAP
+          const limit = line.credit ? STACK_MAX_CREDIT : STACK_MAX
+          let rows
+          for (let pass = 0; pass < 60; pass++) {
+            rows = arrange(line, cs, heroCap, spec)
+            if (line.credit)
+              rows.push({
+                credit: true,
+                h: CREDIT_H,
+                placed: [],
+                t: line.credit.t,
+                width: 0,
+              })
+            rows.forEach((row, k) => {
+              const prev = rows[k - 1]
+              row.gapAbove = !prev
+                ? 0
+                : row.credit
+                  ? CREDIT_GAP
+                  : row.hero || prev.hero
+                    ? HERO_GAP
+                    : GAP
+            })
+            const total = stackHeight(rows)
+            const tooWide = rows.some((r) => r.width > ROW_MAX + 1)
+            if (total <= limit && !tooWide) break
+            let best = -1
+            let bestW = Infinity
+            for (let k = 0; k + 1 < spec.length; k++) {
+              const a = rows[k]
+              const b = rows[k + 1]
+              if (a.hero || b.hero) continue
+              const merged = a.width + 0.3 * cs + b.width
+              if (merged <= ROW_MAX && merged < bestW) {
+                best = k
+                bestW = merged
+              }
+            }
+            if (!tooWide && best >= 0)
+              spec = [
+                ...spec.slice(0, best),
+                [...spec[best], ...spec[best + 1]],
+                ...spec.slice(best + 2),
+              ]
+            else if (!tooWide && heroCap > 220) heroCap -= 20
+            else if (cs > CONTENT.min) cs -= 4
+            else break
+          }
+          line.rows = rows
+          line.H = stackHeight(rows)
+          line.cs = cs
+          for (const row of rows) {
+            for (const p of row.placed) {
+              const tok = p.tok
+              tok.x = p.x
+              tok.size = p.size
+              tok.w = p.w
+              if (p.wdth) tok.wdth = p.wdth
+              tok.base =
+                p.at === 'cap' ? row.top + ASC_S * p.size : row.top + row.cap
+              tok.row = row
+            }
+          }
+          line.hero = line.tokens.find((t) => t.kind === 'hero')
+        }
+
+        /* ---------- the timeline ---------- */
+
+        const titleWords = (t0, t1, t2) =>
+          tokensOf(['Lift', 'me', 'higher'], [t0, t1, t2], 'higher')
+        const LYRICS = lyricLines()
+        /* The reprise takes the first bar of the drop after the last words
+           sung into it (the aligner heard "next to death" inside the drop). */
+        const intoDrop = LYRICS.filter((l) => l.start < DROP).at(-1)
+        let REPRISE = DROP + 8 * BEAT
+        while (REPRISE < Math.max(...intoDrop.times) + 0.5) REPRISE += 4 * BEAT
+        const LINES = []
+        LINES.push({
+          section: 'Intro',
+          tokens: titleWords(TITLE.lift, TITLE.me, TITLE.higher),
+          credit: { t: TITLE.credit, title: SONG.album, artist: SONG.artist },
+        })
+        for (const line of LYRICS) {
+          if (
+            line.start > REPRISE &&
+            !LINES.some((l) => l.section === 'Interlude')
+          ) {
+            LINES.push({
+              section: 'Interlude',
+              tokens: titleWords(
+                REPRISE,
+                REPRISE + 0.5 * BEAT,
+                REPRISE + 2 * BEAT
+              ),
+            })
+          }
+          const hero = HEROES[line.text]
+          if (!hero) console.warn('no hero for', line.text)
+          const entry = {
+            section: line.section,
+            text: line.text,
+            tokens: tokensOf(line.words, line.times, hero),
+          }
+          LINES.push(entry)
+        }
+        const LAST = LINES.at(-1)
+        LAST.credit = { t: OUTRO, title: SONG.title, artist: SONG.artist }
+        for (const line of LINES)
+          line.start = Math.min(...line.tokens.map((t) => t.t))
+        LINES.forEach((line, k) => {
+          line.slideAt = LINES[k + 1]?.start ?? Infinity
+          /* The slide-off ends as the next line's first word lands, so that
+             word lands on a clear frame (an ease-in barely moves at first). */
+          line.exitAt = Math.max(
+            line.slideAt - SLIDE,
+            Math.max(...line.tokens.map((t) => t.t)) + 0.06
+          )
+          line.exitDur = Number.isFinite(line.exitAt)
+            ? Math.min(SLIDE, Math.max(0.12, line.slideAt - line.exitAt))
+            : SLIDE
+          const type = line.section.replace(/\s*\d+$/, '')
+          line.accent = ACCENTS[SECTION_ACCENT[type] ?? 'gold']
+          line.ground = mix(GROUND, line.accent, 0.07)
+          layout(line)
+        })
+
+        /* ---------- DOM ---------- */
+
+        const linesLayer = document.getElementById('lines')
+        const ghostLayer = document.getElementById('ghosts')
+        function span(cls, text, size, color) {
+          const el = document.createElement('span')
+          el.className = `w ${cls}`
+          el.textContent = text
+          el.style.fontSize = `${size}px`
+          el.style.color = color
+          return el
+        }
+        for (const line of LINES) {
+          line.el = document.createElement('div')
+          line.el.className = 'line'
+          line.el.style.display = 'none'
+          for (const tok of line.tokens) {
+            const cls = tok.kind === 'small' ? 's' : 'c'
+            const color =
+              tok.kind === 'hero'
+                ? line.accent
+                : tok.kind === 'small'
+                  ? SMALL_TYPE
+                  : TYPE
+            tok.el = span(cls, tok.text, tok.size, color)
+            const base = tok.kind === 'small' ? BASE_S : BASE_C
+            tok.top = tok.base - base * tok.size
+            tok.el.style.transformOrigin = `0px ${(base * tok.size).toFixed(2)}px`
+            tok.el.style.visibility = 'hidden'
+            tok.el.style.fontVariationSettings =
+              tok.kind === 'hero'
+                ? vars(tok.wdth, 900)
+                : tok.kind === 'content'
+                  ? CONTENT_VARS
+                  : 'normal'
+            line.el.append(tok.el)
+          }
+          if (line.credit) {
+            const row = line.rows.find((r) => r.credit)
+            const title = span('s', line.credit.title, 44, TYPE)
+            const artist = span('c tracked', line.credit.artist, 28, TYPE)
+            artist.style.fontVariationSettings = vars(100, 700)
+            title.style.transformOrigin = artist.style.transformOrigin = '0 0'
+            line.creditEls = [
+              { el: title, top: row.top + 36 - BASE_S * 44 },
+              { el: artist, top: row.top + CREDIT_H - BASE_C * 28 },
+            ]
+            for (const c of line.creditEls) {
+              c.el.style.opacity = '0'
+              line.el.append(c.el)
+            }
+          }
+          linesLayer.append(line.el)
+          if (line.hero) {
+            const hero = line.hero
+            const size = hero.size * 3
+            const el = span('c', hero.text, size, line.accent)
+            el.style.display = 'none'
+            el.style.opacity = '0'
+            ghostLayer.append(el)
+            line.ghost = { el, size, cap: size * CAP, baseOff: BASE_C * size }
+          }
+        }
+
+        const header = document.getElementById('header')
+        const headTitle = span('s', SONG.title, 30, TYPE)
+        const headMark = document.createElement('span')
+        headMark.className = 'w'
+        headMark.style.cssText = `width:7px;height:7px;background:${TYPE};transform-origin:50% 50%`
+        const headSection = span('c', '', 15, TYPE)
+        headSection.style.fontVariationSettings = vars(125, 600)
+        headSection.style.letterSpacing = '0.28em'
+        header.append(headTitle, headMark, headSection)
+        const HEAD_BASE = 150
+        const headTitleW = widthPerPx(SONG.title, 's', 'normal') * 30
+        headTitle.style.transform = `translate(${X0}px, ${HEAD_BASE - BASE_S * 30}px)`
+        headMark.style.transform = `translate(${X0 + headTitleW + 22}px, ${HEAD_BASE - 13}px) rotate(45deg)`
+        headSection.style.transform = `translate(${X0 + headTitleW + 50}px, ${HEAD_BASE - BASE_C * 15}px)`
+        header.style.opacity = '0'
+        const fade = document.getElementById('fade')
+
+        /* ---------- seek: every visual from t alone ---------- */
+
+        const FIRST_LYRIC = LINES.find((l) => l.section !== 'Intro').start
+        function lineAt(t) {
+          let found = null
+          for (const line of LINES) if (line.start <= t) found = line
+          return found
+        }
+
+        function stackY(line, t) {
+          let h = 0
+          line.rows.forEach((row) => {
+            if (t < row.t) return
+            h += (row.h + row.gapAbove) * easePush(clamp01((t - row.t) / PUSH))
+          })
+          return CY - h / 2
+        }
+
+        function renderLine(line, t) {
+          const on = t >= line.start && t < line.exitAt + 2 * line.exitDur
+          put(
+            line.el,
+            'display',
+            on && t < line.exitAt + line.exitDur ? 'block' : 'none'
+          )
+          if (line.ghost)
+            put(
+              line.ghost.el,
+              'display',
+              on && t >= line.hero.t ? 'block' : 'none'
+            )
+          if (!on) return
+          const rest = stackY(line, t)
+          let y = rest
+          if (t >= line.exitAt)
+            y -=
+              easeSlide(clamp01((t - line.exitAt) / line.exitDur)) *
+              (CY + line.H / 2 + 80)
+          put(line.el, 'transform', `translate3d(0px, ${y.toFixed(2)}px, 0px)`)
+          const live = t < line.exitAt && t < OUTRO
+          for (const tok of line.tokens) renderToken(tok, t, live)
+          if (line.creditEls) {
+            const p =
+              t < line.credit.t
+                ? 0
+                : easeLand(clamp01((t - line.credit.t) / RISE))
+            for (const c of line.creditEls) {
+              put(c.el, 'opacity', p.toFixed(3))
+              put(
+                c.el,
+                'transform',
+                `translate3d(${X0}px, ${(c.top + 16 * (1 - p)).toFixed(2)}px, 0px)`
+              )
+            }
+          }
+          if (line.ghost && t >= line.hero.t) renderGhost(line, t, rest)
+        }
+
+        function renderToken(tok, t, live) {
+          const el = tok.el
+          if (t < tok.t) {
+            put(el, 'visibility', 'hidden')
+            return
+          }
+          put(el, 'visibility', 'visible')
+          const dt = t - tok.t
+          let scale = 1
+          let dy = 0
+          let opacity = 1
+          if (tok.kind === 'small') {
+            const e = easeLand(clamp01(dt / SMALL_IN))
+            opacity = e
+            dy = (1 - e) * 12
+          } else {
+            scale = 1.35 - 0.35 * easeLand(clamp01(dt / LAND))
+            if (tok.kind === 'hero') {
+              const e = easeLand(clamp01(dt / SWEEP))
+              put(
+                el,
+                'fontVariationSettings',
+                vars(50 + (tok.wdth - 50) * e, 500 + 400 * e)
+              )
+              if (live && dt > LAND) scale *= 1 + 0.03 * kick(t)
+            }
+          }
+          put(el, 'opacity', opacity.toFixed(3))
+          put(
+            el,
+            'transform',
+            `translate3d(${tok.x.toFixed(2)}px, ${(tok.top + dy).toFixed(2)}px, 0px) scale(${scale.toFixed(4)})`
+          )
+        }
+
+        /* A copy of the hero at 3x, 6%, cropped by the frame, moving at half
+           the hero's speed and drifting left. */
+        function renderGhost(line, t, rest) {
+          const g = line.ghost
+          const hero = line.hero
+          const dt = t - hero.t
+          const e = easeLand(clamp01(dt / SWEEP))
+          const heroMid = rest + hero.base - (hero.size * CAP) / 2
+          let mid = CY + (heroMid - CY) * 0.5
+          if (t >= line.exitAt)
+            mid -=
+              easeSlide(clamp01((t - line.exitAt) / (2 * line.exitDur))) *
+              (mid + g.cap / 2 + 80)
+          const x = X0 - g.size * 0.35 - dt * 14
+          const top = mid + g.cap / 2 - g.baseOff
+          put(
+            g.el,
+            'fontVariationSettings',
+            vars(50 + (hero.wdth - 50) * e, 500 + 400 * e)
+          )
+          put(g.el, 'opacity', (0.06 * e).toFixed(4))
+          put(
+            g.el,
+            'transform',
+            `translate3d(${x.toFixed(2)}px, ${top.toFixed(2)}px, 0px)`
+          )
+        }
+
+        function seek(time) {
+          const t = Math.min(Math.max(Number(time) || 0, 0), END)
+          const current = lineAt(t)
+          put(stage, 'backgroundColor', current ? current.ground : GROUND)
+          put(fade, 'opacity', (1 - easePush(clamp01(t / 1.0))).toFixed(3))
+          const lyric =
+            current && current.section !== 'Intro' && t >= FIRST_LYRIC
+          const headIn = lyric
+            ? clamp01((t - FIRST_LYRIC) / 0.6) *
+              (1 - clamp01((t - OUTRO) / 0.4))
+            : 0
+          put(header, 'opacity', (0.55 * headIn).toFixed(3))
+          if (lyric) {
+            const label =
+              current.section === 'Interlude' ? 'Interlude' : current.section
+            if (headSection.textContent !== label)
+              headSection.textContent = label
+          }
+          for (const line of LINES) renderLine(line, t)
+        }
+
+        /* ---------- checks (?check) ---------- */
+
+        function inkBox(tok, top) {
+          const y = top + tok.base
+          if (tok.kind === 'small')
+            return [
+              tok.x,
+              y - ASC_S * tok.size,
+              tok.x + tok.w,
+              y + DESC_S * tok.size,
+            ]
+          return [tok.x, y - CAP * tok.size, tok.x + tok.w, y]
+        }
+        function check() {
+          const issues = []
+          const lines = []
+          for (const line of LINES) {
+            const top = CY - line.H / 2
+            const boxes = line.tokens.map((tok) => ({
+              tok,
+              box: inkBox(tok, top),
+            }))
+            if (line.credit) {
+              const row = line.rows.find((r) => r.credit)
+              const tw = widthPerPx(line.credit.title, 's', 'normal') * 44
+              boxes.push({
+                tok: { text: line.credit.title },
+                box: [X0, top + row.top, X0 + tw, top + row.top + CREDIT_H],
+              })
+            }
+            for (const { tok, box } of boxes) {
+              if (
+                box[0] < SAFE - 0.5 ||
+                box[2] > W - SAFE + 0.5 ||
+                box[1] < SAFE - 0.5 ||
+                box[3] > H - SAFE + 0.5
+              )
+                issues.push(
+                  `edge: "${tok.text}" in "${line.text ?? line.section}" at ${box.map(Math.round)}`
+                )
+            }
+            for (let i = 0; i < boxes.length; i++)
+              for (let j = i + 1; j < boxes.length; j++) {
+                const a = boxes[i].box
+                const b = boxes[j].box
+                if (
+                  a[0] < b[2] - 2 &&
+                  b[0] < a[2] - 2 &&
+                  a[1] < b[3] - 2 &&
+                  b[1] < a[3] - 2
+                )
+                  issues.push(
+                    `overlap: "${boxes[i].tok.text}" / "${boxes[j].tok.text}" in "${line.text ?? line.section}"`
+                  )
+              }
+            const hero = line.hero
+            if (hero) {
+              seek(hero.t + SWEEP + 0.01)
+              const domW = hero.el.offsetWidth
+              if (domW > HERO_MAX_W + 1)
+                issues.push(`hero too wide: ${hero.text} ${domW}`)
+              if (hero.size * CAP > HERO_MAX_CAP + 0.5)
+                issues.push(`hero too tall: ${hero.text}`)
+              if (Math.abs(domW - hero.w) > 3)
+                issues.push(
+                  `hero measure drift: ${hero.text} ${domW} vs ${hero.w.toFixed(1)}`
+                )
+            }
+            for (const tok of line.tokens) {
+              if (tok.kind !== 'small') continue
+              const row = tok.row
+              const ok =
+                Math.abs(tok.base - (row.top + row.cap)) < 0.01 ||
+                Math.abs(tok.base - (row.top + ASC_S * tok.size)) < 0.01
+              if (!ok) issues.push(`small off its line: ${tok.text}`)
+            }
+            lines.push({
+              line: line.text ?? line.section,
+              start: +line.start.toFixed(2),
+              rows: line.rows.length,
+              H: Math.round(line.H),
+              content: line.cs,
+              hero: hero
+                ? `${hero.text} ${Math.round(hero.w)}x${Math.round(hero.size * CAP)} wdth ${hero.wdth}`
+                : null,
+            })
+          }
+          let landing = 0
+          for (const line of LINES)
+            for (const tok of line.tokens) {
+              const shown = () =>
+                line.el.style.display !== 'none' &&
+                tok.el.style.visibility === 'visible'
+              seek(tok.t - 1 / 60)
+              const before = shown()
+              seek(tok.t + 1e-4)
+              const after = shown()
+              if (before)
+                issues.push(`early: ${tok.text} @ ${tok.t.toFixed(2)}`)
+              if (!after) issues.push(`late: ${tok.text} @ ${tok.t.toFixed(2)}`)
+              landing++
+            }
+          const handoffs = []
+          LINES.forEach((line, k) => {
+            const prev = LINES[k - 1]
+            if (!prev) return
+            seek(line.start + 1e-4)
+            if (prev.el.style.display !== 'none')
+              handoffs.push(
+                `${line.text ?? line.section} (${(prev.exitAt + prev.exitDur - line.start).toFixed(2)}s)`
+              )
+          })
+          const accents = new Set(
+            Object.values(ACCENTS).map((hex) => mix(hex, hex, 0))
+          )
+          for (const el of document.querySelectorAll('#lines .w, #header .w')) {
+            const color = getComputedStyle(el).color
+            const isHero = LINES.some((l) => l.hero && l.hero.el === el)
+            if (!isHero && accents.has(color))
+              issues.push(`accent off a hero: ${el.textContent}`)
+          }
+          const snap = () =>
+            [...stage.querySelectorAll('*')]
+              .map((el) => el.style.cssText)
+              .join('\n') + stage.style.cssText
+          seek(END)
+          const atEnd = snap()
+          seek(END + 1)
+          const holds = snap() === atEnd
+          if (!holds) issues.push('seek(END) and seek(END + 1) differ')
+          return {
+            end: END,
+            lines: LINES.length,
+            words: landing,
+            holds,
+            handoffs,
+            metrics: { CAP, ASC_S, DESC_S, BASE_C, BASE_S },
+            issues,
+            layout: lines,
+          }
+        }
+
+        window.seek = seek
+        window.duration = END
+        window.cues = LINES.map((l) => ({
+          text: l.text ?? l.section,
+          start: l.start,
+          last: Math.max(...l.tokens.map((t) => t.t)),
+          hero: l.hero?.t,
+          slideAt: l.slideAt,
+          exitAt: l.exitAt,
+        }))
+
+        /* ---------- stage fit and playback ---------- */
+
+        function fit() {
+          const scale = Math.min(innerWidth / W, innerHeight / H)
+          stage.style.transform = `translate(${(innerWidth - W * scale) / 2}px, ${(innerHeight - H * scale) / 2}px) scale(${scale})`
+        }
+        fit()
+        addEventListener('resize', fit)
+
+        if (params.has('check')) {
+          const result = check()
+          document.getElementById('report').textContent = JSON.stringify(result)
+          window.report = result
+        }
+        const startAt = Number(params.get('t') ?? 0)
+        seek(RENDER ? startAt : 20)
+        window.ready = true
+        if (RENDER) return
+
+        const audio = new Audio()
+        audio.preload = 'auto'
+        audio.src = SONG.audio
+        let useAudio = true
+        let paused = false
+        let clockOrigin = 0
+        let clockAt = startAt
+        let endedAt = 0
+        const clock = () =>
+          paused ? clockAt : clockAt + (performance.now() - clockOrigin) / 1000
+        function now() {
+          return useAudio ? audio.currentTime : clock()
+        }
+        function jump(t) {
+          const to = Math.min(Math.max(t, 0), END)
+          if (useAudio) audio.currentTime = to
+          clockAt = to
+          clockOrigin = performance.now()
+          endedAt = 0
+        }
+        function toggle() {
+          if (useAudio) {
+            if (audio.paused) audio.play()
+            else audio.pause()
+            return
+          }
+          clockAt = clock()
+          clockOrigin = performance.now()
+          paused = !paused
+        }
+        function frame() {
+          let t = now()
+          if (t >= END - 0.02 || (useAudio && audio.ended)) {
+            if (!endedAt) endedAt = performance.now()
+            t = END
+            if (performance.now() - endedAt > 1000) {
+              jump(0)
+              if (useAudio) audio.play()
+            }
+          }
+          seek(t)
+          requestAnimationFrame(frame)
+        }
+        window.player = {
+          now,
+          get source() {
+            return useAudio ? 'audio' : 'clock'
+          },
+        }
+        const start = document.getElementById('start')
+        start.style.display = 'flex'
+        start.addEventListener('click', async () => {
+          start.remove()
+          jump(startAt)
+          try {
+            await audio.play()
+          } catch {
+            useAudio = false
+            clockOrigin = performance.now()
+          }
+          requestAnimationFrame(frame)
+        })
+        addEventListener('keydown', (event) => {
+          if (event.code === 'Space') {
+            event.preventDefault()
+            toggle()
+          } else if (event.code === 'ArrowRight') jump(now() + 5)
+          else if (event.code === 'ArrowLeft') jump(now() - 5)
+        })
+      })()
+    </script>
+  </body>
+</html>

@@ -192,6 +192,12 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `meter-glow` and `tracker-sheen` utilities give its marks the glass
   treatment (no borders or outlines).
 
+- `public/kinetic/<song>/` standalone kinetic lyric videos (Lift Me Higher):
+  one self-contained HTML page each, outside the app, its React kit rules and
+  its service worker (`globIgnores` and `navigateFallbackDenylist` in
+  `vite.config.ts`), drawn from `window.seek(t)`; the song data is inlined by
+  `scripts/kinetic-data.py` (README "Kinetic lyrics").
+
 ## Dust UI rules (house rules, non-negotiable)
 
 - Semantic tokens only: `bg-primary`, `text-muted-foreground`,
