@@ -1,9 +1,27 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
+import { defineConfig, type Connect, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { VitePWA } from 'vite-plugin-pwa'
+
+/** Serves public/kinetic/<song>/ at its folder URL in dev and preview, as Caddy does live. */
+function kineticIndex(): Plugin {
+  const rewrite: Connect.NextHandleFunction = (req, _res, next) => {
+    const match = req.url?.match(/^\/kinetic\/([^/?#]+)\/?(\?.*)?$/)
+    if (match) req.url = `/kinetic/${match[1]}/index.html${match[2] ?? ''}`
+    next()
+  }
+  return {
+    name: 'kinetic-index',
+    configureServer: (server) => {
+      server.middlewares.use(rewrite)
+    },
+    configurePreviewServer: (server) => {
+      server.middlewares.use(rewrite)
+    },
+  }
+}
 
 export default defineConfig({
   // music.dgfisher.com serves from the root; VITE_BASE_PATH builds for a subpath.
@@ -11,6 +29,7 @@ export default defineConfig({
   // 4600 extends the dust-ui 4xxx port block (docs 4100 ... real-estate 4500).
   server: { port: 4600 },
   plugins: [
+    kineticIndex(),
     tanstackRouter({ target: 'react', autoCodeSplitting: true }),
     react(),
     tailwindcss(),

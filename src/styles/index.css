@@ -33,8 +33,15 @@
 @source '../../node_modules/@dust-ui/charts/dist';
 
 @custom-variant dark (&:is(.dark *));
-/* Landscape phones and other short viewports. */
-@custom-variant short (@media (max-height: 560px));
+/* Landscape phones and other short viewports, never inside the frame (a
+   short desktop window still shows a full-height phone, scaled). */
+@custom-variant short {
+  @media (max-height: 560px) {
+    &:where(:not([data-framed] *)) {
+      @slot;
+    }
+  }
+}
 
 @theme {
   --font-sans:

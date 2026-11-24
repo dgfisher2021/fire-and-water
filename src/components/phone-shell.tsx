@@ -109,6 +109,15 @@ function ShellToasts() {
   )
 }
 
+/**
+ * When the app sits in the phone frame: a tablet-sized touch screen, as the
+ * kit does, or any desktop window with a mouse, however short (the frame
+ * scales to fit). A landscape phone is wide but short and touch, so it
+ * stays full screen.
+ */
+const FRAME_QUERY =
+  '(min-width: 768px) and (min-height: 700px), (min-width: 768px) and (hover: hover) and (pointer: fine)'
+
 export type PhoneShellProps = {
   /** The active track id; drives the backdrop. */
   theme: string
@@ -124,6 +133,7 @@ export function PhoneShell({ theme, children }: PhoneShellProps) {
   const mini = useMiniPlayerVisible()
   return (
     <MobileAppShell
+      frameQuery={FRAME_QUERY}
       nav={useShellNav()}
       backdrop={<SongBackdrop theme={theme} />}
       grain

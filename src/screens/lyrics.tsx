@@ -103,8 +103,10 @@ export function LyricsScreen() {
   const [picking, setPicking] = useState<CompareSide | null>(null)
 
   // The control opens folded to the bar so the words get the screen; the
-  // reader unfolds it by hand for this song. Short viewports never show the card.
-  const short = useMediaQuery(SHORT_QUERY)
+  // reader unfolds it by hand for this song. Short viewports never show the
+  // card, unless the app is framed (the frame keeps a phone's height).
+  const shortViewport = useMediaQuery(SHORT_QUERY)
+  const short = shortViewport && !framed
   const foldedPlayer = usePrefs((s) => s.foldedPlayer)
   const [unfolded, setUnfolded] = useState<TrackId | null>(null)
   const collapsed = short || unfolded !== track
