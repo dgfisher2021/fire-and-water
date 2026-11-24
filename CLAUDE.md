@@ -41,17 +41,19 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
 
 - `src/components/phone-shell.tsx` the chrome on `@dust-ui/blocks`'
   `MobileAppShell`: on phones the screen fills the viewport with a fixed
-  nav; from 768px wide and 700px tall it sits in a `DeviceFrame` over a
-  blurred copy of the backdrop (a landscape phone is wide but short and
-  stays fluid). Framed, the shell renders the backdrop twice, so
+  nav; from 768px wide it sits in a `DeviceFrame` over a blurred copy of
+  the backdrop when the screen is 700px tall or has a mouse (`FRAME_QUERY`,
+  passed as `frameQuery`: a short desktop window still frames, the frame
+  scales to fit, while a landscape phone is wide, short and touch and stays
+  fluid). Framed, the shell renders the backdrop twice, so
   `SongBackdrop` draws the artwork in the window copy and the chosen
   background only inside the phone (one WebGL scene, never two). The nav,
   mini player (`overlay`, `strip`) and toasts are shell props; the pulse
   glow and its variables mount inside, where `useMobileShellRoot` has the
   root. Screens are `MobileAppScreen`; `useMobileShellRoot` (for
   `SheetAction`/toast portals) and `useMobileShellFramed` come from blocks.
-  The `short:` variant (max-height 560px) lays the album stage sideways and
-  hides the Now Playing card.
+  The `short:` variant (max-height 560px, never inside the frame) lays the
+  album stage sideways and hides the Now Playing card.
 - `src/screens/lyrics.tsx` keeps the Now Playing card and bar both mounted
   and starts folded to the bar; a tap unfolds the card for that song
   (grid-rows transition, `inert` on the hidden one). The screen has no

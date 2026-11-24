@@ -43,7 +43,7 @@ export function ArtworkStage({
     >
       <MotionTilt
         rotation={7}
-        className='relative mb-4 size-[min(216px,28dvh)] short:mb-0 short:size-[150px] short:shrink-0'
+        className='relative mb-4 size-[min(216px,28dvh)] short:mb-0 short:size-[150px] short:shrink-0 [[data-framed]_&]:size-[216px]'
       >
         <div
           aria-hidden
