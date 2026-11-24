@@ -42,8 +42,11 @@ export default defineConfig({
           '**/*-cyrillic*',
           '**/*-vietnamese*',
           '**/*-latin-ext*',
+          // The standalone kinetic lyric pages are not part of the app.
+          'kinetic/**',
         ],
         navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/\/kinetic\//],
         runtimeCaching: [
           { urlPattern: /\.(m4a|mp3|mp4)(\?|$)/, handler: 'NetworkOnly' },
         ],
