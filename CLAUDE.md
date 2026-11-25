@@ -235,9 +235,9 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `signals.ts` what the film hears (a live analyser from `lib/audio.ts`
   while the song plays, the precomputed pulse otherwise and for held
   frames), `scene*.tsx` is one react-three-fiber canvas with
-  `@react-three/postprocessing` bloom, the kit's in-canvas `SparkField`,
-  `GlowTrail` and `AssistantOrb3d` (the orb, lit by `Studio`, a procedural
-  drei `Environment`; the kit's Scene/Stage/Backdrop components each open
+  `@react-three/postprocessing` bloom, the kit's in-canvas `SparkField`
+  and `GlowTrail` (`Studio` is a procedural drei `Environment` the metal
+  reflects; the kit's Scene/Stage/Backdrop components each open
   their own WebGL context, so they are not used here), `scene-solid.tsx`
   (extruded hero letters from `cinzel-black.typeface.json`, written by
   `scripts/kinetic-font.mjs`; transparent materials at render order 80 so
@@ -245,12 +245,16 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   the hero's glyphs, placed in stage space by the same pose),
   `scene-cover.tsx` (the song's own cover from `TRACKS[id].art`: the picture
   resolving in the intro, its gold as grains, a wash, the perched figure
-  cut from it, a raven in flight, the wings of `wing.ts`). The orb is one
-  thing, the clockwork heart: always at `stage.heart` in the rings, only on
+  cut from it, the wings of `wing.ts`). `scene-heart.tsx` is the clockwork
+  heart, a watch movement (cue `orb`): always at `stage.heart` in the rings, only on
   lines about the heart, pulse or machine, and lines that share its frame
-  are laid out clear of it (`line.reserve`). The sigils are particles that
-  hold a rune and flow into the next (the kit's `ParticleCarouselScene`
-  morph, ported in-canvas and timed by the song). `lib/audio.ts` owns the
+  are laid out clear of it (`line.reserve`). The effects are ports of the real ones, not
+  look-alikes: `scene-runes.tsx` is the Runic Alphabet showpiece's shader
+  (react-ui-animation-examples), `scene-comets.tsx` the Sparks showpiece's
+  comets (choir and wire), `scene-constellation.tsx` Spirit World's sky
+  (stars lit and joined near two drifting foci). When an effect looks cheap,
+  find its source in those repos and port that. A line keeps leaving for
+  `TAIL` seconds after the next lands, so hand-offs overlap. `lib/audio.ts` owns the
   one Web Audio graph: a song loads with CORS only after the media origin
   answers a HEAD probe (the R2 rule allows the site and localhost:4600),
   never on iOS, and the analyser attaches only to a clean source, because

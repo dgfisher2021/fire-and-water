@@ -231,37 +231,6 @@ export function Shafts() {
   )
 }
 
-const CHOIR = /* glsl */ `
-void main() {
-  vec2 p = vP;
-  vec3 col = vec3(0.0);
-  for (int i = 0; i < 9; i++) {
-    float fi = float(i);
-    float e = abs(fi - 4.0) / 4.0;
-    float x = (fi - 4.0) / 4.0 * uHalfW * 0.94;
-    float top = 0.6 + e * 3.4 + sin(fi * 2.4) * 0.3;
-    float dx = (p.x - x) / 0.34;
-    float arch = top - dx * dx * 0.55;
-    // Brightest under the arch, thinning toward the floor.
-    float body = exp(-dx * dx * 1.2) * smoothstep(arch, arch - 0.5, p.y)
-      * (0.3 + 0.7 * smoothstep(-4.7, arch, p.y));
-    float edge = exp(-pow((abs(dx) - 1.0) * 5.0, 2.0))
-      * smoothstep(arch + 0.1, arch - 0.6, p.y);
-    // Each column answers the voice; the outer ones shimmer with the highs.
-    float swell = 0.35 + 0.9 * max(uVocal, uMid) * (0.75 + 0.25 * sin(uTime * 0.9 + fi * 1.7))
-      + 0.35 * uHigh * e;
-    col += mix(uAccent, PALE, 0.4) * (body * 0.6 + edge * 0.4) * swell
-      * (0.08 + 0.2 * e);
-  }
-  gl_FragColor = vec4(col * uLevel, 1.0);
-}
-`
-
-/** Tall arched columns of light, tallest at the sides, swelling with the voice. */
-export function Choir() {
-  return <Layer level={(s) => s.cues.choir} fragment={CHOIR} z={-3} order={5} />
-}
-
 const BEAM = /* glsl */ `
 void main() {
   vec2 apex = vec2(uHalfW * 0.46, 5.4);

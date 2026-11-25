@@ -1,10 +1,6 @@
-import { useMemo, useRef, useState } from 'react'
+import { useMemo } from 'react'
 import { Environment, Lightformer } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
-import type * as THREE from 'three'
-import { AssistantOrb3d, type AssistantOrb3dState } from '@dust-ui/3d'
 import { Layer } from './scene-layer'
-import { CAM_Z, useScene } from './scene-state'
 
 /**
  * The room the glass and the metal reflect: a few soft lights drawn once
@@ -71,93 +67,6 @@ export function Studio() {
     </Environment>
   )
 }
-
-/** The kit orb floats 0.65 above its own origin; this centres it. */
-const LIFT = -0.65
-/** The kit orb's radius at scale 1, and how far in front of the z = 0 plane it stands. */
-const RADIUS = 0.86
-const FRONT = 0.4
-const NEAR = (CAM_Z - FRONT) / CAM_Z
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
-const smooth = (v: number) => {
-  const x = clamp01(v)
-  return x * x * (3 - 2 * x)
-}
-const backOut = (v: number) => {
-  const x = clamp01(v) - 1
-  return 1 + 2.4 * x * x * x + 1.4 * x * x
-}
-
-/**
- * The clockwork heart: the kit's glass orb, always at the centre of the
- * rings (`stage.heart`). It lights there on its word, beats a lub-dub on
- * the kick (`s.heartbeat`), is larger the more the line is about it, and
- * leaves by dimming and sinking back into the rings.
- */
-export function Orb() {
-  const { ref, accentHex } = useScene()
-  const group = useRef<THREE.Group>(null)
-  const [state, setState] = useState<AssistantOrb3dState>('idle')
-  const mood = useRef<AssistantOrb3dState>('idle')
-  // The strongest the cue has been since it came up: the heart's size this time.
-  const peak = useRef(0)
-  const onset = useRef(0)
-
-  useFrame(() => {
-    const s = ref.current
-    const g = group.current
-    if (!g) return
-    const level = s.cues.orb
-    // Drawn once at the start, too small to see, so its glass compiles then.
-    g.visible = level > 0.004 || s.frames < 3
-    if (level <= 0.004) peak.current = 0
-    if (!g.visible) return
-    if (level <= 0.004) {
-      g.scale.setScalar(1e-4)
-      return
-    }
-    // A busy churn in the loud sections, a slow breath in the quiet ones.
-    const next: AssistantOrb3dState =
-      s.energy > 0.78 ? 'thinking' : s.energy > 0.45 ? 'speaking' : 'listening'
-    if (next !== mood.current) {
-      mood.current = next
-      setState(next)
-    }
-    if (s.onset.orb !== onset.current) {
-      onset.current = s.onset.orb
-      peak.current = 0
-    }
-    peak.current = Math.max(peak.current, level)
-    const age = s.calm ? 99 : s.age.orb
-    // Lighting up: a quick swell past its size. Leaving: smaller, lower, then gone.
-    const arrive = backOut(age / 0.7)
-    const held = age > 1.2 ? level / peak.current : 1
-    const leave = 0.55 + 0.45 * smooth(held)
-    const size = 0.52 + 0.48 * peak.current
-    const beat = (0.5 + 0.5 * peak.current) * (0.06 + 0.13 * s.energy)
-    const [x, y, r] = s.heart
-    g.position.set(x * NEAR, (y - (1 - held) * 0.45 * r) * NEAR, FRONT)
-    g.scale.setScalar(
-      ((r * 0.8 * NEAR) / RADIUS) *
-        size *
-        arrive *
-        leave *
-        // Gone well before its cue is: the next picture rises into a clear frame.
-        clamp01((held - 0.42) / 0.25) *
-        (1 + beat * s.heartbeat + 0.025 * s.sub)
-    )
-  })
-
-  return (
-    <group ref={group} visible={false}>
-      <group position-y={LIFT}>
-        <AssistantOrb3d state={state} color={accentHex} glowColor={accentHex} />
-      </group>
-    </group>
-  )
-}
-
 const GLOW = /* glsl */ `
 uniform float uRadius;
 void main() {

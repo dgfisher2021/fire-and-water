@@ -278,7 +278,7 @@ const lift: KineticSong = {
     'In the thunder, in the glow': { hero: 'thunder', cues: ['storm'] },
     'We move like ghosts in row by row': {
       hero: 'ghosts',
-      cues: ['ghosts', 'raven'],
+      cues: ['ghosts'],
     },
     'Heart to heart and breath to breath': {
       hero: 'heart',
@@ -286,7 +286,7 @@ const lift: KineticSong = {
     },
     'Dancing softly next to death': {
       hero: 'death',
-      cues: ['ghosts', ['candle', 0.4], 'raven'],
+      cues: ['ghosts', ['candle', 0.4]],
       sand: 'scatter',
     },
     'I hear the violins of night': {
