@@ -76,5 +76,57 @@
   "locked": 0,
   "median": 0.83,
   "max": 2.72
+ },
+ "heavyrise": {
+  "status": "applied",
+  "date": "2026-11-25",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 49,
+  "apply": 34,
+  "keep": 8,
+  "review": 7,
+  "locked": 0,
+  "median": 0.48,
+  "max": 1.93
+ },
+ "refusegospel": {
+  "status": "applied",
+  "date": "2026-11-25",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 99,
+  "apply": 31,
+  "keep": 43,
+  "review": 25,
+  "locked": 0,
+  "median": 0.41,
+  "max": 1.19
+ },
+ "writing": {
+  "status": "applied",
+  "date": "2026-11-25",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 129,
+  "apply": 50,
+  "keep": 68,
+  "review": 11,
+  "locked": 0,
+  "median": 0.48,
+  "max": 1.52
+ },
+ "chosen": {
+  "status": "applied",
+  "date": "2026-11-25",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 92,
+  "apply": 37,
+  "keep": 31,
+  "review": 24,
+  "locked": 0,
+  "median": 0.52,
+  "max": 1.84
  }
 }

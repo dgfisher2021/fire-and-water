@@ -200,4 +200,8 @@ export const COLLECTION_OF: Record<TrackId, CollectionKey> = {
   drift: 'ashes',
   kiki: 'kin',
   analyst: 'enough',
+  heavyrise: 'kin',
+  refusegospel: 'rising',
+  writing: 'siblings',
+  chosen: 'rising',
 }

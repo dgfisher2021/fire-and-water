@@ -516,6 +516,22 @@
   --analyst-deep: oklch(0.37 0.16 281);
   --analyst-glow: oklch(0.66 0.14 281 / 42%);
   --analyst-ink: oklch(0.22 0.04 281);
+  --heavyrise: oklch(0.78 0.13 90); /* citrine and gold in the crown */
+  --heavyrise-deep: oklch(0.37 0.14 90);
+  --heavyrise-glow: oklch(0.66 0.13 90 / 42%);
+  --heavyrise-ink: oklch(0.22 0.04 90);
+  --refusegospel: oklch(0.78 0.05 70); /* ink on paper, a hand reaching up */
+  --refusegospel-deep: oklch(0.37 0.06 70);
+  --refusegospel-glow: oklch(0.66 0.05 70 / 42%);
+  --refusegospel-ink: oklch(0.22 0.04 70);
+  --writing: oklch(0.78 0.16 36); /* the fire at his side this time */
+  --writing-deep: oklch(0.37 0.18 36);
+  --writing-glow: oklch(0.66 0.16 36 / 42%);
+  --writing-ink: oklch(0.22 0.04 36);
+  --chosen: oklch(0.78 0.12 276); /* constellations drawn through him */
+  --chosen-deep: oklch(0.37 0.13 276);
+  --chosen-glow: oklch(0.66 0.12 276 / 42%);
+  --chosen-ink: oklch(0.22 0.04 276);
   /* Type on the bright-to-deep gradients, in every mode. */
   --track-foreground: oklch(1 0 0);
   /* Resting voice before a song is chosen. */

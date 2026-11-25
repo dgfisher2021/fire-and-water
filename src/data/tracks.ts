@@ -111,6 +111,10 @@ export const trackIdSchema = z.enum([
   'drift',
   'kiki',
   'analyst',
+  'heavyrise',
+  'refusegospel',
+  'writing',
+  'chosen',
 ])
 export type TrackId = z.infer<typeof trackIdSchema>
 
@@ -266,6 +270,10 @@ export const TRACK_ORDER: readonly TrackId[] = [
   'drift',
   'kiki',
   'analyst',
+  'heavyrise',
+  'refusegospel',
+  'writing',
+  'chosen',
 ]
 
 export const ALBUM = {
@@ -361,6 +369,10 @@ const PARTNERS: Partial<Record<TrackId, TrackId>> = {
   lookagain: 'loop',
   storyofme: 'baritone',
   analyst: 'working',
+  heavyrise: 'heavy',
+  refuse: 'refusegospel',
+  refusegospel: 'refuse',
+  writing: 'storyofme',
 }
 
 export function comparePartner(id: TrackId): TrackId {
@@ -2000,6 +2012,69 @@ export const TRACKS: Record<TrackId, Track> = {
     themeColor: '#0a0818',
     timing: timingFor('analyst'),
     ...lyricsFor('analyst'),
+  }),
+  heavyrise: trackSchema.parse({
+    id: 'heavyrise',
+    title: 'Heavy is the Head (Rise to Sovereignty)',
+    dedication: 'By Dustin',
+    written: '2026-11-17',
+    voice: 'A sultry, soulful voice rising to gospel harmonies',
+    description:
+      'Signal to Sovereignty’s verses meet Heavy Is the Head’s chorus: one voice takes back the years, you drew the line and called it law, I leave your rules, I break your pact; the other answers from the throne, every stone they threw turned to jewels around her head. Hypnotic trance over heartbeat percussion and eerie calliope, with a gospel lift. Stand up, hold your gaze, and straighten out your crown.',
+    audioFile: 'heavy-is-the-head-rise-to-sovereignty.mp3',
+    duration: 359,
+    art: { full: 'assets/heavyrise.webp', thumb: 'assets/heavyrise-512.webp' },
+    themeColor: '#100a00',
+    timing: timingFor('heavyrise'),
+    ...lyricsFor('heavyrise'),
+  }),
+  refusegospel: trackSchema.parse({
+    id: 'refusegospel',
+    title: 'I Refuse to Give Up (Anti-Gospel Version)',
+    dedication: 'By Dustin',
+    written: '2026-11-17',
+    voice: 'A close male voice answered by a gospel choir',
+    description:
+      'The same words as cinematic dark pop, an anti-gospel at 90 BPM: a close, low voice over intimate piano and a heartbeat groove, a choir swelling in answer until the final chorus surges. Shorter than the original and without its North African pulse, with a hand reaching up in ink on the cover. Not today, you don’t get to win.',
+    audioFile: 'i-refuse-to-give-up-anti-gospel.mp3',
+    duration: 257,
+    art: {
+      full: 'assets/refusegospel.webp',
+      thumb: 'assets/refusegospel-512.webp',
+    },
+    themeColor: '#100a05',
+    timing: timingFor('refusegospel'),
+    ...lyricsFor('refusegospel'),
+  }),
+  writing: trackSchema.parse({
+    id: 'writing',
+    title: 'Writing the Story of Me',
+    dedication: 'By Dustin',
+    written: '2026-11-17',
+    voice: 'A close, breathy voice over a slowing heartbeat',
+    description:
+      'The Story of Me rewritten for the friends who stayed: the verses for his sister and for God give way to one for his found family, who never told him to shrink and made room for the real him. Minimal trance over a sub-bass heartbeat, an ethereal string interlude, and a new last page: I’ll just turn another page with these words in my hands. The strength he carried all along was strength that lives in him.',
+    audioFile: 'writing-the-story-of-me.mp3',
+    duration: 343,
+    art: { full: 'assets/writing.webp', thumb: 'assets/writing-512.webp' },
+    themeColor: '#160604',
+    timing: timingFor('writing'),
+    ...lyricsFor('writing'),
+  }),
+  chosen: trackSchema.parse({
+    id: 'chosen',
+    title: 'Chosen on Purpose',
+    dedication: 'By Dustin',
+    written: '2026-11-23',
+    voice: 'A close, intimate voice over vocoder choirs',
+    description:
+      'He came up like a bruise, still learning his name, and mistook the storm for proof he had to give in. Ritual neo-folk electronica over a frame drum and a sub-bass heartbeat, vocoder choirs answering in layers: pain is material, not a throne, and no hard word can name all of him. I can change and still be mine. Chosen on purpose, not a verdict to retest.',
+    audioFile: 'chosen-on-purpose.mp3',
+    duration: 337,
+    art: { full: 'assets/chosen.webp', thumb: 'assets/chosen-512.webp' },
+    themeColor: '#070a18',
+    timing: timingFor('chosen'),
+    ...lyricsFor('chosen'),
   }),
 }
 

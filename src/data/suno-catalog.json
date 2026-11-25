@@ -2984,6 +2984,106 @@
           "missing songs-as-of-2026-11-17.zip/The Analyst’s Apology - usesuno.com.m4a"
         ]
       }
+    },
+    {
+      "id": 121,
+      "title": "Heavy is the Head (Rise to Sovereignty)",
+      "date": "2026-11-17",
+      "weekday": "Tuesday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:59",
+      "durationSeconds": 359,
+      "style": "Trance, hypnotic steady four-on-the-floor; lo-fi ambient, cinematic shadowy mix with warm vocal focus and deep controlled low end; sultry soulful female lead in an intimate breathy close-mic delivery, opening into stacked gospel-inflected harmonies; heartbeat percussion, eerie calliope fragments, low drones, swung claps, sub-bass pulses, distorted bass growls, wide trance pads, sparse metallic ticks, spacious half-time drops and a dramatic gospel lift, ending with breath and a fading heartbeat.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "heavyrise",
+      "addedToApp": true,
+      "description": "Signal to Sovereignty’s verses meet Heavy Is the Head’s chorus: one voice takes back the years, you drew the line and called it law, I leave your rules, I break your pact; the other answers from the throne, every stone they threw turned to jewels around her head. Hypnotic trance over heartbeat percussion and eerie calliope, with a gospel lift. Stand up, hold your gaze, and straighten out your crown.",
+      "files": {
+        "app": "public/heavy-is-the-head-rise-to-sovereignty.mp3",
+        "downloads": [
+          "new song thru 11-24-2026.zip/Heavy is the Head (Rise to Sovereignty) - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 122,
+      "title": "I Refuse to Give Up (Anti-Gospel Version)",
+      "date": "2026-11-17",
+      "weekday": "Tuesday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "4:17",
+      "durationSeconds": 257,
+      "style": "cinematic dark pop, anti gospel, 90 BPM, heartbeat groove, intimate low piano, close male vocals, swelling choir responses, cinematic strings, restrained toms, deep bass, spacious verses, rising harmony, massive gospel choir, controlled low end, polished mix, 90s film score, confessional mood, final chorus surge, powerful, experimental, bass, epic, drum",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "refusegospel",
+      "addedToApp": true,
+      "description": "The same words as cinematic dark pop, an anti-gospel at 90 BPM: a close, low voice over intimate piano and a heartbeat groove, a choir swelling in answer until the final chorus surges. Shorter than the original and without its North African pulse, with a hand reaching up in ink on the cover. Not today, you don’t get to win.",
+      "files": {
+        "app": "public/i-refuse-to-give-up-anti-gospel.mp3",
+        "downloads": [
+          "new song thru 11-24-2026.zip/I Refuse to Give Up - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 123,
+      "title": "Writing the Story of Me",
+      "date": "2026-11-17",
+      "weekday": "Tuesday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:43",
+      "durationSeconds": 343,
+      "style": "Minimal trance, narrow minor-key synth figure, restrained four-on-the-floor pulse, deep sub-bass heartbeat, sparse metallic ticks, cold low drones and an ethereal string interlude; close, breathy melodic female lead in the user's recorded voice, intimate vocalizations forward in the coda rising power with intense beat; dense controlled low end, stark cinematic mix, restrained dynamics, long shadowy reverb; 90 bpm, slow hypnotic pulse gradually thinning as the heartbeat slows and recedes.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "writing",
+      "addedToApp": true,
+      "description": "The Story of Me rewritten for the friends who stayed: the verses for his sister and for God give way to one for his found family, who never told him to shrink and made room for the real him. Minimal trance over a sub-bass heartbeat, an ethereal string interlude, and a new last page: I’ll just turn another page with these words in my hands. The strength he carried all along was strength that lives in him.",
+      "files": {
+        "app": "public/writing-the-story-of-me.mp3",
+        "downloads": [
+          "new song thru 11-24-2026.zip/Writing the Story of Me - usesuno.com.m4a"
+        ]
+      }
+    },
+    {
+      "id": 124,
+      "title": "Chosen on Purpose",
+      "date": "2026-11-23",
+      "weekday": "Monday",
+      "version": "v6",
+      "type": "Cover",
+      "duration": "5:37",
+      "durationSeconds": 337,
+      "style": "Ritualistic neo-folk and neo-pagan electronica, hypnotic glitch pulses, minimal modular synth patterns, deep frame drum and sub-bass heartbeat, vocoder-treated choirs chanting in layers, evolving drones, slow trance-inducing tempo, intimate close-mic whispers against vast reverberant spaces, ascending harmonic builds, textured noise bursts and stuttered artifacts woven into a sacred meditative soundscape. Keep the source’s spacious, deliberate progression and restrained pulse; enrich the vocal arrangement with intimate lead lines, layered choral responses, and a gradual harmonic lift into the final refrain.",
+      "styleTruncated": false,
+      "tag": null,
+      "status": "Published",
+      "batch": null,
+      "source": "app",
+      "appId": "chosen",
+      "addedToApp": true,
+      "description": "He came up like a bruise, still learning his name, and mistook the storm for proof he had to give in. Ritual neo-folk electronica over a frame drum and a sub-bass heartbeat, vocoder choirs answering in layers: pain is material, not a throne, and no hard word can name all of him. I can change and still be mine. Chosen on purpose, not a verdict to retest.",
+      "files": {
+        "app": "public/chosen-on-purpose.mp3",
+        "downloads": [
+          "new song thru 11-24-2026.zip/Chosen on Purpose - usesuno.com.m4a"
+        ]
+      }
     }
   ]
 }
