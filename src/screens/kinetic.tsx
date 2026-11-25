@@ -25,7 +25,7 @@ import {
   type SectionCard,
 } from '@/kinetic/timeline'
 import type { FrameSource } from '@/kinetic/types'
-import { Maximize, Minimize, Volume2, VolumeX, X } from 'lucide-react'
+import { Maximize, Minimize, Volume2, VolumeX, X, Play } from 'lucide-react'
 import {
   MotionGlow,
   MotionSparkles,
@@ -124,13 +124,11 @@ export function KineticScreen() {
     listenToAudio()
   }
   // A finished song hands off to the next; the film ends with its own song.
-  useEffect(
-    () =>
-      usePlayer.subscribe((s, prev) => {
-        if (prev.track === track && s.track && s.track !== track) s.pause()
-      }),
-    [track]
-  )
+  const setSolo = usePlayer((s) => s.setSolo)
+  useEffect(() => {
+    setSolo(true)
+    return () => setSolo(false)
+  }, [setSolo])
 
   const [section, setSection] = useState<string | null>(null)
   const [card, setCard] = useState<SectionCard | null>(null)
@@ -420,6 +418,59 @@ export function KineticScreen() {
           {t.title} has no kinetic film yet.
         </p>
       )}
+
+      {/* Before the film starts: its poster, in place of a black frame. */}
+      <div
+        aria-hidden={isCurrent}
+        className={cn(
+          'pointer-events-none absolute inset-0 overflow-hidden bg-background transition-opacity duration-1000',
+          isCurrent || hold ? 'opacity-0' : 'opacity-100'
+        )}
+      >
+        <img
+          src={`${import.meta.env.BASE_URL}${t.art.full}`}
+          alt=''
+          className='absolute inset-0 size-full scale-110 object-cover opacity-35 blur-2xl'
+        />
+        <div className='absolute inset-0 bg-linear-to-r from-background via-background/70 to-transparent' />
+        <div className='absolute inset-0 flex items-center gap-[6vw] px-[9vw] max-md:flex-col max-md:justify-center max-md:gap-8 max-md:text-center'>
+          <div className='min-w-0 flex-1'>
+            <p
+              className='text-foreground/70'
+              style={{ font: `italic 500 clamp(18px, 2vw, 30px) ${ITALIC}` }}
+            >
+              A kinetic lyric film
+            </p>
+            <h1
+              className='mt-3 text-foreground uppercase'
+              style={{
+                font: `900 clamp(40px, 7.2vw, 132px) ${DISPLAY}`,
+                lineHeight: 0.95,
+              }}
+            >
+              {t.title}
+            </h1>
+            <p
+              className='mt-6 text-foreground/80 uppercase'
+              style={{
+                font: `700 clamp(12px, 1.2vw, 20px) ${DISPLAY}`,
+                letterSpacing: '0.34em',
+              }}
+            >
+              {song?.artist}
+            </p>
+            <p className='mt-10 flex items-center gap-3 text-sm tracking-[0.2em] text-muted-foreground uppercase max-md:justify-center'>
+              <Play className='size-4 fill-current' />
+              Press play
+            </p>
+          </div>
+          <img
+            src={`${import.meta.env.BASE_URL}${t.art.full}`}
+            alt=''
+            className='aspect-square w-[min(38vw,62vh)] rounded-lg object-cover shadow-2xl max-md:order-first max-md:w-[min(64vw,40vh)]'
+          />
+        </div>
+      </div>
 
       {/* Click anywhere to play or pause. */}
       <button

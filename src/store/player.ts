@@ -46,9 +46,12 @@ export type PlayerState = {
    */
   requested: { track: TrackId; seq: number } | null
   playMode: PlayMode
+  /** A song playing on its own (a kinetic film): when it ends, nothing follows. */
+  solo: boolean
 
   setCarouselIndex: (index: number) => void
   setPlayMode: (mode: PlayMode) => void
+  setSolo: (solo: boolean) => void
   play: (track: TrackId) => void
   pause: () => void
   toggle: (track: TrackId) => void
@@ -70,9 +73,11 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   carouselIndex: 0,
   requested: null,
   playMode: 'album',
+  solo: false,
 
   setCarouselIndex: (index) => set({ carouselIndex: index }),
   setPlayMode: (playMode) => set({ playMode }),
+  setSolo: (solo) => set({ solo }),
 
   play: (track) => {
     const audio = getAudio()
@@ -113,8 +118,8 @@ export const usePlayer = create<PlayerState>()((set, get) => ({
   _sync: (patch) => set(patch),
   // A finished track hands off to whatever the play mode says comes next.
   _ended: () => {
-    const { track, playMode, requestTrack, seek, play } = get()
-    const next = track ? nextAfterEnd(track, playMode) : null
+    const { track, playMode, solo, requestTrack, seek, play } = get()
+    const next = track && !solo ? nextAfterEnd(track, playMode) : null
     if (next === null)
       set((s) => ({ status: 'paused', currentTime: s.duration }))
     else if (next === track) {
