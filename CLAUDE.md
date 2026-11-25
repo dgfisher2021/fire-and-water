@@ -254,7 +254,11 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   comets (choir and wire), `scene-constellation.tsx` Spirit World's sky
   (stars lit and joined near two drifting foci). When an effect looks cheap,
   find its source in those repos and port that. A line keeps leaving for
-  `TAIL` seconds after the next lands, so hand-offs overlap. `lib/audio.ts` owns the
+  `TAIL` seconds after the next lands, so hand-offs overlap. Readability
+  is a rule: `scene-guard.tsx` shades the scene behind the words' box
+  (`timeline.guard`, written by the text engine), materials keep a
+  brightness floor, and late words rush their entrance; after changing an
+  effect or a material, look at every line at rest in both orientations. `lib/audio.ts` owns the
   one Web Audio graph: a song loads with CORS only after the media origin
   answers a HEAD probe (the R2 rule allows the site and localhost:4600),
   never on iOS, and the analyser attaches only to a clean source, because

@@ -272,7 +272,7 @@ export function createTextEngine(
       if (tok.kind === 'small') {
         tok.el = word(
           tok.text,
-          `font:italic 500 ${tok.size}px ${ITALIC};color:color-mix(in oklab, var(--foreground) 84%, transparent)`
+          `font:italic 500 ${tok.size}px ${ITALIC};color:color-mix(in oklab, var(--foreground) 92%, transparent);text-shadow:0 0 16px rgb(3 13 18 / 0.95), 0 1px 5px rgb(3 13 18 / 0.8)`
         )
       } else if (mat) {
         const hero = tok.kind === 'hero'
@@ -626,10 +626,10 @@ export function createTextEngine(
         S.dy += 0.17 * size * easeInOut((dt - 0.2) / 1.4)
         break
       case 'fade':
-        S.opacity *= 1 - 0.7 * smooth((dt - 0.5) / 2.6)
+        S.opacity *= 1 - 0.36 * smooth((dt - 0.5) / 2.6)
         break
       case 'brief':
-        S.opacity *= 1 - 0.74 * smooth((dt - 0.5) / 0.5)
+        S.opacity *= 1 - 0.42 * smooth((dt - 0.5) / 0.5)
         break
       case 'float':
         S.dx += m * 7 * Math.sin(t * 0.6)
@@ -637,7 +637,7 @@ export function createTextEngine(
         break
       case 'air':
         S.track += 0.2 * easeInOut(dt / 3.2)
-        S.opacity *= 1 - 0.25 * smooth(dt / 3.2)
+        S.opacity *= 1 - 0.1 * smooth(dt / 3.2)
         break
       case 'hum':
         S.dx += m * 1.3 * Math.sin(t * 96)
@@ -674,7 +674,11 @@ export function createTextEngine(
     }
     put(el, 'visibility', 'visible')
     const line = item.line
-    const dt = reduced ? 9 : t - tok.t
+    // A word sung just before its line leaves arrives faster, so it is whole
+    // while it can still be read.
+    const room = line.exitAt - tok.t
+    const rush = room < 1 ? Math.min(3, 1 / Math.max(room, 0.34)) : 1
+    const dt = reduced ? 9 : (t - tok.t) * rush
     const mat = tok.mat
     S.opacity = S.scale = S.scaleY = 1
     S.dx = S.dy = S.z = S.blur = S.clip = S.track = S.rotX = S.rot = S.skew = 0
@@ -875,6 +879,30 @@ export function createTextEngine(
 
   const sig: Signal = { kick: 0, bass: 0, vocal: 0, mid: 0, flash: 0 }
 
+  /** Tells the scene where the words stand: the line most present right now. */
+  function guard(t: number) {
+    const g = timeline.guard
+    g.level = 0
+    for (const item of laid) {
+      const { line } = item
+      if (t < line.start || t >= line.exitAt + line.exitDur) continue
+      const level = 1 - clamp01((t - line.exitAt) / line.exitDur)
+      if (level < g.level) continue
+      let w = 0
+      let h = 0
+      for (const row of item.rows) {
+        if (t < row.t) continue
+        w = Math.max(w, row.width)
+        h += row.h + row.gapAbove
+      }
+      g.level = level
+      g.w = w
+      g.h = h
+      g.x = stage.x0 + w / 2
+      g.y = stage.cy
+    }
+  }
+
   function render(time: number, heard: Signals | null) {
     const t = Math.min(Math.max(time, 0), timeline.end)
     sig.kick = heard?.kick ?? 0
@@ -883,6 +911,7 @@ export function createTextEngine(
     sig.mid = heard?.mid ?? 0
     sig.flash = flashAt(t)
     for (const item of laid) drawLine(item, t, sig)
+    guard(t)
     // The sand outlives its line: keep its word placed.
     const sand = sandAt(timeline, t)
     if (sand) {

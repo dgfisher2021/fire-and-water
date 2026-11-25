@@ -78,6 +78,8 @@ export type SceneState = {
   flash: number
   /** The hero the scene casts in solid letters, and the one the sand holds. */
   solid: HeroWord | null
+  /** The shade behind the words: centre and half size on z = 0, and its strength. */
+  guard: [number, number, number, number, number]
   sand: HeroWord | null
   sandIn: number
   sandOut: number
@@ -146,6 +148,7 @@ export function createScene(): SceneState {
     heroPos: new THREE.Vector3(),
     flash: 0,
     solid: null,
+    guard: [0, 0, 1, 1, 0],
     sand: null,
     sandIn: 0,
     sandOut: 0,
@@ -247,6 +250,19 @@ export function stepScene(
   s.heart[1] = -(stage.heart.y - stage.h / 2) * s.stageUnit
   s.heart[2] = stage.heart.r * s.stageUnit
   s.flash = calm ? 0 : f.flash
+  // The shade follows the words, easing between one line's box and the next.
+  const g = f.guard
+  const k = s.frames === 0 || jumped ? 1 : 1 - Math.exp(-dt * 7)
+  if (g.level > 0.01 && g.w > 0) {
+    const gx = (g.x - stage.w / 2) * s.stageUnit
+    const gy = -(g.y - stage.h / 2) * s.stageUnit
+    const still = s.guard[4] < 0.02 ? 1 : k
+    s.guard[0] += (gx - s.guard[0]) * still
+    s.guard[1] += (gy - s.guard[1]) * still
+    s.guard[2] += ((g.w / 2) * s.stageUnit - s.guard[2]) * still
+    s.guard[3] += ((g.h / 2) * s.stageUnit - s.guard[3]) * still
+  }
+  s.guard[4] += (g.level - s.guard[4]) * k
   s.solid = f.solid
   s.sand = calm ? null : f.sand
   s.sandIn = f.sandIn

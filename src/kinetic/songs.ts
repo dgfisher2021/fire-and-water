@@ -323,7 +323,6 @@ const lift: KineticSong = {
     'No beginning without ending': {
       hero: 'ending',
       cues: [['clockwork', 0.6]],
-      sand: 'scatter',
     },
     'Sing through the pillars, old and true': {
       hero: 'sing',
