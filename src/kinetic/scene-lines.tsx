@@ -4,7 +4,8 @@ import * as THREE from 'three'
 import { GlowTrail, type GlowTrailRef } from '@dust-ui/3d'
 import { WirePulses } from './scene-particles'
 import { CAM_Z, shown, useScene } from './scene-state'
-import { PALETTE, SHARED, shaderArgs } from './scene-util'
+import { PALETTE, SHARED, rng, shaderArgs } from './scene-util'
+import { FEATHERS, featherPoint } from './wing'
 
 const { clamp } = THREE.MathUtils
 
@@ -127,175 +128,248 @@ export function Wires() {
   )
 }
 
-function rune(points: [number, number][]) {
-  const path = new THREE.CurvePath<THREE.Vector3>()
-  for (let i = 1; i < points.length; i++) {
-    const [ax, ay] = points[i - 1]
-    const [bx, by] = points[i]
-    path.add(
-      new THREE.LineCurve3(
-        new THREE.Vector3(ax, ay, 0),
-        new THREE.Vector3(bx, by, 0)
-      )
-    )
+// The cover's runes as single strokes, a unit tall: raido, fehu, algiz, othala, kaun.
+const RUNES: [number, number][][] = [
+  [
+    [-0.3, -0.8],
+    [-0.3, 0.8],
+    [0.3, 0.35],
+    [-0.3, -0.05],
+    [0.35, -0.8],
+  ],
+  [
+    [-0.2, -0.8],
+    [-0.2, 0.8],
+    [-0.2, 0.3],
+    [0.35, 0.8],
+    [-0.2, 0.3],
+    [-0.2, -0.2],
+    [0.35, 0.3],
+  ],
+  [
+    [-0.4, 0.8],
+    [0, 0.2],
+    [0.4, 0.8],
+    [0, 0.2],
+    [0, 0.8],
+    [0, -0.8],
+  ],
+  [
+    [-0.35, -0.8],
+    [0.3, 0.1],
+    [0, 0.8],
+    [-0.3, 0.1],
+    [0.35, -0.8],
+  ],
+  [
+    [0.3, 0.8],
+    [-0.3, 0],
+    [0.3, -0.8],
+  ],
+]
+const SIGIL_COUNT = 3200
+/** Seconds a rune stands, and seconds the grains take to flow into the next. */
+const SIGIL_HOLD = 1.15
+const SIGIL_FLOW = 0.75
+
+/** `count` points along a rune's stroke, a little off it, as x and y pairs. */
+function runePoints(points: [number, number][], count: number, seed: number) {
+  const random = rng(seed)
+  const lengths = points
+    .slice(1)
+    .map(([x, y], i) => Math.hypot(x - points[i][0], y - points[i][1]))
+  const total = lengths.reduce((sum, l) => sum + l, 0)
+  const out = new Float32Array(count * 2)
+  for (let n = 0; n < count; n++) {
+    let d = random() * total
+    let k = 0
+    while (k < lengths.length - 1 && d > lengths[k]) d -= lengths[k++]
+    const f = d / lengths[k]
+    // Most grains sit on the stroke; a few stray from it.
+    const off = (random() + random() - 1) * (random() < 0.85 ? 0.035 : 0.11)
+    const ang = random() * Math.PI * 2
+    out[n * 2] =
+      points[k][0] + (points[k + 1][0] - points[k][0]) * f + Math.cos(ang) * off
+    out[n * 2 + 1] =
+      points[k][1] + (points[k + 1][1] - points[k][1]) * f + Math.sin(ang) * off
   }
-  return path
+  return out
 }
 
-// Invented single-stroke glyphs on an arc around the clockwork's centre.
-const RUNES: { at: [number, number]; curve: THREE.CurvePath<THREE.Vector3> }[] =
-  [
-    {
-      at: [5.0, 3.2],
-      curve: rune([
-        [-0.3, -0.8],
-        [-0.3, 0.8],
-        [0.3, 0.35],
-        [-0.3, -0.05],
-        [0.35, -0.8],
-      ]),
-    },
-    {
-      at: [6.6, 2.0],
-      curve: rune([
-        [0.3, 0.8],
-        [-0.3, 0.25],
-        [0.3, -0.25],
-        [-0.3, -0.8],
-      ]),
-    },
-    {
-      at: [7.2, 0.1],
-      curve: rune([
-        [-0.4, 0.8],
-        [0, 0.2],
-        [0.4, 0.8],
-        [0, 0.2],
-        [0, -0.8],
-      ]),
-    },
-    {
-      at: [6.6, -1.8],
-      curve: rune([
-        [-0.35, -0.8],
-        [0.3, 0.1],
-        [0, 0.8],
-        [-0.3, 0.1],
-        [0.35, -0.8],
-      ]),
-    },
-    {
-      at: [5.0, -3.0],
-      curve: rune([
-        [-0.1, 0.8],
-        [-0.1, -0.8],
-        [-0.1, -0.1],
-        [0.35, 0.45],
-      ]),
-    },
-  ]
+const SIGIL_VERT = /* glsl */ `
+attribute vec2 aR0, aR1, aR2, aR3, aR4;
+attribute vec4 aSeed;
+${SHARED}
+uniform float uIndex, uLevel, uSize;
+varying float vA;
+varying float vHot;
+vec2 rune(float i) {
+  i = mod(i, 5.0);
+  return i < 0.5 ? aR0 : i < 1.5 ? aR1 : i < 2.5 ? aR2 : i < 3.5 ? aR3 : aR4;
+}
+void main() {
+  float at = floor(uIndex);
+  // Each grain leaves in its own time, so the rune loosens before it flows.
+  float e = clamp(fract(uIndex) * 1.5 - aSeed.x * 0.5, 0.0, 1.0);
+  e = e * e * (3.0 - 2.0 * e);
+  vec2 a = rune(at);
+  vec2 b = rune(at + 1.0);
+  float mid = sin(e * 3.14159);
+  // Between two runes the grains swirl apart, as the kit's particle carousel does.
+  float ang = aSeed.y * 6.2832 + e * 4.0;
+  vec3 p = vec3(mix(a, b, e) + vec2(cos(ang), sin(ang)) * mid * (0.25 + 0.75 * aSeed.z), (aSeed.w - 0.5) * mid * 2.4);
+  // Coming and going, the whole cloud is loose dust.
+  float loose = 1.0 - smoothstep(0.0, 0.9, uLevel - aSeed.x * 0.1);
+  p.xy += vec2(cos(ang * 1.7), sin(ang * 1.3)) * loose * (0.6 + 2.2 * aSeed.z);
+  p.xy += vec2(sin(uTime * 1.4 + aSeed.y * 40.0), cos(uTime * 1.2 + aSeed.w * 40.0)) * 0.012;
+  vec4 mv = modelViewMatrix * vec4(p * uSize, 1.0);
+  gl_Position = projectionMatrix * mv;
+  float tw = 0.7 + 0.3 * sin(uTime * (2.0 + aSeed.z * 5.0) + aSeed.x * 60.0);
+  gl_PointSize = (2.4 + 3.0 * aSeed.z * aSeed.z + mid * 2.5 * aSeed.w) * uScale / 1158.0
+    * (1.0 + 0.25 * uKick);
+  vA = uLevel * tw * (1.0 - 0.45 * mid) * (1.0 - 0.6 * loose) * (1.0 + 0.6 * uHigh * step(0.7, aSeed.w));
+  vHot = aSeed.z * aSeed.z + mid * 0.4;
+}
+`
+const SIGIL_FRAG = /* glsl */ `
+varying float vA;
+varying float vHot;
+${PALETTE}
+void main() {
+  float d = length(gl_PointCoord - 0.5) * 2.0;
+  float a = smoothstep(1.0, 0.2, d);
+  gl_FragColor = vec4(mix(GOLD, WARM, 0.25 + 0.6 * vHot) * a * vA * 0.62, 1.0);
+}
+`
 
-function Sigil({ index }: { index: number }) {
-  const { ref } = useScene()
-  const group = useRef<THREE.Group>(null)
-  const trail = useRef<GlowTrailRef>(null)
-  const { at, curve } = RUNES[index]
+/**
+ * The sigils: gold grains that hold one of the cover's runes, then swirl
+ * apart and flow into the next (the particle morph of the kit's
+ * `ParticleCarouselScene`, drawn here in the film's own canvas and timed by
+ * the song, so any moment gives the same rune).
+ */
+export function Sigils() {
+  const { ref, shared } = useScene()
+  const points = useRef<THREE.Points>(null)
+  const material = useRef<THREE.ShaderMaterial>(null)
+  const geometry = useMemo(() => {
+    const random = rng(313)
+    const seeds = new Float32Array(SIGIL_COUNT * 4)
+    for (let i = 0; i < seeds.length; i++) seeds[i] = random()
+    const g = new THREE.BufferGeometry()
+    g.setAttribute(
+      'position',
+      new THREE.BufferAttribute(new Float32Array(SIGIL_COUNT * 3), 3)
+    )
+    RUNES.forEach((stroke, i) =>
+      g.setAttribute(
+        `aR${i}`,
+        new THREE.BufferAttribute(runePoints(stroke, SIGIL_COUNT, 41 + i), 2)
+      )
+    )
+    g.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 4))
+    return g
+  }, [])
+  const args = useMemo(
+    () =>
+      shaderArgs(
+        {
+          ...shared,
+          uIndex: { value: 0 },
+          uLevel: { value: 0 },
+          uSize: { value: 1 },
+        },
+        SIGIL_VERT,
+        SIGIL_FRAG,
+        { depthTest: false }
+      ),
+    [shared]
+  )
 
   useFrame(() => {
     const s = ref.current
-    const g = group.current
-    if (!g) return
+    const p = points.current
+    const mat = material.current
+    if (!p || !mat) return
     const level = s.cues.sigils
-    g.visible = shown(s, level)
-    if (!g.visible) return
-    g.position.x = at[0] * s.sx
-    trail.current?.set(
-      clamp(Math.min(level * 1.3, (s.age.sigils - index * 0.4) / 0.7), 0, 1),
-      0.25 - 0.25 * s.kick
-    )
+    p.visible = shown(s, level)
+    if (!p.visible) return
+    // Above the heart's place on a wide stage; beside it, under the words, on a phone.
+    const [hx, hy, hr] = s.heart
+    if (s.tall) p.position.set(hx - 1.3, hy + 0.1, 0.4)
+    else p.position.set(hx + 0.5, hy + hr + 1.75, 0.4)
+    const u = mat.uniforms
+    u.uSize.value = s.tall ? 0.72 : 1.25
+    u.uLevel.value = level
+    // A rune stands, then flows into the next, by the song's clock.
+    const span = SIGIL_HOLD + SIGIL_FLOW
+    const at = (s.calm ? 0 : s.song) / span
+    const turn = at - Math.floor(at)
+    u.uIndex.value =
+      Math.floor(at) + clamp((turn * span - SIGIL_HOLD) / SIGIL_FLOW, 0, 1)
   })
 
   return (
-    <group ref={group} position={[at[0], at[1], 0.4]} scale={0.6}>
-      <GlowTrail
-        ref={trail}
-        curve={curve}
-        progress={0}
-        radius={0.035}
-        tubularSegments={120}
-        radialSegments={5}
-        color='#6b5324'
-        glowColor='#e6bc63'
-        hotColor='#fff1c4'
-        glowLength={1.6}
-        intensity={1.5}
-      />
-    </group>
+    <points
+      ref={points}
+      geometry={geometry}
+      renderOrder={12}
+      frustumCulled={false}
+    >
+      <shaderMaterial ref={material} args={args} />
+    </points>
   )
-}
-
-/** Gold glyph strokes writing themselves one after another. */
-export function Sigils() {
-  return RUNES.map((_, i) => <Sigil key={i} index={i} />)
 }
 
 type Figure = { stars: [number, number][]; edges: [number, number][] }
 
-// A wing as a fan: feathers from a root to their tips, joined by two arcs.
-const WING_ROOT: [number, number] = [1.3, 2.7]
-const WING_TIPS: [number, number][] = [
-  [3.3, 4.15],
-  [4.8, 3.95],
-  [6.1, 3.35],
-  [7.1, 2.45],
-  [7.7, 1.4],
-]
+// The seeress's wing (`wing.ts`) as stars: the root, each long feather's
+// middle and tip, joined along the feathers and from tip to tip.
+const WING_ROOT: [number, number] = [1.2, 2.3]
+const WING_FEATHERS = FEATHERS.filter((_, i) => i < 7)
+const wingStar = (i: number, s: number): [number, number] => {
+  const [x, y] = featherPoint(WING_FEATHERS[i], s)
+  return [WING_ROOT[0] + x * 6.4, WING_ROOT[1] + y * 2.2]
+}
+const WING_N = WING_FEATHERS.length
 const WING: Figure = {
   stars: [
     WING_ROOT,
-    ...WING_TIPS.map(([x, y]): [number, number] => [
-      WING_ROOT[0] + (x - WING_ROOT[0]) * 0.55,
-      WING_ROOT[1] + (y - WING_ROOT[1]) * 0.55,
-    ]),
-    ...WING_TIPS,
+    ...WING_FEATHERS.map((_, i) => wingStar(i, 0.55)),
+    ...WING_FEATHERS.map((_, i) => wingStar(i, 1)),
   ],
-  edges: WING_TIPS.flatMap((_, i): [number, number][] => [
+  edges: WING_FEATHERS.flatMap((_, i): [number, number][] => [
     [0, 1 + i],
-    [1 + i, 6 + i],
+    [1 + i, 1 + WING_N + i],
     ...(i > 0
       ? ([
           [i, 1 + i],
-          [5 + i, 6 + i],
+          [WING_N + i, 1 + WING_N + i],
         ] as [number, number][])
       : []),
   ]),
 }
-const chain = (stars: [number, number][], close = false): Figure => ({
-  stars,
-  edges: stars
-    .map((_, i): [number, number] => [i, (i + 1) % stars.length])
-    .slice(0, close ? undefined : -1),
-})
+// The stave from the top of the cover: eight spokes, each forked at its end.
+const STAVE_AT: [number, number] = [0, 3.75]
+const STAVE: Figure = (() => {
+  const stars: [number, number][] = [STAVE_AT]
+  const edges: [number, number][] = []
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2
+    const at = (r: number, da = 0): [number, number] => [
+      STAVE_AT[0] + Math.cos(a + da) * r,
+      STAVE_AT[1] + Math.sin(a + da) * r * 0.9,
+    ]
+    const n = stars.length
+    stars.push(at(0.62), at(0.8, 0.2), at(0.8, -0.2))
+    edges.push([0, n], [n, n + 1], [n, n + 2])
+  }
+  return { stars, edges }
+})()
 const FIGURES: Figure[] = [
   WING,
   { ...WING, stars: WING.stars.map(([x, y]) => [-x, y]) },
-  chain([
-    [-0.9, 3.5],
-    [-0.45, 4.1],
-    [0, 3.55],
-    [0.45, 4.1],
-    [0.9, 3.5],
-  ]),
-  chain(
-    [
-      [4.7, -2.7],
-      [5.6, -3.2],
-      [6.6, -2.9],
-      [7.2, -3.6],
-      [6.3, -4.0],
-    ],
-    true
-  ),
+  STAVE,
 ]
 
 const LINE_W = 0.022
@@ -386,7 +460,7 @@ void main() {
 `
 const FIGURE_Z = -6
 
-/** Invented constellations (a pair of wings, a crown, a kite) joining up. */
+/** The cover as constellations: the seeress's two wings and the stave above her, joining up. */
 export function Constellations() {
   const { ref, shared } = useScene()
   const group = useRef<THREE.Group>(null)
@@ -415,7 +489,14 @@ export function Constellations() {
     g.visible = shown(s, level)
     if (!g.visible) return
     const k = (CAM_Z - FIGURE_Z) / CAM_Z
-    g.scale.set(k * s.sx, k, 1)
+    // On a phone the figures keep their shape, smaller and higher.
+    if (s.tall) {
+      g.scale.set(k * 0.3, k * 0.5, 1)
+      g.position.y = 1.9 * k
+    } else {
+      g.scale.set(k * s.sx, k, 1)
+      g.position.y = 0
+    }
     // Both materials share the one uniforms object.
     mat.uniforms.uLevel.value = level
     mat.uniforms.uProgress.value =

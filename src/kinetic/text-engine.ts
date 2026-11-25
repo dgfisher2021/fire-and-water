@@ -1,12 +1,20 @@
-import { pulseAt, type Pulse } from '@/lib/pulse'
+import {
+  inkOf,
+  layoutLine,
+  problemsOf,
+  type Metrics,
+  type Row,
+  type Slot,
+} from './layout'
 import { MATERIALS, type Material } from './materials'
+import type { Signals } from './signals'
 import type { LineStyle } from './songs'
-import { STAGE_H, STAGE_W, X0 } from './stage'
+import type { Stage } from './stage'
 import type { KineticLine, Timeline, Token } from './timeline'
-import { flashAt, kickAt, lineIndexAt, sandAt } from './timeline'
+import { flashAt, lineIndexAt, sandAt } from './timeline'
 
 /**
- * The typography of the kinetic film: a 1920x1080 stage of plain DOM text,
+ * The typography of the kinetic film: a stage of plain DOM text (`stage.ts`),
  * laid out once and drawn for any song time. Each line builds as a
  * flush-left stack in 3D space and arrives and leaves the way its section
  * does; a word with a material is painted as what it says (gold foil, flame,
@@ -14,28 +22,10 @@ import { flashAt, kickAt, lineIndexAt, sandAt } from './timeline'
  * letter, unless the scene casts it in solid letters or sand.
  */
 
-const SAFE = 120
-const CY = STAGE_H / 2
-const ROW_MAX = STAGE_W - SAFE - X0
-const STACK_MAX = 700
-const STACK_MAX_CREDIT = 800
-const HERO_MAX_W = 1480
-const HERO_MAX_CAP = 270
-const CONTENT = { size: 124, min: 96 }
-const SMALL_SIZE = 78
-const GAP = 38
-const HERO_GAP = 50
-const CREDIT_GAP = 70
-const CREDIT_H = 96
-const INNER = 20
-
 const HERO_FONT = "900 1000px 'Cinzel Variable'"
 const DISPLAY = "'Cinzel Variable', 'Cormorant Garamond', serif"
 const ITALIC = "'Cormorant Garamond', ui-serif, Georgia, serif"
 const TRACK_CONTENT = 0.05
-
-/** Small words that close the phrase before them ("hush now"). */
-const BACK = new Set(['me', 'now', 'is', 'am'])
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
 const smooth = (v: number) => {
@@ -80,33 +70,17 @@ const noise = (x: number) => {
 }
 
 type Letter = { el: HTMLElement; left: number; w: number }
-type Placed = Token & {
-  el: HTMLElement
-  /** The letters' holder, the letters and the blurred copy behind them. */
-  face?: HTMLElement
-  letters?: Letter[]
-  glow?: HTMLElement
-  mat?: Material
-  /** Words landed before this one in its line, 0 to 1. */
-  rank: number
-  x: number
-  size: number
-  w: number
-  base: number
-  top: number
-}
-type Row = {
-  hero: boolean
-  credit: boolean
-  cap: number
-  h: number
-  t: number
-  top: number
-  gapAbove: number
-  width: number
-  placed: { tok: Placed; x: number; size: number; w: number; at: string }[]
-}
-type Group = { lead: Placed[]; word: Placed; trail: Placed[] }
+type Placed = Token &
+  Slot & {
+    el: HTMLElement
+    /** The letters' holder, the letters and the blurred copy behind them. */
+    face?: HTMLElement
+    letters?: Letter[]
+    glow?: HTMLElement
+    mat?: Material
+    /** Words landed before this one in its line, 0 to 1. */
+    rank: number
+  }
 type Laid = {
   line: KineticLine
   el: HTMLElement
@@ -116,19 +90,30 @@ type Laid = {
   hero?: Placed
   credits?: { el: HTMLElement; top: number }[]
 }
-/** The song's pulse at the frame being drawn. */
-type Signal = { kick: number; bass: number; vocal: number; flash: number }
+/** What the film hears at the frame being drawn, and the storm's lightning. */
+type Signal = {
+  kick: number
+  bass: number
+  vocal: number
+  mid: number
+  flash: number
+}
+
+/** A line that does not fit its stage, and why. */
+export type LineReport = { line: string; problems: string[] }
 
 export type TextEngine = {
-  render: (time: number) => void
+  render: (time: number, heard: Signals | null) => void
+  /** Every line's built stack checked against the stage: overlaps and margins. */
+  check: () => LineReport[]
   dispose: () => void
 }
 
 export function createTextEngine(
   root: HTMLElement,
   timeline: Timeline,
-  pulse: Pulse | null,
-  reduced: boolean
+  reduced: boolean,
+  stage: Stage
 ): TextEngine {
   root.textContent = ''
   const beat = timeline.beat
@@ -185,175 +170,26 @@ export function createTextEngine(
   const BASE_D = baselineRatio(HERO_FONT)
   const BASE_S = baselineRatio(SMALL_FONT)
 
-  const smallW = (tok: Token) => widthPerPx(tok.text, SMALL_FONT) * SMALL_SIZE
-  const sideW = (list: Token[]) =>
-    list.reduce((sum, tok) => sum + smallW(tok) + INNER, 0)
   /** A word set letter by letter: no kerning, the tracking after each letter. */
   const letterW = (ch: string, hero: boolean) =>
     hero
       ? widthPerPx(ch, HERO_FONT)
       : widthPerPx(ch, CONTENT_FONT, TRACK_CONTENT)
-  const letteredPer = (tok: Token) =>
-    [...tok.text].reduce((sum, ch) => sum + letterW(ch, tok.kind === 'hero'), 0)
-
-  /* ---------- layout ---------- */
-
-  function groupsOf(tokens: Placed[]): Group[] {
-    const groups: Group[] = []
-    let pending: Placed[] = []
-    for (const tok of tokens) {
-      if (tok.kind === 'small') {
-        pending.push(tok)
-        continue
-      }
-      if (groups.length) {
-        let i = 0
-        while (i < pending.length && BACK.has(pending[i].key)) i++
-        groups.at(-1)!.trail.push(...pending.slice(0, i))
-        pending = pending.slice(i)
-      }
-      groups.push({ lead: pending, word: tok, trail: [] })
-      pending = []
-    }
-    if (pending.length && groups.length) groups.at(-1)!.trail.push(...pending)
-    return groups
-  }
-
-  function arrange(
-    groups: Group[],
-    cs: number,
-    heroCap: number,
-    spec: number[][]
-  ) {
-    return spec.map((ids): Row => {
-      const row = ids.map((i) => groups[i])
-      const hero = row.some((g) => g.word.kind === 'hero')
-      let cap = cs * CAP
-      let x = X0
-      const placed: Row['placed'] = []
-      for (const g of row) {
-        if (x > X0) x += 0.34 * cs
-        for (const tok of g.lead) {
-          placed.push({ tok, x, size: SMALL_SIZE, w: smallW(tok), at: 'cap' })
-          x += smallW(tok) + INNER
-        }
-        if (g.word.kind === 'hero') {
-          const budget = Math.min(
-            HERO_MAX_W,
-            ROW_MAX - sideW(g.lead) - sideW(g.trail) - INNER
-          )
-          const per = letteredPer(g.word)
-          const size = Math.min(budget / per, heroCap / CAP)
-          placed.push({ tok: g.word, x, size, w: per * size, at: 'word' })
-          cap = size * CAP
-          x += per * size + INNER * 1.3
-        } else {
-          const w =
-            (g.word.material
-              ? letteredPer(g.word)
-              : widthPerPx(g.word.text, CONTENT_FONT, TRACK_CONTENT)) * cs
-          placed.push({ tok: g.word, x, size: cs, w, at: 'word' })
-          x += w + INNER * 0.6
-        }
-        for (const tok of g.trail) {
-          placed.push({ tok, x, size: SMALL_SIZE, w: smallW(tok), at: 'base' })
-          x += smallW(tok) + INNER
-        }
-      }
-      return {
-        hero,
-        credit: false,
-        cap,
-        h: cap,
-        placed,
-        top: 0,
-        gapAbove: 0,
-        width: Math.max(...placed.map((p) => p.x + p.w)) - X0,
-        t: Math.min(...placed.map((p) => p.tok.t)),
-      }
-    })
-  }
-
-  function stackHeight(rows: Row[]) {
-    let y = 0
-    rows.forEach((row, k) => {
-      const prev = rows[k - 1]
-      row.gapAbove = !prev
-        ? 0
-        : row.credit
-          ? CREDIT_GAP
-          : row.hero || prev.hero
-            ? HERO_GAP
-            : GAP
-      y += row.gapAbove
-      row.top = y
-      y += row.h
-    })
-    return y
-  }
-
-  function layout(line: KineticLine, tokens: Placed[]) {
-    const groups = groupsOf(tokens)
-    let spec = groups.map((_, i) => [i])
-    let cs = CONTENT.size
-    let heroCap = HERO_MAX_CAP
-    const limit = line.credit ? STACK_MAX_CREDIT : STACK_MAX
-    let rows: Row[] = []
-    for (let pass = 0; pass < 60; pass++) {
-      rows = arrange(groups, cs, heroCap, spec)
-      if (line.credit)
-        rows.push({
-          hero: false,
-          credit: true,
-          cap: 0,
-          h: CREDIT_H,
-          placed: [],
-          top: 0,
-          gapAbove: 0,
-          width: 0,
-          t: line.credit.t,
-        })
-      const total = stackHeight(rows)
-      const tooWide = rows.some((r) => r.width > ROW_MAX + 1)
-      if (total <= limit && !tooWide) break
-      let best = -1
-      let bestW = Infinity
-      for (let k = 0; k + 1 < spec.length; k++) {
-        if (rows[k].hero || rows[k + 1].hero) continue
-        const merged = rows[k].width + 0.34 * cs + rows[k + 1].width
-        if (merged <= ROW_MAX && merged < bestW) {
-          best = k
-          bestW = merged
-        }
-      }
-      if (!tooWide && best >= 0)
-        spec = [
-          ...spec.slice(0, best),
-          [...spec[best], ...spec[best + 1]],
-          ...spec.slice(best + 2),
-        ]
-      else if (!tooWide && heroCap > 200) heroCap -= 20
-      else if (cs > CONTENT.min) cs -= 4
-      else break
-    }
-    const H = stackHeight(rows)
-    for (const row of rows)
-      for (const p of row.placed) {
-        const tok = p.tok
-        tok.x = p.x
-        tok.size = p.size
-        tok.w = p.w
-        tok.base = p.at === 'cap' ? row.top + ASC_S * p.size : row.top + row.cap
-        tok.top = tok.base - (tok.kind === 'small' ? BASE_S : BASE_D) * p.size
-      }
-    return { rows, H }
+  const metrics: Metrics = {
+    cap: CAP,
+    ascSmall: ASC_S,
+    baseDisplay: BASE_D,
+    baseSmall: BASE_S,
+    small: (text) => widthPerPx(text, SMALL_FONT),
+    content: (text) => widthPerPx(text, CONTENT_FONT, TRACK_CONTENT),
+    letter: letterW,
   }
 
   /* ---------- DOM ---------- */
 
-  const stage = document.createElement('div')
-  stage.style.cssText = `position:absolute;left:0;top:0;width:${STAGE_W}px;height:${STAGE_H}px;perspective:1700px;perspective-origin:38% 50%`
-  root.append(stage)
+  const board = document.createElement('div')
+  board.style.cssText = `position:absolute;left:0;top:0;width:${stage.w}px;height:${stage.h}px;perspective:${stage.perspective}px;perspective-origin:${stage.vanishX}px ${stage.vanishY}px`
+  root.append(board)
   const word = (text: string, css: string) => {
     const el = document.createElement('span')
     el.textContent = text
@@ -422,9 +258,16 @@ export function createTextEngine(
           ...tok,
           rank: line.tokens.length > 1 ? i / (line.tokens.length - 1) : 0,
           mat: tok.material ? MATERIALS[tok.material] : undefined,
+          lettered: !!tok.material,
         }) as Placed
     )
-    const { rows, H } = layout(line, tokens)
+    const { rows, H } = layoutLine(
+      stage,
+      metrics,
+      tokens,
+      line.credit?.t,
+      line.reserve
+    )
     for (const tok of tokens) {
       const mat = tok.mat
       if (tok.kind === 'small') {
@@ -475,10 +318,10 @@ export function createTextEngine(
     }
     const hero = tokens.find((t) => t.kind === 'hero')
     if (hero) {
-      const restTop = CY - H / 2
+      const restTop = stage.cy - H / 2
       line.heroAt = [
-        ((hero.x + hero.w / 2) / STAGE_W) * 2 - 1,
-        -(((restTop + hero.base - (hero.size * CAP) / 2) / STAGE_H) * 2 - 1),
+        ((hero.x + hero.w / 2) / stage.w) * 2 - 1,
+        -(((restTop + hero.base - (hero.size * CAP) / 2) / stage.h) * 2 - 1),
       ]
       if (line.heroWord) {
         const cap = hero.size * CAP
@@ -499,11 +342,11 @@ export function createTextEngine(
       )
       credits = [
         { el: head, top: row.top + 38 - BASE_S * 46 },
-        { el: artist, top: row.top + CREDIT_H - BASE_D * 26 },
+        { el: artist, top: row.top + stage.creditH - BASE_D * 26 },
       ]
       el.append(head, artist)
     }
-    stage.append(el)
+    board.append(el)
     return { line, el, tokens, rows, H, hero, credits }
   })
   probe.remove()
@@ -521,7 +364,7 @@ export function createTextEngine(
       if (t < row.t) continue
       h += (row.h + row.gapAbove) * easeInOut((t - row.t) / PUSH)
     }
-    return CY - h / 2
+    return stage.cy - h / 2
   }
   const swayOf = (t: number) => (reduced ? 0 : Math.sin(t * 0.21) * 2.2)
   const tiltOf = (t: number) => (reduced ? 0 : Math.sin(t * 0.17 + 1) * 1.1)
@@ -887,7 +730,11 @@ export function createTextEngine(
                   settle *
                   S.opacity *
                   (1 - erode) *
-                  (hero && live ? 0.75 + 0.5 * sig.kick : 1)
+                  (hero && live
+                    ? 0.75 + 0.5 * sig.kick
+                    : live
+                      ? 0.82 + 0.4 * sig.mid
+                      : 1)
           put(tok.glow, 'opacity', clamp01(level).toFixed(3))
         }
       }
@@ -1001,7 +848,11 @@ export function createTextEngine(
     publish(item, t)
     const y = stackY(item, t)
     const out = reduced ? 0 : clamp01((t - line.exitAt) / line.exitDur)
-    put(item.el, 'transform-origin', `${X0}px ${(item.H / 2).toFixed(0)}px`)
+    put(
+      item.el,
+      'transform-origin',
+      `${stage.x0}px ${(item.H / 2).toFixed(0)}px`
+    )
     put(item.el, 'opacity', leave(item, line.style, out, y, t).toFixed(3))
     const live = t < line.exitAt && t < timeline.outro
     for (const tok of item.tokens) drawToken(item, tok, t, live, sig, out)
@@ -1012,19 +863,20 @@ export function createTextEngine(
         put(
           c.el,
           'transform',
-          `translate3d(${X0}px, ${(c.top + 18 * (1 - p)).toFixed(1)}px, 0)`
+          `translate3d(${stage.x0}px, ${(c.top + 18 * (1 - p)).toFixed(1)}px, 0)`
         )
       }
     }
   }
 
-  const sig: Signal = { kick: 0, bass: 0, vocal: 0, flash: 0 }
+  const sig: Signal = { kick: 0, bass: 0, vocal: 0, mid: 0, flash: 0 }
 
-  function render(time: number) {
+  function render(time: number, heard: Signals | null) {
     const t = Math.min(Math.max(time, 0), timeline.end)
-    sig.kick = pulse ? kickAt(pulse, t) : 0
-    sig.bass = pulse ? pulseAt(pulse.bass, pulse.fps, t) : 0
-    sig.vocal = pulse ? pulseAt(pulse.vocal, pulse.fps, t) : 0
+    sig.kick = heard?.kick ?? 0
+    sig.bass = heard?.bass ?? 0
+    sig.vocal = heard?.vocal ?? 0
+    sig.mid = heard?.mid ?? 0
     sig.flash = flashAt(t)
     for (const item of laid) drawLine(item, t, sig)
     // The sand outlives its line: keep its word placed.
@@ -1035,8 +887,21 @@ export function createTextEngine(
     }
   }
 
+  const check = () =>
+    laid.flatMap((item): LineReport[] => {
+      const problems = problemsOf(
+        stage,
+        inkOf(stage, metrics, item.tokens, item.H),
+        item.H,
+        item.line.reserve
+      )
+      const name = item.line.text ?? item.tokens.map((t) => t.text).join(' ')
+      return problems.length ? [{ line: name, problems }] : []
+    })
+
   return {
     render,
+    check,
     dispose: () => {
       root.textContent = ''
     },

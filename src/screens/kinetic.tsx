@@ -8,12 +8,18 @@ import {
   useState,
 } from 'react'
 import { Link, useParams, useSearch } from '@tanstack/react-router'
+import { createListener, createSignals, type Signals } from '@/kinetic/signals'
 import { KINETIC_SONGS } from '@/kinetic/songs'
-import { STAGE_H, STAGE_W, X0 } from '@/kinetic/stage'
-import { createTextEngine, type TextEngine } from '@/kinetic/text-engine'
+import { fitStage, stageFor } from '@/kinetic/stage'
+import {
+  createTextEngine,
+  type LineReport,
+  type TextEngine,
+} from '@/kinetic/text-engine'
 import {
   buildTimeline,
   cardAt,
+  createFrame,
   frameAt,
   lineIndexAt,
   type SectionCard,
@@ -30,7 +36,7 @@ import {
   useMediaQuery,
 } from '@dust-ui/ui'
 import { TRACKS } from '@/data/tracks'
-import { getAudio } from '@/lib/audio'
+import { getAudio, listenToAudio } from '@/lib/audio'
 import { loadPulse, type Pulse } from '@/lib/pulse'
 import { selectProgress, usePlayer } from '@/store/player'
 
@@ -39,6 +45,7 @@ const KineticScene = lazy(() =>
 )
 
 const REDUCED = '(prefers-reduced-motion: reduce)'
+const COARSE = '(pointer: coarse)'
 const FONTS = [
   "900 100px 'Cinzel Variable'",
   "400 100px 'Cinzel Variable'",
@@ -54,19 +61,29 @@ const ITALIC = "'Cormorant Garamond', serif"
  */
 export function KineticScreen() {
   const { track } = useParams({ from: '/kinetic/$track' })
-  const { t: startAt, hold } = useSearch({ from: '/kinetic/$track' })
+  const { t: startAt, hold, check } = useSearch({ from: '/kinetic/$track' })
   const t = TRACKS[track]
   const song = KINETIC_SONGS[track]
   const reduced = useMediaQuery(REDUCED)
+  const coarse = useMediaQuery(COARSE)
+  // Wide windows get the 16:9 stage, a phone held upright the 9:16 one.
+  const [stage, setStage] = useState(() =>
+    stageFor(window.innerWidth, window.innerHeight)
+  )
 
   const timeline = useMemo(
     () => (song && t.timing ? buildTimeline(t, song) : null),
     [song, t]
   )
-  const [pulse, setPulse] = useState<Pulse | null>(null)
+  // What the film hears: the analyser while the song plays, else its pulse.
+  const pulse = useRef<Pulse | null>(null)
+  const [heard] = useState(createSignals)
   useEffect(() => {
     let live = true
-    void loadPulse(t.audioFile).then((p) => live && setPulse(p))
+    pulse.current = null
+    void loadPulse(t.audioFile).then((p) => {
+      if (live) pulse.current = p
+    })
     return () => {
       live = false
     }
@@ -96,6 +113,8 @@ export function KineticScreen() {
     const fresh = !isCurrent
     play(track)
     if (fresh && startAt) seek(startAt)
+    // Inside the gesture, so the analyser's context may start.
+    listenToAudio()
   }
   // A finished song hands off to the next; the film ends with its own song.
   useEffect(
@@ -112,7 +131,14 @@ export function KineticScreen() {
   const shownSection = useRef<string | null>(null)
   const shownCard = useRef<SectionCard | null>(null)
 
-  /* The typography, laid out once the faces are in. */
+  // The song's own cover, for the scene to draw from.
+  const art = useMemo(
+    () => ({ src: t.art.full, perch: song?.art?.perch }),
+    [t.art.full, song]
+  )
+  const [report, setReport] = useState<LineReport[] | null>(null)
+
+  /* The typography, laid out once the faces are in and again when the stage turns. */
   const textRef = useRef<HTMLDivElement>(null)
   const fitRef = useRef<HTMLDivElement>(null)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -122,9 +148,21 @@ export function KineticScreen() {
     let engine: TextEngine | null = null
     let raf = 0
     let live = true
+    const ear = createListener()
+    const sig = heard
+    // Dev only: the signals, for a script to sample.
+    if (import.meta.env.DEV)
+      (globalThis as { __kinetic?: Signals }).__kinetic = sig
+    let frames = 0
     const draw = () => {
       const time = now()
-      engine?.render(time)
+      const player = usePlayer.getState()
+      const sounding =
+        !hold && player.track === track && player.status === 'playing'
+      // The context may only wake after a gesture: keep asking while it plays.
+      if (sounding && !sig.live && frames++ % 45 === 0) listenToAudio()
+      ear.read(pulse.current, time, sounding, sig)
+      engine?.render(time, sig)
       // The header and the section cards are React's: tell it when they change.
       const at = lineIndexAt(timeline, time)
       const lyric = time >= timeline.firstLyric && time < timeline.outro
@@ -144,7 +182,16 @@ export function KineticScreen() {
     void Promise.all(FONTS.map((f) => document.fonts.load(f, 'AZaz’'))).then(
       () => {
         if (!live) return
-        engine = createTextEngine(host, timeline, pulse, reduced)
+        engine = createTextEngine(host, timeline, reduced, stage)
+        if (import.meta.env.DEV && check) {
+          const found = engine.check()
+          setReport(found)
+          document.documentElement.dataset.kineticCheck = JSON.stringify({
+            stage: stage.name,
+            lines: timeline.lines.length,
+            problems: found,
+          })
+        }
         draw()
       }
     )
@@ -153,17 +200,21 @@ export function KineticScreen() {
       cancelAnimationFrame(raf)
       engine?.dispose()
     }
-  }, [timeline, pulse, reduced, now])
+  }, [timeline, reduced, now, stage, check, hold, track, heard])
 
-  // The 1920x1080 stage, scaled to fit the window.
+  // The stage, chosen for the window's shape and scaled to fit it.
   useEffect(() => {
     const root = rootRef.current
     const fit = fitRef.current
     if (!root || !fit) return
     const apply = () => {
       const { width, height } = root.getBoundingClientRect()
-      const scale = Math.min(width / STAGE_W, height / STAGE_H)
-      fit.style.transform = `translate(${(width - STAGE_W * scale) / 2}px, ${(height - STAGE_H * scale) / 2}px) scale(${scale})`
+      const next = stageFor(width, height)
+      setStage(next)
+      const { scale, left, top } = fitStage(next, width, height)
+      fit.style.width = `${next.w}px`
+      fit.style.height = `${next.h}px`
+      fit.style.transform = `translate(${left}px, ${top}px) scale(${scale})`
     }
     apply()
     const observer = new ResizeObserver(apply)
@@ -171,19 +222,18 @@ export function KineticScreen() {
     return () => observer.disconnect()
   }, [])
 
-  const frame = useMemo<FrameSource | null>(
-    () =>
-      timeline
-        ? () =>
-            frameAt(
-              timeline,
-              pulse,
-              now(),
-              usePlayer.getState().status === 'playing'
-            )
-        : null,
-    [timeline, pulse, now]
-  )
+  const frame = useMemo<FrameSource | null>(() => {
+    if (!timeline) return null
+    const into = createFrame()
+    return () =>
+      frameAt(
+        timeline,
+        heard,
+        now(),
+        usePlayer.getState().status === 'playing',
+        into
+      )
+  }, [timeline, now, heard])
 
   /* Controls: shown on movement, hidden while the film plays untouched. */
   const [awake, setAwake] = useState(true)
@@ -195,6 +245,18 @@ export function KineticScreen() {
   }
   useEffect(() => () => window.clearTimeout(idle.current), [])
   const shown = awake || !playing
+  // A finger has no hover: a tap starts the film, then shows or hides the controls.
+  const touched = useRef(false)
+  const tap = () => {
+    if (!touched.current) return toggle()
+    if (!playing) {
+      toggle()
+      return wake()
+    }
+    if (!awake) return wake()
+    window.clearTimeout(idle.current)
+    setAwake(false)
+  }
 
   const [muted, setMuted] = useState(() => getAudio().muted)
   const mute = () => {
@@ -226,6 +288,10 @@ export function KineticScreen() {
     m: mute,
   })
 
+  // Finger-sized targets where there is no mouse.
+  const big = coarse ? 'icon-lg' : 'icon'
+  const bigClass = coarse ? 'size-12' : undefined
+
   return (
     <div
       ref={rootRef}
@@ -234,18 +300,20 @@ export function KineticScreen() {
         'dark fixed inset-0 overflow-hidden bg-background text-foreground',
         !shown && 'cursor-none'
       )}
-      onPointerMove={wake}
-      onPointerDown={wake}
+      onPointerMove={(e) => e.pointerType !== 'touch' && wake()}
+      onPointerDown={(e) => {
+        touched.current = e.pointerType === 'touch'
+        if (!touched.current) wake()
+      }}
     >
       {frame && (
         <Suspense fallback={null}>
-          <KineticScene frame={frame} />
+          <KineticScene frame={frame} stage={stage} art={art} />
         </Suspense>
       )}
       <div
         ref={fitRef}
         className='pointer-events-none absolute top-0 left-0 origin-top-left'
-        style={{ width: STAGE_W, height: STAGE_H }}
       >
         <div ref={textRef} className='absolute inset-0' />
         {/* The running header: the song, and the section morphing beside it. */}
@@ -254,7 +322,7 @@ export function KineticScreen() {
             'absolute flex items-baseline gap-7 whitespace-nowrap text-foreground transition-opacity duration-700',
             section ? 'opacity-60' : 'opacity-0'
           )}
-          style={{ left: X0, top: 88 }}
+          style={{ left: stage.x0, top: stage.headerTop }}
         >
           <span style={{ font: `italic 500 30px ${ITALIC}`, lineHeight: 1 }}>
             {t.title}
@@ -279,10 +347,10 @@ export function KineticScreen() {
             cardOn ? 'opacity-100' : 'opacity-0'
           )}
           style={{
-            left: X0,
-            top: STAGE_H / 2 - 52,
+            left: stage.x0,
+            top: stage.cy - 52,
             color: card?.accent,
-            font: `600 58px ${DISPLAY}`,
+            font: `600 ${stage.cardSize}px ${DISPLAY}`,
             letterSpacing: '0.42em',
             lineHeight: 1,
           }}
@@ -326,19 +394,30 @@ export function KineticScreen() {
         type='button'
         aria-label={playing ? 'Pause' : 'Play'}
         className='absolute inset-0 cursor-[inherit]'
-        onClick={toggle}
+        onClick={tap}
         tabIndex={-1}
       />
 
+      {report && (
+        <pre className='absolute top-2 left-2 max-h-[90%] max-w-[90%] overflow-auto rounded-md bg-background/90 p-3 text-xs text-foreground'>
+          {report.length
+            ? report
+                .map((r) => `${r.line}\n  ${r.problems.join('\n  ')}`)
+                .join('\n')
+            : `${stage.name}: every line fits`}
+        </pre>
+      )}
+
       <div
         className={cn(
-          'absolute inset-x-0 top-0 flex items-center justify-end p-4 transition-opacity duration-300',
+          'absolute inset-x-0 top-0 flex items-center justify-end pt-[max(1rem,env(safe-area-inset-top))] pr-[max(1rem,env(safe-area-inset-right))] transition-opacity duration-300',
           shown ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
       >
         <Button
           variant='glass-ghost'
-          size='icon'
+          size={big}
+          className={bigClass}
           aria-label='Close the film'
           nativeButton={false}
           render={<Link to='/lyrics/$track' params={{ track }} />}
@@ -349,12 +428,19 @@ export function KineticScreen() {
 
       <div
         className={cn(
-          'absolute inset-x-0 bottom-0 bg-linear-to-t from-background/85 to-transparent px-5 pt-16 pb-5 transition-opacity duration-300',
+          'absolute inset-x-0 bottom-0 bg-linear-to-t from-background/85 to-transparent pt-16 pr-[max(1.25rem,env(safe-area-inset-right))] pb-[max(1.25rem,env(safe-area-inset-bottom))] pl-[max(1.25rem,env(safe-area-inset-left))] transition-opacity duration-300',
           shown ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
+        onPointerDown={wake}
       >
-        <div className='mx-auto flex max-w-5xl items-center gap-4'>
+        <div
+          className={cn(
+            'mx-auto flex max-w-5xl items-center',
+            coarse ? 'gap-3' : 'gap-4'
+          )}
+        >
           <MediaPlayButton
+            className={coarse ? 'size-14' : undefined}
             playing={playing}
             loading={loading}
             onClick={toggle}
@@ -371,7 +457,8 @@ export function KineticScreen() {
           />
           <Button
             variant='glass-ghost'
-            size='icon'
+            size={big}
+            className={bigClass}
             aria-label={muted ? 'Unmute' : 'Mute'}
             onClick={mute}
           >
@@ -379,7 +466,8 @@ export function KineticScreen() {
           </Button>
           <Button
             variant='glass-ghost'
-            size='icon'
+            size={big}
+            className={bigClass}
             aria-label={full ? 'Leave full screen' : 'Full screen'}
             onClick={fullscreen}
           >

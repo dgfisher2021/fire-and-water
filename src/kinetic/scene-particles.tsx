@@ -85,6 +85,8 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
   float twinkle = 0.72 + 0.28 * sin(uTime * (0.5 + aSeed.y * 1.6) + aSeed.y * 40.0);
+  // The highs make the brighter stars glitter.
+  twinkle *= 1.0 + uHigh * 0.9 * step(0.55, aSeed.w) * (0.5 + 0.5 * sin(uTime * 9.0 + aSeed.z * 80.0));
   float big = aSeed.x * aSeed.x * aSeed.x * aSeed.x;
   vStreak = uStreak * par;
   float px = (1.5 + 4.5 * big) * (1.0 + (1.0 - depth) * 0.7) * (1.0 + uKick * 0.12);
@@ -167,6 +169,9 @@ void main() {
   // Now and then a mote turns its face to the light and flares.
   vSpark = pow(0.5 + 0.5 * sin(uTime * (0.9 + aSeed.x * 1.7) + aSeed.w * 90.0), 24.0)
     * step(0.55, aSeed.x) * (1.0 - smoothstep(0.1, 0.3, vBlur));
+  // A hat or a bright passage turns more of them to the light.
+  vSpark = min(1.0, vSpark * (1.0 + 2.2 * uHigh)
+    + uSnare * step(0.8, fract(aSeed.w * 7.0 + floor(uSong * 4.0) * 0.37)) * (1.0 - smoothstep(0.1, 0.4, vBlur)));
   gl_PointSize = (2.6 + aSeed.x * 4.4 + vBlur * 26.0 + vSpark * 16.0) * uScale / 1158.0
     * (1.0 + uKick * 0.1);
   vA = uLevel * (0.14 + 0.86 * seen * seen) / (1.0 + vBlur * vBlur * 18.0);
@@ -224,7 +229,7 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
   gl_PointSize = (46.0 + 50.0 * aSeed.w) * uScale / 1158.0 * (0.8 + 0.5 * uBass);
-  vA = uLevel * (0.45 + 0.55 * uBass + 0.5 * uKick) * smoothstep(0.0, 0.05, run) * smoothstep(1.0, 0.95, run);
+  vA = uLevel * (0.45 + 0.55 * uBass + 0.5 * uKick + 0.8 * uSnare) * smoothstep(0.0, 0.05, run) * smoothstep(1.0, 0.95, run);
   vS = vec4(dir, aSeed.yzw);
 }
 `
@@ -279,8 +284,9 @@ void main() {
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
   gl_PointSize = (5.0 + 15.0 * aSeed.y * aSeed.y) * (1.0 - life * 0.55)
-    * uScale / 1158.0 * (1.0 + uKick * 0.2);
+    * uScale / 1158.0 * (1.0 + uKick * 0.2 + uSnare * 0.7 * step(0.7, aSeed.w));
   float flicker = 0.7 + 0.3 * sin(uTime * (6.0 + aSeed.w * 9.0) + aSeed.x * 50.0);
+  flicker *= 1.0 + uSnare * 0.9 * step(0.7, aSeed.w);
   vA = uLevel * smoothstep(0.0, 0.06, life) * pow(1.0 - life, 1.4) * flicker;
   vS = vec4(life, aSeed.yzw);
 }
@@ -441,13 +447,13 @@ export function HeroBursts() {
     s.flare *= Math.exp(-s.dt * 3.5)
     const count = s.heroCount
     if (last.current >= 0 && count > last.current && !s.calm) {
-      RAY.set(s.heroAt[0], s.heroAt[1], 0.5).unproject(camera)
+      RAY.set(s.heroAt[0] * s.fitX, s.heroAt[1] * s.fitY, 0.5).unproject(camera)
       RAY.sub(camera.position).normalize()
       s.heroPos.copy(camera.position).addScaledVector(RAY, 6 / -RAY.z)
       // A spray along the word rather than one clump at its middle.
       for (let k = -2; k <= 2; k++) {
         SPRAY.copy(s.heroPos)
-        SPRAY.x += k * 0.55 * s.sx
+        SPRAY.x += k * 0.55 * Math.max(s.sx, 0.5)
         sparks.current?.emit(SPRAY, {
           count: 16,
           speed: 2.1 + Math.abs(k) * 0.35,

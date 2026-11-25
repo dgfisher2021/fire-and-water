@@ -2,8 +2,17 @@ import type { TrackId } from '@/data/tracks'
 import type { MaterialName } from './materials'
 import type { Cue, SandMode, Solid } from './types'
 
-/** A cue with its level (1 when given bare). */
-export type CueSpec = Cue | [Cue, number]
+/**
+ * A cue with its level (1 when given bare), and optionally the word of the
+ * line it waits for ("orb" on "heart") instead of the line's first word.
+ */
+export type CueSpec = Cue | [Cue, number] | [Cue, number, string]
+
+/** A cue held between two song times, whatever is being sung. */
+export type Moment = { cue: Cue; from: number; to: number; level?: number }
+
+/** A part of the cover: left, top, right, bottom, each 0 to 1. */
+export type Crop = [number, number, number, number]
 
 /**
  * How a section's lines arrive and leave: `title` slow and grand, `rise`
@@ -36,6 +45,12 @@ export type KineticSong = {
   /** What the title and the reprise call up. */
   titleCues: CueSpec[]
   dropCues: CueSpec[]
+  /** Cues every line of a section adds to its own (by label, the number dropped). */
+  sectionCues?: Record<string, CueSpec[]>
+  /** Cues by the clock: the cover gathering in the intro. */
+  moments?: Moment[]
+  /** What to cut from the song's cover (`TRACKS[id].art`): the figure that perches. */
+  art?: { perch?: Crop }
   /** What a word is made of, wherever it is sung. */
   words: Record<string, MaterialName>
   /** Per line: the word to sing loudest and what the scene shows. */
@@ -89,7 +104,15 @@ const lift: KineticSong = {
     'Final Chorus': 'lift',
     Outro: 'dissolve',
   },
-  titleCues: ['golddust', ['rise', 0.5]],
+  titleCues: ['golddust', ['rise', 0.5], ['wash', 0.8]],
+  // The seeress gathers out of gold dust and lifts away as HIGHER forms.
+  moments: [{ cue: 'cover', from: 0.2, to: 11.4 }],
+  sectionCues: {
+    Bridge: [['wash', 0.7]],
+    'Final Chorus': ['wings'],
+  },
+  // The raven on its stone, lower right of the cover.
+  art: { perch: [0.665, 0.59, 0.95, 0.995] },
   dropCues: ['rise', 'fire', 'wire'],
   words: {
     marble: 'marble',
@@ -204,12 +227,13 @@ const lift: KineticSong = {
     },
     'A clockwork heart beneath the stone': {
       hero: 'clockwork',
-      cues: ['clockwork', 'orb'],
+      // The heart lights inside the rings on its own word.
+      cues: ['clockwork', ['orb', 0.8, 'heart']],
       solid: 'brass',
     },
     'Keeps time in low electric tones': {
       hero: 'electric',
-      cues: ['clockwork', ['wire', 0.7], ['orb', 0.8]],
+      cues: ['clockwork', ['wire', 0.7], ['orb', 0.7]],
     },
     'The moon writes sigils in the rain': {
       hero: 'sigils',
@@ -240,7 +264,11 @@ const lift: KineticSong = {
     },
     'Let the pulse become a prayer': {
       hero: 'prayer',
-      cues: [['rise', 0.6], ['choir', 0.7], 'orb'],
+      cues: [
+        ['rise', 0.6],
+        ['choir', 0.7],
+        ['orb', 0.95, 'pulse'],
+      ],
     },
     'Let the air remember air': {
       hero: 'remember',
@@ -248,19 +276,22 @@ const lift: KineticSong = {
       sand: 'form',
     },
     'In the thunder, in the glow': { hero: 'thunder', cues: ['storm'] },
-    'We move like ghosts in row by row': { hero: 'ghosts', cues: ['ghosts'] },
+    'We move like ghosts in row by row': {
+      hero: 'ghosts',
+      cues: ['ghosts', 'raven'],
+    },
     'Heart to heart and breath to breath': {
       hero: 'heart',
-      cues: [['ghosts', 0.5], 'golddust', 'orb'],
+      cues: [['ghosts', 0.5], 'golddust', ['orb', 0.95]],
     },
     'Dancing softly next to death': {
       hero: 'death',
-      cues: ['ghosts', ['candle', 0.4]],
+      cues: ['ghosts', ['candle', 0.4], 'raven'],
       sand: 'scatter',
     },
     'I hear the violins of night': {
       hero: 'violins',
-      cues: ['thread', ['moon', 0.5]],
+      cues: ['thread', ['moon', 0.5], ['wash', 0.7]],
     },
     'A neoclassical silver light': {
       hero: 'light',
@@ -273,7 +304,7 @@ const lift: KineticSong = {
     },
     'And carve a path for memory': {
       hero: 'memory',
-      cues: [['frost', 0.6], 'thread'],
+      cues: [['frost', 0.6], 'thread', ['wash', 0.6]],
     },
     'The beat descends like temple rain': {
       hero: 'temple',
@@ -281,11 +312,11 @@ const lift: KineticSong = {
     },
     'A measured, dark, mechanical refrain': {
       hero: 'mechanical',
-      cues: ['clockwork', ['orb', 0.7]],
+      cues: ['clockwork', ['orb', 0.75]],
     },
     'Yet in the fracture, in the seam': {
       hero: 'fracture',
-      cues: ['wire', ['sigils', 0.5]],
+      cues: [['wire', 0.7], 'sigils'],
     },
     'A voice appears, a lucid beam': { hero: 'voice', cues: ['beam'] },
     'Hush now, the lantern’s bending': { hero: 'hush', cues: ['candle'] },
@@ -300,7 +331,10 @@ const lift: KineticSong = {
     },
     'I am the room and I am you': {
       hero: 'you',
-      cues: [['beam', 0.6], ['choir', 0.5], 'orb'],
+      cues: [
+        ['beam', 0.6],
+        ['choir', 0.5],
+      ],
     },
     'Oh, sacred machine, keep turning': {
       hero: 'machine',
@@ -324,23 +358,21 @@ const lift: KineticSong = {
     },
     'And when the last delay fades slow': {
       hero: 'delay',
-      cues: [
-        ['tide', 0.6],
-        ['ghosts', 0.4],
-      ],
+      cues: [['tide', 0.6], ['ghosts', 0.4], 'perch'],
       sand: ['scatter', 3.6],
     },
     'The marble sings, the sub still low': {
       hero: 'marble',
-      cues: ['shafts', ['orb', 0.7]],
+      cues: ['shafts', 'perch'],
     },
     'I leave my name in haloed sound': {
       hero: 'haloed',
-      cues: ['moon', 'sigils'],
+      // The heart's last glow, low in its rings; the star takes its place.
+      cues: ['sigils', 'perch', ['orb', 0.4]],
     },
     'A trembling star beneath the ground': {
       hero: 'star',
-      cues: ['star'],
+      cues: ['star', ['perch', 0.8]],
       solid: 'light',
     },
   },

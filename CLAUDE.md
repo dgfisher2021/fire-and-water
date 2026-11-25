@@ -222,12 +222,19 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   word: its material; per section: accent, energy and line style),
   `materials.ts` is the library of looks, entrances and motions,
   `timeline.ts` builds the lines, the section cards and the `KineticFrame`
-  the scene reads (`types.ts`, twenty-one cues plus the solid and sand
-  hero), `text-engine.ts` draws the typography as plain DOM for any song
+  the scene reads (`types.ts`, twenty-six cues plus the solid and sand
+  hero; a cue can wait for a word of its line, a section can add cues to
+  all its lines, and `moments` hold a cue by the clock), `text-engine.ts` draws the typography as plain DOM for any song
   time (imperative, no React per frame; a gradient needs
   `background-clip: text` per letter, so glows are a blurred copy behind,
-  never `text-shadow`), `stage.ts` holds the 1920x1080 stage and the pose
-  maths both layers share, `scene*.tsx` is one react-three-fiber canvas with
+  never `text-shadow`), `stage.ts` holds the two stages (1920x1080, and
+  1080x1920 for a window narrower than 0.8, each with its layout constants
+  and `heart`, the clockwork heart's place) and the pose maths both layers
+  share, `layout.ts` the stack arithmetic and the fit check (`?check=1` in
+  dev lists lines that overlap, leave the margins or cross the heart),
+  `signals.ts` what the film hears (a live analyser from `lib/audio.ts`
+  while the song plays, the precomputed pulse otherwise and for held
+  frames), `scene*.tsx` is one react-three-fiber canvas with
   `@react-three/postprocessing` bloom, the kit's in-canvas `SparkField`,
   `GlowTrail` and `AssistantOrb3d` (the orb, lit by `Studio`, a procedural
   drei `Environment`; the kit's Scene/Stage/Backdrop components each open
@@ -235,7 +242,19 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   (extruded hero letters from `cinzel-black.typeface.json`, written by
   `scripts/kinetic-font.mjs`; transparent materials at render order 80 so
   they draw over the hush veil) and `scene-sand.tsx` (grains sampled from
-  the hero's glyphs, placed in stage space by the same pose). The text
+  the hero's glyphs, placed in stage space by the same pose),
+  `scene-cover.tsx` (the song's own cover from `TRACKS[id].art`: the picture
+  resolving in the intro, its gold as grains, a wash, the perched figure
+  cut from it, a raven in flight, the wings of `wing.ts`). The orb is one
+  thing, the clockwork heart: always at `stage.heart` in the rings, only on
+  lines about the heart, pulse or machine, and lines that share its frame
+  are laid out clear of it (`line.reserve`). The sigils are particles that
+  hold a rune and flow into the next (the kit's `ParticleCarouselScene`
+  morph, ported in-canvas and timed by the song). `lib/audio.ts` owns the
+  one Web Audio graph: a song loads with CORS only after the media origin
+  answers a HEAD probe (the R2 rule allows the site and localhost:4600),
+  never on iOS, and the analyser attaches only to a clean source, because
+  an element without CORS routed into a graph plays silence. The text
   layer writes each cast hero's box and pose into its `HeroWord`; the scene
   hides nothing itself: the DOM hero of a cast word is simply not painted.
   Everything is a function of song time (no springs, no accumulated state

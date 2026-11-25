@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { Font, type FontData } from 'three/examples/jsm/loaders/FontLoader.js'
 import typeface from './cinzel-black.typeface.json'
 import { BEAT, CAM_Z, HALF_H, useScene } from './scene-state'
-import { STAGE_H, STAGE_W, project } from './stage'
+import { project } from './stage'
 import type { HeroWord, Solid } from './types'
 
 const POOL = 12
@@ -243,11 +243,11 @@ export function SolidWord() {
       }
       dy -= out * out * 0.5 * height
       const x = left + (advances.current[i] / total) * width + dx
-      project(word.pose, x, top + height + dy, (1 - e) * -160, P)
+      project(s.stage, word.pose, x, top + height + dy, (1 - e) * -160, P)
       // Stage px to a point DISTANCE ahead of the camera.
       RAY.set(
-        ((P[0] - STAGE_W / 2) * s.stageUnit) / s.halfW,
-        (-(P[1] - STAGE_H / 2) * s.stageUnit) / HALF_H,
+        ((P[0] - s.stage.w / 2) * s.stageUnit) / s.halfW,
+        (-(P[1] - s.stage.h / 2) * s.stageUnit) / HALF_H,
         0.5
       )
         .unproject(camera)

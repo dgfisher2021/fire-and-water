@@ -1,7 +1,7 @@
 import type { Track } from '@/data/tracks'
-import { pulseAt, type Pulse } from '@/lib/pulse'
 import { MATERIALS, type Material, type MaterialName } from './materials'
-import type { CueSpec, HeroSpec, KineticSong, LineStyle } from './songs'
+import type { Signals } from './signals'
+import type { CueSpec, HeroSpec, KineticSong, LineStyle, Moment } from './songs'
 import {
   CUES,
   type Cue,
@@ -27,6 +27,10 @@ export type KineticLine = {
   tokens: Token[]
   credit?: { t: number; title: string; artist: string }
   cues: CueSpec[]
+  /** The cues resolved: each with its level and the song time it comes up at. */
+  cueAt: { cue: Cue; level: number; from: number }[]
+  /** Shares the frame with the clockwork heart (or the star in its place): keep clear. */
+  reserve: boolean
   accent: string
   energy: number
   style: LineStyle
@@ -52,6 +56,7 @@ export type SectionCard = {
 
 export type Timeline = {
   lines: KineticLine[]
+  moments: Moment[]
   cards: SectionCard[]
   heroTimes: number[]
   firstLyric: number
@@ -262,6 +267,8 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     energy: song.energy[type(section)] ?? 0.5,
     style: song.styles[type(section)] ?? 'rise',
     heroAt: [-0.2, 0] as [number, number],
+    cueAt: [] as KineticLine['cueAt'],
+    reserve: false,
     start: 0,
     next: Infinity,
     exitAt: Infinity,
@@ -314,7 +321,10 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
       ...base(line.section),
       text: line.text,
       tokens: tokensOf(line.words, line.times, song.words, spec?.hero),
-      cues: spec?.cues ?? [],
+      cues: [
+        ...(spec?.cues ?? []),
+        ...(song.sectionCues?.[type(line.section)] ?? []),
+      ],
     })
     specs.push(spec ?? {})
   }
@@ -324,6 +334,12 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
   for (const line of lines) {
     line.start = Math.min(...line.tokens.map((t) => t.t))
     line.hero = line.tokens.find((t) => t.kind === 'hero')
+    line.cueAt = line.cues.map((spec) => {
+      const [cue, level, word] = typeof spec === 'string' ? [spec, 1] : spec
+      const at = word ? line.tokens.find((t) => t.key === word)?.t : undefined
+      return { cue, level, from: at ?? line.start }
+    })
+    line.reserve = line.cueAt.some((c) => c.cue === 'orb' || c.cue === 'star')
   }
   const cards: SectionCard[] = []
   lines.forEach((line, k) => {
@@ -359,6 +375,7 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
   return {
     lines,
     cards,
+    moments: song.moments ?? [],
     heroTimes: lines
       .flatMap((l) => (l.hero ? [l.hero.t] : []))
       .sort((a, b) => a - b),
@@ -388,21 +405,6 @@ export function cardAt(timeline: Timeline, t: number) {
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
 const smooth = (v: number) => v * v * (3 - 2 * v)
-
-/** How far the bass stands above its last half second, squared: a kick. */
-export function kickAt(pulse: Pulse, t: number) {
-  const now = pulseAt(pulse.bass, pulse.fps, t)
-  let low = now
-  for (
-    let i = Math.ceil((t - 0.5) * pulse.fps);
-    i <= Math.floor(t * pulse.fps);
-    i++
-  )
-    if (i >= 0 && i < pulse.bass.length)
-      low = Math.min(low, parseInt(pulse.bass[i], 36) / 35)
-  const k = clamp01((now - low) / 0.15)
-  return k * k
-}
 
 const FLASH_SPAN = 1.9
 const hash = (n: number) => {
@@ -436,30 +438,68 @@ export function sandAt(timeline: Timeline, t: number) {
   return found
 }
 
+const REST: [number, number] = [-0.2, 0]
 const RISE = 0.9
 const FALL = 1.6
 const LEAD = 0.3
 
-/** The frame the scene draws at `t`: cue levels eased in before a line and out after it. */
+/** An empty frame, for `frameAt` to fill again and again. */
+export const createFrame = (): KineticFrame => ({
+  time: 0,
+  playing: false,
+  bass: 0,
+  vocal: 0,
+  sub: 0,
+  lowMid: 0,
+  mid: 0,
+  high: 0,
+  loud: 0,
+  kick: 0,
+  snare: 0,
+  accent: '#ffffff',
+  energy: 0,
+  cues: Object.fromEntries(CUES.map((c) => [c, 0])) as Record<Cue, number>,
+  flash: 0,
+  heroCount: 0,
+  heroAt: [-0.2, 0],
+  solid: null,
+  sand: null,
+  sandIn: 0,
+  sandOut: 0,
+  sandLevel: 0,
+  fade: 1,
+})
+
+/**
+ * The frame the scene draws at `t`: cue levels eased in before a line and
+ * out after it, and what the film hears (`sig`). Fills and returns `into`
+ * when given, so a film draws every frame into the same object.
+ */
 export function frameAt(
   timeline: Timeline,
-  pulse: Pulse | null,
+  sig: Signals | null,
   t: number,
-  playing: boolean
+  playing: boolean,
+  into: KineticFrame = createFrame()
 ): KineticFrame {
-  const cues = Object.fromEntries(CUES.map((c) => [c, 0])) as Record<
-    Cue,
-    number
-  >
+  const cues = into.cues
+  for (const cue of CUES) cues[cue] = 0
   const k = lineIndexAt(timeline, t + LEAD)
   for (let j = Math.max(0, k - 2); j <= k; j++) {
     const line = timeline.lines[j]
-    const up = smooth(clamp01((t - (line.start - LEAD)) / RISE))
     const down = 1 - smooth(clamp01((t - line.next) / FALL))
-    for (const spec of line.cues) {
-      const [cue, level] = typeof spec === 'string' ? [spec, 1] : spec
-      cues[cue] = Math.max(cues[cue], level * up * down)
+    for (const c of line.cueAt) {
+      // A cue waiting on a word comes up on it, not ahead of it.
+      const lead = c.from > line.start ? 0 : LEAD
+      const up = smooth(clamp01((t - (c.from - lead)) / RISE))
+      cues[c.cue] = Math.max(cues[c.cue], c.level * up * down)
     }
+  }
+  for (const m of timeline.moments) {
+    if (t < m.from || t > m.to + FALL) continue
+    const up = smooth(clamp01((t - m.from) / RISE))
+    const down = 1 - smooth(clamp01((t - m.to) / FALL))
+    cues[m.cue] = Math.max(cues[m.cue], (m.level ?? 1) * up * down)
   }
   const at = lineIndexAt(timeline, t)
   const line = at >= 0 ? timeline.lines[at] : undefined
@@ -480,33 +520,36 @@ export function frameAt(
   const word = line?.heroWord
   const sand = sandAt(timeline, t)
   const plan = sand?.sand
-  return {
-    time: t,
-    playing,
-    bass: pulse ? pulseAt(pulse.bass, pulse.fps, t) : 0,
-    vocal: pulse ? pulseAt(pulse.vocal, pulse.fps, t) : 0,
-    kick: pulse ? kickAt(pulse, t) : 0,
-    accent: line?.accent ?? timeline.lines[0].accent,
-    energy: line?.energy ?? 0.3,
-    cues,
-    flash: flashAt(t),
-    heroCount,
-    heroAt: heroLine?.heroAt ?? [-0.2, 0],
-    solid:
-      word?.solid && t >= word.t && t < word.exitAt + word.exitDur
-        ? word
-        : null,
-    sand,
-    sandIn:
-      plan && plan.mode !== 'scatter'
-        ? 1 - clamp01((t - plan.in0) / (plan.in1 - plan.in0))
-        : 0,
-    sandOut:
-      plan && plan.mode !== 'gather'
-        ? clamp01((t - plan.out0) / (plan.out1 - plan.out0))
-        : 0,
-    sandLevel:
-      plan?.mode === 'gather' ? 1 - clamp01((t - plan.in1 - 0.1) / 0.8) : 1,
-    fade: clamp01(t / 1.2) * (1 - 0.6 * clamp01((t - (timeline.end - 3)) / 3)),
-  }
+  const f = into
+  f.time = t
+  f.playing = playing
+  f.bass = sig?.bass ?? 0
+  f.vocal = sig?.vocal ?? 0
+  f.sub = sig?.sub ?? 0
+  f.lowMid = sig?.lowMid ?? 0
+  f.mid = sig?.mid ?? 0
+  f.high = sig?.high ?? 0
+  f.loud = sig?.loud ?? 0
+  f.kick = sig?.kick ?? 0
+  f.snare = sig?.snare ?? 0
+  f.accent = line?.accent ?? timeline.lines[0].accent
+  f.energy = line?.energy ?? 0.3
+  f.flash = flashAt(t)
+  f.heroCount = heroCount
+  f.heroAt = heroLine?.heroAt ?? REST
+  f.solid =
+    word?.solid && t >= word.t && t < word.exitAt + word.exitDur ? word : null
+  f.sand = sand
+  f.sandIn =
+    plan && plan.mode !== 'scatter'
+      ? 1 - clamp01((t - plan.in0) / (plan.in1 - plan.in0))
+      : 0
+  f.sandOut =
+    plan && plan.mode !== 'gather'
+      ? clamp01((t - plan.out0) / (plan.out1 - plan.out0))
+      : 0
+  f.sandLevel =
+    plan?.mode === 'gather' ? 1 - clamp01((t - plan.in1 - 0.1) / 0.8) : 1
+  f.fade = clamp01(t / 1.2) * (1 - 0.6 * clamp01((t - (timeline.end - 3)) / 3))
+  return f
 }

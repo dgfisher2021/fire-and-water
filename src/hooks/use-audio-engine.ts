@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
-import { getAudio } from '@/lib/audio'
+import { TRACKS, TRACK_ORDER } from '@/data/tracks'
+import { getAudio, probeAudioCors } from '@/lib/audio'
+import { mediaUrl } from '@/lib/media'
 import { usePlayer } from '@/store/player'
 
 /**
@@ -14,6 +16,8 @@ export function useAudioEngine() {
   useEffect(() => {
     const audio = getAudio()
     let frame = 0
+    // Learn early whether the media origin lets Web Audio read the songs.
+    void probeAudioCors(mediaUrl(TRACKS[TRACK_ORDER[0]].audioFile))
 
     const tick = () => {
       sync({ currentTime: audio.currentTime })

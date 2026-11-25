@@ -7,6 +7,8 @@ import { KineticScreen } from '@/screens/kinetic'
 const searchSchema = z.object({
   t: z.coerce.number().min(0).optional().catch(undefined),
   hold: z.coerce.boolean().optional().catch(undefined),
+  // Dev only: lists the lines that do not fit the stage.
+  check: z.coerce.boolean().optional().catch(undefined),
 })
 
 export type KineticSearch = z.infer<typeof searchSchema>

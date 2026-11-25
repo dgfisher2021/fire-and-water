@@ -27,7 +27,12 @@ export const CUES = [
   'constellations', // stars joined by lines
   'bright', // a white bloom: brief but bright
   'star', // one trembling star, the rest gone quiet
-  'orb', // the liquid heart: a glass orb beating with the bass
+  'orb', // the clockwork heart: a glass orb at the centre of the rings, beating with the kick
+  'cover', // the song's cover, gathered out of grains of light
+  'wash', // the cover's watercolour stains as a dim backdrop
+  'wings', // great gold wings unfolding behind the words
+  'raven', // a raven crossing the top of the frame
+  'perch', // a figure cut from the cover, settled low in the frame
 ] as const
 export type Cue = (typeof CUES)[number]
 
@@ -72,11 +77,20 @@ export type KineticFrame = {
   time: number
   /** False before the song starts or when paused: hold, do not animate hard. */
   playing: boolean
-  /** Bass and voice energy, 0 to 1 (ten readings a second, eased). */
+  /**
+   * What the film hears, 0 to 1 (`signals.ts`): live from the playing song,
+   * else from its precomputed pulse. Bass and voice energy, the finer bands,
+   * the overall loudness, and the hits (a kick, a snare or hat).
+   */
   bass: number
   vocal: number
-  /** A kick: how far the bass stands above its last half second, 0 to 1. */
+  sub: number
+  lowMid: number
+  mid: number
+  high: number
+  loud: number
   kick: number
+  snare: number
   /** The section's accent as a CSS hex colour, and the one before it with a 0 to 1 blend. */
   accent: string
   /** Overall intensity of the section, 0 (hushed verse) to 1 (final chorus). */

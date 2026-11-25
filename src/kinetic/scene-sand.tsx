@@ -3,7 +3,6 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { HALF_H, useScene } from './scene-state'
 import { rng, shaderArgs } from './scene-util'
-import { PERSPECTIVE, STAGE_H, STAGE_W, VANISH_X, VANISH_Y, X0 } from './stage'
 
 const COUNT = 14000
 const SAMPLE_PX = 200
@@ -57,6 +56,9 @@ attribute vec2 aTarget;
 attribute vec4 aSeed;
 uniform vec4 uBox;
 uniform vec4 uPose;
+// The stage: its left edge, perspective and vanishing point; then its size.
+uniform vec4 uStage;
+uniform vec2 uSize;
 uniform float uIn, uOut, uLevel, uUnit, uPx, uHalfW, uTime;
 varying float vA;
 varying float vHot;
@@ -87,13 +89,13 @@ void main() {
   // The line's pose and the stage's perspective, as CSS applies them.
   float a = radians(uPose.y);
   float b = radians(uPose.z);
-  vec3 q = p - vec3(${X0.toFixed(1)}, uPose.w, 0.0);
+  vec3 q = p - vec3(uStage.x, uPose.w, 0.0);
   q = vec3(q.x, q.y * cos(b) - q.z * sin(b), q.y * sin(b) + q.z * cos(b));
   q = vec3(q.x * cos(a) + q.z * sin(a), q.y, -q.x * sin(a) + q.z * cos(a));
-  q += vec3(${X0.toFixed(1)}, uPose.w + uPose.x, 0.0);
-  float s = ${PERSPECTIVE.toFixed(1)} / max(${PERSPECTIVE.toFixed(1)} - q.z, 200.0);
-  vec2 sp = vec2(${VANISH_X.toFixed(1)}, ${VANISH_Y.toFixed(1)}) + (q.xy - vec2(${VANISH_X.toFixed(1)}, ${VANISH_Y.toFixed(1)})) * s;
-  vec2 w = (sp - vec2(${(STAGE_W / 2).toFixed(1)}, ${(STAGE_H / 2).toFixed(1)})) * uUnit;
+  q += vec3(uStage.x, uPose.w + uPose.x, 0.0);
+  float s = uStage.y / max(uStage.y - q.z, 200.0);
+  vec2 sp = uStage.zw + (q.xy - uStage.zw) * s;
+  vec2 w = (sp - uSize * 0.5) * uUnit;
   gl_Position = vec4(w.x / uHalfW, -w.y / ${HALF_H.toFixed(5)}, 0.0, 1.0);
 
   float loose = max(gi, min(oi * 3.0, 1.0));
@@ -148,6 +150,8 @@ export function Sand() {
         {
           uBox: { value: new THREE.Vector4() },
           uPose: { value: new THREE.Vector4() },
+          uStage: { value: new THREE.Vector4() },
+          uSize: { value: new THREE.Vector2() },
           uColor: { value: new THREE.Color() },
           uIn: { value: 0 },
           uOut: { value: 0 },
@@ -195,6 +199,14 @@ export function Sand() {
       word.pose.rotX,
       word.pose.hinge
     )
+    const stage = s.stage
+    u.uStage.value.set(
+      stage.x0,
+      stage.perspective,
+      stage.vanishX,
+      stage.vanishY
+    )
+    u.uSize.value.set(stage.w, stage.h)
     u.uColor.value.set(word.sand.color)
     u.uIn.value = s.sandIn
     u.uOut.value = s.sandOut

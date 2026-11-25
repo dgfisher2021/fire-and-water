@@ -5,6 +5,7 @@ import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { BloomEffect } from 'postprocessing'
 import * as THREE from 'three'
 import { cn, useMediaQuery } from '@dust-ui/ui'
+import { CoverArt, Raven, Wings } from './scene-cover'
 import {
   Beam,
   Bright,
@@ -21,7 +22,7 @@ import {
   Veils,
 } from './scene-layers'
 import { Constellations, Sigils, Thread, Wires } from './scene-lines'
-import { Orb, Studio } from './scene-orb'
+import { Orb, OrbGlow, Studio } from './scene-orb'
 import { Embers, GoldDust, HeroBursts, Rain, Stars } from './scene-particles'
 import { Sand } from './scene-sand'
 import { SolidWord } from './scene-solid'
@@ -29,11 +30,13 @@ import {
   CAM_Z,
   FOV,
   GROUND,
+  type SceneApi,
   SceneContext,
   createScene,
   stepScene,
   useScene,
 } from './scene-state'
+import type { Stage } from './stage'
 import type { FrameSource } from './types'
 
 const GROUND_SRGB = new THREE.Color(GROUND).convertLinearToSRGB()
@@ -41,10 +44,12 @@ const GROUND_SRGB = new THREE.Color(GROUND).convertLinearToSRGB()
 /** Reads the frame once, before every other subscriber, and moves the camera. */
 function Driver({
   frame,
+  stage,
   calm,
   onAccent,
 }: {
   frame: FrameSource
+  stage: Stage
   calm: boolean
   onAccent: (hex: string) => void
 }) {
@@ -54,8 +59,16 @@ function Driver({
     const s = ref.current
     const f = frame()
     if (f.accent !== s.accentHex) onAccent(f.accent)
-    const aspect = size.width / Math.max(size.height, 1)
-    stepScene(s, f, delta, aspect, size.height * gl.getPixelRatio(), calm)
+    stepScene(
+      s,
+      f,
+      delta,
+      size.width,
+      size.height,
+      gl.getPixelRatio(),
+      calm,
+      stage
+    )
     s.accentHex = f.accent
     s.frames++
 
@@ -86,7 +99,8 @@ function Post() {
   useFrame(() => {
     const s = ref.current
     if (bloom.current)
-      bloom.current.intensity = 0.75 + s.kick * 0.22 + s.cues.bright * 0.45
+      bloom.current.intensity =
+        0.75 + s.kick * 0.24 + s.snare * 0.05 + s.cues.bright * 0.45
   })
 
   return (
@@ -110,9 +124,13 @@ function Post() {
  */
 export function KineticScene({
   frame,
+  stage,
+  art,
   className,
 }: {
   frame: FrameSource
+  stage: Stage
+  art?: SceneApi['art']
   className?: string
 }) {
   const calm = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -121,16 +139,18 @@ export function KineticScene({
   const [accentHex, setAccentHex] = useState('#4fc0ae')
   // Steps the resolution down, never back up, if the frame rate sags.
   const [dprCap, setDprCap] = useState(1.75)
+  // A phone held upright: fewer pixels to fill, a weaker chip to fill them.
+  const cap = stage.name === 'portrait' ? Math.min(dprCap, 1.5) : dprCap
   const api = useMemo(
-    () => ({ ref, shared: scene.shared, accentHex }),
-    [scene, accentHex]
+    () => ({ ref, shared: scene.shared, accentHex, art }),
+    [scene, accentHex, art]
   )
 
   return (
     <div aria-hidden className={cn('absolute inset-0', className)}>
       <Canvas
         flat
-        dpr={[Math.min(1, dprCap), dprCap]}
+        dpr={[Math.min(1, cap), cap]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
         // The orb's glass reads a quarter-size copy of the scene.
         onCreated={({ gl }) => {
@@ -150,8 +170,14 @@ export function KineticScene({
         />
         <Studio />
         <SceneContext value={api}>
-          <Driver frame={frame} calm={calm} onAccent={setAccentHex} />
+          <Driver
+            frame={frame}
+            stage={stage}
+            calm={calm}
+            onAccent={setAccentHex}
+          />
           <Mist />
+          <CoverArt />
           <Stars />
           <Moon />
           <Storm />
@@ -161,6 +187,7 @@ export function KineticScene({
           <Beam />
           <Bright />
           <Constellations />
+          <Wings />
           <Ghosts />
           <GoldDust />
           <Rain />
@@ -172,7 +199,9 @@ export function KineticScene({
           <Veils />
           <Candle />
           <LoneStar />
+          <Raven />
           <HeroBursts />
+          <OrbGlow />
           <Orb />
           <SolidWord />
           <Sand />
