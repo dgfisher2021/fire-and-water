@@ -151,40 +151,52 @@ export function Stars() {
 
 const DUST_VERT = /* glsl */ `
 varying float vBlur;
+varying float vSpark;
 void main() {
   vec3 p = position;
   float t = uTime * 0.12;
-  p.x += sin(t * (0.6 + aSeed.z) + aSeed.y * 40.0) * 0.8;
-  p.y = mod(p.y + uTime * 0.05 * (0.5 + aSeed.z) + 6.0, 12.0) - 6.0;
-  p.z += cos(t * 0.7 + aSeed.y * 20.0) * 0.6;
+  // A slow turning current, the near motes drifting faster.
+  float swirl = t * (0.25 + aSeed.z * 0.5) + aSeed.y * 6.2832;
+  p.x += sin(swirl) * (0.7 + aSeed.w) + sin(t * 3.0 + aSeed.x * 30.0) * 0.15;
+  p.y = mod(p.y + uTime * 0.06 * (0.4 + aSeed.z) + cos(swirl) * 0.4 + 6.5, 13.0) - 6.5;
+  p.z += cos(swirl * 0.7) * 0.9;
   vec4 mv = modelViewMatrix * vec4(p, 1.0);
   gl_Position = projectionMatrix * mv;
-  vBlur = abs(p.z - 1.0) / 7.0;
-  gl_PointSize = (3.0 + aSeed.x * 4.0 + vBlur * 24.0) * uScale / 1158.0;
+  vBlur = abs(p.z - 1.0) / 8.0;
   float seen = 0.5 + 0.5 * sin(uTime * (0.3 + aSeed.z * 0.5) + aSeed.y * 60.0);
-  vA = uLevel * (0.15 + 0.85 * seen * seen) / (1.0 + vBlur * vBlur * 16.0);
+  // Now and then a mote turns its face to the light and flares.
+  vSpark = pow(0.5 + 0.5 * sin(uTime * (0.9 + aSeed.x * 1.7) + aSeed.w * 90.0), 24.0)
+    * step(0.55, aSeed.x) * (1.0 - smoothstep(0.1, 0.3, vBlur));
+  gl_PointSize = (2.6 + aSeed.x * 4.4 + vBlur * 26.0 + vSpark * 16.0) * uScale / 1158.0
+    * (1.0 + uKick * 0.1);
+  vA = uLevel * (0.14 + 0.86 * seen * seen) / (1.0 + vBlur * vBlur * 18.0);
   vS = aSeed;
 }
 `
 const DUST_FRAG = /* glsl */ `
 varying float vBlur;
+varying float vSpark;
 void main() {
-  float d = length(gl_PointCoord - 0.5) * 2.0;
+  vec2 c = gl_PointCoord - 0.5;
+  float d = length(c) * 2.0;
   float sharp = exp(-d * d * 4.0) * smoothstep(1.0, 0.7, d);
   float bokeh = smoothstep(1.0, 0.45, d) * (0.5 + 0.3 * d * d);
   float a = mix(sharp * 1.6, bokeh, smoothstep(0.08, 0.3, vBlur));
-  gl_FragColor = vec4(mix(GOLD, WARM, 0.2 + vS.w * 0.5) * a * vA, 1.0);
+  // The flare: a small four-point star.
+  float star = (exp(-abs(c.x) * 46.0) + exp(-abs(c.y) * 46.0)) * smoothstep(1.0, 0.1, d);
+  vec3 col = mix(GOLD, WARM, 0.2 + vS.w * 0.5);
+  gl_FragColor = vec4(col * a * vA + mix(WARM, vec3(1.0), 0.5) * star * vSpark * uLevel * 1.4, 1.0);
 }
 `
 
-/** Slow gold motes; the ones off the focal plane open into soft discs. */
+/** Slow gold motes in depth; near ones flare, far ones open into soft discs. */
 export function GoldDust() {
   const geometry = useMemo(
     () =>
-      seededPoints(620, 23, (r, p, q) => {
-        p[0] = (r() * 2 - 1) * 12
-        p[1] = (r() * 2 - 1) * 6
-        p[2] = -6 + r() * 12
+      seededPoints(1500, 23, (r, p, q) => {
+        p[0] = (r() * 2 - 1) * 13
+        p[1] = (r() * 2 - 1) * 6.5
+        p[2] = -9 + r() * 15
         q[0] = r()
         q[1] = r()
         q[2] = r()
@@ -199,6 +211,58 @@ export function GoldDust() {
       fragment={DUST_FRAG}
       level={(s) => s.cues.golddust}
       order={9}
+    />
+  )
+}
+
+const PULSE_VERT = /* glsl */ `
+void main() {
+  // Charges running along the wires, each at its own speed and direction.
+  float dir = aSeed.x < 0.5 ? 1.0 : -1.0;
+  float run = fract(aSeed.y + dir * uSong * (0.16 + 0.22 * aSeed.z));
+  vec3 p = vec3((run * 2.0 - 1.0) * uHalfW * 1.05, position.y, position.z);
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = (46.0 + 50.0 * aSeed.w) * uScale / 1158.0 * (0.8 + 0.5 * uBass);
+  vA = uLevel * (0.45 + 0.55 * uBass + 0.5 * uKick) * smoothstep(0.0, 0.05, run) * smoothstep(1.0, 0.95, run);
+  vS = vec4(dir, aSeed.yzw);
+}
+`
+const PULSE_FRAG = /* glsl */ `
+void main() {
+  vec2 c = gl_PointCoord - 0.5;
+  // A hot head with a tail behind it.
+  float along = c.x * vS.x;
+  float tail = smoothstep(-0.5, 0.25, along) * smoothstep(0.34, 0.22, along);
+  float a = exp(-c.y * c.y * 2200.0) * tail * tail
+    + exp(-dot(c - vec2(0.24 * vS.x, 0.0), c - vec2(0.24 * vS.x, 0.0)) * 420.0) * 1.6;
+  gl_FragColor = vec4(mix(uAccent, vec3(1.0, 0.96, 0.84), 0.6) * a * vA, 1.0);
+}
+`
+
+/** Pulses travelling the wires (`WIRE_LINES` in scene-lines gives their places). */
+export function WirePulses({ lines }: { lines: [number, number][] }) {
+  const geometry = useMemo(
+    () =>
+      seededPoints(lines.length * 5, 71, (r, p, q) => {
+        const [y, z] = lines[Math.floor(r() * lines.length) % lines.length]
+        p[0] = 0
+        p[1] = y
+        p[2] = z
+        q[0] = r()
+        q[1] = r()
+        q[2] = r()
+        q[3] = r()
+      }),
+    [lines]
+  )
+  return (
+    <Cloud
+      geometry={geometry}
+      vertex={PULSE_VERT}
+      fragment={PULSE_FRAG}
+      level={(s) => s.cues.wire}
+      order={11}
     />
   )
 }
@@ -364,6 +428,7 @@ void main() {
 `
 const FLARE_SIZE: [number, number] = [3, 3]
 const RAY = new THREE.Vector3()
+const SPRAY = new THREE.Vector3()
 
 /** Sparks and a short flare where a hero word lands. */
 export function HeroBursts() {
@@ -379,12 +444,17 @@ export function HeroBursts() {
       RAY.set(s.heroAt[0], s.heroAt[1], 0.5).unproject(camera)
       RAY.sub(camera.position).normalize()
       s.heroPos.copy(camera.position).addScaledVector(RAY, 6 / -RAY.z)
-      sparks.current?.emit(s.heroPos, {
-        count: 30,
-        speed: 1.3,
-        up: 0.8,
-        spread: 0.9,
-      })
+      // A spray along the word rather than one clump at its middle.
+      for (let k = -2; k <= 2; k++) {
+        SPRAY.copy(s.heroPos)
+        SPRAY.x += k * 0.55 * s.sx
+        sparks.current?.emit(SPRAY, {
+          count: 16,
+          speed: 2.1 + Math.abs(k) * 0.35,
+          up: 1.15,
+          spread: 1.7,
+        })
+      }
       if (s.flare < 0.35) s.flare = 1
     }
     last.current = count
@@ -394,13 +464,13 @@ export function HeroBursts() {
     <group renderOrder={70}>
       <SparkField
         ref={sparks}
-        count={420}
+        count={520}
         glow
-        color={accentHex}
+        color='#fff6dc'
         endColor={accentHex}
-        size={0.032}
-        gravity={1.5}
-        life={[0.5, 1.4]}
+        size={0.03}
+        gravity={2.2}
+        life={[0.45, 1.5]}
       />
       <Layer
         level={(s) => s.flare}

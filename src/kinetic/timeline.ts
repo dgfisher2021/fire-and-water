@@ -1,10 +1,24 @@
 import type { Track } from '@/data/tracks'
 import { pulseAt, type Pulse } from '@/lib/pulse'
-import type { CueSpec, KineticSong } from './songs'
-import { CUES, type Cue, type KineticFrame } from './types'
+import { MATERIALS, type Material, type MaterialName } from './materials'
+import type { CueSpec, HeroSpec, KineticSong, LineStyle } from './songs'
+import {
+  CUES,
+  type Cue,
+  type HeroWord,
+  type KineticFrame,
+  type Solid,
+} from './types'
 
 export type TokenKind = 'small' | 'content' | 'hero'
-export type Token = { text: string; kind: TokenKind; key: string; t: number }
+export type Token = {
+  text: string
+  kind: TokenKind
+  key: string
+  t: number
+  /** What the word is made of; heroes always have one. */
+  material?: MaterialName
+}
 
 export type KineticLine = {
   section: string
@@ -15,6 +29,7 @@ export type KineticLine = {
   cues: CueSpec[]
   accent: string
   energy: number
+  style: LineStyle
   start: number
   /** When the next line lands, and when this one starts to leave. */
   next: number
@@ -23,10 +38,21 @@ export type KineticLine = {
   hero?: Token
   /** The hero's place on screen (-1 to 1, y up), set by the text layer once laid out. */
   heroAt: [number, number]
+  /** The hero as the scene draws it (solid letters, sand), when it does. */
+  heroWord?: HeroWord
+}
+
+/** A section's name, shown in the quiet before its first line. */
+export type SectionCard = {
+  label: string
+  accent: string
+  from: number
+  to: number
 }
 
 export type Timeline = {
   lines: KineticLine[]
+  cards: SectionCard[]
   heroTimes: number[]
   firstLyric: number
   outro: number
@@ -39,13 +65,39 @@ const SMALL_WORDS = new Set(
     ' '
   )
 )
-const EXIT = 0.32
+/** How long each style takes to leave, at most. */
+const EXIT: Record<LineStyle, number> = {
+  title: 1.2,
+  rise: 0.5,
+  unveil: 0.55,
+  lift: 0.32,
+  clockwork: 0.37,
+  dissolve: 0.9,
+}
+/** A gap this long before a new section leaves room for its card. */
+const CARD_ROOM = 4.2
+const CARD_LEAD = 2.7
+const SAND_OUT = 2.2
+const SAND_COLOR: Record<Solid, string> = {
+  gold: '#f3cf7c',
+  silver: '#dbe7f0',
+  brass: '#e9a868',
+  steel: '#b8c6d0',
+  ice: '#bfe6ff',
+  light: '#fff4d6',
+}
+
 const clean = (word: string) =>
   word.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '')
 const keyOf = (word: string) => clean(word).toLowerCase().replace(/’/g, "'")
 const sameLine = (s: string) => s.toLowerCase().replace(/[^a-z’ ]/g, '')
 
-function tokensOf(words: string[], times: number[], hero?: string): Token[] {
+function tokensOf(
+  words: string[],
+  times: number[],
+  materials: Record<string, MaterialName>,
+  hero?: string
+): Token[] {
   let heroUsed = false
   return words.map((word, j) => {
     const key = keyOf(word)
@@ -61,7 +113,11 @@ function tokensOf(words: string[], times: number[], hero?: string): Token[] {
           ? 'I'
           : bare.toLowerCase()
         : bare.toUpperCase()
-    return { text, kind, key, t: times[j] }
+    const material =
+      materials[key.replace(/'/g, '’')] ??
+      materials[key] ??
+      (kind === 'hero' ? 'accent' : undefined)
+    return { text, kind, key, t: times[j], material }
   })
 }
 
@@ -156,6 +212,46 @@ export function sheetLines(track: Track): SheetLine[] {
   return lines
 }
 
+/** The hero as the scene draws it, with the sand's schedule around the line. */
+function heroWordOf(line: KineticLine, spec: HeroSpec): HeroWord | undefined {
+  const hero = line.hero
+  if (!hero || (!spec.solid && !spec.sand)) return undefined
+  const material: Material = MATERIALS[hero.material ?? 'accent']
+  const word: HeroWord = {
+    text: hero.text,
+    t: hero.t,
+    exitAt: line.exitAt,
+    exitDur: line.exitDur,
+    box: [0, 0, 0, 0],
+    pose: { y: 0, rotY: 0, rotX: 0, hinge: 0 },
+    motion: material.motion,
+    solid: spec.solid,
+  }
+  if (spec.sand) {
+    const [mode, seconds] =
+      typeof spec.sand === 'string' ? [spec.sand, SAND_OUT] : spec.sand
+    const in0 = hero.t - (line.style === 'title' ? 2.8 : 1.5)
+    const in1 = hero.t + 0.1
+    const leave = Number.isFinite(line.exitAt) ? line.exitAt : hero.t + 6
+    const out0 =
+      mode === 'gather' ? in1 + 0.9 : Math.max(leave - 0.3, hero.t + 0.5)
+    const fill = material.fill
+    word.sand = {
+      mode,
+      in0,
+      in1,
+      out0,
+      out1: out0 + seconds,
+      color: spec.solid
+        ? SAND_COLOR[spec.solid]
+        : typeof fill === 'string' && fill.startsWith('#')
+          ? fill
+          : '#e9dcc0',
+    }
+  }
+  return word
+}
+
 export function buildTimeline(track: Track, song: KineticSong): Timeline {
   const beat = 60 / song.bpm
   const sheet = sheetLines(track)
@@ -164,11 +260,12 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     section,
     accent: song.accents[type(section)] ?? song.accents.Chorus,
     energy: song.energy[type(section)] ?? 0.5,
+    style: song.styles[type(section)] ?? 'rise',
     heroAt: [-0.2, 0] as [number, number],
     start: 0,
     next: Infinity,
     exitAt: Infinity,
-    exitDur: EXIT,
+    exitDur: EXIT.rise,
   })
   // The title as a line of its own; its last word is the hero.
   const words = track.title.split(/\s+/)
@@ -176,6 +273,7 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     tokensOf(
       words,
       words.map((_, i) => t[Math.min(i, t.length - 1)]),
+      song.words,
       keyOf(words.at(-1)!)
     )
 
@@ -191,6 +289,7 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
       cues: song.titleCues,
     },
   ]
+  const specs: HeroSpec[] = [song.title]
   // The reprise takes the first bar of the drop after the last words sung into it.
   let reprise = Infinity
   if (song.drop !== undefined) {
@@ -208,14 +307,16 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
         tokens: titleTokens([reprise, reprise + beat / 2, reprise + 2 * beat]),
         cues: song.dropCues,
       })
+      specs.push(song.dropHero ?? {})
     }
     const spec = song.lines[line.text]
     lines.push({
       ...base(line.section),
       text: line.text,
-      tokens: tokensOf(line.words, line.times, spec?.hero),
+      tokens: tokensOf(line.words, line.times, song.words, spec?.hero),
       cues: spec?.cues ?? [],
     })
+    specs.push(spec ?? {})
   }
   const last = lines.at(-1)!
   last.credit = { t: song.outro, title: track.title, artist: song.artist }
@@ -224,16 +325,40 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     line.start = Math.min(...line.tokens.map((t) => t.t))
     line.hero = line.tokens.find((t) => t.kind === 'hero')
   }
+  const cards: SectionCard[] = []
   lines.forEach((line, k) => {
-    line.next = lines[k + 1]?.start ?? Infinity
-    if (!Number.isFinite(line.next)) return
-    // The exit ends as the next line's first word lands.
-    const lastWord = Math.max(...line.tokens.map((t) => t.t))
-    line.exitAt = Math.max(line.next - EXIT, lastWord + 0.06)
-    line.exitDur = Math.min(EXIT, Math.max(0.14, line.next - line.exitAt))
+    const next = lines[k + 1]
+    if (next) {
+      line.next = next.start
+      const lastWord = Math.max(
+        ...line.tokens.map((t) => t.t),
+        line.credit?.t ?? 0
+      )
+      // Before a new section with room to spare, leave early for its card.
+      let end = line.next
+      if (next.section !== line.section && line.next - lastWord >= CARD_ROOM) {
+        end = Math.min(lastWord + 3.6, line.next - CARD_LEAD)
+        // The title's reprise announces itself.
+        if (next.text)
+          cards.push({
+            label: next.section,
+            accent: next.accent,
+            from: line.next - CARD_LEAD + 0.3,
+            to: line.next - 0.35,
+          })
+      }
+      // The exit ends as the next line's first word lands, or sooner.
+      line.exitAt = Math.max(
+        end - EXIT[line.style],
+        Math.min(lastWord + 0.3, end - 0.14)
+      )
+      line.exitDur = end - line.exitAt
+    }
+    line.heroWord = heroWordOf(line, specs[k])
   })
   return {
     lines,
+    cards,
     heroTimes: lines
       .flatMap((l) => (l.hero ? [l.hero.t] : []))
       .sort((a, b) => a - b),
@@ -254,6 +379,13 @@ export function lineIndexAt(timeline: Timeline, t: number) {
   return found
 }
 
+/** The section card showing at `t`, if any. */
+export function cardAt(timeline: Timeline, t: number) {
+  for (const card of timeline.cards)
+    if (t >= card.from && t < card.to) return card
+  return null
+}
+
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v)
 const smooth = (v: number) => v * v * (3 - 2 * v)
 
@@ -270,6 +402,38 @@ export function kickAt(pulse: Pulse, t: number) {
       low = Math.min(low, parseInt(pulse.bass[i], 36) / 35)
   const k = clamp01((now - low) / 0.15)
   return k * k
+}
+
+const FLASH_SPAN = 1.9
+const hash = (n: number) => {
+  const x = Math.sin(n * 127.1) * 43758.5453
+  return x - Math.floor(x)
+}
+
+/** The storm's lightning at `t`: a strike and an afterflash in most 1.9 s slots. */
+export function flashAt(t: number) {
+  const slot = Math.floor(t / FLASH_SPAN)
+  if (hash(slot + 2) < 0.3) return 0
+  const ph = t - slot * FLASH_SPAN
+  return (
+    smooth(clamp01(ph / 0.07)) * Math.exp(-ph * 4.5) +
+    (ph > 0.24
+      ? 0.45 * smooth(clamp01((ph - 0.24) / 0.06)) * Math.exp(-(ph - 0.24) * 6)
+      : 0)
+  )
+}
+
+/** The hero word the sand holds at `t`: the last whose schedule has begun and not run out. */
+export function sandAt(timeline: Timeline, t: number) {
+  let found: HeroWord | null = null
+  for (const line of timeline.lines) {
+    const sand = line.heroWord?.sand
+    if (!sand) continue
+    const from = sand.mode === 'scatter' ? sand.out0 : sand.in0
+    if (from > t) break
+    if (t <= sand.out1) found = line.heroWord!
+  }
+  return found
 }
 
 const RISE = 0.9
@@ -313,6 +477,9 @@ export function frameAt(
       break
     }
   }
+  const word = line?.heroWord
+  const sand = sandAt(timeline, t)
+  const plan = sand?.sand
   return {
     time: t,
     playing,
@@ -322,8 +489,24 @@ export function frameAt(
     accent: line?.accent ?? timeline.lines[0].accent,
     energy: line?.energy ?? 0.3,
     cues,
+    flash: flashAt(t),
     heroCount,
     heroAt: heroLine?.heroAt ?? [-0.2, 0],
+    solid:
+      word?.solid && t >= word.t && t < word.exitAt + word.exitDur
+        ? word
+        : null,
+    sand,
+    sandIn:
+      plan && plan.mode !== 'scatter'
+        ? 1 - clamp01((t - plan.in0) / (plan.in1 - plan.in0))
+        : 0,
+    sandOut:
+      plan && plan.mode !== 'gather'
+        ? clamp01((t - plan.out0) / (plan.out1 - plan.out0))
+        : 0,
+    sandLevel:
+      plan?.mode === 'gather' ? 1 - clamp01((t - plan.in1 - 0.1) / 0.8) : 1,
     fade: clamp01(t / 1.2) * (1 - 0.6 * clamp01((t - (timeline.end - 3)) / 3)),
   }
 }

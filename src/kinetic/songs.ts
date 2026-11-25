@@ -1,28 +1,45 @@
 import type { TrackId } from '@/data/tracks'
-import type { Cue } from './types'
+import type { MaterialName } from './materials'
+import type { Cue, SandMode, Solid } from './types'
 
 /** A cue with its level (1 when given bare). */
 export type CueSpec = Cue | [Cue, number]
+
+/**
+ * How a section's lines arrive and leave: `title` slow and grand, `rise`
+ * out of a blur from below, `unveil` wiped open, `lift` thrown forward and
+ * pulled up, `clockwork` turned in on the beat grid, `dissolve` thinning out.
+ */
+export type LineStyle =
+  'title' | 'rise' | 'unveil' | 'lift' | 'clockwork' | 'dissolve'
+
+/** What the scene makes of a hero word: solid letters, sand (with seconds to blow away), or both. */
+export type HeroSpec = { solid?: Solid; sand?: SandMode | [SandMode, number] }
 
 export type KineticSong = {
   /** The credit under the title. */
   artist: string
   bpm: number
   /** When the title's three words and the credit land in the intro. */
-  title: { words: [number, number, number]; credit: number }
+  title: { words: [number, number, number]; credit: number } & HeroSpec
   /** An instrumental drop the title returns in, on the first bar after the words sung into it. */
   drop?: number
+  dropHero?: HeroSpec
   /** When the closing credit rises. */
   outro: number
   /** Section accents by label (the trailing number dropped). */
   accents: Record<string, string>
   /** Section intensity, 0 to 1. */
   energy: Record<string, number>
+  /** How each section's lines move. */
+  styles: Record<string, LineStyle>
   /** What the title and the reprise call up. */
   titleCues: CueSpec[]
   dropCues: CueSpec[]
+  /** What a word is made of, wherever it is sung. */
+  words: Record<string, MaterialName>
   /** Per line: the word to sing loudest and what the scene shows. */
-  lines: Record<string, { hero: string; cues: CueSpec[] }>
+  lines: Record<string, { hero: string; cues: CueSpec[] } & HeroSpec>
 }
 
 const TEAL = '#4fc0ae'
@@ -33,8 +50,14 @@ const COPPER = '#e0895a'
 const lift: KineticSong = {
   artist: 'Dustin',
   bpm: 122,
-  title: { words: [1.1, 7.0, 15.5], credit: 23.2 },
+  title: {
+    words: [1.1, 7.0, 15.5],
+    credit: 23.2,
+    solid: 'gold',
+    sand: 'gather',
+  },
   drop: 115.3,
+  dropHero: { solid: 'gold', sand: 'scatter' },
   outro: 298,
   accents: {
     Intro: GOLD,
@@ -56,8 +79,113 @@ const lift: KineticSong = {
     'Final Chorus': 1,
     Outro: 0.3,
   },
+  styles: {
+    Intro: 'title',
+    Verse: 'rise',
+    'Pre-Chorus': 'unveil',
+    Chorus: 'lift',
+    Interlude: 'lift',
+    Bridge: 'clockwork',
+    'Final Chorus': 'lift',
+    Outro: 'dissolve',
+  },
   titleCues: ['golddust', ['rise', 0.5]],
   dropCues: ['rise', 'fire', 'wire'],
+  words: {
+    marble: 'marble',
+    light: 'light',
+    midnight: 'midnight',
+    breathes: 'breathe',
+    silver: 'silver',
+    thread: 'string',
+    hallowed: 'halo',
+    pillars: 'marble',
+    hum: 'hum',
+    shadows: 'shadow',
+    shadow: 'shadow',
+    lean: 'lean',
+    dreams: 'dream',
+    gold: 'gold',
+    'half-seen': 'halfseen',
+    unseen: 'unseen',
+    clockwork: 'brass',
+    heart: 'heart',
+    stone: 'stone',
+    time: 'turn',
+    low: 'low',
+    electric: 'neon',
+    moon: 'moon',
+    writes: 'write',
+    sigils: 'sigil',
+    rain: 'rain',
+    pulls: 'pull',
+    tide: 'water',
+    hush: 'hush',
+    night: 'midnight',
+    turning: 'turn',
+    slow: 'soft',
+    candle: 'flame',
+    burning: 'fire',
+    echoes: 'echo',
+    rise: 'climb',
+    lucid: 'light',
+    skies: 'sky',
+    lift: 'climb',
+    higher: 'lift',
+    fire: 'fire',
+    choir: 'halo',
+    wire: 'neon',
+    pulse: 'pulse',
+    prayer: 'halo',
+    air: 'air',
+    remember: 'sand',
+    thunder: 'storm',
+    glow: 'light',
+    ghosts: 'ghost',
+    breath: 'breathe',
+    dancing: 'dance',
+    softly: 'soft',
+    death: 'ash',
+    violins: 'string',
+    neoclassical: 'marble',
+    bow: 'bend',
+    frozen: 'ice',
+    sea: 'water',
+    carve: 'stone',
+    memory: 'echo',
+    beat: 'pulse',
+    descends: 'fall',
+    temple: 'marble',
+    measured: 'turn',
+    dark: 'dark',
+    mechanical: 'steel',
+    fracture: 'crack',
+    seam: 'beam',
+    voice: 'sing',
+    appears: 'appear',
+    beam: 'beam',
+    'lantern’s': 'flame',
+    bending: 'bend',
+    ending: 'ash',
+    sing: 'sing',
+    old: 'stone',
+    you: 'halo',
+    sacred: 'halo',
+    machine: 'brass',
+    constellations: 'star',
+    string: 'string',
+    dust: 'sand',
+    brief: 'brief',
+    bright: 'bright',
+    delay: 'echo',
+    fades: 'fade',
+    sings: 'sing',
+    sub: 'sub',
+    haloed: 'halo',
+    trembling: 'star',
+    star: 'star',
+    ground: 'stone',
+  },
   lines: {
     'In marble light, the midnight breathes': {
       hero: 'midnight',
@@ -66,19 +194,22 @@ const lift: KineticSong = {
     'A silver thread through hallowed eaves': {
       hero: 'silver',
       cues: ['thread', ['shafts', 0.5]],
+      solid: 'silver',
     },
     'The pillars hum, the shadows lean': { hero: 'pillars', cues: ['shafts'] },
     'Like dreams in gold, half-seen, unseen': {
       hero: 'gold',
       cues: ['golddust'],
+      solid: 'gold',
     },
     'A clockwork heart beneath the stone': {
       hero: 'clockwork',
-      cues: ['clockwork'],
+      cues: ['clockwork', 'orb'],
+      solid: 'brass',
     },
     'Keeps time in low electric tones': {
       hero: 'electric',
-      cues: ['clockwork', ['wire', 0.6]],
+      cues: ['clockwork', ['wire', 0.7], ['orb', 0.8]],
     },
     'The moon writes sigils in the rain': {
       hero: 'sigils',
@@ -101,6 +232,7 @@ const lift: KineticSong = {
     'Lift me higher, through the fire': {
       hero: 'higher',
       cues: ['rise', 'fire'],
+      solid: 'gold',
     },
     'Through the choir, through the wire': {
       hero: 'wire',
@@ -108,21 +240,23 @@ const lift: KineticSong = {
     },
     'Let the pulse become a prayer': {
       hero: 'prayer',
-      cues: [['rise', 0.6], 'choir'],
+      cues: [['rise', 0.6], ['choir', 0.7], 'orb'],
     },
     'Let the air remember air': {
       hero: 'remember',
       cues: [['rise', 0.6], 'golddust'],
+      sand: 'form',
     },
     'In the thunder, in the glow': { hero: 'thunder', cues: ['storm'] },
     'We move like ghosts in row by row': { hero: 'ghosts', cues: ['ghosts'] },
     'Heart to heart and breath to breath': {
       hero: 'heart',
-      cues: [['ghosts', 0.5], 'golddust'],
+      cues: [['ghosts', 0.5], 'golddust', 'orb'],
     },
     'Dancing softly next to death': {
       hero: 'death',
       cues: ['ghosts', ['candle', 0.4]],
+      sand: 'scatter',
     },
     'I hear the violins of night': {
       hero: 'violins',
@@ -132,7 +266,11 @@ const lift: KineticSong = {
       hero: 'light',
       cues: ['shafts', ['beam', 0.6]],
     },
-    'They bow above the frozen sea': { hero: 'frozen', cues: ['frost'] },
+    'They bow above the frozen sea': {
+      hero: 'frozen',
+      cues: ['frost'],
+      solid: 'ice',
+    },
     'And carve a path for memory': {
       hero: 'memory',
       cues: [['frost', 0.6], 'thread'],
@@ -143,7 +281,7 @@ const lift: KineticSong = {
     },
     'A measured, dark, mechanical refrain': {
       hero: 'mechanical',
-      cues: ['clockwork'],
+      cues: ['clockwork', ['orb', 0.7]],
     },
     'Yet in the fracture, in the seam': {
       hero: 'fracture',
@@ -154,6 +292,7 @@ const lift: KineticSong = {
     'No beginning without ending': {
       hero: 'ending',
       cues: [['clockwork', 0.6]],
+      sand: 'scatter',
     },
     'Sing through the pillars, old and true': {
       hero: 'sing',
@@ -161,11 +300,12 @@ const lift: KineticSong = {
     },
     'I am the room and I am you': {
       hero: 'you',
-      cues: ['beam', ['choir', 0.5]],
+      cues: [['beam', 0.6], ['choir', 0.5], 'orb'],
     },
     'Oh, sacred machine, keep turning': {
       hero: 'machine',
-      cues: ['clockwork'],
+      cues: ['clockwork', 'orb'],
+      solid: 'brass',
     },
     'While the constellations are burning': {
       hero: 'constellations',
@@ -174,10 +314,13 @@ const lift: KineticSong = {
     'String and shadow, dust and light': {
       hero: 'dust',
       cues: ['thread', 'golddust'],
+      sand: 'form',
     },
     'We are brief but we are bright': {
       hero: 'bright',
       cues: ['bright', ['constellations', 0.6]],
+      solid: 'light',
+      sand: 'scatter',
     },
     'And when the last delay fades slow': {
       hero: 'delay',
@@ -185,16 +328,21 @@ const lift: KineticSong = {
         ['tide', 0.6],
         ['ghosts', 0.4],
       ],
+      sand: ['scatter', 3.6],
     },
     'The marble sings, the sub still low': {
       hero: 'marble',
-      cues: ['shafts'],
+      cues: ['shafts', ['orb', 0.7]],
     },
     'I leave my name in haloed sound': {
       hero: 'haloed',
       cues: ['moon', 'sigils'],
     },
-    'A trembling star beneath the ground': { hero: 'star', cues: ['star'] },
+    'A trembling star beneath the ground': {
+      hero: 'star',
+      cues: ['star'],
+      solid: 'light',
+    },
   },
 }
 

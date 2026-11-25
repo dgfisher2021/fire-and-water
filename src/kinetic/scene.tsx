@@ -21,7 +21,10 @@ import {
   Veils,
 } from './scene-layers'
 import { Constellations, Sigils, Thread, Wires } from './scene-lines'
+import { Orb, Studio } from './scene-orb'
 import { Embers, GoldDust, HeroBursts, Rain, Stars } from './scene-particles'
+import { Sand } from './scene-sand'
+import { SolidWord } from './scene-solid'
 import {
   CAM_Z,
   FOV,
@@ -129,6 +132,10 @@ export function KineticScene({
         flat
         dpr={[Math.min(1, dprCap), dprCap]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
+        // The orb's glass reads a quarter-size copy of the scene.
+        onCreated={({ gl }) => {
+          gl.transmissionResolutionScale = 0.25
+        }}
         camera={{ fov: FOV, position: [0, 0, CAM_Z], near: 0.1, far: 120 }}
       >
         <PerformanceMonitor
@@ -141,6 +148,7 @@ export function KineticScene({
           intensity={1.6}
           color='#cfe4f2'
         />
+        <Studio />
         <SceneContext value={api}>
           <Driver frame={frame} calm={calm} onAccent={setAccentHex} />
           <Mist />
@@ -165,6 +173,9 @@ export function KineticScene({
           <Candle />
           <LoneStar />
           <HeroBursts />
+          <Orb />
+          <SolidWord />
+          <Sand />
           <Post />
         </SceneContext>
       </Canvas>

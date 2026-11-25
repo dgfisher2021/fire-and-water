@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@fontsource/cinzel": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/router-plugin": "^1.168.41",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",

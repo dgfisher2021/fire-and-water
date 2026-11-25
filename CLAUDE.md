@@ -196,15 +196,34 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
 
 - `src/kinetic/` the kinetic lyric films, at `/kinetic/$track` (`screens/kinetic.tsx`):
   the one route outside `PhoneShell` (`__root.tsx` branches on it), full
-  window, forced dark. `songs.ts` directs a song (hero word and scene cues
-  per line, accents, title and drop times), `timeline.ts` builds the lines
-  and the `KineticFrame` the scene reads (`types.ts`, twenty cues),
-  `text-engine.ts` draws the typography as plain DOM for any song time
-  (imperative, no React per frame), `scene*.tsx` is one react-three-fiber
-  canvas with `@react-three/postprocessing` bloom and the kit's in-canvas
-  `SparkField`/`GlowTrail` (the kit's Scene/Stage/Backdrop components each
-  open their own WebGL context, so they are not used here). The clock is
-  `getAudio().currentTime`; `?t=&hold=1` freezes a frame for screenshots.
+  window, forced dark. `songs.ts` directs a song (per line: hero word,
+  scene cues, and whether the hero is cast in solid letters or sand; per
+  word: its material; per section: accent, energy and line style),
+  `materials.ts` is the library of looks, entrances and motions,
+  `timeline.ts` builds the lines, the section cards and the `KineticFrame`
+  the scene reads (`types.ts`, twenty-one cues plus the solid and sand
+  hero), `text-engine.ts` draws the typography as plain DOM for any song
+  time (imperative, no React per frame; a gradient needs
+  `background-clip: text` per letter, so glows are a blurred copy behind,
+  never `text-shadow`), `stage.ts` holds the 1920x1080 stage and the pose
+  maths both layers share, `scene*.tsx` is one react-three-fiber canvas with
+  `@react-three/postprocessing` bloom, the kit's in-canvas `SparkField`,
+  `GlowTrail` and `AssistantOrb3d` (the orb, lit by `Studio`, a procedural
+  drei `Environment`; the kit's Scene/Stage/Backdrop components each open
+  their own WebGL context, so they are not used here), `scene-solid.tsx`
+  (extruded hero letters from `cinzel-black.typeface.json`, written by
+  `scripts/kinetic-font.mjs`; transparent materials at render order 80 so
+  they draw over the hush veil) and `scene-sand.tsx` (grains sampled from
+  the hero's glyphs, placed in stage space by the same pose). The text
+  layer writes each cast hero's box and pose into its `HeroWord`; the scene
+  hides nothing itself: the DOM hero of a cast word is simply not painted.
+  Everything is a function of song time (no springs, no accumulated state
+  beyond cosmetic drift), which is what keeps `?t=&hold=1` honest. The
+  first three frames draw every material once, tiny, to compile shaders
+  before the song needs them. React owns only the header
+  (`MotionTextMorph`), the section cards (`MotionText`, `MotionSparkles`)
+  and the controls. The clock is `getAudio().currentTime`; `?t=&hold=1`
+  freezes a frame for screenshots.
 
 ## Dust UI rules (house rules, non-negotiable)
 

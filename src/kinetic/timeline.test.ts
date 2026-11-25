@@ -1,7 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { TRACKS, type TrackId } from '@/data/tracks'
+import { MATERIALS } from './materials'
 import { KINETIC_SONGS } from './songs'
-import { buildTimeline, frameAt, lineIndexAt, sheetLines } from './timeline'
+import {
+  buildTimeline,
+  cardAt,
+  frameAt,
+  lineIndexAt,
+  sheetLines,
+} from './timeline'
 import { CUES } from './types'
 
 const ids = Object.keys(KINETIC_SONGS) as TrackId[]
@@ -63,6 +70,56 @@ describe.each(ids)('kinetic film: %s', (id) => {
     const end = frameAt(timeline, null, timeline.end, false)
     expect(end.heroCount).toBe(timeline.lines.length)
     expect(end.cues.star).toBeGreaterThan(0.9)
+  })
+
+  it('gives every line a word made of what it says', () => {
+    for (const name of Object.values(song.words))
+      expect(MATERIALS[name], name).toBeDefined()
+    for (const line of timeline.lines) {
+      const made = line.tokens.filter(
+        (t) => t.material && t.material !== 'accent'
+      )
+      expect(made.length, line.text).toBeGreaterThan(0)
+      expect(line.hero?.material, line.text).toBeDefined()
+    }
+  })
+
+  it('casts heroes in solid letters and sand, one word of sand at a time', () => {
+    const words = timeline.lines.flatMap((l) =>
+      l.heroWord ? [l.heroWord] : []
+    )
+    expect(words.some((w) => w.solid)).toBe(true)
+    const sands = words.flatMap((w) => (w.sand ? [w.sand] : []))
+    expect(sands.length).toBeGreaterThan(2)
+    sands.forEach((sand, k) => {
+      expect(sand.in0).toBeLessThan(sand.in1)
+      expect(sand.out0).toBeLessThan(sand.out1)
+      const next = sands[k + 1]
+      if (!next) return
+      const begins = next.mode === 'scatter' ? next.out0 : next.in0
+      expect(begins, `sand ${k}`).toBeGreaterThan(sand.out1)
+    })
+    for (const line of timeline.lines) {
+      const word = line.heroWord
+      if (!word) continue
+      const mid = frameAt(timeline, null, word.t + 0.2, true)
+      if (word.solid) expect(mid.solid).toBe(word)
+      if (word.sand && word.sand.mode !== 'scatter') expect(mid.sand).toBe(word)
+      expect(mid.sandIn).toBeLessThanOrEqual(1)
+      expect(mid.sandOut).toBeGreaterThanOrEqual(0)
+    }
+  })
+
+  it('shows a section card only in a gap, after the line before has left', () => {
+    expect(timeline.cards.length).toBeGreaterThan(0)
+    for (const card of timeline.cards) {
+      expect(card.to).toBeGreaterThan(card.from + 1)
+      const before = timeline.lines[lineIndexAt(timeline, card.from)]
+      expect(before.exitAt + before.exitDur).toBeLessThanOrEqual(card.from)
+      expect(card.to).toBeLessThan(before.next)
+      expect(cardAt(timeline, (card.from + card.to) / 2)).toBe(card)
+    }
+    expect(cardAt(timeline, 0)).toBeNull()
   })
 
   it('credits the song to its writer', () => {
