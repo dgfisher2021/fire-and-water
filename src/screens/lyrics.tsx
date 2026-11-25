@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useSearch } from '@tanstack/react-router'
+import { KINETIC_SONGS } from '@/kinetic/songs'
 import {
   Columns2,
   Copy,
@@ -233,6 +234,15 @@ export function LyricsScreen() {
     : null
   const driveLink = t.driveLink
   const more: SheetActionAction[] = [
+    ...(KINETIC_SONGS[track]
+      ? [
+          {
+            label: 'Watch the kinetic film',
+            onClick: () =>
+              void navigate({ to: '/kinetic/$track', params: { track } }),
+          },
+        ]
+      : []),
     ...(hook
       ? [{ label: 'Watch the hook', onClick: () => setWatching(true) }]
       : []),

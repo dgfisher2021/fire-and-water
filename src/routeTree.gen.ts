@@ -16,6 +16,7 @@ import { Route as MoreRouteImport } from './routes/more'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StoryRouteImport } from './routes/story'
+import { Route as KineticTrackRouteImport } from './routes/kinetic.$track'
 import { Route as LyricsTrackRouteImport } from './routes/lyrics.$track'
 import { Route as TimeTrackRouteImport } from './routes/time.$track'
 
@@ -54,6 +55,11 @@ const StoryRoute = StoryRouteImport.update({
   path: '/story',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KineticTrackRoute = KineticTrackRouteImport.update({
+  id: '/kinetic/$track',
+  path: '/kinetic/$track',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LyricsTrackRoute = LyricsTrackRouteImport.update({
   id: '/lyrics/$track',
   path: '/lyrics/$track',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
+  '/kinetic/$track': typeof KineticTrackRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
+  '/kinetic/$track': typeof KineticTrackRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/settings': typeof SettingsRoute
   '/story': typeof StoryRoute
+  '/kinetic/$track': typeof KineticTrackRoute
   '/lyrics/$track': typeof LyricsTrackRoute
   '/time/$track': typeof TimeTrackRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/story'
+    | '/kinetic/$track'
     | '/lyrics/$track'
     | '/time/$track'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/story'
+    | '/kinetic/$track'
     | '/lyrics/$track'
     | '/time/$track'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/settings'
     | '/story'
+    | '/kinetic/$track'
     | '/lyrics/$track'
     | '/time/$track'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   SettingsRoute: typeof SettingsRoute
   StoryRoute: typeof StoryRoute
+  KineticTrackRoute: typeof KineticTrackRoute
   LyricsTrackRoute: typeof LyricsTrackRoute
   TimeTrackRoute: typeof TimeTrackRoute
 }
@@ -198,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kinetic/$track': {
+      id: '/kinetic/$track'
+      path: '/kinetic/$track'
+      fullPath: '/kinetic/$track'
+      preLoaderRoute: typeof KineticTrackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lyrics/$track': {
       id: '/lyrics/$track'
       path: '/lyrics/$track'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   SettingsRoute: SettingsRoute,
   StoryRoute: StoryRoute,
+  KineticTrackRoute: KineticTrackRoute,
   LyricsTrackRoute: LyricsTrackRoute,
   TimeTrackRoute: TimeTrackRoute,
 }

@@ -30,6 +30,9 @@ importers:
       '@dust-ui/ui':
         specifier: ^0.35.0
         version: 0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+      '@fontsource-variable/cinzel':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@fontsource-variable/outfit':
         specifier: ^5.3.0
         version: 5.3.0
@@ -42,6 +45,9 @@ importers:
       '@react-three/fiber':
         specifier: ^9.8.1
         version: 9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)
+      '@react-three/postprocessing':
+        specifier: ^3.2.2
+        version: 3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0)
       '@tanstack/react-router':
         specifier: ^1.170.40
         version: 1.170.40(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
@@ -60,6 +66,9 @@ importers:
       motion:
         specifier: ^14.14.0
         version: 14.14.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      postprocessing:
+        specifier: ^6.39.6
+        version: 6.39.6(three@0.187.0)
       react:
         specifier: 19.2.5
         version: 19.2.5
@@ -831,6 +840,9 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@fontsource-variable/cinzel@5.3.0':
+    resolution: {integrity: sha512-eFcU0TwaAP5QESF2pV8VoOPJJXJ6sSGm/6mXMwqTdMBPAJMaLhfa6oISHuOtFeddsoHP9RYm4Io0j1j3mNEz2Q==}
 
   '@fontsource-variable/outfit@5.3.0':
     resolution: {integrity: sha512-fPb5XnYK0k7SbR++HEmm4+ZqDszmLKQ+sPRUr8oQ/KNC0vy6r6hazJFe8iYozv4cqlHbvJ/JECkJWrfDodUMVQ==}
@@ -5362,6 +5374,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
+  '@fontsource-variable/cinzel@5.3.0': {}
+
   '@fontsource-variable/outfit@5.3.0': {}
 
   '@fontsource/cormorant-garamond@5.3.0': {}
@@ -5637,7 +5651,6 @@ snapshots:
       three: 0.187.0
     transitivePeerDependencies:
       - '@types/three'
-    optional: true
 
   '@reduxjs/toolkit@2.13.0(react-redux@9.3.1(@types/react@19.3.0)(react@19.2.5)(redux@5.0.1))(react@19.2.5)':
     dependencies:
@@ -7797,7 +7810,6 @@ snapshots:
     dependencies:
       postprocessing: 6.39.6(three@0.187.0)
       three: 0.187.0
-    optional: true
 
   nanoid@3.3.19: {}
 
@@ -7892,7 +7904,6 @@ snapshots:
   postprocessing@6.39.6(three@0.187.0):
     dependencies:
       three: 0.187.0
-    optional: true
 
   potpack@1.0.2: {}
 

@@ -194,11 +194,17 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `meter-glow` and `tracker-sheen` utilities give its marks the glass
   treatment (no borders or outlines).
 
-- `public/kinetic/<song>/` standalone kinetic lyric videos (Lift Me Higher):
-  one self-contained HTML page each, outside the app, its React kit rules and
-  its service worker (`globIgnores` and `navigateFallbackDenylist` in
-  `vite.config.ts`), drawn from `window.seek(t)`; the song data is inlined by
-  `scripts/kinetic-data.py` (README "Kinetic lyrics").
+- `src/kinetic/` the kinetic lyric films, at `/kinetic/$track` (`screens/kinetic.tsx`):
+  the one route outside `PhoneShell` (`__root.tsx` branches on it), full
+  window, forced dark. `songs.ts` directs a song (hero word and scene cues
+  per line, accents, title and drop times), `timeline.ts` builds the lines
+  and the `KineticFrame` the scene reads (`types.ts`, twenty cues),
+  `text-engine.ts` draws the typography as plain DOM for any song time
+  (imperative, no React per frame), `scene*.tsx` is one react-three-fiber
+  canvas with `@react-three/postprocessing` bloom and the kit's in-canvas
+  `SparkField`/`GlowTrail` (the kit's Scene/Stage/Backdrop components each
+  open their own WebGL context, so they are not used here). The clock is
+  `getAudio().currentTime`; `?t=&hold=1` freezes a frame for screenshots.
 
 ## Dust UI rules (house rules, non-negotiable)
 
