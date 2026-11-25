@@ -274,6 +274,24 @@ The default pass never drops a window, which matters for vocals buried under the
 
 For a song the aligner cannot hear, or to redo a stretch by ear, open `/time/<id>` in the app: play the song and tap **Mark** (or Space) as each line starts, tap any line to mark it again, then copy or download the result and paste it in as that song's `timing.json` entry (line times only; the words light whole).
 
+### Refining the timings from the vocal
+
+Whisper on the full mix leaves systematic faults: a line it did not hear is spread evenly between its neighbours and can sit seconds off, the first word after a pause is pinned to the end of the word before it (line starts 0.3 to 1.2 s early), an echo can be taken for the sung line, and it invents words over wordless pads. `scripts/timing/refine.py` is a second pass that fixes what it can prove and proposes the rest. It does not listen: every number is model-inferred.
+
+```bash
+python3 -m venv scripts/timing/.venv-refine && scripts/timing/.venv-refine/bin/pip install -r scripts/timing/requirements-refine.txt
+scripts/timing/.venv-refine/bin/python scripts/timing/refine.py lift --report   # propose and print the per-line diff
+scripts/timing/.venv-refine/bin/python scripts/timing/refine.py lift --apply    # write the safe lines into timing.json
+scripts/timing/.venv-refine/bin/python scripts/timing/refine.py --all --apply --minutes 120   # the sweep, resumable
+python3 scripts/timing/refine_check.py                                          # the rules' self-check, no audio
+```
+
+Per song it separates the vocal with Demucs (`htdemucs`) and reads the stem with two acoustic models: torchaudio's `WAV2VEC2_ASR_BASE_960H` (English) and `MMS_FA` (multilingual; the sheet is romanized to a-z). Each model force-aligns the known sheet on its own: the whole sheet across the whole song, and each line Whisper had heard alone in a window 4 s either side of its old span, with a wildcard before and after to take whatever else is sung there. Lines where both placements agree and score well become anchors, and the lines between two anchors (the ones Whisper spread, or placed wrongly) are aligned together inside that gap. A leading word the model did not hear is pulled to 0.3 s before the first word it did. The better-scoring model's reading is taken, the other is the cross-check, and word starts are snapped to the nearest onset of the stem (spectral flux), further back for a word that follows a pause. A line's score is the mean probability of its aligned characters.
+
+`--report` prints, per line, the old start, the proposed one, the delta, the score, how far the other model disagrees, the level rise at the new start, and a verdict. `--apply` writes only lines marked APPLY: moved by at least 0.25 s (`--min-delta`), score at least 0.45 (`--min-score`; 0.6 for a move over 2 s; 0.15 less when the voice comes in from quiet, a rise of 15 dB), both models within 0.35 s, not squeezed into a sliver, and in order with both neighbours. It writes the line start and its word starts through `align.dump_timing`, recomputes the stanza start and label lines that follow, and asserts order and word counts. Everything else stays a proposal in `scripts/timing/proposals/<id>.json` (`verdict: review` with the reason) for a check by ear on `/time/<id>`. A French sheet (`lang: 'fr'`) has only `MMS_FA` to read it, so with no second model its lines are proposed and never written. `--base <rev>` runs the proposal against the timing of a git revision and prints today's values beside it, which is how the tool was validated on Lift Me Higher (`claude/2026-11-24-timing-refine.md`).
+
+Hand-timed lines are never rewritten: list them in `scripts/timing/hand-timed.json` (`"all"` or `[stanza, line]` pairs); a `/time/<id>` export, which has no `words`, counts as hand-timed on its own. `proposals/log.json` records each song processed, so `--all` continues in album order where it stopped (songs whose sheet was transcribed from Whisper go last); `--all` without `--apply` only proposes, and `refine.py <ids> --apply` then writes from the saved proposals without the audio. Stems and posteriors cache in `scripts/timing/stems/` (ignored). Separation is the slow part: tens of minutes per song on a busy CPU, a few on a GPU (used when torch sees one; `REFINE_DEVICE=cpu` forces the CPU, `REFINE_THREADS` caps its threads, default 6). `refine_whisper.py` optionally transcribes the stems with Whisper so a line where Whisper heard other words is held back.
+
 ## Kinetic lyrics
 
 `/kinetic/lift` plays Lift Me Higher as a kinetic lyric film: the whole window (outside the phone frame), a 3D scene behind the typography, both drawn from the song's own clock. Open it and click to play; Space or K pauses, the arrows seek 5 s, F is full screen, M mutes, and the controls (play, scrubber, mute, full screen, close) fade while it plays. `?t=<seconds>` starts at a moment and `&hold=1` freezes on it.

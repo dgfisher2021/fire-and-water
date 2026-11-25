@@ -3,6 +3,7 @@ dist
 dev-dist
 scripts/timing/asr*/
 scripts/timing/.venv/
+scripts/timing/stems/
 __pycache__/
 *.local
 .DS_Store

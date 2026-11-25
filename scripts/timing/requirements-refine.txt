@@ -1,0 +1,7 @@
+# refine.py: vocal separation and forced alignment, CPU wheels.
+# pip install -r scripts/timing/requirements-refine.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.5
+torchaudio>=2.5
+demucs>=4.0
+numpy
