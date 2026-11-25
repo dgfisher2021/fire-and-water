@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { GlowTrail, type GlowTrailRef } from '@dust-ui/3d'
+import { WirePulses } from './scene-particles'
 import { CAM_Z, shown, useScene } from './scene-state'
 import { PALETTE, SHARED, shaderArgs } from './scene-util'
 
@@ -55,13 +56,14 @@ export function Thread() {
   )
 }
 
-const WIRES = [
+const WIRE_LINES: [number, number][] = [
   [3.75, 0],
   [3.3, 0.6],
   [2.75, -0.5],
   [-3.0, 0.8],
   [-3.6, 0.2],
-].map(([y, z]) => ({
+]
+const WIRES = WIRE_LINES.map(([y, z]) => ({
   y,
   curve: new THREE.QuadraticBezierCurve3(
     new THREE.Vector3(-11, 0, z),
@@ -107,15 +109,22 @@ function Wire({ index }: { index: number }) {
         glowColor={accentHex}
         hotColor='#fff3d0'
         glowLength={3}
-        intensity={1.5}
+        intensity={0.9}
       />
     </group>
   )
 }
 
-/** Taut lines across the top and bottom that hum with the bass. */
+/** Taut lines across the top and bottom that hum with the bass, charges running along them. */
 export function Wires() {
-  return WIRES.map((_, i) => <Wire key={i} index={i} />)
+  return (
+    <>
+      {WIRES.map((_, i) => (
+        <Wire key={i} index={i} />
+      ))}
+      <WirePulses lines={WIRE_LINES} />
+    </>
+  )
 }
 
 function rune(points: [number, number][]) {
@@ -289,18 +298,31 @@ const FIGURES: Figure[] = [
   ),
 ]
 
-/** Line and star buffers; aT is when (0 to 1) each vertex joins its figure. */
+const LINE_W = 0.022
+
+/** Line (as quads, so they keep their width at any dpr) and star buffers; aT is when (0 to 1) each vertex joins its figure. */
 function figureBuffers() {
   const lines: number[] = []
   const lineT: number[] = []
+  const lineSide: number[] = []
+  const index: number[] = []
   const stars: number[] = []
   const starT: number[] = []
   for (const figure of FIGURES) {
     const n = figure.edges.length
     const born = figure.stars.map(() => 1)
     figure.edges.forEach(([a, b], k) => {
-      lines.push(...figure.stars[a], 0, ...figure.stars[b], 0)
-      lineT.push(k / n, (k + 1) / n)
+      const [ax, ay] = figure.stars[a]
+      const [bx, by] = figure.stars[b]
+      const len = Math.hypot(bx - ax, by - ay) || 1
+      const nx = (-(by - ay) / len) * LINE_W
+      const ny = ((bx - ax) / len) * LINE_W
+      const at = lines.length / 3
+      lines.push(ax + nx, ay + ny, 0, ax - nx, ay - ny, 0)
+      lines.push(bx + nx, by + ny, 0, bx - nx, by - ny, 0)
+      lineT.push(k / n, k / n, (k + 1) / n, (k + 1) / n)
+      lineSide.push(1, -1, 1, -1)
+      index.push(at, at + 1, at + 2, at + 1, at + 3, at + 2)
       born[a] = Math.min(born[a], k / n)
       born[b] = Math.min(born[b], (k + 1) / n)
     })
@@ -315,15 +337,21 @@ function figureBuffers() {
     g.setAttribute('aT', new THREE.Float32BufferAttribute(t, 1))
     return g
   }
-  return { lines: geometry(lines, lineT), stars: geometry(stars, starT) }
+  const quads = geometry(lines, lineT)
+  quads.setAttribute('aSide', new THREE.Float32BufferAttribute(lineSide, 1))
+  quads.setIndex(index)
+  return { lines: quads, stars: geometry(stars, starT) }
 }
 
 const FIGURE_VERT = /* glsl */ `
 attribute float aT;
+attribute float aSide;
 ${SHARED}
 varying float vT;
+varying float vSide;
 void main() {
   vT = aT;
+  vSide = aSide;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * mv;
   gl_PointSize = (9.0 + 5.0 * sin(aT * 40.0)) * uScale / 1158.0;
@@ -333,14 +361,16 @@ const FIGURE_HEAD = /* glsl */ `
 ${SHARED}
 uniform float uLevel, uProgress;
 varying float vT;
+varying float vSide;
 ${PALETTE}
 `
 const FIGURE_LINE = /* glsl */ `
 void main() {
   float on = smoothstep(uProgress, uProgress - 0.03, vT);
   float head = exp(-max(uProgress - vT, 0.0) * 12.0);
-  vec3 col = mix(MOON, mix(GOLD, uAccent, 0.4), 0.55) * (0.42 + head * 0.7);
-  gl_FragColor = vec4(col * on * uLevel, 1.0);
+  vec3 col = mix(MOON, mix(GOLD, uAccent, 0.4), 0.55) * (0.5 + head * 0.9);
+  float core = exp(-vSide * vSide * 5.0);
+  gl_FragColor = vec4(col * core * on * uLevel, 1.0);
 }
 `
 const FIGURE_STAR = /* glsl */ `
@@ -369,7 +399,9 @@ export function Constellations() {
       uProgress: { value: 0 },
     }
     return [
-      shaderArgs(uniforms, FIGURE_VERT, FIGURE_HEAD + FIGURE_LINE),
+      shaderArgs(uniforms, FIGURE_VERT, FIGURE_HEAD + FIGURE_LINE, {
+        side: THREE.DoubleSide,
+      }),
       shaderArgs(uniforms, FIGURE_VERT, FIGURE_HEAD + FIGURE_STAR),
     ]
   }, [shared])
@@ -392,9 +424,9 @@ export function Constellations() {
 
   return (
     <group ref={group} position-z={FIGURE_Z} renderOrder={7}>
-      <lineSegments geometry={buffers.lines} frustumCulled={false}>
+      <mesh geometry={buffers.lines} frustumCulled={false}>
         <shaderMaterial ref={lineMaterial} args={lineArgs} />
-      </lineSegments>
+      </mesh>
       <points geometry={buffers.stars} frustumCulled={false}>
         <shaderMaterial args={starArgs} />
       </points>

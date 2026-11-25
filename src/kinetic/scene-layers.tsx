@@ -71,23 +71,19 @@ export function Moon() {
 }
 
 const STORM = /* glsl */ `
+uniform float uFlash;
 void main() {
   vec2 p = vP;
   float t = uTime * 0.03;
   float d = fbm(p * 0.22 + vec2(t, 0.0)) * 0.65
     + fbm(p * 0.6 - vec2(t * 1.6, 3.0)) * 0.35;
   float body = smoothstep(0.1, 2.8, p.y - 0.4 + (d - 0.5) * 5.0);
-  float span = 1.9;
-  float slot = floor(uSong / span);
-  float ph = uSong - slot * span;
-  float on = step(0.3, hash11(slot + 2.0));
+  float slot = floor(uSong / 1.9);
   vec2 at = vec2(
     (hash11(slot + 0.3) * 1.6 - 0.6) * uHalfW * 0.8,
     2.2 + hash11(slot + 0.7) * 1.6
   );
-  float env = smoothstep(0.0, 0.07, ph) * exp(-ph * 4.5)
-    + 0.45 * smoothstep(0.24, 0.3, ph) * exp(-(ph - 0.24) * 6.0);
-  env = env * on + 0.06;
+  float env = uFlash + 0.06;
   float glow = exp(-length((p - at) * vec2(0.3, 0.55)) * 1.1);
   float billow = smoothstep(0.3, 0.72, fbm(p * 0.9 + vec2(t * 2.0, d * 2.0)));
   vec3 cloud = mix(INK * 1.4, vec3(0.016, 0.03, 0.044), billow * (0.4 + 0.6 * d));
@@ -98,8 +94,9 @@ void main() {
 }
 `
 
-/** A cloud mass across the top, lit from inside at most once every 1.9 s. */
+/** A cloud mass across the top, lit from inside by the timeline's lightning. */
 export function Storm() {
+  const uniforms = useMemo(() => ({ uFlash: { value: 0 } }), [])
   return (
     <Layer
       level={(s) => s.cues.storm}
@@ -110,6 +107,10 @@ export function Storm() {
       z={-5}
       add={false}
       order={3}
+      uniforms={uniforms}
+      onFrame={(u, s) => {
+        u.uFlash.value = s.flash
+      }}
     />
   )
 }
@@ -355,48 +356,89 @@ export function Ghosts() {
 
 const SEA = /* glsl */ `
 uniform float uFrost;
+// Distance to the nearest cell wall of a jittered grid: the ice's cracks.
+float cracks(vec2 p) {
+  vec2 n = floor(p);
+  vec2 f = fract(p);
+  vec2 mg, mr;
+  float md = 8.0;
+  for (int j = -1; j <= 1; j++)
+  for (int i = -1; i <= 1; i++) {
+    vec2 g = vec2(float(i), float(j));
+    vec2 o = vec2(hash21(n + g), hash21(n + g + 17.3));
+    vec2 r = g + o - f;
+    float d = dot(r, r);
+    if (d < md) { md = d; mr = r; mg = g; }
+  }
+  md = 8.0;
+  for (int j = -2; j <= 2; j++)
+  for (int i = -2; i <= 2; i++) {
+    vec2 g = mg + vec2(float(i), float(j));
+    vec2 o = vec2(hash21(n + g), hash21(n + g + 17.3));
+    vec2 r = g + o - f;
+    if (dot(mr - r, mr - r) > 1e-5)
+      md = min(md, dot(0.5 * (mr + r), normalize(r - mr)));
+  }
+  return md;
+}
 void main() {
   vec2 p = vP;
-  float tt = uTime * (1.0 - uFrost);
-  vec3 col = vec3(0.0);
-  float a = 0.0;
-  vec3 ice = vec3(0.4, 0.7, 0.9);
-  vec3 crestCol = mix(mix(uAccent, MOON, 0.45), ice, uFrost);
-  for (int i = 0; i < 6; i++) {
-    float fi = float(i);
-    float base = -2.35 - fi * 0.4 - (1.0 - uLevel) * 1.6;
-    float amp = (0.05 + fi * 0.03) * (1.0 + uBass * 0.7) * mix(1.0, 0.45, uFrost);
-    float x = p.x * (1.15 - fi * 0.11) + fi * 1.7;
-    float w = sin(x + tt * (0.45 + fi * 0.1)) + 0.45 * sin(x * 2.3 - tt * 0.7 + fi);
-    float facet = abs(fract(x * 0.35 + fi * 0.37) - 0.5) * 4.0 - 1.0
-      + 0.4 * (abs(fract(x * 0.9 + fi) - 0.5) * 4.0 - 1.0);
-    float y = base + mix(w, facet, uFrost) * amp;
-    float below = smoothstep(0.012, -0.012, p.y - y);
-    float crest = exp(-abs(p.y - y) * mix(22.0, 34.0, uFrost));
-    vec3 deep = INK * (0.7 + fi * 0.16) + crestCol * 0.004 * fi;
-    col = mix(col, deep, below);
-    a = max(a, below);
-    float shimmer = 0.25 + 0.75 * vnoise(vec2(x * 1.4 + tt * 0.5, fi * 3.0 + tt * 0.2));
-    col += crestCol * crest * (0.1 + fi * 0.03) * shimmer;
+  float horizon = -2.2 - (1.0 - uLevel) * 1.7;
+  float d = horizon - p.y;
+  vec3 tint = mix(mix(uAccent, MOON, 0.5), vec3(0.45, 0.74, 0.95), uFrost);
+  if (d < 0.0) {
+    // A thin band of light resting on the horizon.
+    float g = exp(d * 5.0) * 0.07 + exp(d * 26.0) * 0.12;
+    gl_FragColor = vec4(tint * g * uLevel, 0.0);
+    return;
   }
-  // Glints: short horizontal dashes, jittered off their grid.
-  vec2 g = p * vec2(2.6, 8.0);
-  vec2 cell = floor(g);
-  float hsh = hash21(cell);
-  vec2 jit = vec2(hash21(cell + 7.3), hash21(cell + 2.9)) - 0.5;
-  float twinkle = pow(0.5 + 0.5 * sin(uTime * (1.2 + hsh * 2.5) + hsh * 40.0), 3.0);
-  vec2 gd = (fract(g) - 0.5 - jit * 0.7) / vec2(2.6, 8.0);
-  float glint = exp(-pow(gd.x / mix(0.06, 0.025, uFrost), 2.0) - pow(gd.y / 0.011, 2.0))
-    * step(mix(0.82, 0.6, uFrost), hsh) * mix(twinkle, 0.4 + 0.6 * twinkle, uFrost) * a;
-  col += mix(crestCol, vec3(1.0), 0.5) * glint * mix(0.3, 0.75, uFrost);
-  float crack = smoothstep(0.03, 0.0, abs(fbm2(p * vec2(0.8, 2.2) + 3.0) - 0.5)) * a;
-  col += ice * crack * 0.05 * uFrost;
-  col += ice * exp(-abs(p.y + 2.3) * 1.6) * 0.05 * uFrost;
-  gl_FragColor = vec4(col * uLevel, a * uLevel);
+  // The surface as a plane running to the horizon.
+  float depth = 1.0 / (d + 0.09);
+  vec2 uv = vec2(p.x * depth * 0.6, depth * 2.0);
+  float near = clamp(d / 2.5, 0.0, 1.0);
+  float fres = pow(1.0 - near, 2.6);
+  float tt = uTime * (1.0 - uFrost);
+
+  // Water: long swells and fine chop tilt the mirror.
+  float swell = fbm(uv * vec2(0.5, 1.6) + vec2(tt * 0.1, tt * 0.42));
+  float chop = vnoise(uv * vec2(2.4, 9.0) - vec2(tt * 0.3, tt * 1.1));
+  float tilt = (swell - 0.5) * 1.6 + (chop - 0.5) * 0.9;
+  vec3 sky = mix(INK * 1.2, tint * 0.085, fres);
+  // The light's reflection: a broken glitter path widening toward the viewer.
+  float lx = uHalfW * 0.42;
+  float across = (p.x - lx + tilt * (0.2 + d * 0.9)) / (0.22 + d * 0.75);
+  float path = exp(-across * across);
+  float glitter = smoothstep(0.52, 0.86, chop + tilt * 0.25) * (0.35 + 0.65 * swell);
+  vec3 water = sky
+    + mix(PALE, WARM, 0.25) * path * (0.05 + 0.75 * glitter) * (0.35 + 0.65 * fres) * (1.0 + uBass * 0.5)
+    + tint * smoothstep(0.6, 0.85, swell) * 0.035 * (0.3 + fres);
+
+  // Ice: a still pale sheet, veined with cracks, snow-dusted, glinting.
+  vec3 ice = water;
+  if (uFrost > 0.01) {
+    vec2 iu = uv * vec2(0.55, 0.9) + 3.0;
+    float cr = cracks(iu);
+    float fine = cracks(iu * 3.1 + 9.0);
+    float vein = smoothstep(0.035, 0.0, cr) + 0.35 * smoothstep(0.03, 0.0, fine);
+    float milk = fbm(uv * vec2(0.4, 0.7) + 11.0);
+    vec2 gc = floor(uv * vec2(7.0, 14.0));
+    float gh = hash21(gc);
+    float glint = step(0.93, gh) * pow(0.5 + 0.5 * sin(uTime * (1.0 + gh * 3.0) + gh * 50.0), 6.0)
+      * exp(-dot(fract(uv * vec2(7.0, 14.0)) - 0.5, fract(uv * vec2(7.0, 14.0)) - 0.5) * 30.0);
+    ice = mix(vec3(0.012, 0.035, 0.06), tint * 0.16, fres * (0.45 + 0.55 * milk))
+      + tint * vein * (0.07 + 0.3 * fres)
+      + vec3(1.0) * glint * 0.9
+      + mix(PALE, vec3(1.0), 0.5) * path * 0.16 * (0.4 + 0.6 * milk);
+  }
+
+  vec3 col = mix(water, ice, uFrost);
+  col += tint * exp(-d * 9.0) * 0.1;
+  float a = smoothstep(0.0, 0.03, d) * uLevel;
+  gl_FragColor = vec4(col * a, a);
 }
 `
 
-/** The dark sea along the bottom; frost stills it into ice with glints. */
+/** The sea as a dark mirror running to the horizon; frost stills it into cracked ice. */
 export function Sea() {
   const uniforms = useMemo(() => ({ uFrost: { value: 0 } }), [])
   return (

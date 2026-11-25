@@ -9,15 +9,18 @@ import {
 } from 'react'
 import { Link, useParams, useSearch } from '@tanstack/react-router'
 import { KINETIC_SONGS } from '@/kinetic/songs'
+import { STAGE_H, STAGE_W, X0 } from '@/kinetic/stage'
+import { createTextEngine, type TextEngine } from '@/kinetic/text-engine'
 import {
-  STAGE_H,
-  STAGE_W,
-  createTextEngine,
-  type TextEngine,
-} from '@/kinetic/text-engine'
-import { buildTimeline, frameAt } from '@/kinetic/timeline'
+  buildTimeline,
+  cardAt,
+  frameAt,
+  lineIndexAt,
+  type SectionCard,
+} from '@/kinetic/timeline'
 import type { FrameSource } from '@/kinetic/types'
 import { Maximize, Minimize, Volume2, VolumeX, X } from 'lucide-react'
+import { MotionSparkles, MotionText, MotionTextMorph } from '@dust-ui/motion'
 import {
   Button,
   MediaPlayButton,
@@ -42,6 +45,8 @@ const FONTS = [
   "italic 500 100px 'Cormorant Garamond'",
 ]
 const IDLE_MS = 2600
+const DISPLAY = "'Cinzel Variable', serif"
+const ITALIC = "'Cormorant Garamond', serif"
 
 /**
  * A song as a kinetic lyric film: full window, the 3D scene behind the
@@ -101,6 +106,12 @@ export function KineticScreen() {
     [track]
   )
 
+  const [section, setSection] = useState<string | null>(null)
+  const [card, setCard] = useState<SectionCard | null>(null)
+  const [cardOn, setCardOn] = useState(false)
+  const shownSection = useRef<string | null>(null)
+  const shownCard = useRef<SectionCard | null>(null)
+
   /* The typography, laid out once the faces are in. */
   const textRef = useRef<HTMLDivElement>(null)
   const fitRef = useRef<HTMLDivElement>(null)
@@ -112,13 +123,28 @@ export function KineticScreen() {
     let raf = 0
     let live = true
     const draw = () => {
-      engine?.render(now())
+      const time = now()
+      engine?.render(time)
+      // The header and the section cards are React's: tell it when they change.
+      const at = lineIndexAt(timeline, time)
+      const lyric = time >= timeline.firstLyric && time < timeline.outro
+      const next = lyric && at >= 0 ? timeline.lines[at].section : null
+      if (next !== shownSection.current) {
+        shownSection.current = next
+        setSection(next)
+      }
+      const card = cardAt(timeline, time)
+      if (card !== shownCard.current) {
+        shownCard.current = card
+        if (card) setCard(card)
+        setCardOn(!!card)
+      }
       raf = requestAnimationFrame(draw)
     }
     void Promise.all(FONTS.map((f) => document.fonts.load(f, 'AZaz’'))).then(
       () => {
         if (!live) return
-        engine = createTextEngine(host, timeline, pulse, t.title, reduced)
+        engine = createTextEngine(host, timeline, pulse, reduced)
         draw()
       }
     )
@@ -127,7 +153,7 @@ export function KineticScreen() {
       cancelAnimationFrame(raf)
       engine?.dispose()
     }
-  }, [timeline, pulse, t.title, reduced, now])
+  }, [timeline, pulse, reduced, now])
 
   // The 1920x1080 stage, scaled to fit the window.
   useEffect(() => {
@@ -222,6 +248,71 @@ export function KineticScreen() {
         style={{ width: STAGE_W, height: STAGE_H }}
       >
         <div ref={textRef} className='absolute inset-0' />
+        {/* The running header: the song, and the section morphing beside it. */}
+        <div
+          className={cn(
+            'absolute flex items-baseline gap-7 whitespace-nowrap text-foreground transition-opacity duration-700',
+            section ? 'opacity-60' : 'opacity-0'
+          )}
+          style={{ left: X0, top: 88 }}
+        >
+          <span style={{ font: `italic 500 30px ${ITALIC}`, lineHeight: 1 }}>
+            {t.title}
+          </span>
+          <span
+            style={{
+              font: `600 14px ${DISPLAY}`,
+              letterSpacing: '0.34em',
+              lineHeight: 1,
+            }}
+          >
+            <MotionTextMorph className='uppercase'>
+              {section ?? ''}
+            </MotionTextMorph>
+          </span>
+        </div>
+        {/* A section's name in the quiet before its first line. */}
+        <div
+          aria-hidden={!cardOn}
+          className={cn(
+            'absolute transition-opacity duration-500',
+            cardOn ? 'opacity-100' : 'opacity-0'
+          )}
+          style={{
+            left: X0,
+            top: STAGE_H / 2 - 52,
+            color: card?.accent,
+            font: `600 58px ${DISPLAY}`,
+            letterSpacing: '0.42em',
+            lineHeight: 1,
+          }}
+        >
+          {card && (
+            <MotionSparkles
+              key={`${card.label}${card.from}`}
+              count={5}
+              size={30}
+              color={card.accent}
+            >
+              <MotionText
+                as='p'
+                per='char'
+                preset='blur'
+                stagger={0.06}
+                duration={0.8}
+                className='whitespace-nowrap uppercase'
+              >
+                {card.label}
+              </MotionText>
+              <span
+                className={cn(
+                  'mt-5 block h-px origin-left bg-linear-to-r from-current to-transparent transition-transform duration-1000 ease-out',
+                  cardOn ? 'scale-x-100' : 'scale-x-0'
+                )}
+              />
+            </MotionSparkles>
+          )}
+        </div>
       </div>
 
       {!timeline && (

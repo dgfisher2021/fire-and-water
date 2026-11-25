@@ -1,6 +1,6 @@
 import { type RefObject, createContext, useContext } from 'react'
 import * as THREE from 'three'
-import { CUES, type Cue, type KineticFrame } from './types'
+import { CUES, type Cue, type HeroWord, type KineticFrame } from './types'
 
 export const GROUND = '#030d12'
 export const CAM_Z = 10
@@ -55,6 +55,17 @@ export type SceneState = {
   heroCount: number
   heroAt: [number, number]
   heroPos: THREE.Vector3
+  /** Lightning in the storm cloud. */
+  flash: number
+  /** The hero the scene casts in solid letters, and the one the sand holds. */
+  solid: HeroWord | null
+  sand: HeroWord | null
+  sandIn: number
+  sandOut: number
+  sandLevel: number
+  /** World units (on z = 0) and device pixels per pixel of the text stage. */
+  stageUnit: number
+  stagePx: number
   /** The hero flare's decaying envelope. */
   flare: number
   shared: SharedUniforms
@@ -97,6 +108,14 @@ export function createScene(): SceneState {
     heroCount: -1,
     heroAt: [0, 0],
     heroPos: new THREE.Vector3(),
+    flash: 0,
+    solid: null,
+    sand: null,
+    sandIn: 0,
+    sandOut: 0,
+    sandLevel: 0,
+    stageUnit: HALF_H / 540,
+    stagePx: 1,
     flare: 0,
     shared: {
       uTime: { value: 0 },
@@ -154,6 +173,14 @@ export function stepScene(
 
   s.halfW = HALF_H * aspect
   s.sx = s.halfW / REF_HALF_W
+  s.stageUnit = (HALF_H / 540) * Math.min(1, s.sx)
+  s.stagePx = (pixelHeight / 1080) * Math.min(1, s.sx)
+  s.flash = calm ? 0 : f.flash
+  s.solid = f.solid
+  s.sand = calm ? null : f.sand
+  s.sandIn = f.sandIn
+  s.sandOut = f.sandOut
+  s.sandLevel = f.sandLevel
   s.heroAt = f.heroAt
   s.heroCount = f.heroCount
 
