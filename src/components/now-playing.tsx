@@ -1,6 +1,9 @@
+import { Link } from '@tanstack/react-router'
+import { KINETIC_SONGS } from '@/kinetic/songs'
 import {
   ChevronDown,
   ChevronUp,
+  Clapperboard,
   Play,
   SkipBack,
   SkipForward,
@@ -8,6 +11,7 @@ import {
 } from 'lucide-react'
 import {
   Button,
+  buttonVariants,
   formatTime,
   MediaPlayButton,
   MediaScrubber,
@@ -87,6 +91,26 @@ function Control({
   )
 }
 
+/** To the song's kinetic film: spelled out on the card, "Film" on the slim bar. */
+function FilmLink({ track, short }: { track: TrackId; short?: boolean }) {
+  return (
+    // A real link (the kit's Button would give the anchor a button role).
+    <Link
+      to='/kinetic/$track'
+      params={{ track }}
+      aria-label={short ? `Watch the ${TRACKS[track].title} film` : undefined}
+      onClick={(e) => e.stopPropagation()}
+      className={cn(
+        buttonVariants({ variant: 'ghost', size: 'xs' }),
+        'shrink-0 gap-1.5 rounded-md bg-primary/15 px-2 text-[11px] font-semibold tracking-[0.04em] text-primary hover:bg-primary/25 hover:text-primary'
+      )}
+    >
+      <Clapperboard className='size-3.5' aria-hidden />
+      {short ? 'Film' : 'Watch the film'}
+    </Link>
+  )
+}
+
 const DESCRIPTION =
   'min-w-0 flex-1 text-left text-[12.5px] leading-normal text-foreground/85 [text-shadow:0_1px_2px_var(--background)]'
 
@@ -141,6 +165,7 @@ export function NowPlayingCard({
   const t = TRACKS[track]
   const hook = hookFor(track)
   const style = sunoStyle(track)
+  const film = Boolean(KINETIC_SONGS[track])
 
   return (
     <section
@@ -196,10 +221,16 @@ export function NowPlayingCard({
           />
         )}
       </div>
-      {style && (
-        <p className='line-clamp-2 text-[11px] leading-snug text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
-          {style}
-        </p>
+      {(style || film) && (
+        // The film link shares the style's row, so the card grows no taller.
+        <div className='flex items-center justify-end gap-3'>
+          {style && (
+            <p className='line-clamp-2 min-w-0 flex-1 text-[11px] leading-snug text-muted-foreground [text-shadow:0_1px_2px_var(--background)]'>
+              {style}
+            </p>
+          )}
+          {film && <FilmLink track={track} />}
+        </div>
       )}
       <MediaScrubber
         progress={progress}
@@ -290,6 +321,7 @@ export function NowPlayingBar({
           <span>{formatTime(duration)}</span>
         </div>
       </div>
+      {KINETIC_SONGS[track] && <FilmLink track={track} short />}
       {onExpand ? (
         <Button
           variant='ghost'

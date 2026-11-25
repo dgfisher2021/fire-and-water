@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { Play } from 'lucide-react'
+import { KINETIC_SONGS } from '@/kinetic/songs'
+import { Clapperboard, Play } from 'lucide-react'
 import { Button, formatTime, MediaPlayingBars, MediaRow } from '@dust-ui/ui'
 import { TRACKS, type TrackId } from '@/data/tracks'
 import { usePlayer } from '@/store/player'
+import { TagPill } from './tag-pill'
 
 export type TrackRowProps = {
   id: TrackId
@@ -52,8 +54,27 @@ export function TrackRow({
         />
       }
       title={
-        <span className='block truncate font-display text-[18px] leading-tight font-medium text-foreground'>
-          {t.title}
+        <span className='flex min-w-0 items-center gap-2'>
+          <span className='block truncate font-display text-[18px] leading-tight font-medium text-foreground'>
+            {t.title}
+          </span>
+          {!onSelect && KINETIC_SONGS[id] && (
+            <span
+              role='img'
+              aria-label='Has a kinetic film'
+              className='flex shrink-0'
+            >
+              <TagPill
+                color='var(--track-deep)'
+                colorDark='var(--track-bright)'
+              >
+                <span aria-hidden className='flex items-center gap-1'>
+                  <Clapperboard className='size-2.5' />
+                  Film
+                </span>
+              </TagPill>
+            </span>
+          )}
         </span>
       }
       subtitle={`${t.dedication} · ${t.voice}`}

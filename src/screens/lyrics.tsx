@@ -6,6 +6,7 @@ import {
   Copy,
   Download,
   Ellipsis,
+  Play,
   ScrollText,
   Share2,
   X,
@@ -17,6 +18,7 @@ import {
 } from '@dust-ui/blocks'
 import { MotionTextMorph, MotionTextShimmer } from '@dust-ui/motion'
 import {
+  Button,
   downloadText,
   downloadUrl,
   Empty,
@@ -48,6 +50,13 @@ import {
 } from '@/data/tracks'
 import { audioLabel } from '@/lib/format'
 import { mediaUrl } from '@/lib/media'
+import {
+  momentText,
+  momentTime,
+  momentUrl,
+  parseMoment,
+  type Moment,
+} from '@/lib/moment'
 import { copyText, share } from '@/lib/share'
 import { songText } from '@/lib/song-text'
 import { toaster } from '@/lib/toaster'
@@ -72,7 +81,7 @@ const partnerFor = (next: TrackId, current?: TrackId) =>
 
 export function LyricsScreen() {
   const { track } = useParams({ from: '/lyrics/$track' })
-  const { with: other } = useSearch({ from: '/lyrics/$track' })
+  const { with: other, line } = useSearch({ from: '/lyrics/$track' })
   const navigate = useNavigate()
   const framed = useMobileShellFramed()
   const shellRoot = useMobileShellRoot()
@@ -102,6 +111,20 @@ export function LyricsScreen() {
   const [watching, setWatching] = useState(false)
   const [filming, setFilming] = useState(false)
   const [picking, setPicking] = useState<CompareSide | null>(null)
+
+  // A shared moment (`?line=`) holds one line; a held line opens its actions.
+  const marked = parseMoment(line, t.lyrics)
+  const [lineMenu, setLineMenu] = useState<{
+    track: TrackId
+    moment: Moment
+  } | null>(null)
+  const menuLine = lineMenu?.track === track ? lineMenu.moment : null
+  const menuText = menuLine ? momentText(t.lyrics, menuLine) : null
+  const playFrom = (moment: Moment) => {
+    const at = momentTime(t.timing, moment)
+    play(track)
+    if (at !== null) seek(at)
+  }
 
   // The control opens folded to the bar so the words get the screen; the
   // reader unfolds it by hand for this song. Short viewports never show the
@@ -266,6 +289,32 @@ export function LyricsScreen() {
         ]
       : []),
   ]
+  const lineActions: SheetActionAction[] =
+    menuLine && menuText
+      ? [
+          {
+            label: 'Share this line',
+            onClick: () =>
+              void share({
+                title: `${t.title} - ${ALBUM.artist}`,
+                text: `“${menuText}” from "${t.title}"`,
+                url: momentUrl(track, menuLine, document.baseURI),
+              }),
+          },
+          {
+            label: 'Copy this line',
+            onClick: () => void copyText(menuText, 'Line copied'),
+          },
+          {
+            label:
+              momentTime(t.timing, menuLine) === null
+                ? 'Play the song'
+                : 'Play from here',
+            onClick: () => playFrom(menuLine),
+          },
+        ]
+      : []
+
   if (more.length > 0)
     quick.push({
       icon: Ellipsis,
@@ -365,6 +414,23 @@ export function LyricsScreen() {
             )}
           </div>
         </div>
+        {marked && !other && singTime === undefined && (
+          // A shared moment never starts by itself (browsers block it):
+          // the reader starts the song at the held line. A row of its own
+          // above the words, so it never covers the held line.
+          <div className='flex animate-in justify-center pt-2 duration-300 fade-in-0 motion-reduce:animate-none'>
+            <Button
+              size='sm'
+              onClick={() => playFrom(marked)}
+              className='rounded-lg bg-linear-to-br from-track-bright to-track-deep px-4 text-[12px] tracking-[1px] text-track-foreground shadow-[0_8px_24px_-8px_var(--track-glow)]'
+            >
+              <Play className='size-3.5 fill-current' aria-hidden />
+              {momentTime(t.timing, marked) === null
+                ? 'Play the song'
+                : 'Play from here'}
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* The pane ends above the nav, so the sung line is never under it. */}
@@ -387,6 +453,10 @@ export function LyricsScreen() {
               if (!isCurrent) play(track)
               seek(seconds)
             }}
+            marked={marked}
+            onLineMenu={(stanza, at) =>
+              setLineMenu({ track, moment: { stanza, line: at } })
+            }
             paneClassName='pt-6 pb-[40vh]'
           />
         ) : (
@@ -411,6 +481,15 @@ export function LyricsScreen() {
           </Empty>
         )}
       </div>
+
+      {menuLine && menuText && (
+        <SheetAction
+          title={`“${menuText}”`}
+          actions={lineActions}
+          onClose={() => setLineMenu(null)}
+          container={shellRoot}
+        />
+      )}
 
       {sheet && (
         <SheetAction

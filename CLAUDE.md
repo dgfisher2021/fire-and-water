@@ -200,6 +200,21 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   app shell with that song's Open Graph tags, which Caddy serves before its
   SPA fallback (`try_files {path} {path}/index.html /index.html`); the
   service worker ignores them. Re-run the script after adding a song.
+- Share a moment: `/lyrics/$track?line=<stanza>-<line>` (1-based, labels
+  counted; `lib/moment.ts` parses, addresses and times it, a dash because
+  the router's JSON search parsing turns `3.10` into 3.1). `LyricsReader`
+  takes `marked` (centres the line once by layout offsets, `data-marked`
+  rim in `--primary`) and `onLineMenu`; `use-line-hold.ts` fires it on a
+  450 ms hold, a right click or the menu key. The pane scrolls, so the
+  touch is not taken as the play fan takes it: the lines are
+  `pointer-coarse:select-none` with the iOS callout off, and the click a
+  hold leaves is eaten at the document (it would land on the new sheet's
+  scrim and close it). The line `SheetAction` and the "Play from here"
+  pill live in `screens/lyrics.tsx`. A line link previews as its song.
+- Film links: `TrackRow` shows a `TagPill` "Film" for `KINETIC_SONGS`
+  (not in pickers); `FilmLink` in `now-playing.tsx` is a real `Link`
+  styled with `buttonVariants` (the kit's `Button` with `render` gives an
+  anchor `role=button`), in the card's style row and on the bar.
 - `src/kinetic/` the kinetic lyric films, at `/kinetic/$track` (`screens/kinetic.tsx`):
   the one route outside `PhoneShell` (`__root.tsx` branches on it), full
   window, forced dark. `songs.ts` directs a song (per line: hero word,

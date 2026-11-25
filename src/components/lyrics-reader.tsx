@@ -17,7 +17,9 @@ import {
   useFollowScroll,
   useScrollFocus,
 } from '@dust-ui/ui'
+import type { Moment } from '@/lib/moment'
 import { cn } from '@/lib/utils'
+import { useLineHold } from './use-line-hold'
 
 const STANZA = '[data-slot="lyrics-stanza"]'
 // Every line of the sheet in order, labels included, as the timing counts.
@@ -37,6 +39,10 @@ export type LyricsReaderProps = {
   timing?: LyricsTiming
   /** With `timing`, tapping a sung line jumps the song to it. */
   onSeekLine?: (seconds: number) => void
+  /** A line held in the song's colour (a shared moment); the pane opens on it. */
+  marked?: Moment | null
+  /** A held press, a right click or the context-menu key on a line. */
+  onLineMenu?: (stanza: number, line: number) => void
   /** `default` is the single full-width reader; `compact` fits a split column. */
   size?: 'default' | 'compact'
   /** Rendered above the stanzas inside the scroll pane (sticky tags). */
@@ -66,6 +72,8 @@ export function LyricsReader({
   time,
   timing,
   onSeekLine,
+  marked,
+  onLineMenu,
   size = 'default',
   children,
   ref,
@@ -121,6 +129,38 @@ export function LyricsReader({
     observer.observe(el)
     return () => observer.disconnect()
   }, [pane, singing, detached])
+
+  useLineHold(pane, onLineMenu)
+  // A shared moment opens with its line in the middle of the pane, and
+  // again once the display face has loaded and the lines have settled.
+  // The pane only: scrollIntoView would also scroll the screen behind it.
+  const markedStanza = marked?.stanza
+  const markedLine = marked?.line
+  useEffect(() => {
+    const el = pane.current
+    if (!el || markedStanza === undefined || markedLine === undefined) return
+    let live = true
+    const centre = () => {
+      const line = el.querySelector<HTMLElement>(
+        `[data-stanza="${markedStanza}"][data-line="${markedLine}"]`
+      )
+      if (!live || !line) return
+      // By layout offsets, not client rects: the stanza is mid-rise.
+      let top = -el.offsetTop
+      for (
+        let node: HTMLElement | null = line;
+        node && node !== el.offsetParent;
+        node = node.offsetParent as HTMLElement | null
+      )
+        top += node.offsetTop
+      el.scrollTop = top + line.offsetHeight / 2 - el.clientHeight / 2
+    }
+    centre()
+    void document.fonts?.ready.then(centre)
+    return () => {
+      live = false
+    }
+  }, [pane, contentKey, markedStanza, markedLine])
 
   // Which side of the pane the sung line went past, for the way-back pill.
   const [songAbove, setSongAbove] = useState(false)
@@ -202,16 +242,31 @@ export function LyricsReader({
                     key={j}
                     data-slot='lyrics-line'
                     data-state={lineState(i, j)}
-                    role={seekTo ? 'button' : undefined}
-                    tabIndex={seekTo ? 0 : undefined}
+                    data-stanza={i}
+                    data-line={j}
+                    data-marked={
+                      (marked?.stanza === i && marked.line === j) || undefined
+                    }
+                    role={seekTo || onLineMenu ? 'button' : undefined}
+                    tabIndex={seekTo || onLineMenu ? 0 : undefined}
+                    aria-haspopup={onLineMenu ? 'dialog' : undefined}
+                    aria-keyshortcuts={
+                      onLineMenu && seekTo ? 'Shift+F10' : undefined
+                    }
                     onClick={seekTo ? () => seekTo(i, j) : undefined}
                     onKeyDown={
-                      seekTo
+                      seekTo || onLineMenu
                         ? (e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault()
-                              seekTo(i, j)
-                            }
+                            const menu =
+                              e.key === 'ContextMenu' ||
+                              (e.key === 'F10' && e.shiftKey)
+                            if (!menu && e.key !== 'Enter' && e.key !== ' ')
+                              return
+                            e.preventDefault()
+                            // Enter plays a timed line; with no timing it
+                            // opens the line's actions, as the menu keys do.
+                            if (seekTo && !menu) seekTo(i, j)
+                            else onLineMenu?.(i, j)
                           }
                         : undefined
                     }
@@ -221,8 +276,18 @@ export function LyricsReader({
                     className={cn(
                       'mx-auto -my-1 block w-fit max-w-full rounded-lg py-1 transition-[color,text-shadow,background-color] duration-200 data-[state=current]:bg-card/85 data-[state=current]:text-foreground data-[state=current]:backdrop-blur-md data-[state=current]:[text-shadow:0_1px_2px_var(--background),0_2px_18px_var(--background),0_0_18px_var(--track-glow)] data-[state=spoken]:text-foreground/85 motion-reduce:transition-none',
                       size === 'default' ? 'px-3' : 'px-2',
+                      // A shared moment: held in the song's colour with a
+                      // rim, where the sung line is plain glass.
+                      'data-marked:bg-[color-mix(in_oklab,var(--primary)_24%,var(--card))]/90 data-marked:text-foreground data-marked:shadow-[inset_0_0_0_1.5px_var(--primary),0_0_24px_-6px_var(--track-glow)] data-marked:backdrop-blur-md',
+                      // A finger's hold opens the line's actions; keep iOS
+                      // from selecting the words or showing its callout.
+                      onLineMenu &&
+                        'pointer-coarse:select-none pointer-coarse:[-webkit-touch-callout:none]',
                       seekTo &&
-                        'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none'
+                        'cursor-pointer hover:text-foreground/80 focus-visible:text-foreground focus-visible:outline-none',
+                      !seekTo &&
+                        onLineMenu &&
+                        'focus-visible:text-foreground focus-visible:outline-none'
                     )}
                   >
                     {word !== null && lineState(i, j) === 'current' ? (
