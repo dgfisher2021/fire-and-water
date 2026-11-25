@@ -261,7 +261,13 @@ export function createTextEngine(
           lettered: !!tok.material,
         }) as Placed
     )
-    const { rows, H } = layoutLine(stage, metrics, tokens, line.credit?.t)
+    const { rows, H } = layoutLine(
+      stage,
+      metrics,
+      tokens,
+      line.credit?.t,
+      line.reserve
+    )
     for (const tok of tokens) {
       const mat = tok.mat
       if (tok.kind === 'small') {
@@ -886,7 +892,8 @@ export function createTextEngine(
       const problems = problemsOf(
         stage,
         inkOf(stage, metrics, item.tokens, item.H),
-        item.H
+        item.H,
+        item.line.reserve
       )
       const name = item.line.text ?? item.tokens.map((t) => t.text).join(' ')
       return problems.length ? [{ line: name, problems }] : []

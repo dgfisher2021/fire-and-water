@@ -5,6 +5,7 @@ import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { BloomEffect } from 'postprocessing'
 import * as THREE from 'three'
 import { cn, useMediaQuery } from '@dust-ui/ui'
+import { CoverArt, Raven, Wings } from './scene-cover'
 import {
   Beam,
   Bright,
@@ -21,7 +22,7 @@ import {
   Veils,
 } from './scene-layers'
 import { Constellations, Sigils, Thread, Wires } from './scene-lines'
-import { Orb, Studio } from './scene-orb'
+import { Orb, OrbGlow, Studio } from './scene-orb'
 import { Embers, GoldDust, HeroBursts, Rain, Stars } from './scene-particles'
 import { Sand } from './scene-sand'
 import { SolidWord } from './scene-solid'
@@ -29,6 +30,7 @@ import {
   CAM_Z,
   FOV,
   GROUND,
+  type SceneApi,
   SceneContext,
   createScene,
   stepScene,
@@ -123,10 +125,12 @@ function Post() {
 export function KineticScene({
   frame,
   stage,
+  art,
   className,
 }: {
   frame: FrameSource
   stage: Stage
+  art?: SceneApi['art']
   className?: string
 }) {
   const calm = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -138,8 +142,8 @@ export function KineticScene({
   // A phone held upright: fewer pixels to fill, a weaker chip to fill them.
   const cap = stage.name === 'portrait' ? Math.min(dprCap, 1.5) : dprCap
   const api = useMemo(
-    () => ({ ref, shared: scene.shared, accentHex }),
-    [scene, accentHex]
+    () => ({ ref, shared: scene.shared, accentHex, art }),
+    [scene, accentHex, art]
   )
 
   return (
@@ -173,6 +177,7 @@ export function KineticScene({
             onAccent={setAccentHex}
           />
           <Mist />
+          <CoverArt />
           <Stars />
           <Moon />
           <Storm />
@@ -182,6 +187,7 @@ export function KineticScene({
           <Beam />
           <Bright />
           <Constellations />
+          <Wings />
           <Ghosts />
           <GoldDust />
           <Rain />
@@ -193,7 +199,9 @@ export function KineticScene({
           <Veils />
           <Candle />
           <LoneStar />
+          <Raven />
           <HeroBursts />
+          <OrbGlow />
           <Orb />
           <SolidWord />
           <Sand />

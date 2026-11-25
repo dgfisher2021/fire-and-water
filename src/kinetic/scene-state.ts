@@ -40,6 +40,8 @@ export type SceneState = {
   /** Cosmetic clock: slows when paused, stands still under reduced motion. */
   motion: number
   song: number
+  /** The last frame's song time: a jump means a seek. */
+  lastTime: number
   dt: number
   playing: boolean
   calm: boolean
@@ -83,6 +85,11 @@ export type SceneState = {
   /** World units (on z = 0) and device pixels per pixel of the text stage. */
   stageUnit: number
   stagePx: number
+  /** The clockwork heart's home on the z = 0 plane, and its radius there. */
+  heart: [number, number, number]
+  /** The heart's beat, 0 to 1: a lub on each kick and a softer dub after it. */
+  heartbeat: number
+  dubAt: number
   /** The hero flare's decaying envelope. */
   flare: number
   shared: SharedUniforms
@@ -90,6 +97,8 @@ export type SceneState = {
 
 export type SceneApi = {
   ref: RefObject<SceneState>
+  /** The song's cover (a path under public/) and the figure to cut from it. */
+  art?: { src: string; perch?: [number, number, number, number] }
   shared: SharedUniforms
   /** The section accent as React state: it changes a few times a song. */
   accentHex: string
@@ -107,6 +116,7 @@ export function createScene(): SceneState {
     onset: record(0),
     motion: 0,
     song: 0,
+    lastTime: 0,
     dt: 0,
     playing: false,
     calm: false,
@@ -141,6 +151,9 @@ export function createScene(): SceneState {
     sandOut: 0,
     sandLevel: 0,
     stageUnit: HALF_H / 540,
+    heart: [4.6, 0, 1],
+    heartbeat: 0,
+    dubAt: -1,
     stagePx: 1,
     flare: 0,
     shared: {
@@ -184,10 +197,13 @@ export function stepScene(
   s.song = calm ? 0 : f.time
   if (!calm) s.motion += dt * (f.playing ? 1 : 0.3)
 
+  const jumped = s.frames === 0 || Math.abs(f.time - s.lastTime) > 0.5
+  s.lastTime = f.time
   for (const cue of CUES) {
     const level = clamp(f.cues[cue] ?? 0, 0, 1)
     if (level > 0.01) {
-      if (s.cues[cue] <= 0.01) s.onset[cue] = s.frames === 0 ? DRAWN : f.time
+      // First seen on the first frame or after a seek: already drawn.
+      if (s.cues[cue] <= 0.01) s.onset[cue] = jumped ? DRAWN : f.time
       if (f.time < s.onset[cue]) s.onset[cue] = DRAWN
       s.age[cue] = calm ? -DRAWN : f.time - s.onset[cue]
     }
@@ -196,9 +212,16 @@ export function stepScene(
 
   s.bass = damp(s.bass, calm ? 0.35 : f.bass, 14, dt)
   s.vocal = damp(s.vocal, calm ? 0.5 : f.vocal, 10, dt)
+  const before = s.kick
   // A hit lands at once and rings out; the bands are already enveloped.
   s.kick = calm ? 0 : Math.max(f.kick, damp(s.kick, f.kick, 18, dt))
   s.snare = calm ? 0 : Math.max(f.snare, damp(s.snare, f.snare, 22, dt))
+  // Lub on the kick; dub a sixth of a second later, softer.
+  if (f.kick > 0.55 && before <= 0.55 && f.playing) s.dubAt = f.time + 0.17
+  const since = f.time - s.dubAt
+  const dub =
+    s.dubAt >= 0 && since >= 0 && since < 0.6 ? Math.exp(-since * 13) : 0
+  s.heartbeat = calm ? 0 : Math.min(1, Math.max(s.kick, 0.6 * dub))
   s.sub = damp(s.sub, calm ? 0.35 : f.sub, 14, dt)
   s.mid = damp(s.mid, calm ? 0.4 : f.mid, 12, dt)
   s.high = damp(s.high, calm ? 0.2 : f.high, 20, dt)
@@ -220,6 +243,9 @@ export function stepScene(
   s.fitY = (stage.h * fit.scale) / Math.max(height, 1)
   s.stageUnit = ((2 * HALF_H) / Math.max(height, 1)) * fit.scale
   s.stagePx = fit.scale * dpr
+  s.heart[0] = (stage.heart.x - stage.w / 2) * s.stageUnit
+  s.heart[1] = -(stage.heart.y - stage.h / 2) * s.stageUnit
+  s.heart[2] = stage.heart.r * s.stageUnit
   s.flash = calm ? 0 : f.flash
   s.solid = f.solid
   s.sand = calm ? null : f.sand

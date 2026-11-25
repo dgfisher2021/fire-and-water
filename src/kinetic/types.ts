@@ -27,7 +27,12 @@ export const CUES = [
   'constellations', // stars joined by lines
   'bright', // a white bloom: brief but bright
   'star', // one trembling star, the rest gone quiet
-  'orb', // the liquid heart: a glass orb beating with the bass
+  'orb', // the clockwork heart: a glass orb at the centre of the rings, beating with the kick
+  'cover', // the song's cover, gathered out of grains of light
+  'wash', // the cover's watercolour stains as a dim backdrop
+  'wings', // great gold wings unfolding behind the words
+  'raven', // a raven crossing the top of the frame
+  'perch', // a figure cut from the cover, settled low in the frame
 ] as const
 export type Cue = (typeof CUES)[number]
 

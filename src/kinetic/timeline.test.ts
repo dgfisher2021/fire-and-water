@@ -122,6 +122,48 @@ describe.each(ids)('kinetic film: %s', (id) => {
     expect(cardAt(timeline, 0)).toBeNull()
   })
 
+  it('holds its timed cues inside the song and brings each cue up on its word', () => {
+    for (const m of timeline.moments) {
+      expect(m.from).toBeGreaterThanOrEqual(0)
+      expect(m.to).toBeGreaterThan(m.from)
+      expect(m.to).toBeLessThan(timeline.end)
+      const mid = frameAt(timeline, null, (m.from + m.to) / 2, true)
+      expect(mid.cues[m.cue]).toBeGreaterThan(0.9 * (m.level ?? 1))
+    }
+    for (const line of timeline.lines)
+      for (const c of line.cueAt) {
+        expect(CUES).toContain(c.cue)
+        expect(c.from).toBeGreaterThanOrEqual(line.start)
+        expect(c.from).toBeLessThan(line.next)
+        // A cue named for a word waits for it.
+        if (c.from > line.start)
+          expect(
+            frameAt(timeline, null, c.from - 0.05, true).cues[c.cue]
+          ).toBeLessThan(0.05)
+      }
+  })
+
+  it('adds a section\u2019s cues to its lines only', () => {
+    for (const [section, cues] of Object.entries(song.sectionCues ?? {})) {
+      const names = cues.map((c) => (typeof c === 'string' ? c : c[0]))
+      const inside = timeline.lines.filter(
+        (l) => l.section.replace(/\s*\d+$/, '') === section
+      )
+      expect(inside.length, section).toBeGreaterThan(0)
+      for (const line of inside)
+        for (const name of names)
+          expect(line.cueAt.map((c) => c.cue)).toContain(name)
+    }
+  })
+
+  it('keeps lines that share the frame with the heart clear of it', () => {
+    for (const line of timeline.lines)
+      expect(line.reserve, line.text).toBe(
+        line.cueAt.some((c) => c.cue === 'orb' || c.cue === 'star')
+      )
+    expect(timeline.lines.some((l) => l.reserve)).toBe(true)
+  })
+
   it('credits the song to its writer', () => {
     expect(timeline.lines.at(-1)!.credit?.artist).toBe(song.artist)
   })

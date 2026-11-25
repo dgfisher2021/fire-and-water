@@ -30,6 +30,11 @@ export type Stage = {
   creditGap: number
   creditH: number
   inner: number
+  /**
+   * The clockwork heart's place: the centre and radius, in stage px, of the
+   * orb at the middle of the rings. Lines it shares the frame with keep clear.
+   */
+  heart: { x: number; y: number; r: number }
   /** The running header's top, and the type sizes of the header and the cards. */
   headerTop: number
   cardSize: number
@@ -58,6 +63,7 @@ export const LANDSCAPE: Stage = {
   creditGap: 70,
   creditH: 96,
   inner: 20,
+  heart: { x: 1570, y: 540, r: 132 },
   headerTop: 88,
   cardSize: 58,
 }
@@ -85,6 +91,7 @@ export const PORTRAIT: Stage = {
   creditGap: 64,
   creditH: 96,
   inner: 18,
+  heart: { x: 700, y: 1600, r: 150 },
   headerTop: 150,
   cardSize: 50,
 }

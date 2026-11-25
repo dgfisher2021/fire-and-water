@@ -51,6 +51,8 @@ type Placed<T> = { tok: T; x: number; size: number; w: number; at: string }
 
 /** Small words that close the phrase before them ("hush now"). */
 const BACK = new Set(['me', 'now', 'is', 'am'])
+/** The gap kept between the words and the clockwork heart. */
+const CLEAR = 28
 /** How far a small word's tail hangs below its baseline, per pixel. */
 const DESCENT = 0.24
 
@@ -102,9 +104,17 @@ export function layoutLine<T extends Slot>(
   stage: Stage,
   m: Metrics,
   tokens: T[],
-  creditAt?: number
+  creditAt?: number,
+  /** Keep clear of the clockwork heart (`stage.heart`). */
+  reserve = false
 ) {
-  const rowMax = stage.w - stage.safe - stage.x0
+  // Beside the stack the heart narrows the rows; under it, it shortens the stack.
+  const { heart } = stage
+  const beside = Math.abs(heart.y - stage.cy) < stage.stackMax / 2
+  const rowMax =
+    reserve && beside
+      ? heart.x - heart.r - CLEAR - stage.x0
+      : stage.w - stage.safe - stage.x0
   const smallW = (tok: T) => m.small(tok.text) * stage.small
   const sideW = (list: T[]) =>
     list.reduce((sum, tok) => sum + smallW(tok) + stage.inner, 0)
@@ -130,7 +140,7 @@ export function layoutLine<T extends Slot>(
         }
         if (g.word.kind === 'hero') {
           const budget = Math.min(
-            stage.heroMaxW,
+            Math.min(stage.heroMaxW, rowMax),
             rowMax - sideW(g.lead) - sideW(g.trail) - stage.inner
           )
           const per = letteredPer(g.word)
@@ -167,7 +177,11 @@ export function layoutLine<T extends Slot>(
   let spec = groups.map((_, i) => [i])
   let cs = stage.content.size
   let heroCap = stage.heroMaxCap
-  const limit = creditAt === undefined ? stage.stackMax : stage.stackMaxCredit
+  const open = creditAt === undefined ? stage.stackMax : stage.stackMaxCredit
+  const limit =
+    reserve && !beside
+      ? Math.min(open, 2 * (Math.abs(heart.y - stage.cy) - heart.r - CLEAR))
+      : open
   let rows: (Row & { placed: Placed<T>[] })[] = []
   for (let pass = 0; pass < 80; pass++) {
     rows = arrange(cs, heroCap, spec)
@@ -245,8 +259,14 @@ export function inkOf(stage: Stage, m: Metrics, tokens: Slot[], H: number) {
  * What is wrong with a built line: words whose ink overlaps, or ink outside
  * the stage's safe margins. Empty when the line fits.
  */
-export function problemsOf(stage: Stage, inks: Ink[], H: number) {
+export function problemsOf(
+  stage: Stage,
+  inks: Ink[],
+  H: number,
+  reserve = false
+) {
   const problems: string[] = []
+  const { heart } = stage
   const y0 = stage.cy - H / 2
   if (y0 < stage.safeY - 0.5)
     problems.push(`stack starts ${Math.round(y0)} above ${stage.safeY}`)
@@ -255,6 +275,14 @@ export function problemsOf(stage: Stage, inks: Ink[], H: number) {
       `stack ends ${Math.round(y0 + H)} below ${stage.h - stage.safeY}`
     )
   inks.forEach((a, i) => {
+    if (
+      reserve &&
+      a.box[2] > heart.x - heart.r &&
+      a.box[0] < heart.x + heart.r &&
+      a.box[3] > heart.y - heart.r &&
+      a.box[1] < heart.y + heart.r
+    )
+      problems.push(`${a.text} crosses the heart`)
     if (a.box[0] < stage.x0 - 0.5)
       problems.push(`${a.text} starts left of the edge`)
     if (a.box[2] > stage.w - stage.safe + 1)

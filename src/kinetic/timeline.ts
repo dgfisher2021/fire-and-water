@@ -1,7 +1,7 @@
 import type { Track } from '@/data/tracks'
 import { MATERIALS, type Material, type MaterialName } from './materials'
 import type { Signals } from './signals'
-import type { CueSpec, HeroSpec, KineticSong, LineStyle } from './songs'
+import type { CueSpec, HeroSpec, KineticSong, LineStyle, Moment } from './songs'
 import {
   CUES,
   type Cue,
@@ -27,6 +27,10 @@ export type KineticLine = {
   tokens: Token[]
   credit?: { t: number; title: string; artist: string }
   cues: CueSpec[]
+  /** The cues resolved: each with its level and the song time it comes up at. */
+  cueAt: { cue: Cue; level: number; from: number }[]
+  /** Shares the frame with the clockwork heart (or the star in its place): keep clear. */
+  reserve: boolean
   accent: string
   energy: number
   style: LineStyle
@@ -52,6 +56,7 @@ export type SectionCard = {
 
 export type Timeline = {
   lines: KineticLine[]
+  moments: Moment[]
   cards: SectionCard[]
   heroTimes: number[]
   firstLyric: number
@@ -262,6 +267,8 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     energy: song.energy[type(section)] ?? 0.5,
     style: song.styles[type(section)] ?? 'rise',
     heroAt: [-0.2, 0] as [number, number],
+    cueAt: [] as KineticLine['cueAt'],
+    reserve: false,
     start: 0,
     next: Infinity,
     exitAt: Infinity,
@@ -314,7 +321,10 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
       ...base(line.section),
       text: line.text,
       tokens: tokensOf(line.words, line.times, song.words, spec?.hero),
-      cues: spec?.cues ?? [],
+      cues: [
+        ...(spec?.cues ?? []),
+        ...(song.sectionCues?.[type(line.section)] ?? []),
+      ],
     })
     specs.push(spec ?? {})
   }
@@ -324,6 +334,12 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
   for (const line of lines) {
     line.start = Math.min(...line.tokens.map((t) => t.t))
     line.hero = line.tokens.find((t) => t.kind === 'hero')
+    line.cueAt = line.cues.map((spec) => {
+      const [cue, level, word] = typeof spec === 'string' ? [spec, 1] : spec
+      const at = word ? line.tokens.find((t) => t.key === word)?.t : undefined
+      return { cue, level, from: at ?? line.start }
+    })
+    line.reserve = line.cueAt.some((c) => c.cue === 'orb' || c.cue === 'star')
   }
   const cards: SectionCard[] = []
   lines.forEach((line, k) => {
@@ -359,6 +375,7 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
   return {
     lines,
     cards,
+    moments: song.moments ?? [],
     heroTimes: lines
       .flatMap((l) => (l.hero ? [l.hero.t] : []))
       .sort((a, b) => a - b),
@@ -470,12 +487,19 @@ export function frameAt(
   const k = lineIndexAt(timeline, t + LEAD)
   for (let j = Math.max(0, k - 2); j <= k; j++) {
     const line = timeline.lines[j]
-    const up = smooth(clamp01((t - (line.start - LEAD)) / RISE))
     const down = 1 - smooth(clamp01((t - line.next) / FALL))
-    for (const spec of line.cues) {
-      const [cue, level] = typeof spec === 'string' ? [spec, 1] : spec
-      cues[cue] = Math.max(cues[cue], level * up * down)
+    for (const c of line.cueAt) {
+      // A cue waiting on a word comes up on it, not ahead of it.
+      const lead = c.from > line.start ? 0 : LEAD
+      const up = smooth(clamp01((t - (c.from - lead)) / RISE))
+      cues[c.cue] = Math.max(cues[c.cue], c.level * up * down)
     }
+  }
+  for (const m of timeline.moments) {
+    if (t < m.from || t > m.to + FALL) continue
+    const up = smooth(clamp01((t - m.from) / RISE))
+    const down = 1 - smooth(clamp01((t - m.to) / FALL))
+    cues[m.cue] = Math.max(cues[m.cue], (m.level ?? 1) * up * down)
   }
   const at = lineIndexAt(timeline, t)
   const line = at >= 0 ? timeline.lines[at] : undefined

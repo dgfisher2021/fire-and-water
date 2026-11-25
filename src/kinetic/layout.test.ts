@@ -56,9 +56,20 @@ describe.each(ids)('kinetic layout: %s', (id) => {
   it.each(stages)('fits every line on the $name stage', (stage) => {
     for (const line of timeline.lines) {
       const tokens = slots(line)
-      const { rows, H } = layoutLine(stage, metrics, tokens, line.credit?.t)
+      const { rows, H } = layoutLine(
+        stage,
+        metrics,
+        tokens,
+        line.credit?.t,
+        line.reserve
+      )
       expect(rows.length).toBeGreaterThan(0)
-      const problems = problemsOf(stage, inkOf(stage, metrics, tokens, H), H)
+      const problems = problemsOf(
+        stage,
+        inkOf(stage, metrics, tokens, H),
+        H,
+        line.reserve
+      )
       expect(problems, `${stage.name}: ${line.text ?? 'title'}`).toEqual([])
       for (const tok of tokens) expect(tok.size).toBeGreaterThan(0)
     }
@@ -73,6 +84,26 @@ describe.each(ids)('kinetic layout: %s', (id) => {
       expect(hero.w).toBeLessThanOrEqual(940)
     }
   })
+
+  it.each(stages)(
+    'would cross the heart on the $name stage without the reserve',
+    (stage) => {
+      // Laid out as if the heart were not there, some line that shares its frame runs into it.
+      const crossing = timeline.lines
+        .filter((l) => l.reserve)
+        .some((line) => {
+          const tokens = slots(line)
+          const { H } = layoutLine(stage, metrics, tokens, line.credit?.t)
+          return problemsOf(
+            stage,
+            inkOf(stage, metrics, tokens, H),
+            H,
+            true
+          ).some((p) => p.includes('heart'))
+        })
+      if (stage.name === 'landscape') expect(crossing).toBe(true)
+    }
+  )
 
   it('reports a line that cannot fit', () => {
     const cramped: Stage = { ...PORTRAIT, w: 420, stackMax: 200 }

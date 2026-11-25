@@ -131,6 +131,11 @@ export function KineticScreen() {
   const shownSection = useRef<string | null>(null)
   const shownCard = useRef<SectionCard | null>(null)
 
+  // The song's own cover, for the scene to draw from.
+  const art = useMemo(
+    () => ({ src: t.art.full, perch: song?.art?.perch }),
+    [t.art.full, song]
+  )
   const [report, setReport] = useState<LineReport[] | null>(null)
 
   /* The typography, laid out once the faces are in and again when the stage turns. */
@@ -303,7 +308,7 @@ export function KineticScreen() {
     >
       {frame && (
         <Suspense fallback={null}>
-          <KineticScene frame={frame} stage={stage} />
+          <KineticScene frame={frame} stage={stage} art={art} />
         </Suspense>
       )}
       <div

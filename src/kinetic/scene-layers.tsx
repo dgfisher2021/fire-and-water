@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { Layer, Shade } from './scene-layer'
+import { CAM_Z } from './scene-state'
 
 const MIST = /* glsl */ `
 uniform float uRise;
@@ -153,17 +154,23 @@ void main() {
 }
 `
 
-/** Concentric toothed rings behind the right of the frame (under the words on a phone), ticking on the beat. */
+const CLOCK_Z = -4
+
+/** Concentric toothed rings around the heart's place (right of the words; under them on a phone), ticking on the beat. */
 export function Clockwork() {
   return (
     <Layer
-      level={(s) => s.cues.clockwork}
+      level={(s) => Math.max(s.cues.clockwork, s.cues.orb * 0.75)}
       fragment={CLOCKWORK}
       size={[9.6, 9.6]}
-      at={[4.8, 0.1]}
-      tall={{ at: [0.75, -3.05], scale: 0.56 }}
-      z={-4}
+      z={CLOCK_Z}
       order={4}
+      onFrame={(_u, s, m) => {
+        // Centred on the heart, wherever the stage puts it.
+        const k = (CAM_Z - CLOCK_Z) / CAM_Z
+        m.position.set(s.heart[0] * k, s.heart[1] * k, CLOCK_Z)
+        m.scale.setScalar(k * (s.tall ? 0.56 : 1))
+      }}
     />
   )
 }
@@ -520,16 +527,17 @@ void main() {
 }
 `
 
-/** The last star, a little below centre, trembling. */
+/** The last star, trembling where the heart was. */
 export function LoneStar() {
   return (
     <Layer
       level={(s) => s.cues.star}
       fragment={STAR}
       size={[7, 7]}
-      at={[1, -1.5]}
-      tall={{ at: [0.5, -3.45] }}
       order={60}
+      onFrame={(_u, s, m) => {
+        m.position.set(s.heart[0], s.heart[1], 0)
+      }}
     />
   )
 }
