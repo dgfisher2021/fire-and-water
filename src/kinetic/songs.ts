@@ -59,7 +59,8 @@ export type KineticSong = {
 
 const TEAL = '#4fc0ae'
 const MOON = '#91bfd7'
-const GOLD = '#e6bc63'
+/** The chorus: the pale violet-blue of an aurora. Gold is kept for the word. */
+const AURORA = '#aab8ff'
 const COPPER = '#e0895a'
 
 const lift: KineticSong = {
@@ -68,20 +69,20 @@ const lift: KineticSong = {
   title: {
     words: [1.1, 7.0, 15.5],
     credit: 23.2,
-    solid: 'gold',
+    solid: 'light',
     sand: 'gather',
   },
   drop: 115.3,
-  dropHero: { solid: 'gold', sand: 'scatter' },
+  dropHero: { solid: 'light', sand: 'scatter' },
   outro: 298,
   accents: {
-    Intro: GOLD,
+    Intro: MOON,
     Verse: TEAL,
     'Pre-Chorus': MOON,
-    Chorus: GOLD,
-    Interlude: GOLD,
+    Chorus: AURORA,
+    Interlude: AURORA,
     Bridge: COPPER,
-    'Final Chorus': GOLD,
+    'Final Chorus': AURORA,
     Outro: MOON,
   },
   energy: {
@@ -104,7 +105,10 @@ const lift: KineticSong = {
     'Final Chorus': 'lift',
     Outro: 'dissolve',
   },
-  titleCues: ['golddust', ['rise', 0.5], ['wash', 0.8]],
+  titleCues: [
+    ['rise', 0.5],
+    ['wash', 0.8],
+  ],
   // The seeress gathers out of gold dust and lifts away as HIGHER forms.
   moments: [{ cue: 'cover', from: 0.2, to: 11.4 }],
   sectionCues: {
@@ -139,7 +143,7 @@ const lift: KineticSong = {
     electric: 'neon',
     moon: 'moon',
     writes: 'write',
-    sigils: 'sigil',
+    sigils: 'moon',
     rain: 'rain',
     pulls: 'pull',
     tide: 'water',
@@ -161,7 +165,7 @@ const lift: KineticSong = {
     pulse: 'pulse',
     prayer: 'halo',
     air: 'air',
-    remember: 'sand',
+    remember: 'mote',
     thunder: 'storm',
     glow: 'light',
     ghosts: 'ghost',
@@ -229,11 +233,11 @@ const lift: KineticSong = {
       hero: 'clockwork',
       // The heart lights inside the rings on its own word.
       cues: ['clockwork', ['orb', 0.8, 'heart']],
-      solid: 'brass',
+      solid: 'steel',
     },
     'Keeps time in low electric tones': {
       hero: 'electric',
-      cues: ['clockwork', ['wire', 0.7], ['orb', 0.7]],
+      cues: ['clockwork', ['wire', 0.7]],
     },
     'The moon writes sigils in the rain': {
       hero: 'sigils',
@@ -256,7 +260,7 @@ const lift: KineticSong = {
     'Lift me higher, through the fire': {
       hero: 'higher',
       cues: ['rise', 'fire'],
-      solid: 'gold',
+      solid: 'light',
     },
     'Through the choir, through the wire': {
       hero: 'wire',
@@ -267,12 +271,11 @@ const lift: KineticSong = {
       cues: [
         ['rise', 0.6],
         ['choir', 0.7],
-        ['orb', 0.95, 'pulse'],
       ],
     },
     'Let the air remember air': {
       hero: 'remember',
-      cues: [['rise', 0.6], 'golddust'],
+      cues: [['rise', 0.6]],
       sand: 'form',
     },
     'In the thunder, in the glow': { hero: 'thunder', cues: ['storm'] },
@@ -282,7 +285,10 @@ const lift: KineticSong = {
     },
     'Heart to heart and breath to breath': {
       hero: 'heart',
-      cues: [['ghosts', 0.5], 'golddust', ['orb', 0.95]],
+      cues: [
+        ['ghosts', 0.5],
+        ['orb', 0.7],
+      ],
     },
     'Dancing softly next to death': {
       hero: 'death',
@@ -338,7 +344,7 @@ const lift: KineticSong = {
     'Oh, sacred machine, keep turning': {
       hero: 'machine',
       cues: ['clockwork', 'orb'],
-      solid: 'brass',
+      solid: 'steel',
     },
     'While the constellations are burning': {
       hero: 'constellations',
@@ -367,7 +373,7 @@ const lift: KineticSong = {
     'I leave my name in haloed sound': {
       hero: 'haloed',
       // The heart's last glow, low in its rings; the star takes its place.
-      cues: ['sigils', 'perch', ['orb', 0.4]],
+      cues: ['sigils', 'perch'],
     },
     'A trembling star beneath the ground': {
       hero: 'star',

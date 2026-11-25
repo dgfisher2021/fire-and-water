@@ -250,12 +250,13 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   lines about the heart, pulse or machine, and lines that share its frame
   are laid out clear of it (`line.reserve`). The effects are ports of the real ones, not
   look-alikes: `scene-runes.tsx` is the Runic Alphabet showpiece's shader
-  (react-ui-animation-examples), `scene-comets.tsx` the Sparks showpiece's
-  comets (choir and wire), `scene-constellation.tsx` Spirit World's sky
+  (react-ui-animation-examples), `scene-aurora.tsx` the app's aurora curtains (rise and
+  choir) and the WebGL Chromatic showpiece's strings (wire), `scene-constellation.tsx` Spirit World's sky
   (stars lit and joined near two drifting foci). When an effect looks cheap,
   find its source in those repos and port that. A line keeps leaving for
-  `TAIL` seconds after the next lands, so hand-offs overlap. Readability
-  is a rule: `scene-guard.tsx` shades the scene behind the words' box
+  `TAIL` seconds after the next lands, so hand-offs overlap. The grade is cold
+  (navy, teal, silver, aurora violet); gold only where the lyric says gold.
+  Readability is a rule: `scene-guard.tsx` shades the scene behind the words' box
   (`timeline.guard`, written by the text engine), materials keep a
   brightness floor, and late words rush their entrance; after changing an
   effect or a material, look at every line at rest in both orientations. `lib/audio.ts` owns the
