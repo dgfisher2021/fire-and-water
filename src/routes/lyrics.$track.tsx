@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router'
 import { trackIdSchema, type TrackId } from '@/data/tracks'
+import { momentParam } from '@/lib/moment'
 import { LyricsScreen } from '@/screens/lyrics'
 
 // Ids that left the album; old links land on the song that took their place.
@@ -8,8 +9,10 @@ const MOVED: Record<string, TrackId> = { pencil: 'baritone' }
 
 // `with` opens the words side by side with a second song; the pair is in
 // the URL so a comparison is shareable. Unknown ids drop back to one column.
+// `line` marks one lyric line (a shared moment); a bad value drops silently.
 const searchSchema = z.object({
   with: trackIdSchema.optional().catch(undefined),
+  line: momentParam.optional().catch(undefined),
 })
 
 export type LyricsSearch = z.infer<typeof searchSchema>
