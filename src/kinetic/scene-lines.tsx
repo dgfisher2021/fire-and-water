@@ -208,7 +208,10 @@ function Sigil({ index }: { index: number }) {
     const level = s.cues.sigils
     g.visible = shown(s, level)
     if (!g.visible) return
-    g.position.x = at[0] * s.sx
+    // On a phone the glyphs stand in a row under the words.
+    if (s.tall) g.position.set(-1.7 + index * 0.85, -3.35, 0.4)
+    else g.position.set(at[0] * s.sx, at[1], 0.4)
+    g.scale.setScalar(s.tall ? 0.42 : 0.6)
     trail.current?.set(
       clamp(Math.min(level * 1.3, (s.age.sigils - index * 0.4) / 0.7), 0, 1),
       0.25 - 0.25 * s.kick
@@ -415,7 +418,14 @@ export function Constellations() {
     g.visible = shown(s, level)
     if (!g.visible) return
     const k = (CAM_Z - FIGURE_Z) / CAM_Z
-    g.scale.set(k * s.sx, k, 1)
+    // On a phone the figures keep their shape, smaller and higher.
+    if (s.tall) {
+      g.scale.set(k * 0.33, k * 0.5, 1)
+      g.position.y = 1.75 * k
+    } else {
+      g.scale.set(k * s.sx, k, 1)
+      g.position.y = 0
+    }
     // Both materials share the one uniforms object.
     mat.uniforms.uLevel.value = level
     mat.uniforms.uProgress.value =

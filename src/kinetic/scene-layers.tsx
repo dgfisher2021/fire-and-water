@@ -52,7 +52,7 @@ void main() {
 }
 `
 
-/** The moon, low right; it climbs into place as the cue comes up. */
+/** The moon, low right (high right on a phone); it climbs into place as the cue comes up. */
 export function Moon() {
   return (
     <Layer
@@ -60,6 +60,7 @@ export function Moon() {
       fragment={MOON_FRAG}
       size={[9, 9]}
       at={[5.5, -1.7]}
+      tall={{ at: [1.15, 3.05], scale: 0.62 }}
       z={-8}
       add={false}
       order={2}
@@ -77,11 +78,11 @@ void main() {
   float t = uTime * 0.03;
   float d = fbm(p * 0.22 + vec2(t, 0.0)) * 0.65
     + fbm(p * 0.6 - vec2(t * 1.6, 3.0)) * 0.35;
-  float body = smoothstep(0.1, 2.8, p.y - 0.4 + (d - 0.5) * 5.0);
+  float body = smoothstep(0.1, 2.8, p.y - 0.4 - uTall * 1.3 + (d - 0.5) * 5.0);
   float slot = floor(uSong / 1.9);
   vec2 at = vec2(
     (hash11(slot + 0.3) * 1.6 - 0.6) * uHalfW * 0.8,
-    2.2 + hash11(slot + 0.7) * 1.6
+    2.2 + uTall * 1.1 + hash11(slot + 0.7) * 1.6
   );
   float env = uFlash + 0.06;
   float glow = exp(-length((p - at) * vec2(0.3, 0.55)) * 1.1);
@@ -152,7 +153,7 @@ void main() {
 }
 `
 
-/** Concentric toothed rings behind the right of the frame, ticking on the beat. */
+/** Concentric toothed rings behind the right of the frame (under the words on a phone), ticking on the beat. */
 export function Clockwork() {
   return (
     <Layer
@@ -160,6 +161,7 @@ export function Clockwork() {
       fragment={CLOCKWORK}
       size={[9.6, 9.6]}
       at={[4.8, 0.1]}
+      tall={{ at: [0.75, -3.05], scale: 0.56 }}
       z={-4}
       order={4}
     />
@@ -193,7 +195,7 @@ void main() {
     float x = side * (uHalfW - 0.45 - inner * 2.15);
     float w = 0.62 - inner * 0.2 + smoothstep(-3.7, -4.5, p.y) * 0.16;
     float d = (p.x - x) / w;
-    float m = smoothstep(1.0, 0.94, abs(d));
+    float m = smoothstep(1.0, 0.94, abs(d)) * (1.0 - inner * uTall);
     float flute = 0.5 + 0.5 * cos(d * 15.7);
     float lit = smoothstep(-1.0, 1.0, d);
     vec3 c = INK * (0.5 + 0.5 * flute)
@@ -278,6 +280,7 @@ export function Beam() {
       fragment={BEAM}
       size={[8, 14]}
       at={[3.5, 0]}
+      tall={{ at: [0.6, 0] }}
       windowed
       z={-1}
       order={5}
@@ -288,7 +291,7 @@ export function Beam() {
 const BRIGHT = /* glsl */ `
 void main() {
   // High on the right, clear of the lyric lines.
-  vec2 c = vec2(uHalfW * 0.56, 2.7);
+  vec2 c = vec2(uHalfW * 0.56, 2.7 + uTall * 0.9);
   vec2 q = (vP - c) * vec2(1.0, 1.15);
   float r = length(q);
   vec2 n = q / max(r, 1e-4);
@@ -314,7 +317,7 @@ void main() {
   for (int row = 0; row < 2; row++) {
     float fr = float(row);
     float sc = 0.72 + fr * 0.38;
-    float y0 = -2.6 - fr * 1.5;
+    float y0 = -2.6 - fr * 1.5 - uTall * 0.9;
     float s = 2.5 * sc;
     float xx = p.x + uTime * (0.16 + fr * 0.1) * (fr < 0.5 ? 1.0 : -1.0) + fr * 1.3;
     float h = hash11(floor(xx / s) * 1.37 + fr * 17.0 + 5.0);
@@ -383,7 +386,7 @@ float cracks(vec2 p) {
 }
 void main() {
   vec2 p = vP;
-  float horizon = -2.2 - (1.0 - uLevel) * 1.7;
+  float horizon = -2.2 - uTall * 0.75 - (1.0 - uLevel) * 1.7;
   float d = horizon - p.y;
   vec3 tint = mix(mix(uAccent, MOON, 0.5), vec3(0.45, 0.74, 0.95), uFrost);
   if (d < 0.0) {
@@ -493,6 +496,7 @@ export function Candle() {
       fragment={CANDLE}
       size={[8, 8]}
       at={[5.2, -1.9]}
+      tall={{ at: [1.35, -3.3], scale: 0.8 }}
       z={2}
       order={60}
     />
@@ -522,6 +526,7 @@ export function LoneStar() {
       fragment={STAR}
       size={[7, 7]}
       at={[1, -1.5]}
+      tall={{ at: [0.5, -3.45] }}
       order={60}
     />
   )

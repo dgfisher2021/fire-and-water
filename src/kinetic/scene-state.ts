@@ -1,5 +1,6 @@
 import { type RefObject, createContext, useContext } from 'react'
 import * as THREE from 'three'
+import { LANDSCAPE, type Stage, fitStage } from './stage'
 import { CUES, type Cue, type HeroWord, type KineticFrame } from './types'
 
 export const GROUND = '#030d12'
@@ -22,6 +23,8 @@ export type SharedUniforms = {
   uVocal: { value: number }
   uKick: { value: number }
   uEnergy: { value: number }
+  /** 1 on the portrait stage, where layers stack above and below the words. */
+  uTall: { value: number }
 }
 
 export type SceneState = {
@@ -49,6 +52,11 @@ export type SceneState = {
   halfW: number
   /** Horizontal squeeze against the 16:9 layout. */
   sx: number
+  /** The text stage, whether it is the portrait one, and how much of the window it fills. */
+  stage: Stage
+  tall: boolean
+  fitX: number
+  fitY: number
   accent: THREE.Color
   accentTarget: THREE.Color
   accentHex: string
@@ -102,6 +110,10 @@ export function createScene(): SceneState {
     rise: 0,
     halfW: REF_HALF_W,
     sx: 1,
+    stage: LANDSCAPE,
+    tall: false,
+    fitX: 1,
+    fitY: 1,
     accent,
     accentTarget: accent.clone(),
     accentHex: '',
@@ -127,6 +139,7 @@ export function createScene(): SceneState {
       uVocal: { value: 0 },
       uKick: { value: 0 },
       uEnergy: { value: 0 },
+      uTall: { value: 0 },
     },
   }
 }
@@ -139,10 +152,14 @@ export function stepScene(
   s: SceneState,
   f: KineticFrame,
   delta: number,
-  aspect: number,
-  pixelHeight: number,
-  calm: boolean
+  width: number,
+  height: number,
+  dpr: number,
+  calm: boolean,
+  stage: Stage
 ) {
+  const aspect = width / Math.max(height, 1)
+  const pixelHeight = height * dpr
   const dt = Math.min(delta, 0.05)
   s.dt = dt
   s.calm = calm
@@ -173,8 +190,13 @@ export function stepScene(
 
   s.halfW = HALF_H * aspect
   s.sx = s.halfW / REF_HALF_W
-  s.stageUnit = (HALF_H / 540) * Math.min(1, s.sx)
-  s.stagePx = (pixelHeight / 1080) * Math.min(1, s.sx)
+  const fit = fitStage(stage, width, height)
+  s.stage = stage
+  s.tall = stage.name === 'portrait'
+  s.fitX = (stage.w * fit.scale) / Math.max(width, 1)
+  s.fitY = (stage.h * fit.scale) / Math.max(height, 1)
+  s.stageUnit = ((2 * HALF_H) / Math.max(height, 1)) * fit.scale
+  s.stagePx = fit.scale * dpr
   s.flash = calm ? 0 : f.flash
   s.solid = f.solid
   s.sand = calm ? null : f.sand
@@ -193,6 +215,7 @@ export function stepScene(
   u.uVocal.value = s.vocal
   u.uKick.value = s.kick
   u.uEnergy.value = s.energy
+  u.uTall.value = s.tall ? 1 : 0
 }
 
 /** True while a cue element should draw: it is up, or the shaders are warming. */

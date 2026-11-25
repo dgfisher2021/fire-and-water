@@ -38,6 +38,8 @@ type LayerProps = {
   size?: [number, number]
   /** Centre in 16:9 z = 0 units; x follows the window's width. */
   at?: [number, number]
+  /** On the portrait stage: the centre in plain z = 0 units, and a scale. */
+  tall?: { at?: [number, number]; scale?: number }
   /**
    * Keep vP in screen-plane units although the plane is a smaller window at
    * `at` (a band of the frame), so the shader only runs where it draws.
@@ -61,6 +63,7 @@ export function Layer({
   fragment,
   size = FULL,
   at = ORIGIN,
+  tall,
   windowed = false,
   z = 0,
   add = true,
@@ -99,9 +102,12 @@ export function Layer({
     if (!m.visible) return
     mat.uniforms.uLevel.value = l
     const k = (CAM_Z - z) / CAM_Z
-    m.position.set(at[0] * s.sx * k, at[1] * k, z)
-    m.scale.setScalar(k)
-    if (windowed) mat.uniforms.uOrigin.value.set(at[0] * s.sx, at[1])
+    const place = s.tall ? tall : undefined
+    const x = place?.at ? place.at[0] : at[0] * s.sx
+    const y = place?.at ? place.at[1] : at[1]
+    m.position.set(x * k, y * k, z)
+    m.scale.setScalar(k * (place?.scale ?? 1))
+    if (windowed) mat.uniforms.uOrigin.value.set(x, y)
     onFrame?.(mat.uniforms, s, m)
   })
 

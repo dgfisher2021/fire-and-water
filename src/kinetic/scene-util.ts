@@ -95,7 +95,7 @@ float fbm2(vec2 p) {
 `
 
 export const SHARED = /* glsl */ `
-uniform float uTime, uSong, uHalfW, uScale, uBass, uVocal, uKick, uEnergy;
+uniform float uTime, uSong, uHalfW, uScale, uBass, uVocal, uKick, uEnergy, uTall;
 uniform vec3 uAccent;
 `
 

@@ -441,13 +441,13 @@ export function HeroBursts() {
     s.flare *= Math.exp(-s.dt * 3.5)
     const count = s.heroCount
     if (last.current >= 0 && count > last.current && !s.calm) {
-      RAY.set(s.heroAt[0], s.heroAt[1], 0.5).unproject(camera)
+      RAY.set(s.heroAt[0] * s.fitX, s.heroAt[1] * s.fitY, 0.5).unproject(camera)
       RAY.sub(camera.position).normalize()
       s.heroPos.copy(camera.position).addScaledVector(RAY, 6 / -RAY.z)
       // A spray along the word rather than one clump at its middle.
       for (let k = -2; k <= 2; k++) {
         SPRAY.copy(s.heroPos)
-        SPRAY.x += k * 0.55 * s.sx
+        SPRAY.x += k * 0.55 * Math.max(s.sx, 0.5)
         sparks.current?.emit(SPRAY, {
           count: 16,
           speed: 2.1 + Math.abs(k) * 0.35,
