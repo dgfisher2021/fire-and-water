@@ -79,6 +79,15 @@ const EXIT: Record<LineStyle, number> = {
   clockwork: 0.37,
   dissolve: 0.9,
 }
+/** How long each style goes on leaving after the next line has landed. */
+export const TAIL: Record<LineStyle, number> = {
+  title: 0,
+  rise: 0.3,
+  unveil: 0.25,
+  lift: 0.42,
+  clockwork: 0.4,
+  dissolve: 0.35,
+}
 /** A gap this long before a new section leaves room for its card. */
 const CARD_ROOM = 4.2
 const CARD_LEAD = 2.7
@@ -363,12 +372,14 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
             to: line.next - 0.35,
           })
       }
-      // The exit ends as the next line's first word lands, or sooner.
+      // The exit starts before the next line lands and finishes just after
+      // it, receding as it fades: a fast hand-off dissolves, it does not cut.
+      const tail = end === line.next ? TAIL[line.style] : 0
       line.exitAt = Math.max(
         end - EXIT[line.style],
         Math.min(lastWord + 0.3, end - 0.14)
       )
-      line.exitDur = end - line.exitAt
+      line.exitDur = end + tail - line.exitAt
     }
     line.heroWord = heroWordOf(line, specs[k])
   })

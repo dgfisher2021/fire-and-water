@@ -5,12 +5,14 @@ import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { BloomEffect } from 'postprocessing'
 import * as THREE from 'three'
 import { cn, useMediaQuery } from '@dust-ui/ui'
-import { CoverArt, Raven, Wings } from './scene-cover'
+import { Comets } from './scene-comets'
+import { Constellations } from './scene-constellation'
+import { CoverArt, Wings } from './scene-cover'
+import { Heart } from './scene-heart'
 import {
   Beam,
   Bright,
   Candle,
-  Choir,
   Clockwork,
   Ghosts,
   LoneStar,
@@ -21,9 +23,10 @@ import {
   Storm,
   Veils,
 } from './scene-layers'
-import { Constellations, Sigils, Thread, Wires } from './scene-lines'
-import { Orb, OrbGlow, Studio } from './scene-orb'
+import { Thread } from './scene-lines'
+import { OrbGlow, Studio } from './scene-orb'
 import { Embers, GoldDust, HeroBursts, Rain, Stars } from './scene-particles'
+import { Sigils } from './scene-runes'
 import { Sand } from './scene-sand'
 import { SolidWord } from './scene-solid'
 import {
@@ -38,6 +41,10 @@ import {
 } from './scene-state'
 import type { Stage } from './stage'
 import type { FrameSource } from './types'
+
+/** The comets' colours: voices pale and warm, the wire hot and electric. */
+const CHOIR_LIGHT = ['#f6ecd6', '#e6bc63', '#bcd7e6', '#fff7e8'] as const
+const WIRE_LIGHT = ['#fff3d0', '#e6bc63', '#9fe6ff', '#ffffff'] as const
 
 const GROUND_SRGB = new THREE.Color(GROUND).convertLinearToSRGB()
 
@@ -152,10 +159,6 @@ export function KineticScene({
         flat
         dpr={[Math.min(1, cap), cap]}
         gl={{ antialias: false, powerPreference: 'high-performance' }}
-        // The orb's glass reads a quarter-size copy of the scene.
-        onCreated={({ gl }) => {
-          gl.transmissionResolutionScale = 0.25
-        }}
         camera={{ fov: FOV, position: [0, 0, CAM_Z], near: 0.1, far: 120 }}
       >
         <PerformanceMonitor
@@ -183,7 +186,16 @@ export function KineticScene({
           <Storm />
           <Clockwork />
           <Shafts />
-          <Choir />
+          <Comets
+            cue='choir'
+            count={7}
+            seed={7}
+            colors={CHOIR_LIGHT}
+            spread={6}
+            at={[2.6, 1.7, -2.2]}
+            turn={Math.PI / 2}
+            pace={0.55}
+          />
           <Beam />
           <Bright />
           <Constellations />
@@ -194,15 +206,22 @@ export function KineticScene({
           <Embers />
           <Sea />
           <Thread />
-          <Wires />
+          <Comets
+            cue='wire'
+            count={9}
+            seed={23}
+            colors={WIRE_LIGHT}
+            spread={6.5}
+            at={[2.2, -1.5, -1.2]}
+            pace={1.5}
+          />
           <Sigils />
           <Veils />
           <Candle />
           <LoneStar />
-          <Raven />
           <HeroBursts />
           <OrbGlow />
-          <Orb />
+          <Heart />
           <SolidWord />
           <Sand />
           <Post />

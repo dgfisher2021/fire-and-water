@@ -18,8 +18,8 @@ export const CUES = [
   'candle', // one warm flame, the scene hushed around it
   'rise', // rushing upward through the stars
   'fire', // embers streaming up
-  'choir', // tall soft columns of light, a cathedral of voices
-  'wire', // taut electric lines humming
+  'choir', // comets of pale light sweeping round, a cathedral of voices
+  'wire', // hot comets racing on long arcs
   'storm', // thunder: cloud lit from within
   'ghosts', // pale mist figures drifting in rows
   'frost', // frozen sea: cold blue, ice glints
@@ -31,7 +31,6 @@ export const CUES = [
   'cover', // the song's cover, gathered out of grains of light
   'wash', // the cover's watercolour stains as a dim backdrop
   'wings', // great gold wings unfolding behind the words
-  'raven', // a raven crossing the top of the frame
   'perch', // a figure cut from the cover, settled low in the frame
 ] as const
 export type Cue = (typeof CUES)[number]

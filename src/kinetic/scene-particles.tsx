@@ -220,58 +220,6 @@ export function GoldDust() {
   )
 }
 
-const PULSE_VERT = /* glsl */ `
-void main() {
-  // Charges running along the wires, each at its own speed and direction.
-  float dir = aSeed.x < 0.5 ? 1.0 : -1.0;
-  float run = fract(aSeed.y + dir * uSong * (0.16 + 0.22 * aSeed.z));
-  vec3 p = vec3((run * 2.0 - 1.0) * uHalfW * 1.05, position.y, position.z);
-  vec4 mv = modelViewMatrix * vec4(p, 1.0);
-  gl_Position = projectionMatrix * mv;
-  gl_PointSize = (46.0 + 50.0 * aSeed.w) * uScale / 1158.0 * (0.8 + 0.5 * uBass);
-  vA = uLevel * (0.45 + 0.55 * uBass + 0.5 * uKick + 0.8 * uSnare) * smoothstep(0.0, 0.05, run) * smoothstep(1.0, 0.95, run);
-  vS = vec4(dir, aSeed.yzw);
-}
-`
-const PULSE_FRAG = /* glsl */ `
-void main() {
-  vec2 c = gl_PointCoord - 0.5;
-  // A hot head with a tail behind it.
-  float along = c.x * vS.x;
-  float tail = smoothstep(-0.5, 0.25, along) * smoothstep(0.34, 0.22, along);
-  float a = exp(-c.y * c.y * 2200.0) * tail * tail
-    + exp(-dot(c - vec2(0.24 * vS.x, 0.0), c - vec2(0.24 * vS.x, 0.0)) * 420.0) * 1.6;
-  gl_FragColor = vec4(mix(uAccent, vec3(1.0, 0.96, 0.84), 0.6) * a * vA, 1.0);
-}
-`
-
-/** Pulses travelling the wires (`WIRE_LINES` in scene-lines gives their places). */
-export function WirePulses({ lines }: { lines: [number, number][] }) {
-  const geometry = useMemo(
-    () =>
-      seededPoints(lines.length * 5, 71, (r, p, q) => {
-        const [y, z] = lines[Math.floor(r() * lines.length) % lines.length]
-        p[0] = 0
-        p[1] = y
-        p[2] = z
-        q[0] = r()
-        q[1] = r()
-        q[2] = r()
-        q[3] = r()
-      }),
-    [lines]
-  )
-  return (
-    <Cloud
-      geometry={geometry}
-      vertex={PULSE_VERT}
-      fragment={PULSE_FRAG}
-      level={(s) => s.cues.wire}
-      order={11}
-    />
-  )
-}
-
 const EMBER_VERT = /* glsl */ `
 void main() {
   float life = fract(aSeed.x + uTime * (0.07 + aSeed.y * 0.1));

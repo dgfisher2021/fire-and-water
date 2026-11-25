@@ -37,7 +37,6 @@ const easeInOut = (v: number) => {
   const x = clamp01(v)
   return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2
 }
-const easeIn = (v: number) => Math.pow(clamp01(v), 3)
 const backOut = (v: number) => {
   const x = clamp01(v) - 1
   return 1 + 2.4 * x * x * x + 1.4 * x * x
@@ -788,18 +787,23 @@ export function createTextEngine(
     let scale = 1
     switch (style) {
       case 'lift': {
-        const o = easeIn(out)
-        dy = -260 * o
-        z = -620 * o
-        rotX += 14 * o
-        opacity = 1 - o
+        // Moving from the first frame, so the next line lands on a line
+        // already rising away behind it.
+        const o = easeInOut(out)
+        dy = -300 * o
+        z = -760 * o
+        rotX += 12 * o
+        opacity = 1 - Math.pow(o, 1.3)
+        blur = 10 * o
         break
       }
       case 'clockwork': {
-        const o = clamp01(Math.ceil(out * 3 - 0.001) / 3)
-        const snap = out <= 0 ? 0 : o - (1 / 3) * (1 - backOut(frac(out * 3)))
-        rotX += 84 * clamp01(snap)
-        opacity = 1 - out * out
+        // One smooth turn of the wheel, back into the dark.
+        const o = easeInOut(out)
+        rotX += 76 * o
+        z = -260 * o
+        opacity = 1 - o
+        blur = 6 * o
         break
       }
       case 'unveil':

@@ -8,6 +8,7 @@ import {
   frameAt,
   lineIndexAt,
   sheetLines,
+  TAIL,
 } from './timeline'
 import { CUES } from './types'
 
@@ -47,12 +48,16 @@ describe.each(ids)('kinetic film: %s', (id) => {
     }
   })
 
-  it('runs in order and clears each line as the next lands', () => {
+  it('runs in order, each line leaving across the next one landing', () => {
     timeline.lines.forEach((line, k) => {
       const next = timeline.lines[k + 1]
       if (!next) return
       expect(next.start, next.text).toBeGreaterThan(line.start)
-      expect(line.exitAt + line.exitDur).toBeLessThanOrEqual(next.start + 1e-9)
+      // Still leaving as the next lands, for no longer than its style's tail.
+      expect(line.exitAt + line.exitDur).toBeLessThanOrEqual(
+        next.start + TAIL[line.style] + 1e-9
+      )
+      expect(line.exitAt).toBeLessThan(next.start)
     })
     expect(lineIndexAt(timeline, 0)).toBe(-1)
     expect(lineIndexAt(timeline, timeline.end)).toBe(timeline.lines.length - 1)

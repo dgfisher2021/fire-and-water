@@ -26,7 +26,13 @@ import {
 } from '@/kinetic/timeline'
 import type { FrameSource } from '@/kinetic/types'
 import { Maximize, Minimize, Volume2, VolumeX, X } from 'lucide-react'
-import { MotionSparkles, MotionText, MotionTextMorph } from '@dust-ui/motion'
+import {
+  MotionGlow,
+  MotionSparkles,
+  MotionText,
+  MotionTextMorph,
+  MotionTextShimmer,
+} from '@dust-ui/motion'
 import {
   Button,
   MediaPlayButton,
@@ -356,9 +362,21 @@ export function KineticScreen() {
           }}
         >
           {card && (
+            <MotionGlow
+              key={`glow${card.from}`}
+              mode='pulse'
+              blur={90}
+              scale={1.5}
+              duration={4}
+              colors={[card.accent, 'transparent', card.accent, 'transparent']}
+              className='opacity-25'
+            />
+          )}
+          {card && (
             <MotionSparkles
               key={`${card.label}${card.from}`}
               count={5}
+              className='flex-col items-start'
               size={30}
               color={card.accent}
             >
@@ -374,10 +392,20 @@ export function KineticScreen() {
               </MotionText>
               <span
                 className={cn(
-                  'mt-5 block h-px origin-left bg-linear-to-r from-current to-transparent transition-transform duration-1000 ease-out',
+                  'mt-5 block h-px w-full min-w-96 origin-left bg-linear-to-r from-current to-transparent transition-transform duration-1000 ease-out',
                   cardOn ? 'scale-x-100' : 'scale-x-0'
                 )}
               />
+              {/* The song's own name, small and italic, under the section's. */}
+              <p
+                className='mt-4 whitespace-nowrap normal-case'
+                style={{
+                  font: `italic 500 26px ${ITALIC}`,
+                  letterSpacing: '0.02em',
+                }}
+              >
+                <MotionTextShimmer duration={2.4}>{t.title}</MotionTextShimmer>
+              </p>
             </MotionSparkles>
           )}
         </div>
