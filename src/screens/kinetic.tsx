@@ -36,6 +36,7 @@ import {
 import {
   Button,
   MediaPlayButton,
+  GrainOverlay,
   MediaScrubber,
   cn,
   useHotkeys,
@@ -410,6 +411,9 @@ export function KineticScreen() {
           )}
         </div>
       </div>
+
+      {/* Film grain over the picture and the words alike. */}
+      <GrainOverlay opacity={0.06} className='pointer-events-none' />
 
       {!timeline && (
         <p className='absolute inset-0 grid place-items-center p-8 text-center text-muted-foreground'>

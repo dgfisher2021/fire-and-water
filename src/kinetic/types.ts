@@ -71,6 +71,15 @@ export type HeroWord = {
   sand?: SandPlan
 }
 
+/** The words' box on the text stage (centre and size in its pixels) and how present they are. */
+export type TextGuard = {
+  x: number
+  y: number
+  w: number
+  h: number
+  level: number
+}
+
 export type KineticFrame = {
   /** Song time in seconds. */
   time: number
@@ -107,6 +116,8 @@ export type KineticFrame = {
   heroAt: [number, number]
   /** The hero word the scene draws as solid letters right now, if any. */
   solid: HeroWord | null
+  /** Where the words stand, for the shade the scene lays behind them. */
+  guard: TextGuard
   /** The hero word the sand holds, how scattered it is and how far blown (0 to 1). */
   sand: HeroWord | null
   sandIn: number

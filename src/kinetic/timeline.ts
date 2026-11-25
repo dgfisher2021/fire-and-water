@@ -8,6 +8,7 @@ import {
   type HeroWord,
   type KineticFrame,
   type Solid,
+  type TextGuard,
 } from './types'
 
 export type TokenKind = 'small' | 'content' | 'hero'
@@ -63,6 +64,8 @@ export type Timeline = {
   outro: number
   end: number
   beat: number
+  /** Written by the text layer every frame, read by the scene. */
+  guard: TextGuard
 }
 
 const SMALL_WORDS = new Set(
@@ -394,6 +397,7 @@ export function buildTimeline(track: Track, song: KineticSong): Timeline {
     outro: song.outro,
     end: track.duration,
     beat,
+    guard: { x: 0, y: 0, w: 0, h: 0, level: 0 },
   }
 }
 
@@ -474,6 +478,7 @@ export const createFrame = (): KineticFrame => ({
   heroCount: 0,
   heroAt: [-0.2, 0],
   solid: null,
+  guard: { x: 0, y: 0, w: 0, h: 0, level: 0 },
   sand: null,
   sandIn: 0,
   sandOut: 0,
@@ -551,6 +556,7 @@ export function frameAt(
   f.solid =
     word?.solid && t >= word.t && t < word.exitAt + word.exitDur ? word : null
   f.sand = sand
+  f.guard = timeline.guard
   f.sandIn =
     plan && plan.mode !== 'scatter'
       ? 1 - clamp01((t - plan.in0) / (plan.in1 - plan.in0))

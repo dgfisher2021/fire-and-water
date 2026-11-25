@@ -8,6 +8,7 @@ import { cn, useMediaQuery } from '@dust-ui/ui'
 import { Comets } from './scene-comets'
 import { Constellations } from './scene-constellation'
 import { CoverArt, Wings } from './scene-cover'
+import { TextGuard } from './scene-guard'
 import { Heart } from './scene-heart'
 import {
   Beam,
@@ -219,6 +220,7 @@ export function KineticScene({
           <Veils />
           <Candle />
           <LoneStar />
+          <TextGuard />
           <HeroBursts />
           <OrbGlow />
           <Heart />
