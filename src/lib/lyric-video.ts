@@ -4,6 +4,7 @@ import {
   isLyricsLabel,
 } from '@dust-ui/ui'
 import { type Track } from '@/data/tracks'
+import { getAudioContext } from '@/lib/audio'
 import { mediaUrl } from '@/lib/media'
 
 export type VideoAspect = '9:16' | '1:1' | '16:9'
@@ -131,7 +132,8 @@ export async function recordLyricVideo({
   audio.crossOrigin = 'anonymous'
   audio.src = new URL(mediaUrl(track.audioFile), document.baseURI).href
   audio.preload = 'auto'
-  const actx = new AudioContext()
+  // The app's one AudioContext; this recording's nodes leave it when done.
+  const actx = getAudioContext()!
   const source = actx.createMediaElementSource(audio)
   const tape = actx.createMediaStreamDestination()
   source.connect(tape)
@@ -267,7 +269,7 @@ export async function recordLyricVideo({
       cancelAnimationFrame(frame)
       audio.pause()
       if (recorder.state !== 'inactive') recorder.stop()
-      void actx.close()
+      source.disconnect()
       if (error) reject(error)
     }
     recorder.onstop = () => {

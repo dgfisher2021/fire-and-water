@@ -240,7 +240,9 @@ void main() {
       * (0.3 + 0.7 * smoothstep(-4.7, arch, p.y));
     float edge = exp(-pow((abs(dx) - 1.0) * 5.0, 2.0))
       * smoothstep(arch + 0.1, arch - 0.6, p.y);
-    float swell = 0.35 + 0.9 * uVocal * (0.75 + 0.25 * sin(uTime * 0.9 + fi * 1.7));
+    // Each column answers the voice; the outer ones shimmer with the highs.
+    float swell = 0.35 + 0.9 * max(uVocal, uMid) * (0.75 + 0.25 * sin(uTime * 0.9 + fi * 1.7))
+      + 0.35 * uHigh * e;
     col += mix(uAccent, PALE, 0.4) * (body * 0.6 + edge * 0.4) * swell
       * (0.08 + 0.2 * e);
   }

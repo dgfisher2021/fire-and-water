@@ -106,7 +106,7 @@ export function Orb() {
     const swell = level * level * (3 - 2 * level)
     // At the clockwork's centre when it turns; else high on the right, clear of the words.
     const c = s.cues.clockwork
-    const beat = 1.0 + 0.28 * c + 0.1 * s.bass + 0.14 * s.kick
+    const beat = 1.0 + 0.28 * c + 0.1 * s.sub + 0.14 * s.kick
     if (s.tall) {
       // A phone: at the clockwork's centre under the words; else above them.
       g.position.set(1.45 - 0.7 * c, 3.35 - 6.4 * c, 0.4)

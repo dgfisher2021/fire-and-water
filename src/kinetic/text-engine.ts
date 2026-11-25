@@ -1,4 +1,3 @@
-import { pulseAt, type Pulse } from '@/lib/pulse'
 import {
   inkOf,
   layoutLine,
@@ -8,10 +7,11 @@ import {
   type Slot,
 } from './layout'
 import { MATERIALS, type Material } from './materials'
+import type { Signals } from './signals'
 import type { LineStyle } from './songs'
 import type { Stage } from './stage'
 import type { KineticLine, Timeline, Token } from './timeline'
-import { flashAt, kickAt, lineIndexAt, sandAt } from './timeline'
+import { flashAt, lineIndexAt, sandAt } from './timeline'
 
 /**
  * The typography of the kinetic film: a stage of plain DOM text (`stage.ts`),
@@ -90,14 +90,20 @@ type Laid = {
   hero?: Placed
   credits?: { el: HTMLElement; top: number }[]
 }
-/** The song's pulse at the frame being drawn. */
-type Signal = { kick: number; bass: number; vocal: number; flash: number }
+/** What the film hears at the frame being drawn, and the storm's lightning. */
+type Signal = {
+  kick: number
+  bass: number
+  vocal: number
+  mid: number
+  flash: number
+}
 
 /** A line that does not fit its stage, and why. */
 export type LineReport = { line: string; problems: string[] }
 
 export type TextEngine = {
-  render: (time: number) => void
+  render: (time: number, heard: Signals | null) => void
   /** Every line's built stack checked against the stage: overlaps and margins. */
   check: () => LineReport[]
   dispose: () => void
@@ -106,7 +112,6 @@ export type TextEngine = {
 export function createTextEngine(
   root: HTMLElement,
   timeline: Timeline,
-  pulse: Pulse | null,
   reduced: boolean,
   stage: Stage
 ): TextEngine {
@@ -719,7 +724,11 @@ export function createTextEngine(
                   settle *
                   S.opacity *
                   (1 - erode) *
-                  (hero && live ? 0.75 + 0.5 * sig.kick : 1)
+                  (hero && live
+                    ? 0.75 + 0.5 * sig.kick
+                    : live
+                      ? 0.82 + 0.4 * sig.mid
+                      : 1)
           put(tok.glow, 'opacity', clamp01(level).toFixed(3))
         }
       }
@@ -854,13 +863,14 @@ export function createTextEngine(
     }
   }
 
-  const sig: Signal = { kick: 0, bass: 0, vocal: 0, flash: 0 }
+  const sig: Signal = { kick: 0, bass: 0, vocal: 0, mid: 0, flash: 0 }
 
-  function render(time: number) {
+  function render(time: number, heard: Signals | null) {
     const t = Math.min(Math.max(time, 0), timeline.end)
-    sig.kick = pulse ? kickAt(pulse, t) : 0
-    sig.bass = pulse ? pulseAt(pulse.bass, pulse.fps, t) : 0
-    sig.vocal = pulse ? pulseAt(pulse.vocal, pulse.fps, t) : 0
+    sig.kick = heard?.kick ?? 0
+    sig.bass = heard?.bass ?? 0
+    sig.vocal = heard?.vocal ?? 0
+    sig.mid = heard?.mid ?? 0
     sig.flash = flashAt(t)
     for (const item of laid) drawLine(item, t, sig)
     // The sand outlives its line: keep its word placed.

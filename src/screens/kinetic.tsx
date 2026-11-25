@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react'
 import { Link, useParams, useSearch } from '@tanstack/react-router'
+import { createListener, createSignals, type Signals } from '@/kinetic/signals'
 import { KINETIC_SONGS } from '@/kinetic/songs'
 import { fitStage, stageFor } from '@/kinetic/stage'
 import {
@@ -18,6 +19,7 @@ import {
 import {
   buildTimeline,
   cardAt,
+  createFrame,
   frameAt,
   lineIndexAt,
   type SectionCard,
@@ -34,7 +36,7 @@ import {
   useMediaQuery,
 } from '@dust-ui/ui'
 import { TRACKS } from '@/data/tracks'
-import { getAudio } from '@/lib/audio'
+import { getAudio, listenToAudio } from '@/lib/audio'
 import { loadPulse, type Pulse } from '@/lib/pulse'
 import { selectProgress, usePlayer } from '@/store/player'
 
@@ -73,10 +75,15 @@ export function KineticScreen() {
     () => (song && t.timing ? buildTimeline(t, song) : null),
     [song, t]
   )
-  const [pulse, setPulse] = useState<Pulse | null>(null)
+  // What the film hears: the analyser while the song plays, else its pulse.
+  const pulse = useRef<Pulse | null>(null)
+  const [heard] = useState(createSignals)
   useEffect(() => {
     let live = true
-    void loadPulse(t.audioFile).then((p) => live && setPulse(p))
+    pulse.current = null
+    void loadPulse(t.audioFile).then((p) => {
+      if (live) pulse.current = p
+    })
     return () => {
       live = false
     }
@@ -106,6 +113,8 @@ export function KineticScreen() {
     const fresh = !isCurrent
     play(track)
     if (fresh && startAt) seek(startAt)
+    // Inside the gesture, so the analyser's context may start.
+    listenToAudio()
   }
   // A finished song hands off to the next; the film ends with its own song.
   useEffect(
@@ -134,9 +143,21 @@ export function KineticScreen() {
     let engine: TextEngine | null = null
     let raf = 0
     let live = true
+    const ear = createListener()
+    const sig = heard
+    // Dev only: the signals, for a script to sample.
+    if (import.meta.env.DEV)
+      (globalThis as { __kinetic?: Signals }).__kinetic = sig
+    let frames = 0
     const draw = () => {
       const time = now()
-      engine?.render(time)
+      const player = usePlayer.getState()
+      const sounding =
+        !hold && player.track === track && player.status === 'playing'
+      // The context may only wake after a gesture: keep asking while it plays.
+      if (sounding && !sig.live && frames++ % 45 === 0) listenToAudio()
+      ear.read(pulse.current, time, sounding, sig)
+      engine?.render(time, sig)
       // The header and the section cards are React's: tell it when they change.
       const at = lineIndexAt(timeline, time)
       const lyric = time >= timeline.firstLyric && time < timeline.outro
@@ -156,7 +177,7 @@ export function KineticScreen() {
     void Promise.all(FONTS.map((f) => document.fonts.load(f, 'AZaz’'))).then(
       () => {
         if (!live) return
-        engine = createTextEngine(host, timeline, pulse, reduced, stage)
+        engine = createTextEngine(host, timeline, reduced, stage)
         if (import.meta.env.DEV && check) {
           const found = engine.check()
           setReport(found)
@@ -174,7 +195,7 @@ export function KineticScreen() {
       cancelAnimationFrame(raf)
       engine?.dispose()
     }
-  }, [timeline, pulse, reduced, now, stage, check])
+  }, [timeline, reduced, now, stage, check, hold, track, heard])
 
   // The stage, chosen for the window's shape and scaled to fit it.
   useEffect(() => {
@@ -196,19 +217,18 @@ export function KineticScreen() {
     return () => observer.disconnect()
   }, [])
 
-  const frame = useMemo<FrameSource | null>(
-    () =>
-      timeline
-        ? () =>
-            frameAt(
-              timeline,
-              pulse,
-              now(),
-              usePlayer.getState().status === 'playing'
-            )
-        : null,
-    [timeline, pulse, now]
-  )
+  const frame = useMemo<FrameSource | null>(() => {
+    if (!timeline) return null
+    const into = createFrame()
+    return () =>
+      frameAt(
+        timeline,
+        heard,
+        now(),
+        usePlayer.getState().status === 'playing',
+        into
+      )
+  }, [timeline, now, heard])
 
   /* Controls: shown on movement, hidden while the film plays untouched. */
   const [awake, setAwake] = useState(true)

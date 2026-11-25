@@ -72,11 +72,20 @@ export type KineticFrame = {
   time: number
   /** False before the song starts or when paused: hold, do not animate hard. */
   playing: boolean
-  /** Bass and voice energy, 0 to 1 (ten readings a second, eased). */
+  /**
+   * What the film hears, 0 to 1 (`signals.ts`): live from the playing song,
+   * else from its precomputed pulse. Bass and voice energy, the finer bands,
+   * the overall loudness, and the hits (a kick, a snare or hat).
+   */
   bass: number
   vocal: number
-  /** A kick: how far the bass stands above its last half second, 0 to 1. */
+  sub: number
+  lowMid: number
+  mid: number
+  high: number
+  loud: number
   kick: number
+  snare: number
   /** The section's accent as a CSS hex colour, and the one before it with a 0 to 1 blend. */
   accent: string
   /** Overall intensity of the section, 0 (hushed verse) to 1 (final chorus). */

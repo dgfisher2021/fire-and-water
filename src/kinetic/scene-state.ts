@@ -22,6 +22,9 @@ export type SharedUniforms = {
   uBass: { value: number }
   uVocal: { value: number }
   uKick: { value: number }
+  uSnare: { value: number }
+  uMid: { value: number }
+  uHigh: { value: number }
   uEnergy: { value: number }
   /** 1 on the portrait stage, where layers stack above and below the words. */
   uTall: { value: number }
@@ -43,6 +46,12 @@ export type SceneState = {
   bass: number
   vocal: number
   kick: number
+  /** The finer bands and the snare or hat, from the live analyser when it listens. */
+  sub: number
+  mid: number
+  high: number
+  snare: number
+  loud: number
   energy: number
   fade: number
   /** How far candle and star quiet everything else. */
@@ -104,6 +113,11 @@ export function createScene(): SceneState {
     bass: 0,
     vocal: 0,
     kick: 0,
+    sub: 0,
+    mid: 0,
+    high: 0,
+    snare: 0,
+    loud: 0,
     energy: 0,
     fade: 1,
     hush: 0,
@@ -138,6 +152,9 @@ export function createScene(): SceneState {
       uBass: { value: 0 },
       uVocal: { value: 0 },
       uKick: { value: 0 },
+      uSnare: { value: 0 },
+      uMid: { value: 0 },
+      uHigh: { value: 0 },
       uEnergy: { value: 0 },
       uTall: { value: 0 },
     },
@@ -179,7 +196,13 @@ export function stepScene(
 
   s.bass = damp(s.bass, calm ? 0.35 : f.bass, 14, dt)
   s.vocal = damp(s.vocal, calm ? 0.5 : f.vocal, 10, dt)
-  s.kick = damp(s.kick, calm ? 0 : f.kick, 18, dt)
+  // A hit lands at once and rings out; the bands are already enveloped.
+  s.kick = calm ? 0 : Math.max(f.kick, damp(s.kick, f.kick, 18, dt))
+  s.snare = calm ? 0 : Math.max(f.snare, damp(s.snare, f.snare, 22, dt))
+  s.sub = damp(s.sub, calm ? 0.35 : f.sub, 14, dt)
+  s.mid = damp(s.mid, calm ? 0.4 : f.mid, 12, dt)
+  s.high = damp(s.high, calm ? 0.2 : f.high, 20, dt)
+  s.loud = damp(s.loud, calm ? 0.4 : f.loud, 8, dt)
   s.energy = damp(s.energy, f.energy, 4, dt)
   s.fade = clamp(f.fade, 0, 1)
   s.hush = Math.max(s.cues.candle * 0.8, s.cues.star * 0.93)
@@ -214,6 +237,9 @@ export function stepScene(
   u.uBass.value = s.bass
   u.uVocal.value = s.vocal
   u.uKick.value = s.kick
+  u.uSnare.value = s.snare
+  u.uMid.value = s.mid
+  u.uHigh.value = s.high
   u.uEnergy.value = s.energy
   u.uTall.value = s.tall ? 1 : 0
 }

@@ -97,7 +97,8 @@ function Post() {
   useFrame(() => {
     const s = ref.current
     if (bloom.current)
-      bloom.current.intensity = 0.75 + s.kick * 0.22 + s.cues.bright * 0.45
+      bloom.current.intensity =
+        0.75 + s.kick * 0.24 + s.snare * 0.05 + s.cues.bright * 0.45
   })
 
   return (
