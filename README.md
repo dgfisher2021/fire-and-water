@@ -275,15 +275,13 @@ For a song the aligner cannot hear, or to redo a stretch by ear, open `/time/<id
 
 ## Kinetic lyrics
 
-`public/kinetic/lift-me-higher/` is a full-length kinetic typography video of Lift Me Higher: one self-contained page (no build step, not part of the app or its service worker) at `/kinetic/lift-me-higher/` on the dev server and the live site. Every word lands on its sung time from `timing.json`; each line builds as a flush-left stack (light Anybody content words, Cormorant Garamond italic small words on the cap line or baseline, one heavy hero word per line that sweeps its width from 50 to 150 in the section's colour, kicking with the song's bass pulse), then slides up and off as the next line lands. The title builds on the intro's first sounds, comes back in the drop after the first chorus, and the credit rises under the last line.
+`/kinetic/lift` plays Lift Me Higher as a kinetic lyric film: the whole window (outside the phone frame), a 3D scene behind the typography, both drawn from the song's own clock. Open it and click to play; Space or K pauses, the arrows seek 5 s, F is full screen, M mutes, and the controls (play, scrubber, mute, full screen, close) fade while it plays. `?t=<seconds>` starts at a moment and `&hold=1` freezes on it.
 
-Open it and click to play with sound (Space pauses, arrows seek 5 s, `?t=<seconds>` starts there). For rendering, `?render` stops the playback loop and exposes `window.seek(t)`, which draws any frame from `t` alone, so a frame-by-frame capture is exact; `?check` runs the layout checks (overlaps, the 120 px margin, hero sizes, every word visible from its own frame, accents only on heroes, the final frame holding) into `window.report`. The song data is inlined by a script, so re-run it after re-timing the song:
+- **Words** (`src/kinetic/text-engine.ts`): a 1920x1080 stage scaled to the window. Every word lands on its sung time from `timing.json`; each line builds as a flush-left stack in perspective (Cinzel capitals, Cormorant Garamond italic for the small words), its one hero word assembling letter by letter in the section's colour and breathing with the bass, and the stack lifts up and away as the next line lands.
+- **Scene** (`src/kinetic/scene*.tsx`): one WebGL canvas (react-three-fiber) with stars, mist and bloom always on, and twenty cues the lyrics call up: light shafts between pillars, a silver thread, gold dust, clockwork rings, the moon, rain, sigils, a tide, a candle, the rise through the stars, embers, choir columns, wires, storm, ghosts, frost, a beam, constellations, a white bloom and one trembling star. The kit's `SparkField` and `GlowTrail` (`@dust-ui/3d`) draw the bursts and the drawn lines.
+- **Direction** (`src/kinetic/songs.ts`): per song, the hero word and the cues of every line, the section colours and intensities, when the title lands in the intro and where it returns in the drop. `src/kinetic/timeline.ts` turns that and the sheet into the timeline and the frame the scene reads (`types.ts` is the contract); `timeline.test.ts` checks every line is directed and timed.
 
-```sh
-python3 scripts/kinetic-data.py lift public/kinetic/lift-me-higher/index.html
-```
-
-Lines the aligner did not hear (the bridge and final chorus) borrow the phrasing of the same line where it was heard, or spread through the line; retiming them on `/time/lift` sharpens the video too. The brief it was built from is in `claude/2026-11-24-kinetic-lift-me-higher.md`.
+A line the aligner did not hear borrows the phrasing of the same line where it was heard. To add a film for another song, give it an entry in `KINETIC_SONGS`.
 
 ## Stack
 

@@ -23,6 +23,9 @@
 @import '@fontsource/cormorant-garamond/500.css';
 @import '@fontsource/cormorant-garamond/600.css';
 @import '@fontsource/cormorant-garamond/400-italic.css';
+/* The kinetic films: inscriptional capitals and a firmer italic. */
+@import '@fontsource/cormorant-garamond/500-italic.css';
+@import '@fontsource-variable/cinzel';
 
 /* Tailwind skips node_modules; register the packages' compiled output so
    their class names generate. */

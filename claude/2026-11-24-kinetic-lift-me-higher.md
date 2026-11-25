@@ -1,5 +1,7 @@
 # Kinetic lyrics: Lift Me Higher
 
+> Superseded the same day by the film at `/kinetic/lift` (`src/kinetic/`, README "Kinetic lyrics"): this page was the first pass, a standalone DOM-only page. The bridge and final chorus were re-timed from the isolated vocal (bridge 205.9 s, final chorus 236.4 s; "next to death" after the first chorus was a delay echo), so the Open notes below are closed.
+
 The generic 10-second kinetic lyric prompt (a 120 BPM grid, four lines, Anybody and Fraunces) adapted to Lift Me Higher and stretched to the whole song, following the app's sung timing instead of a beat grid. Built as `public/kinetic/lift-me-higher/index.html`; the README's "Kinetic lyrics" section says how to run, render and check it.
 
 ## The brief, adapted

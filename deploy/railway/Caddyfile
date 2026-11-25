@@ -31,8 +31,7 @@
 	# Not every MIME table knows the manifest's type.
 	header /manifest.webmanifest Content-Type application/manifest+json
 
-	# A folder's own index.html (the kinetic lyric pages), then client
-	# routes fall back to the app shell.
-	try_files {path} {path}index.html {path}/index.html /index.html
+	# Client routes fall back to the app shell.
+	try_files {path} /index.html
 	file_server
 }

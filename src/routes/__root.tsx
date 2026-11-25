@@ -66,8 +66,14 @@ export function RootComponent() {
     shouldThrow: false,
     select: (m) => m.params.track,
   })
+  // A kinetic film takes the whole window, outside the phone.
+  const kineticTrack = useMatch({
+    from: '/kinetic/$track',
+    shouldThrow: false,
+    select: (m) => m.params.track,
+  })
   const carouselIndex = usePlayer((s) => s.carouselIndex)
-  const theme = lyricsTrack ?? TRACK_ORDER[carouselIndex]
+  const theme = kineticTrack ?? lyricsTrack ?? TRACK_ORDER[carouselIndex]
 
   const playingTitle = usePlayer((s) =>
     s.track && s.status === 'playing' ? TRACKS[s.track].title : null
@@ -77,9 +83,13 @@ export function RootComponent() {
   return (
     <MotionProvider>
       <MediaSession />
-      <PhoneShell theme={theme}>
+      {kineticTrack ? (
         <Outlet />
-      </PhoneShell>
+      ) : (
+        <PhoneShell theme={theme}>
+          <Outlet />
+        </PhoneShell>
+      )}
     </MotionProvider>
   )
 }
