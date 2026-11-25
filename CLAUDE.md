@@ -194,6 +194,12 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   `meter-glow` and `tracker-sheen` utilities give its marks the glass
   treatment (no borders or outlines).
 
+- Link previews: `scripts/share-data.py` writes `src/data/share.json` and
+  `public/assets/og/<id>.jpg`; the `sharePages` plugin in `vite.config.ts`
+  writes `dist/lyrics/<id>/index.html` (and `kinetic/<id>` for a film), the
+  app shell with that song's Open Graph tags, which Caddy serves before its
+  SPA fallback (`try_files {path} {path}/index.html /index.html`); the
+  service worker ignores them. Re-run the script after adding a song.
 - `src/kinetic/` the kinetic lyric films, at `/kinetic/$track` (`screens/kinetic.tsx`):
   the one route outside `PhoneShell` (`__root.tsx` branches on it), full
   window, forced dark. `songs.ts` directs a song (hero word and scene cues
