@@ -410,8 +410,8 @@ void main() {
   float run = fract(vR * 1.3 - uTime * 0.22);
   float glint = exp(-pow((run - 0.5) * 9.0, 2.0));
   float core = exp(-vSide * vSide * 3.5);
-  vec3 col = mix(GOLD, WARM, 0.3) * (0.34 + 0.3 * uMid + 0.55 * glint + head + 0.25 * uKick);
-  gl_FragColor = vec4(col * core * on * uLevel * 0.3, 1.0);
+  vec3 col = mix(PALE, uAccent, 0.45) * (0.34 + 0.3 * uMid + 0.55 * glint + head + 0.25 * uKick);
+  gl_FragColor = vec4(col * core * on * uLevel * 0.2, 1.0);
 }
 `
 const WING_Z = -5

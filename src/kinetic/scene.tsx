@@ -5,7 +5,7 @@ import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { BloomEffect } from 'postprocessing'
 import * as THREE from 'three'
 import { cn, useMediaQuery } from '@dust-ui/ui'
-import { Comets } from './scene-comets'
+import { Aurora, Strings } from './scene-aurora'
 import { Constellations } from './scene-constellation'
 import { CoverArt, Wings } from './scene-cover'
 import { TextGuard } from './scene-guard'
@@ -42,10 +42,6 @@ import {
 } from './scene-state'
 import type { Stage } from './stage'
 import type { FrameSource } from './types'
-
-/** The comets' colours: voices pale and warm, the wire hot and electric. */
-const CHOIR_LIGHT = ['#f6ecd6', '#e6bc63', '#bcd7e6', '#fff7e8'] as const
-const WIRE_LIGHT = ['#fff3d0', '#e6bc63', '#9fe6ff', '#ffffff'] as const
 
 const GROUND_SRGB = new THREE.Color(GROUND).convertLinearToSRGB()
 
@@ -181,22 +177,13 @@ export function KineticScene({
             onAccent={setAccentHex}
           />
           <Mist />
+          <Aurora />
           <CoverArt />
           <Stars />
           <Moon />
           <Storm />
           <Clockwork />
           <Shafts />
-          <Comets
-            cue='choir'
-            count={7}
-            seed={7}
-            colors={CHOIR_LIGHT}
-            spread={6}
-            at={[2.6, 1.7, -2.2]}
-            turn={Math.PI / 2}
-            pace={0.55}
-          />
           <Beam />
           <Bright />
           <Constellations />
@@ -207,15 +194,7 @@ export function KineticScene({
           <Embers />
           <Sea />
           <Thread />
-          <Comets
-            cue='wire'
-            count={9}
-            seed={23}
-            colors={WIRE_LIGHT}
-            spread={6.5}
-            at={[2.2, -1.5, -1.2]}
-            pace={1.5}
-          />
+          <Strings />
           <Sigils />
           <Veils />
           <Candle />

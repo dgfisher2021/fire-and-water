@@ -125,7 +125,7 @@ export function Heart() {
     const [x, y, r] = s.heart
     g.position.set(x * NEAR, (y - (1 - held) * 0.45 * r) * NEAR, FRONT)
     g.scale.setScalar(
-      ((r * 1.7 * NEAR) / RADIUS) *
+      ((r * 1.15 * NEAR) / RADIUS) *
         size *
         arrive *
         leave *
@@ -150,7 +150,7 @@ export function Heart() {
     if (balance.current)
       balance.current.rotation.z = Math.sin(half * Math.PI) * 1.15
     // The gimbals turn slowly on their own axes, faster as the song lifts.
-    const speed = 0.25 + 0.5 * s.energy
+    const speed = 0.1 + 0.18 * s.energy
     rings.current.forEach((ring, i) => {
       if (!ring) return
       const a = t * speed * (i % 2 ? -1 : 1) * (1 + i * 0.35)
@@ -168,7 +168,7 @@ export function Heart() {
     }
     if (ruby.current) {
       ruby.current.emissive.copy(s.accent)
-      ruby.current.emissiveIntensity = 1.4 + 5.5 * beat * (0.5 + 0.5 * s.energy)
+      ruby.current.emissiveIntensity = 0.7 + 2.4 * beat * (0.5 + 0.5 * s.energy)
     }
   })
 
@@ -182,33 +182,33 @@ export function Heart() {
           }}
           geometry={geometry}
         >
-          <meshStandardMaterial color='#c79a4e' metalness={1} roughness={0.3} />
+          <meshStandardMaterial color='#7d7462' metalness={1} roughness={0.3} />
         </mesh>
       ))}
       <mesh ref={escape} geometry={parts.escape}>
-        <meshStandardMaterial color='#c79a4e' metalness={1} roughness={0.3} />
+        <meshStandardMaterial color='#7d7462' metalness={1} roughness={0.3} />
       </mesh>
       <mesh ref={third} geometry={parts.third} position={[0.5, -0.36, -0.06]}>
-        <meshStandardMaterial color='#9fb0bb' metalness={1} roughness={0.22} />
+        <meshStandardMaterial color='#6f7f8a' metalness={1} roughness={0.22} />
       </mesh>
       <group ref={balance} position={[0, 0, 0.09]}>
         <mesh geometry={parts.rim}>
           <meshStandardMaterial
-            color='#9fb0bb'
+            color='#6f7f8a'
             metalness={1}
             roughness={0.22}
           />
         </mesh>
         <mesh geometry={parts.spoke}>
           <meshStandardMaterial
-            color='#9fb0bb'
+            color='#6f7f8a'
             metalness={1}
             roughness={0.22}
           />
         </mesh>
         <mesh geometry={parts.spoke} rotation-z={Math.PI / 2}>
           <meshStandardMaterial
-            color='#9fb0bb'
+            color='#6f7f8a'
             metalness={1}
             roughness={0.22}
           />
@@ -220,7 +220,7 @@ export function Heart() {
           color='#2a0a10'
           metalness={0.2}
           roughness={0.15}
-          emissive='#e6bc63'
+          emissive='#91bfd7'
         />
       </mesh>
     </group>

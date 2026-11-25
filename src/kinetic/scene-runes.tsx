@@ -189,7 +189,7 @@ function Rune({
             u_outProgress: { value: 0 },
             u_rotationRadius: { value: 5 },
             u_PointSize: { value: 20 },
-            u_color: { value: new THREE.Color('#f2c15f') },
+            u_color: { value: new THREE.Color('#bcd9ee') },
             u_level: { value: 0 },
           },
           transparent: true,

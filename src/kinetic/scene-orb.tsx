@@ -29,7 +29,7 @@ export function Studio() {
       <Lightformer
         form='rect'
         intensity={3.2}
-        color='#e6bc63'
+        color='#bcd0e0'
         position={[7, -1, 3]}
         rotation-y={-Math.PI / 2}
         scale={[6, 1.6, 1]}

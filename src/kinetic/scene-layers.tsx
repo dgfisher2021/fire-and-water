@@ -149,7 +149,7 @@ void main() {
   sum += exp(-pow(q.x / 0.014, 2.0)) * step(0.0, q.y) * smoothstep(1.87, 1.8, q.y);
   sum += ring(r, 0.13, 0.02);
   sum *= smoothstep(4.75, 4.3, r);
-  vec3 col = mix(GOLD, uAccent, 0.45) * sum * 0.18 * (1.0 + uKick * 0.35);
+  vec3 col = mix(PALE, uAccent, 0.5) * sum * 0.11 * (1.0 + uKick * 0.3);
   gl_FragColor = vec4(col * uLevel, 1.0);
 }
 `

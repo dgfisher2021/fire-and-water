@@ -251,7 +251,6 @@ export const MATERIALS = {
     fill: '#ffffff',
     glow: 'ACCENT',
     glowLevel: 1,
-    edge: '1px color-mix(in oklab, ACCENT 70%, white)',
     motion: 'jitter',
   },
   light: { fill: LIGHT, glow: '#fff1c4', glowLevel: 0.75 },
@@ -361,6 +360,8 @@ export const MATERIALS = {
   },
   /** The colour of the sand a word is made of. */
   sand: { fill: '#f0cf85', glow: '#e6a93a', glowLevel: 0.35 },
+  /** Pale grains, for words made of air. */
+  mote: { fill: '#e6edf4', glow: '#9cc0d8', glowLevel: 0.35 },
   halfseen: plain({
     mask: 'linear-gradient(90deg, #000 30%, rgb(0 0 0 / 0.4) 82%)',
   }),
