@@ -5,11 +5,10 @@ import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import type { BloomEffect } from 'postprocessing'
 import * as THREE from 'three'
 import { cn, useMediaQuery } from '@dust-ui/ui'
-import { Aurora, Strings } from './scene-aurora'
+import { Aurora, Flow, Pulse } from './scene-aurora'
 import { Constellations } from './scene-constellation'
 import { CoverArt, Wings } from './scene-cover'
 import { TextGuard } from './scene-guard'
-import { Heart } from './scene-heart'
 import {
   Beam,
   Bright,
@@ -178,6 +177,8 @@ export function KineticScene({
           />
           <Mist />
           <Aurora />
+          <Flow />
+          <Pulse />
           <CoverArt />
           <Stars />
           <Moon />
@@ -194,7 +195,6 @@ export function KineticScene({
           <Embers />
           <Sea />
           <Thread />
-          <Strings />
           <Sigils />
           <Veils />
           <Candle />
@@ -202,7 +202,6 @@ export function KineticScene({
           <TextGuard />
           <HeroBursts />
           <OrbGlow />
-          <Heart />
           <SolidWord />
           <Sand />
           <Post />

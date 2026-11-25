@@ -1,4 +1,7 @@
+import { useMemo, useRef } from 'react'
+import * as THREE from 'three'
 import { Layer } from './scene-layer'
+import { BEAT } from './scene-state'
 
 /*
  * Aurora: curtains of light hanging from a waving hem, the app's own aurora
@@ -69,55 +72,137 @@ export function Aurora() {
 }
 
 /*
- * Strings: the WebGL Chromatic showpiece (react-ui-animation-examples). A
- * line of light on a sine wave whose red, green and blue part company toward
- * the edges of the frame. Here there are four, they are the wire, and the
- * bass plucks them.
+ * Pulse: the Shader Lines showpiece (react-ui-animation-examples) as the
+ * clockwork heart. Rings of light leave the centre of the clockwork and
+ * widen across the frame, one to a bar of the song, quantised into the
+ * showpiece's mosaic so they step like a mechanism, their red, green and
+ * blue a hair apart.
  */
-const STRINGS = /* glsl */ `
-uniform float uPluck;
-float string(float x, float y, float base, float phase, float scale, float amp) {
-  return 0.0034 / abs(y - base - sin((x + phase) * scale) * amp);
-}
+const PULSE = /* glsl */ `
+uniform vec2 uCentre;
+uniform float uBar;
+float rnd1(float x) { return fract(sin(x) * 1e4); }
 void main() {
-  vec2 p = vP / 4.66;
-  // The colours part further from the centre, as in the showpiece.
-  float d = length(p) * 0.09;
-  float t = uSong * 0.55;
-  float amp = 0.02 + 0.07 * uPluck;
+  vec2 uv = (vP - uCentre) / 4.66;
+  // The mosaic: wide, short cells.
+  vec2 cells = vec2(110.0, 220.0);
+  uv = floor(uv * cells) / cells;
+  // Each column runs a little out of step with its neighbours.
+  float t = uBar + rnd1(uv.x) * 0.035;
+  float r = length(uv);
   vec3 col = vec3(0.0);
-  for (int i = 0; i < 4; i++) {
-    float fi = float(i);
-    // Two above the words and two below, never through them.
-    float base = i < 2 ? 0.86 - fi * 0.13 : -0.6 - fi * 0.13;
-    float scale = 1.5 + fi * 0.7;
-    float phase = t * (1.0 + fi * 0.35) + fi * 2.1;
-    float a = amp * (1.0 - 0.15 * fi);
-    col += vec3(
-      string(p.x * (1.0 + d), p.y, base, phase, scale, a),
-      string(p.x, p.y, base, phase, scale, a),
-      string(p.x * (1.0 - d), p.y, base, phase, scale, a)
-    );
+  for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < 5; i++) {
+      float fi = float(i);
+      col[j] += 0.0006 * fi * fi / abs(fract(t - 0.014 * float(j) + fi * 0.012) * 2.1 - r);
+    }
   }
-  // Cool silver with the chromatic fringe, never past white.
-  col = min(col, vec3(1.0)) * mix(vec3(0.72, 0.86, 1.0), uAccent, 0.25);
-  gl_FragColor = vec4(col * uLevel, 1.0);
+  // Born at the heart's rim, brightest there, gone before the frame's far edge.
+  float fall = smoothstep(0.1, 0.24, r) * smoothstep(2.0, 0.3, r) * (0.6 + 0.4 * uKick);
+  vec3 tint = mix(vec3(0.75, 0.88, 1.0), uAccent, 0.45);
+  gl_FragColor = vec4(min(col.bgr, vec3(1.2)) * tint * fall * uLevel, 1.0);
 }
 `
 
-const STRING_UNIFORMS = { uPluck: { value: 0 } }
-
-export function Strings() {
+export function Pulse() {
+  const uniforms = useMemo(
+    () => ({ uCentre: { value: new THREE.Vector2() }, uBar: { value: 0 } }),
+    []
+  )
   return (
     <Layer
-      level={(s) => s.cues.wire * 0.8}
-      fragment={STRINGS}
-      z={-1}
-      order={12}
-      uniforms={STRING_UNIFORMS}
+      level={(s) => Math.max(s.cues.orb, s.cues.clockwork * 0.5) * 0.8}
+      fragment={PULSE}
+      z={-0.5}
+      order={11}
+      uniforms={uniforms}
       onFrame={(u, s) => {
-        // A pluck on the kick that rings out, over a steady hum from the bass.
-        u.uPluck.value = s.calm ? 0.2 : 0.25 * s.bass + 0.75 * s.kick
+        u.uCentre.value.set(s.heart[0], s.heart[1])
+        // A ring to every bar of four beats.
+        u.uBar.value = (s.calm ? 0.4 : s.song) / (BEAT * 4)
+      }}
+    />
+  )
+}
+
+/*
+ * Flow: the Shader Hero showpiece (react-ui-animation-examples). Filaments
+ * of light orbit and fold through slow cloud. Here it is the wire and the
+ * burning of the bridge: it sits to the right of the words, takes the
+ * section's colour, and quickens with the song.
+ */
+const FLOW = /* glsl */ `
+uniform float uFlow;
+float hRnd(vec2 p) {
+  p = fract(p * vec2(12.9898, 78.233));
+  p += dot(p, p + 34.56);
+  return fract(p.x * p.y);
+}
+float hNoise(vec2 p) {
+  vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hRnd(i), hRnd(i + vec2(1, 0)), u.x), mix(hRnd(i + vec2(0, 1)), hRnd(i + 1.0), u.x), u.y);
+}
+float hFbm(vec2 p) {
+  float t = 0.0, a = 1.0;
+  mat2 m = mat2(1.0, -0.5, 0.2, 1.2);
+  for (int i = 0; i < 4; i++) {
+    t += a * hNoise(p);
+    p *= 2.0 * m;
+    a *= 0.5;
+  }
+  return t;
+}
+float hClouds(vec2 p) {
+  float d = 1.0, t = 0.0;
+  for (float i = 0.0; i < 3.0; i++) {
+    float a = d * hFbm(i * 10.0 + p.x * 0.2 + 0.2 * (1.0 + i) * p.y + d + i * i + p);
+    t = mix(t, d, a);
+    d = a;
+    p *= 2.0 / (i + 1.0);
+  }
+  return t;
+}
+void main() {
+  float T = uFlow;
+  // Centred right of the words; the showpiece's units are the short side.
+  vec2 uv = (vP - vec2(uHalfW * 0.42 * (1.0 - uTall), 2.35 + 0.6 * uTall)) / 6.6;
+  vec2 st = uv * vec2(2.0, 1.0);
+  vec3 col = vec3(0.0);
+  float bg = hClouds(vec2(st.x + T * 0.5, -st.y));
+  uv *= 1.0 - 0.3 * (sin(T * 0.2) * 0.5 + 0.5);
+  // The section's colour and a paler partner, in place of the showpiece's rainbow.
+  vec3 pale = mix(uAccent, vec3(0.86, 0.94, 1.0), 0.6);
+  for (float i = 1.0; i < 10.0; i++) {
+    uv += 0.1 * cos(i * vec2(0.1 + 0.01 * i, 0.8) + i * i + T * 0.5 + 0.1 * uv.x);
+    vec2 p = uv;
+    float d = length(p);
+    col += 0.0024 / d * mix(uAccent, pale, 0.5 + 0.5 * cos(sin(i) * 2.0));
+    float b = hNoise(i + p + bg * 1.731);
+    col += 0.0034 * b / length(max(p, vec2(b * p.x * 0.02, p.y))) * pale;
+    col = mix(col, bg * uAccent * 0.045, min(d, 1.0));
+  }
+  // Falls away toward the frame's edges so it has no border.
+  vec2 e = vP / vec2(uHalfW, 4.66);
+  float edge = smoothstep(1.05, 0.55, abs(e.x)) * smoothstep(1.05, 0.5, abs(e.y));
+  gl_FragColor = vec4(min(col, vec3(1.0)) * edge * uLevel, 1.0);
+}
+`
+
+export function Flow() {
+  const uniforms = useMemo(() => ({ uFlow: { value: 0 } }), [])
+  const clock = useRef(0)
+  return (
+    <Layer
+      level={(s) => s.cues.wire * 0.85}
+      fragment={FLOW}
+      z={-2}
+      order={4}
+      uniforms={uniforms}
+      onFrame={(u, s) => {
+        // Its own clock, quicker when the song is.
+        if (!s.calm)
+          clock.current += s.dt * (0.45 + 0.9 * s.energy + 0.5 * s.bass)
+        u.uFlow.value = 40 + clock.current
       }}
     />
   )

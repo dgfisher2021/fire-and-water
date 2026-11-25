@@ -245,13 +245,13 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   the hero's glyphs, placed in stage space by the same pose),
   `scene-cover.tsx` (the song's own cover from `TRACKS[id].art`: the picture
   resolving in the intro, its gold as grains, a wash, the perched figure
-  cut from it, the wings of `wing.ts`). `scene-heart.tsx` is the clockwork
-  heart, a watch movement (cue `orb`): always at `stage.heart` in the rings, only on
+  cut from it, the wings of `wing.ts`). The clockwork heart (cue `orb`) is light, not a model: always at `stage.heart` in the rings, only on
   lines about the heart, pulse or machine, and lines that share its frame
   are laid out clear of it (`line.reserve`). The effects are ports of the real ones, not
   look-alikes: `scene-runes.tsx` is the Runic Alphabet showpiece's shader
   (react-ui-animation-examples), `scene-aurora.tsx` the app's aurora curtains (rise and
-  choir) and the WebGL Chromatic showpiece's strings (wire), `scene-constellation.tsx` Spirit World's sky
+  choir), the Shader Lines showpiece's rings (the clockwork heart, cue
+  `orb`) and the Shader Hero showpiece's filaments (wire, the bridge), `scene-constellation.tsx` Spirit World's sky
   (stars lit and joined near two drifting foci). When an effect looks cheap,
   find its source in those repos and port that. A line keeps leaving for
   `TAIL` seconds after the next lands, so hand-offs overlap. The grade is cold

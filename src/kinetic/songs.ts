@@ -112,7 +112,10 @@ const lift: KineticSong = {
   // The seeress gathers out of gold dust and lifts away as HIGHER forms.
   moments: [{ cue: 'cover', from: 0.2, to: 11.4 }],
   sectionCues: {
-    Bridge: [['wash', 0.7]],
+    Bridge: [
+      ['wash', 0.7],
+      ['wire', 0.8],
+    ],
     'Final Chorus': ['wings'],
   },
   // The raven on its stone, lower right of the cover.
