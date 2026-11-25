@@ -251,8 +251,10 @@ overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
   look-alikes: `scene-runes.tsx` is the Runic Alphabet showpiece's shader
   (react-ui-animation-examples), `scene-aurora.tsx` the app's aurora curtains (rise and
   choir), the Shader Lines showpiece's rings (the clockwork heart, cue
-  `orb`) and the Shader Hero showpiece's filaments (wire, the bridge), `scene-constellation.tsx` Spirit World's sky
-  (stars lit and joined near two drifting foci). When an effect looks cheap,
+  `orb`) and the Shader Hero showpiece's filaments (wire, the bridge), `scene-constellation.tsx` a few real constellations drawn
+  simply (he found a generated web of lines too complicated). The film sets
+  `solo` in the player store so its song ends without a hand-off, and shows
+  a poster until it is played. When an effect looks cheap,
   find its source in those repos and port that. A line keeps leaving for
   `TAIL` seconds after the next lands, so hand-offs overlap. The grade is cold
   (navy, teal, silver, aurora violet); gold only where the lyric says gold.

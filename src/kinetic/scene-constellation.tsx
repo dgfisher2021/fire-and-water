@@ -1,140 +1,243 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { CAM_Z, HALF_H, REF_HALF_W, shown, useScene } from './scene-state'
-import { rng } from './scene-util'
+import { CAM_Z, shown, useScene } from './scene-state'
 
 /*
- * The constellations of Spirit World (starry_night_cosmos.js): no drawn
- * figures. Twinkling stars swell and glow where attention passes, and thin
- * lines of light join the ones close together, so constellations form and
- * dissolve behind a drifting focus. There it follows the pointer; here two
- * foci wander on the song clock.
+ * The constellations: real ones, drawn simply. A handful of figures from
+ * the night sky stand in the open frame, each a few stars joined by a few
+ * lines, and they draw themselves one line after another. Corvus, the
+ * raven, is among them for the cover's sake.
  */
 
-const STARS = 340
-/** How far a focus reaches, and how close two stars must be to be joined. */
-const REACH = 3.1
-const LINK = 1.5
-const Z = -1.2
-
-const FOCI = /* glsl */ `
-uniform vec2 uFocusA;
-uniform vec2 uFocusB;
-uniform float uReach;
-float boostAt(vec2 p) {
-  float a = 1.0 - distance(p, uFocusA) / uReach;
-  float b = 1.0 - distance(p, uFocusB) / uReach;
-  return clamp(max(a, b), 0.0, 1.0);
+type Figure = {
+  at: [number, number]
+  size: number
+  stars: [number, number][]
+  lines: [number, number][]
 }
-`
+
+/** Stars as x and y in a unit box, lines as pairs of star indices in drawing order. */
+const FIGURES: Figure[] = [
+  {
+    // Cygnus, the swan: the Northern Cross.
+    at: [-6.3, -2.9],
+    size: 1.15,
+    stars: [
+      [0, 1],
+      [0, 0.42],
+      [0, -1],
+      [0.78, 0.2],
+      [-0.74, 0.62],
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [4, 1],
+      [1, 3],
+    ],
+  },
+  {
+    // Lyra: Vega above a small parallelogram.
+    at: [-2.6, -3.3],
+    size: 0.75,
+    stars: [
+      [0, 1],
+      [-0.2, 0.42],
+      [0.25, 0.36],
+      [0.4, -0.6],
+      [-0.05, -0.55],
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+      [4, 1],
+    ],
+  },
+  {
+    // Cassiopeia: the W.
+    at: [0.4, 3.35],
+    size: 1.25,
+    stars: [
+      [-1, 0.3],
+      [-0.5, -0.3],
+      [0, 0.2],
+      [0.5, -0.35],
+      [1, 0.35],
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4],
+    ],
+  },
+  {
+    // Corvus, the raven: a leaning sail.
+    at: [0.9, -3.2],
+    size: 0.9,
+    stars: [
+      [-0.55, 0.5],
+      [0.5, 0.65],
+      [0.65, -0.55],
+      [-0.4, -0.6],
+      [-1.0, 0.25],
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 0],
+      [0, 4],
+    ],
+  },
+  {
+    // The Plough: a bowl and its handle.
+    at: [-4.9, 3.25],
+    size: 1.6,
+    stars: [
+      [0.95, 0.2],
+      [0.95, -0.22],
+      [0.42, -0.3],
+      [0.36, 0.1],
+      [-0.02, 0.2],
+      [-0.46, 0.34],
+      [-0.92, 0.18],
+    ],
+    lines: [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 0],
+      [3, 4],
+      [4, 5],
+      [5, 6],
+    ],
+  },
+]
+
+const Z = -1.2
+/** Lines drawn a second. */
+const PACE = 2.4
 
 const STAR_VERTEX = /* glsl */ `
-${FOCI}
 uniform float uTime;
 uniform float uScale;
 uniform float uLevel;
-attribute vec3 aSeed;
+uniform float uDraw;
+attribute vec2 aSeed;
 varying float vAlpha;
-varying float vBoost;
 void main() {
-  float boost = boostAt(position.xy);
-  // Each star twinkles on its own clock, lit or not.
-  float twinkle = 0.55 + 0.45 * sin(uTime * (0.6 + aSeed.x * 1.8) + aSeed.y * 6.2832);
-  vBoost = boost;
-  vAlpha = uLevel * clamp(twinkle * (0.25 + 0.4 * aSeed.z) + boost * 0.9, 0.0, 1.0);
+  // A star lights as the first line to reach it starts.
+  float lit = clamp((uDraw - aSeed.x) * 3.0 + 1.0, 0.0, 1.0);
+  float twinkle = 0.8 + 0.2 * sin(uTime * (1.2 + aSeed.y * 2.0) + aSeed.y * 6.2832);
+  vAlpha = uLevel * lit * twinkle;
   vec4 mv = modelViewMatrix * vec4(position, 1.0);
   gl_Position = projectionMatrix * mv;
-  float size = 0.035 + 0.03 * aSeed.z + boost * 0.11;
-  gl_PointSize = size * uScale / -mv.z;
+  gl_PointSize = (0.2 + 0.08 * aSeed.y) * uScale / -mv.z;
 }
 `
 const STAR_FRAGMENT = /* glsl */ `
 uniform vec3 uTint;
 varying float vAlpha;
-varying float vBoost;
 void main() {
-  float d = distance(gl_PointCoord, vec2(0.5));
-  // A hard core in a soft halo that widens as the star is lit.
-  float core = 1.0 - smoothstep(0.0, 0.16, d);
-  float halo = (1.0 - smoothstep(0.0, 0.5, d)) * (0.25 + 0.5 * vBoost);
-  vec3 color = mix(vec3(1.0), uTint, 0.35 * (1.0 - core));
-  gl_FragColor = vec4(color * (core + halo), 1.0) * vAlpha;
+  vec2 c = gl_PointCoord - 0.5;
+  float d = length(c);
+  float core = 1.0 - smoothstep(0.0, 0.09, d);
+  float halo = (1.0 - smoothstep(0.0, 0.5, d)) * 0.3;
+  // Four fine points, as a bright star has through a lens.
+  float rays = (exp(-abs(c.x) * 60.0) + exp(-abs(c.y) * 60.0)) * (1.0 - smoothstep(0.1, 0.5, d)) * 0.5;
+  vec3 color = mix(uTint, vec3(1.0), 0.75);
+  gl_FragColor = vec4(color * (core + halo + rays), 1.0) * vAlpha;
 }
 `
-
 const LINE_VERTEX = /* glsl */ `
-${FOCI}
-uniform float uLevel;
 uniform float uWidth;
 attribute vec2 aFrom;
 attribute vec2 aTo;
 attribute vec2 aCorner;
-varying float vAlpha;
+attribute float aOrder;
+varying float vAlong;
 varying float vAcross;
+varying float vOrder;
 void main() {
   vec2 along = aTo - aFrom;
   vec2 normal = normalize(vec2(-along.y, along.x));
-  vec2 p = mix(aFrom, aTo, aCorner.x) + normal * aCorner.y * uWidth;
-  // Drawn only where both of its stars are lit.
-  float lit = min(boostAt(aFrom), boostAt(aTo));
-  vAlpha = uLevel * smoothstep(0.16, 0.5, lit);
+  // Stop short of each star, so the line does not run into its light.
+  float u = mix(0.1, 0.9, aCorner.x);
+  vec2 p = mix(aFrom, aTo, u) + normal * aCorner.y * uWidth;
+  vAlong = aCorner.x;
   vAcross = aCorner.y;
+  vOrder = aOrder;
   gl_Position = projectionMatrix * modelViewMatrix * vec4(p, ${Z.toFixed(1)}, 1.0);
 }
 `
 const LINE_FRAGMENT = /* glsl */ `
 uniform vec3 uTint;
-varying float vAlpha;
+uniform float uLevel;
+uniform float uDraw;
+varying float vAlong;
 varying float vAcross;
+varying float vOrder;
 void main() {
+  // Drawn from its first star to its second as its turn comes.
+  float drawn = clamp(uDraw - vOrder, 0.0, 1.0);
+  float on = 1.0 - smoothstep(drawn - 0.04, drawn, vAlong);
   float glow = 1.0 - abs(vAcross);
-  gl_FragColor = vec4(mix(uTint, vec3(1.0), 0.6) * glow, 1.0) * vAlpha * 0.5;
+  gl_FragColor = vec4(mix(uTint, vec3(1.0), 0.6) * glow, 1.0) * on * uLevel * 0.8;
 }
 `
 
 function build() {
-  const random = rng(4127)
-  const positions = new Float32Array(STARS * 3)
-  const seeds = new Float32Array(STARS * 3)
-  const at: [number, number][] = []
-  for (let i = 0; i < STARS; i++) {
-    const x = (random() * 2 - 1) * REF_HALF_W * 1.02
-    const y = (random() * 2 - 1) * HALF_H * 0.98
-    at.push([x, y])
-    positions.set([x, y, Z], i * 3)
-    seeds.set([random(), random(), random()], i * 3)
-  }
-  const stars = new THREE.BufferGeometry()
-  stars.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-  stars.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 3))
-
-  // Every pair of close neighbours, each star in at most three lines.
-  const used = new Uint8Array(STARS)
+  const position: number[] = []
+  const seed: number[] = []
   const from: number[] = []
   const to: number[] = []
   const corner: number[] = []
+  const order: number[] = []
   const index: number[] = []
-  for (let i = 0; i < STARS; i++)
-    for (let j = i + 1; j < STARS; j++) {
-      if (used[i] >= 3 || used[j] >= 3) continue
-      const d = Math.hypot(at[j][0] - at[i][0], at[j][1] - at[i][1])
-      if (d > LINK || d < 0.25) continue
-      used[i]++
-      used[j]++
+  let turn = 0
+  let longest = 0
+  for (const figure of FIGURES) {
+    const place = ([x, y]: [number, number]): [number, number] => [
+      figure.at[0] + x * figure.size,
+      figure.at[1] + y * figure.size,
+    ]
+    // When the first line to touch each star starts.
+    const first = figure.stars.map(() => Infinity)
+    figure.lines.forEach(([a, b], k) => {
+      first[a] = Math.min(first[a], turn + k)
+      first[b] = Math.min(first[b], turn + k + 0.7)
       const base = from.length / 2
+      const [ax, ay] = place(figure.stars[a])
+      const [bx, by] = place(figure.stars[b])
       for (const [u, v] of [
         [0, -1],
         [0, 1],
         [1, -1],
         [1, 1],
       ]) {
-        from.push(at[i][0], at[i][1])
-        to.push(at[j][0], at[j][1])
+        from.push(ax, ay)
+        to.push(bx, by)
         corner.push(u, v)
+        order.push(turn + k)
       }
       index.push(base, base + 1, base + 2, base + 2, base + 1, base + 3)
-    }
+    })
+    figure.stars.forEach((star, i) => {
+      const [x, y] = place(star)
+      position.push(x, y, Z)
+      seed.push(first[i], (i * 0.37 + turn * 0.11) % 1)
+    })
+    // The figures draw together, each a beat behind the last.
+    turn += 0.45
+    longest = Math.max(longest, turn + figure.lines.length)
+  }
+  const stars = new THREE.BufferGeometry()
+  stars.setAttribute('position', new THREE.Float32BufferAttribute(position, 3))
+  stars.setAttribute('aSeed', new THREE.Float32BufferAttribute(seed, 2))
   const lines = new THREE.BufferGeometry()
   lines.setAttribute(
     'position',
@@ -143,25 +246,19 @@ function build() {
   lines.setAttribute('aFrom', new THREE.Float32BufferAttribute(from, 2))
   lines.setAttribute('aTo', new THREE.Float32BufferAttribute(to, 2))
   lines.setAttribute('aCorner', new THREE.Float32BufferAttribute(corner, 2))
+  lines.setAttribute('aOrder', new THREE.Float32BufferAttribute(order, 1))
   lines.setIndex(index)
-  return { stars, lines }
+  return { stars, lines, turns: longest }
 }
 
-/** Stars that light and join into passing constellations wherever the two foci drift. */
+/** A few real constellations, each drawing itself a line at a time. */
 export function Constellations() {
   const { ref } = useScene()
   const group = useRef<THREE.Group>(null)
-  const { stars, lines } = useMemo(() => build(), [])
+  const { stars, lines, turns } = useMemo(() => build(), [])
   const starMaterial = useRef<THREE.ShaderMaterial>(null)
   const lineMaterial = useRef<THREE.ShaderMaterial>(null)
   const [starArgs, lineArgs] = useMemo(() => {
-    const foci = {
-      uFocusA: { value: new THREE.Vector2() },
-      uFocusB: { value: new THREE.Vector2() },
-      uReach: { value: REACH },
-      uLevel: { value: 0 },
-      uTint: { value: new THREE.Color('#e6bc63') },
-    }
     const common = {
       transparent: true,
       depthWrite: false,
@@ -169,13 +266,20 @@ export function Constellations() {
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide,
     }
+    const tint = { value: new THREE.Color('#aab8ff') }
     return [
       [
         {
           ...common,
           vertexShader: STAR_VERTEX,
           fragmentShader: STAR_FRAGMENT,
-          uniforms: { ...foci, uTime: { value: 0 }, uScale: { value: 1000 } },
+          uniforms: {
+            uTint: tint,
+            uLevel: { value: 0 },
+            uDraw: { value: 0 },
+            uTime: { value: 0 },
+            uScale: { value: 1000 },
+          },
         },
       ],
       [
@@ -183,7 +287,12 @@ export function Constellations() {
           ...common,
           vertexShader: LINE_VERTEX,
           fragmentShader: LINE_FRAGMENT,
-          uniforms: { ...foci, uWidth: { value: 0.02 } },
+          uniforms: {
+            uTint: tint,
+            uLevel: { value: 0 },
+            uDraw: { value: 0 },
+            uWidth: { value: 0.02 },
+          },
         },
       ],
     ] satisfies [THREE.ShaderMaterialParameters][]
@@ -199,27 +308,18 @@ export function Constellations() {
     g.visible = shown(s, level)
     if (!g.visible) return
     g.scale.x = s.sx
-    // Two slow wanderers; under reduced motion they rest apart.
-    const t = s.calm ? 4 : s.song
-    const w = REF_HALF_W
-    u.uFocusA.value.set(
-      w * 0.66 * Math.sin(t * 0.21 + 0.4),
-      1.0 + 2.5 * Math.sin(t * 0.29)
-    )
-    u.uFocusB.value.set(
-      w * 0.6 * Math.sin(t * 0.14 + 2.3),
-      -0.2 + 3.0 * Math.cos(t * 0.23 + 1.1)
-    )
-    u.uLevel.value = level
+    const draw = s.calm ? turns : Math.max(0, s.age.constellations) * PACE
+    u.uLevel.value = lineU.uLevel.value = level
+    u.uDraw.value = lineU.uDraw.value = draw
     u.uTint.value.copy(s.accent)
     u.uTime.value = s.motion
     u.uScale.value = s.shared.uScale.value
-    // About a pixel and a half wide at any size, as Spirit World draws it.
-    lineU.uWidth.value = (2.4 * (CAM_Z - Z)) / s.shared.uScale.value
+    // Two or three pixels wide at any size.
+    lineU.uWidth.value = (2 * (CAM_Z - Z)) / s.shared.uScale.value
   })
 
   return (
-    <group ref={group} visible={false} renderOrder={40}>
+    <group ref={group} visible={false}>
       <mesh geometry={lines} frustumCulled={false} renderOrder={40}>
         <shaderMaterial ref={lineMaterial} args={lineArgs} />
       </mesh>
