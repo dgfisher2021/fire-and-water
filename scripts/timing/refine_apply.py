@@ -84,8 +84,6 @@ def decide(proposal, locked=frozenset(), min_delta=MIN_DELTA, min_score=MIN_SCOR
             p["verdict"], p["why"] = "review", "models disagree"
         elif abs(p["new"] - p["old"]) >= BIG_MOVE and p["score"] < BIG_SCORE - bonus(p):
             p["verdict"], p["why"] = "review", "large move, modest score"
-        elif p.get("whisper") is False:
-            p["verdict"], p["why"] = "review", "Whisper heard other words there"
 
     def final(p):
         return p["new"] if p["verdict"] == "apply" else p["old"]

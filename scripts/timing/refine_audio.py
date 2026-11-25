@@ -15,7 +15,7 @@ import torchaudio
 from songs import HERE
 
 STEMS = HERE / "stems"
-THREADS = int(os.environ.get("REFINE_THREADS", "6"))
+THREADS = int(os.environ.get("REFINE_THREADS", "4"))
 SR = 16000
 FRAME = 0.02  # seconds per emission frame
 HOP = 0.01  # seconds per onset frame
@@ -26,6 +26,11 @@ torch.set_num_threads(THREADS)
 
 _demucs = None
 _models = {}
+
+
+def free_gpu():
+    if DEVICE == "cuda":
+        torch.cuda.empty_cache()
 
 
 def read_audio(path, rate, channels):
@@ -62,6 +67,8 @@ def stem(song_id, audio_path):
             w.setframerate(SR)
             w.writeframes((mono.numpy() * 32767).astype("<i2").tobytes())
         tmp.rename(out)
+        del sources
+        free_gpu()
     with wave.open(str(out), "rb") as w:
         data = np.frombuffer(w.readframes(w.getnframes()), dtype="<i2")
     return torch.from_numpy(data.astype(np.float32) / 32767)
@@ -109,6 +116,7 @@ def emissions(song_id, wav, name, chunk=30.0, context=2.0):
             parts.append(em[first : first + count])
     out = torch.cat(parts)
     np.save(path, out.numpy().astype(np.float16))
+    free_gpu()
     return out
 
 

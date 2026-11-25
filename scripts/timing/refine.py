@@ -26,7 +26,6 @@ usage: refine.py [ids... | --all] [--report] [--apply] [--force]
 
 import argparse
 import datetime
-import difflib
 import json
 import re
 import subprocess
@@ -80,27 +79,6 @@ def settle_lead(words):
         start = max(words[i][0], words[first][0] - LEAD_IN * (first - i))
         out[i] = (start, max(start, min(words[i][1], words[first][0])), words[i][2])
     return out
-
-
-def whisper_words(song_id):
-    """Whisper's words on the stem, if refine_whisper.py has been run."""
-    path = HERE / "stems" / f"{song_id}.whisper.json"
-    if not path.exists():
-        return None
-    words = json.loads(path.read_text(encoding="utf-8"))["words"]
-    return [(ra.word_tokens(w["word"]), w["start"]) for w in words]
-
-
-def whisper_heard(asr, tokens, start, end):
-    """True when Whisper heard at least half the line's words around the
-    proposed span, False when it heard other words there, None when it
-    heard too little to say."""
-    near = [t for t, s in asr if t and start - 1.0 <= s <= end + 1.0]
-    if len(near) < 2:
-        return None
-    hits = sum(any(difflib.SequenceMatcher(None, t, w).ratio() >= 0.75 for w in near) for t in tokens)
-    share = hits / len(tokens)
-    return True if share >= 0.5 else False if share < 0.25 else None
 
 
 def align_song(au, em, name, alignable, old, had_words):
@@ -173,7 +151,6 @@ def propose(song_id, song, entry, lang):
     wav = au.stem(song_id, song["audio"])
     strength, level = au.onset_strength(wav)
     peaks = au.onset_peaks(strength)
-    asr = whisper_words(song_id)
 
     sung = ra.sung_lines(stanzas)
     tokens = [[ra.word_tokens(w) for w in text.split()] for _, _, text in sung]
@@ -225,8 +202,6 @@ def propose(song_id, song, entry, lang):
             wscore=[round(w[2], 2) for w in words],
             rise=au.rise(level, per_word[0]),
         )
-        if asr is not None:
-            p["whisper"] = whisper_heard(asr, alignable[k], raw, words[-1][1])
         lines.append(p)
     return {
         "id": song_id,
