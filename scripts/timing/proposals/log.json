@@ -1,0 +1,80 @@
+{
+ "lift": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 56,
+  "apply": 22,
+  "keep": 11,
+  "review": 9,
+  "locked": 14,
+  "median": 0.52,
+  "max": 2.48
+ },
+ "baritone": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 48,
+  "apply": 37,
+  "keep": 9,
+  "review": 2,
+  "locked": 0,
+  "median": 0.69,
+  "max": 1.64
+ },
+ "water": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 26,
+  "apply": 22,
+  "keep": 4,
+  "review": 0,
+  "locked": 0,
+  "median": 0.76,
+  "max": 1.76
+ },
+ "memories": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 134,
+  "apply": 85,
+  "keep": 44,
+  "review": 5,
+  "locked": 0,
+  "median": 0.46,
+  "max": 2.76
+ },
+ "hearts": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 86,
+  "apply": 18,
+  "keep": 60,
+  "review": 8,
+  "locked": 0,
+  "median": 0.53,
+  "max": 0.98
+ },
+ "fire": {
+  "status": "applied",
+  "date": "2026-11-24",
+  "lang": "en",
+  "transcribed": false,
+  "lines": 99,
+  "apply": 62,
+  "keep": 17,
+  "review": 20,
+  "locked": 0,
+  "median": 0.83,
+  "max": 2.72
+ }
+}
