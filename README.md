@@ -225,6 +225,7 @@ Each song has its own accent color that tints the whole app while it is showing.
 4. Give it lyrics (below). Every sheet is a data file; nothing is typed into components.
 5. Generate the sing-along timings (below). A song missing from `src/data/timing.json` simply reads by scroll.
 6. `pnpm media:sync` to put the new (or replaced) audio on the media CDN and record its version in `src/data/media.json`; commit that file. CI fails until it is done.
+7. `python3 scripts/share-data.py` to write the song's link preview: its entry in `src/data/share.json` and `public/assets/og/<id>.jpg` (the cover over a blurred copy of itself, 1200x630). The build writes a page per song link from that file (`/lyrics/<id>`, and `/kinetic/<id>` for a film), the app itself with the song's title, description and cover in its head, so a link sent in a message shows that song; the site's own link shows Pencil and Pen. `share.test.ts` fails until a new song is listed.
 
 ## Lyrics
 
