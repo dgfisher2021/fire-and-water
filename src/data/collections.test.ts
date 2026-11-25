@@ -19,6 +19,9 @@ const FAMILIES: TrackId[][] = [
   ['raven', 'carry'],
   ['espoir', 'anglais'],
   ['telemetry', 'signal'],
+  ['heavy', 'heavyrise'],
+  ['refuse', 'refusegospel'],
+  ['storyofme', 'writing'],
 ]
 
 describe('the collections', () => {

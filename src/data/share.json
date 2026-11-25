@@ -646,5 +646,29 @@
     "title": "The Analyst’s Apology",
     "description": "He knows the names behind the numbers and held the line through broken handoffs, and he is sorry for the times he let you down. But he won’t wear the weight of every gap as if the whole design were his to save. Loyal still, which is why the anger cuts so deep: I’ll answer for my part, not every fault around me. I’m still here, and I’m learning where to draw the line.",
     "film": false
+  },
+  {
+    "id": "heavyrise",
+    "title": "Heavy is the Head (Rise to Sovereignty)",
+    "description": "Signal to Sovereignty’s verses meet Heavy Is the Head’s chorus: one voice takes back the years, you drew the line and called it law, I leave your rules, I break your pact; the other answers from the throne, every stone they threw turned to jewels around her head. Hypnotic trance over heartbeat percussion and eerie calliope, with a gospel lift. Stand up, hold your gaze, and straighten out your crown.",
+    "film": false
+  },
+  {
+    "id": "refusegospel",
+    "title": "I Refuse to Give Up (Anti-Gospel Version)",
+    "description": "The same words as cinematic dark pop, an anti-gospel at 90 BPM: a close, low voice over intimate piano and a heartbeat groove, a choir swelling in answer until the final chorus surges. Shorter than the original and without its North African pulse, with a hand reaching up in ink on the cover. Not today, you don’t get to win.",
+    "film": false
+  },
+  {
+    "id": "writing",
+    "title": "Writing the Story of Me",
+    "description": "The Story of Me rewritten for the friends who stayed: the verses for his sister and for God give way to one for his found family, who never told him to shrink and made room for the real him. Minimal trance over a sub-bass heartbeat, an ethereal string interlude, and a new last page: I’ll just turn another page with these words in my hands. The strength he carried all along was strength that lives in him.",
+    "film": false
+  },
+  {
+    "id": "chosen",
+    "title": "Chosen on Purpose",
+    "description": "He came up like a bruise, still learning his name, and mistook the storm for proof he had to give in. Ritual neo-folk electronica over a frame drum and a sub-bass heartbeat, vocoder choirs answering in layers: pain is material, not a throne, and no hard word can name all of him. I can change and still be mine. Chosen on purpose, not a verdict to retest.",
+    "film": false
   }
 ]
