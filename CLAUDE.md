@@ -32,8 +32,8 @@ columns, pair in the URL as `?with=`) and More (`MobileListGroup` rows for
 appearance, downloads, Drive links, sharing, and the About note from
 `ALBUM.about`, whose artist row opens the creator profile). React 19 +
 TypeScript strict + Vite 8 + TanStack Router + Tailwind v4 on
-`@dust-ui/ui` 0.35, `@dust-ui/blocks` 0.25, `@dust-ui/motion` 0.16,
-`@dust-ui/tokens` 0.13, `@dust-ui/3d` 0.12 and `@dust-ui/charts` 0.15.0 from
+`@dust-ui/ui` 0.37, `@dust-ui/blocks` 0.26, `@dust-ui/motion` 0.16.1,
+`@dust-ui/tokens` 0.14, `@dust-ui/3d` 0.12.3 and `@dust-ui/charts` 0.16.0 from
 GitHub Packages (blocks and 3d pin an exact ui, blocks an exact motion and
 charts: bump them together or two copies install). Each package's compiled
 `dist` is an `@source` in `index.css`; a package missing there renders its
@@ -128,9 +128,8 @@ classes unstyled (the shell's backdrop went to zero height without blocks).
 - `src/components/` app compositions on the published packages: no forks.
   The kit supplies the shell, `MediaRow`, `MediaPlayer` (the `/time` bar),
   `MediaPlayButton`, `MediaScrubber`, `MediaWaveform`, `MotionMarquee
-overflowOnly`, `MotionTextMorph maxChars` (in motion 0.12 to 0.13 it never
-  morphs, only fades: its wrap check measures the new `sr-only` copy; an
-  upstream fix), `SheetAction` `checked`,
+overflowOnly`, `MotionTextMorph maxChars` (it morphs per character again from
+  motion 0.16.1; 0.12 to 0.16.0 only faded), `SheetAction` `checked`,
   `useHotkeys`, `useMediaSession`, `filterByText`, `shareLink`,
   `downloadUrl`/`downloadText` and `formatTime`. What is still app-level and
   why: `LyricsReader` and `LyricsSplit` (the kit's `MediaLyricsReader` and

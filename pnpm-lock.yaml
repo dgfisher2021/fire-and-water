@@ -13,23 +13,23 @@ importers:
   .:
     dependencies:
       '@dust-ui/3d':
-        specifier: ^0.12.1
-        version: 0.12.1(@date-fns/tz@1.5.0)(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/react@19.3.0)(@types/three@0.187.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/postprocessing@3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0))(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(postprocessing@6.39.6(three@0.187.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)(use-sync-external-store@1.7.0(react@19.2.5))
+        specifier: ^0.12.3
+        version: 0.12.3(@date-fns/tz@1.5.0)(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/react@19.3.0)(@types/three@0.187.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/postprocessing@3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0))(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(postprocessing@6.39.6(three@0.187.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)(use-sync-external-store@1.7.0(react@19.2.5))
       '@dust-ui/blocks':
-        specifier: ^0.25.0
-        version: 0.25.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)(use-sync-external-store@1.7.0(react@19.2.5))
+        specifier: ^0.26.1
+        version: 0.26.1(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)(use-sync-external-store@1.7.0(react@19.2.5))
       '@dust-ui/charts':
-        specifier: 0.15.0
-        version: 0.15.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
+        specifier: 0.16.0
+        version: 0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
       '@dust-ui/motion':
-        specifier: ^0.16.0
-        version: 0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+        specifier: ^0.16.1
+        version: 0.16.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@dust-ui/tokens':
-        specifier: ^0.13.0
-        version: 0.13.0
+        specifier: ^0.14.0
+        version: 0.14.0
       '@dust-ui/ui':
-        specifier: ^0.35.0
-        version: 0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+        specifier: ^0.37.0
+        version: 0.37.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
       '@fontsource-variable/cinzel':
         specifier: ^5.3.0
         version: 5.3.0
@@ -734,8 +734,8 @@ packages:
     peerDependencies:
       react: 19.2.5
 
-  '@dust-ui/3d@0.12.1':
-    resolution: {integrity: sha512-YpoVeOYZB22wTp0gviSTQgnOFeZFBE//MK06F0L/SUaxGGDul3kEuU6PMjyxYe+gE4whSEBYA7bg+heOuobRQg==, tarball: https://npm.pkg.github.com/download/@dust-ui/3d/0.12.1/ca6dd44ecbcbead8a7aa92c9c708d7de271ecfb1}
+  '@dust-ui/3d@0.12.3':
+    resolution: {integrity: sha512-gN9n3T1DSj3cWPuAbi+w73fH78USI+F3zJvbFh9JrjledAJOOaE+INlglB1RVfE9J6CltwvxDbLVfYzlX7qWtw==, tarball: https://npm.pkg.github.com/download/@dust-ui/3d/0.12.3/fbe4d4b27b3311d37ec4e3b321115066d877c601}
     peerDependencies:
       '@react-three/drei': ^10.7.8
       '@react-three/fiber': ^9.7.0
@@ -744,26 +744,21 @@ packages:
       react: 19.2.5
       react-dom: 19.2.5
       three: ^0.187.0
-    peerDependenciesMeta:
-      '@react-three/postprocessing':
-        optional: true
-      postprocessing:
-        optional: true
 
-  '@dust-ui/blocks@0.25.0':
-    resolution: {integrity: sha512-3GWoHjcBfcsqtZSs6s9i6YUXx8FlKlD4kWIMnVujHEtS1cbvNS1bKn1S9W+FEQv7w5ORca/RxD+l2FWklFx/pw==, tarball: https://npm.pkg.github.com/download/@dust-ui/blocks/0.25.0/d47b132eda181359cded2fb263006bdc5506f9d2}
+  '@dust-ui/blocks@0.26.1':
+    resolution: {integrity: sha512-V1AkXxasVXHdwBF5l9aEbnxDUxBT2Ea2y7zopFOhdCEoOt27qXVMjqUr3MY9QiTnYUcHD6vSYOnlSiBr4BrFCQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/blocks/0.26.1/17038473cfc781dc8187a7daaa507219ffa5c5f9}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/charts@0.15.0':
-    resolution: {integrity: sha512-lgmzjnprvd3WGSPbcs93rnVbCUDz3e0hO0t6QjzdGPrJVyzC8MskekW9r0nIwSHUPl8wpZ1FkpnhkyRCpk9Yeg==, tarball: https://npm.pkg.github.com/download/@dust-ui/charts/0.15.0/ab8f618b14bafc1a86dbdb3ffbfe3cdd7a5d0604}
+  '@dust-ui/charts@0.16.0':
+    resolution: {integrity: sha512-m1lsW2TfLMSssJ3/DD1Gk8s0BNimIM21g1zqxiiVH3y2SlXZbitKvyy4Qz7lcLjIJHVS+mWQFUDmlcjtlJS5fQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/charts/0.16.0/18508fa0988ae49c2a23d0a2f23ff45d49df98f3}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/data@0.8.0':
-    resolution: {integrity: sha512-zc8FxUqOCTxLi+EMCgrZcK9Mq/jBfHxBIw1wG86nnKEs4701Q3pTQwJIFJb574zoztidfY8f3K01/WdQMwr7gw==, tarball: https://npm.pkg.github.com/download/@dust-ui/data/0.8.0/1827f5db0ce3cad856cd362dc21cccb3528160be}
+  '@dust-ui/data@0.10.0':
+    resolution: {integrity: sha512-591+iENF9n8xIg3srfaIaibpqZuvYNYsmT2Bl1Vl3skdRG3XZJ7bcxBxOPA09ygLYT61yIGm2frxz7aU2SKhrA==, tarball: https://npm.pkg.github.com/download/@dust-ui/data/0.10.0/a920f66e3075a87c51ad329b1d30362271c1cfb1}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
@@ -775,17 +770,17 @@ packages:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/motion@0.16.0':
-    resolution: {integrity: sha512-fuGATNkwrgysW/Vndk5kqu1lauuUzWnNdwa8yvaCWnkh+YhlOLa/NCBvdqvxpCLjUgE+0Ep5NhRk65dhlg5iaA==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.16.0/7d432f644d6c7408c32f95032dd72187f3d7fc4a}
+  '@dust-ui/motion@0.16.1':
+    resolution: {integrity: sha512-hFtr2VKAfkcXdbKsDFZhEHDzcrYcQrSMdLQEkNXQSjCuHth/IsnbkZxbEh2M39D7z81r6qcxaSH534tljFxaOw==, tarball: https://npm.pkg.github.com/download/@dust-ui/motion/0.16.1/512eccc2068af3e94c18bf4be08fcb5d3351a905}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
 
-  '@dust-ui/tokens@0.13.0':
-    resolution: {integrity: sha512-g/+0X4NS7HS9noevGIyxSv4FAu5Ak6dfDJuocvCMQz30c2NyrJtLwRsaxdF+nOxn/rJ4m7ppR5J/kOkZ3Ycv0A==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.13.0/1a826e5a62714725aeb925ad74d74c52600707b2}
+  '@dust-ui/tokens@0.14.0':
+    resolution: {integrity: sha512-Swm4kiIn1HGtSNaAjjTe+j/ehdyl1+YgeLa9na3BZrP0OO0qWnzoDFb7jgXeDftLZEGK2p3K2LcrzZyK3ktkzQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/tokens/0.14.0/fc86af995ca24bc471ac5eac5dc807e01347769a}
 
-  '@dust-ui/ui@0.35.0':
-    resolution: {integrity: sha512-CI0AjVsJSJ5YKoNu78jS+4kgQ6uYTMqHT1cSRLq2Rse5ytPLZlAfmA02TJXXyAc4/O4XVOS6Y6GUrZADo8SQgQ==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.35.0/1b48bcf6c1addec6773406a0bab02d5b0319f500}
+  '@dust-ui/ui@0.37.0':
+    resolution: {integrity: sha512-GjkJbKc3hdv5IGrywi+pxytzbvASYSD8X16gqU7YdmQrlz80gQ0Um2YsJxPS5xtH5qUjn7jrLt32+j13/3cUog==, tarball: https://npm.pkg.github.com/download/@dust-ui/ui/0.37.0/01ced0f026fc8a37f52cdaff6a9e003805b38e9f}
     peerDependencies:
       react: 19.2.5
       react-dom: 19.2.5
@@ -5105,19 +5100,18 @@ snapshots:
       react: 19.2.5
       tslib: 2.8.1
 
-  '@dust-ui/3d@0.12.1(@date-fns/tz@1.5.0)(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/react@19.3.0)(@types/three@0.187.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/postprocessing@3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0))(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(postprocessing@6.39.6(three@0.187.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)(use-sync-external-store@1.7.0(react@19.2.5))':
+  '@dust-ui/3d@0.12.3(@date-fns/tz@1.5.0)(@react-three/drei@10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/react@19.3.0)(@types/three@0.187.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@react-three/postprocessing@3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0))(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(postprocessing@6.39.6(three@0.187.0))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)(use-sync-external-store@1.7.0(react@19.2.5))':
     dependencies:
-      '@dust-ui/ui': 0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+      '@dust-ui/ui': 0.37.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
       '@react-three/drei': 10.7.9(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/react@19.3.0)(@types/three@0.187.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)
       '@react-three/fiber': 9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0)
+      '@react-three/postprocessing': 3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0)
       clsx: 2.1.1
+      postprocessing: 6.39.6(three@0.187.0)
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
       tailwind-merge: 3.7.0
       three: 0.187.0
-    optionalDependencies:
-      '@react-three/postprocessing': 3.2.2(@react-three/fiber@9.8.1(@types/react@19.3.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(three@0.187.0))(@types/three@0.187.0)(postprocessing@6.39.6(three@0.187.0))(react@19.2.5)(three@0.187.0)
-      postprocessing: 6.39.6(three@0.187.0)
     transitivePeerDependencies:
       - '@date-fns/tz'
       - '@standard-schema/spec'
@@ -5148,13 +5142,13 @@ snapshots:
       - vest
       - yup
 
-  '@dust-ui/blocks@0.25.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)(use-sync-external-store@1.7.0(react@19.2.5))':
+  '@dust-ui/blocks@0.26.1(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(frappe-gantt@1.2.2)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)(use-sync-external-store@1.7.0(react@19.2.5))':
     dependencies:
-      '@dust-ui/charts': 0.15.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
-      '@dust-ui/data': 0.8.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+      '@dust-ui/charts': 0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)
+      '@dust-ui/data': 0.10.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
       '@dust-ui/gantt': 0.3.2(frappe-gantt@1.2.2)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dust-ui/motion': 0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@dust-ui/ui': 0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+      '@dust-ui/motion': 0.16.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@dust-ui/ui': 0.37.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
       class-variance-authority: 0.7.1
       lucide-react: 1.74.0(@types/react@19.3.0)(react@19.2.5)
       react: 19.2.5
@@ -5193,7 +5187,7 @@ snapshots:
       - vest
       - yup
 
-  '@dust-ui/charts@0.15.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)':
+  '@dust-ui/charts@0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react-is@16.13.1)(react@19.2.5)(redux@5.0.1)':
     dependencies:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
@@ -5203,12 +5197,12 @@ snapshots:
       - react-is
       - redux
 
-  '@dust-ui/data@0.8.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))':
+  '@dust-ui/data@0.10.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(react@19.2.5)
       '@dnd-kit/utilities': 3.2.2(react@19.2.5)
-      '@dust-ui/ui': 0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
+      '@dust-ui/ui': 0.37.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))
       '@tanstack/react-table': 8.21.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@tanstack/react-virtual': 3.14.26(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       lucide-react: 1.74.0(@types/react@19.3.0)(react@19.2.5)
@@ -5250,7 +5244,7 @@ snapshots:
       react: 19.2.5
       react-dom: 19.2.5(react@19.2.5)
 
-  '@dust-ui/motion@0.16.0(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
+  '@dust-ui/motion@0.16.1(@types/react@19.3.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)':
     dependencies:
       canvas-confetti: 1.9.4
       class-variance-authority: 0.7.1
@@ -5264,9 +5258,9 @@ snapshots:
       - '@types/react'
       - remix
 
-  '@dust-ui/tokens@0.13.0': {}
+  '@dust-ui/tokens@0.14.0': {}
 
-  '@dust-ui/ui@0.35.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))':
+  '@dust-ui/ui@0.37.0(@date-fns/tz@1.5.0)(@standard-schema/spec@1.1.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(ajv@8.20.0)(immer@11.2.9)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(use-sync-external-store@1.7.0(react@19.2.5))':
     dependencies:
       '@base-ui/react': 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@hookform/resolvers': 7.0.7(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.91.0(@types/react@19.3.0)(react@19.2.5))(zod@4.6.7)
