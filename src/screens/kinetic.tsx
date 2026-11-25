@@ -433,8 +433,8 @@ export function KineticScreen() {
           className='absolute inset-0 size-full scale-110 object-cover opacity-35 blur-2xl'
         />
         <div className='absolute inset-0 bg-linear-to-r from-background via-background/70 to-transparent' />
-        <div className='absolute inset-0 flex items-center gap-[6vw] px-[9vw] max-md:flex-col max-md:justify-center max-md:gap-8 max-md:text-center'>
-          <div className='min-w-0 flex-1'>
+        <div className='absolute inset-0 flex items-center justify-center gap-[6vw] px-[9vw] pt-14 pb-24 max-md:gap-8 max-md:portrait:flex-col max-md:portrait:text-center max-md:landscape:pt-4 max-md:landscape:pb-16'>
+          <div className='min-w-0 md:flex-1'>
             <p
               className='text-foreground/70'
               style={{ font: `italic 500 clamp(18px, 2vw, 30px) ${ITALIC}` }}
@@ -459,7 +459,7 @@ export function KineticScreen() {
             >
               {song?.artist}
             </p>
-            <p className='mt-10 flex items-center gap-3 text-sm tracking-[0.2em] text-muted-foreground uppercase max-md:justify-center'>
+            <p className='mt-10 flex items-center gap-3 text-sm tracking-[0.2em] text-muted-foreground uppercase max-md:portrait:justify-center max-md:landscape:mt-4'>
               <Play className='size-4 fill-current' />
               Press play
             </p>
@@ -467,7 +467,7 @@ export function KineticScreen() {
           <img
             src={`${import.meta.env.BASE_URL}${t.art.full}`}
             alt=''
-            className='aspect-square w-[min(38vw,62vh)] rounded-lg object-cover shadow-2xl max-md:order-first max-md:w-[min(64vw,40vh)]'
+            className='aspect-square w-[min(38vw,62vh)] rounded-lg object-cover shadow-2xl max-md:portrait:order-first max-md:portrait:w-[min(64vw,36vh)] max-md:landscape:w-[min(30vw,58vh)]'
           />
         </div>
       </div>
